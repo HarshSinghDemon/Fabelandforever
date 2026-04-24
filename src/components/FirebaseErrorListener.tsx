@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useEffect } from 'react';
@@ -20,17 +21,28 @@ export function FirebaseErrorListener() {
         error.context.operation === 'list' || 
         error.context.operation === 'get';
 
-      // If a visitor can't read public data yet, we log it silently to the console 
-      // instead of showing a disruptive toast. This happens when rules aren't set to public read.
+      // If a visitor can't read public data yet, we log it prominently to the console
+      // and show a specific toast to help the developer identify why data isn't showing.
       if (isPublicPath && isReadOperation) {
-        console.warn(
-          `Public Access Note: The crochet loops at ${error.context.path} are currently protected. ` +
-          `To show this content to visitors, update your Firestore Rules to allow public read.`
+        console.error(
+          `%c PUBLIC ACCESS BLOCKED: %c The treasures at ${error.context.path} are private. ` +
+          `Go to the Admin Panel or Firebase Console to update your Security Rules to allow public read access.`,
+          "color: white; background: red; font-weight: bold; padding: 4px; border-radius: 4px;",
+          "color: red; font-weight: bold;"
         );
+        
+        // Only show this specific helpful toast if we are on the homepage or shop sections
+        if (typeof window !== 'undefined' && window.location.pathname === '/') {
+          toast({
+            variant: "destructive",
+            title: "Treasures are Hidden 🔒",
+            description: "Your database rules are currently private. Only you (the Admin) can see products. Go to Admin Dashboard to fix this!",
+          });
+        }
         return;
       }
 
-      // For actual write failures or restricted admin data, show the toast.
+      // For actual write failures or restricted admin data, show the standard toast.
       toast({
         variant: "destructive",
         title: "Magic Boundary Encountered",

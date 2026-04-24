@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useEffect } from 'react';
@@ -23,7 +24,8 @@ import {
   Settings,
   AlertCircle,
   Copy,
-  CheckCircle2
+  CheckCircle2,
+  Globe
 } from 'lucide-react';
 import { signOut } from 'firebase/auth';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
@@ -73,6 +75,7 @@ export default function AdminDashboard() {
   const firestoreRules = `rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    // Anyone can see your treasures and site settings
     match /products/{productId} {
       allow read: if true;
       allow write: if request.auth != null;
@@ -81,8 +84,14 @@ service cloud.firestore {
       allow read: if true;
       allow write: if request.auth != null;
     }
+    // Only you can see and manage orders
     match /orders/{orderId} {
       allow read, write: if request.auth != null;
+    }
+    // Only you can manage specific site configuration
+    match /settings/{settingId} {
+      allow write: if request.auth != null;
+      allow read: if true;
     }
   }
 }`;
@@ -121,7 +130,7 @@ service cloud.firestore {
             </div>
             <h1 className="font-headline text-6xl md:text-7xl text-primary mb-4 leading-tight">Studio Control</h1>
             <p className="text-muted-foreground font-medium italic text-xl max-w-2xl">
-              "Welcome back, Master Artisan. The magical loops of your boutique await your command."
+              "Welcome back, Master Artisan. Ensure your 'Magic Boundaries' are open so the world can see your work."
             </p>
           </div>
           <div className="flex flex-wrap gap-4">
@@ -144,41 +153,43 @@ service cloud.firestore {
           </div>
         </div>
 
-        {dbStatus === 'error' && (
-          <Alert variant="destructive" className="mb-10 rounded-[2rem] border-2 bg-white p-8 shadow-xl animate-in slide-in-from-top-4 duration-500">
-            <AlertCircle className="h-6 w-6" />
-            <AlertTitle className="font-headline text-2xl mb-4">Fix the Magic Boundary</AlertTitle>
-            <AlertDescription className="text-base space-y-6">
-              <p>Your <strong>Firestore Rules</strong> are currently blocking public access to your crochet treasures. To fix this and make your site visible to customers, please follow these steps:</p>
-              
-              <div className="bg-slate-950 text-slate-50 p-6 rounded-2xl relative group">
-                <pre className="text-xs overflow-x-auto font-mono leading-relaxed">
-                  {firestoreRules}
-                </pre>
-                <Button 
-                  size="sm"
-                  variant="secondary"
-                  onClick={handleCopyRules}
-                  className="absolute top-4 right-4 rounded-xl"
-                >
-                  {copied ? <CheckCircle2 className="w-4 h-4 mr-2 text-emerald-400" /> : <Copy className="w-4 h-4 mr-2" />}
-                  {copied ? "Copied!" : "Copy Rules"}
-                </Button>
-              </div>
+        {/* CRITICAL: Rules Warning */}
+        <Alert variant="destructive" className="mb-10 rounded-[2rem] border-2 border-destructive bg-white p-8 shadow-2xl animate-in slide-in-from-top-4 duration-500 ring-4 ring-destructive/10">
+          <Globe className="h-8 w-8 text-destructive mb-4" />
+          <AlertTitle className="font-headline text-3xl mb-4">Make Your Site Global! 🌍</AlertTitle>
+          <AlertDescription className="text-base space-y-6">
+            <p className="font-medium text-lg">
+              If visitors see an empty shop, it's because your <strong>Firestore Rules</strong> are set to private. 
+              To fix this, you MUST copy the code below and publish it in your Firebase Console:
+            </p>
+            
+            <div className="bg-slate-950 text-slate-50 p-6 rounded-2xl relative group border-2 border-white/10 shadow-inner">
+              <pre className="text-xs overflow-x-auto font-mono leading-relaxed">
+                {firestoreRules}
+              </pre>
+              <Button 
+                size="sm"
+                variant="secondary"
+                onClick={handleCopyRules}
+                className="absolute top-4 right-4 rounded-xl shadow-lg"
+              >
+                {copied ? <CheckCircle2 className="w-4 h-4 mr-2 text-emerald-400" /> : <Copy className="w-4 h-4 mr-2" />}
+                {copied ? "Copied!" : "Copy These Rules"}
+              </Button>
+            </div>
 
-              <div className="flex flex-col sm:flex-row gap-4 pt-2">
-                <Button asChild className="rounded-full h-12 px-8 bg-primary hover:bg-primary/90">
-                  <a href={firebaseConsoleUrl} target="_blank" rel="noopener noreferrer">
-                    1. Open Firestore Rules Tab <ExternalLink className="w-4 h-4 ml-2" />
-                  </a>
-                </Button>
-                <div className="flex items-center text-sm font-medium text-muted-foreground px-4">
-                  2. Paste code & click "Publish"
-                </div>
+            <div className="flex flex-col sm:flex-row gap-6 pt-4 items-center">
+              <Button asChild className="rounded-full h-16 px-10 bg-primary hover:bg-primary/90 text-lg shadow-xl">
+                <a href={firebaseConsoleUrl} target="_blank" rel="noopener noreferrer">
+                  1. Go to Firebase Rules Tab <ExternalLink className="w-4 h-4 ml-2" />
+                </a>
+              </Button>
+              <div className="flex items-center text-sm font-bold text-muted-foreground uppercase tracking-widest bg-paper px-6 py-3 rounded-full border">
+                2. Paste code & click "Publish"
               </div>
-            </AlertDescription>
-          </Alert>
-        )}
+            </div>
+          </AlertDescription>
+        </Alert>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-16">
           <div className="lg:col-span-1 space-y-6 animate-fade-in-up">
@@ -222,26 +233,6 @@ service cloud.firestore {
                   <span className="font-bold text-primary">{products?.length || 0}</span>
                 </div>
               </div>
-            </div>
-            
-            <div className="p-10 bg-accent/5 rounded-[3rem] border border-dashed border-accent/20">
-               <h4 className="font-headline text-xl text-primary mb-4 italic">System Pulse</h4>
-               <div className="space-y-4">
-                  <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-widest opacity-60">
-                    <span>Database Connection</span>
-                    <span className="flex items-center gap-2">
-                      {dbStatus === 'connected' && <><ShieldCheck className="w-3 h-3 text-emerald-500" /> Authorized</>}
-                      {dbStatus === 'error' && <><ShieldAlert className="w-3 h-3 text-destructive" /> Rule Error</>}
-                      {dbStatus === 'checking' && <><Loader2 className="w-3 h-3 animate-spin" /> Checking...</>}
-                    </span>
-                  </div>
-                  <div className="h-1.5 w-full bg-white rounded-full overflow-hidden">
-                    <div className={`h-full transition-all duration-1000 ${
-                      dbStatus === 'connected' ? 'w-full bg-emerald-400' : 
-                      dbStatus === 'error' ? 'w-1/3 bg-destructive' : 'w-1/2 bg-accent'
-                    }`}></div>
-                  </div>
-               </div>
             </div>
           </div>
 

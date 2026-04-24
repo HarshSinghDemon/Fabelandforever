@@ -1,62 +1,14 @@
+
 "use client";
 
-import React, { useState } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { Sparkles, Heart, ArrowRight, Upload, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Heart, ArrowRight, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useToast } from '@/hooks/use-toast';
-import { uploadToSupabase } from '@/app/actions/supabase-upload';
 
 export function CustomOrder() {
   const bgImage = PlaceHolderImages.find(img => img.id === 'hero-image');
-  const { toast } = useToast();
-  const [uploading, setUploading] = useState(false);
-  const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
-
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    if (file.size > 5 * 1024 * 1024) {
-      toast({
-        variant: "destructive",
-        title: "File too heavy",
-        description: "Please share an image smaller than 5MB.",
-      });
-      return;
-    }
-
-    setUploading(true);
-    setUploadedUrl(null);
-    
-    try {
-      const formData = new FormData();
-      formData.append('file', file);
-
-      const result = await uploadToSupabase(formData);
-
-      if (result.success && result.url) {
-        setUploadedUrl(result.url);
-        toast({
-          title: "Inspiration Captured! ✨",
-          description: "Your reference image has been woven into our storage vault.",
-        });
-      } else {
-        throw new Error(result.error);
-      }
-    } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "Upload Interrupted",
-        description: error.message || "Connection to the storage loom failed.",
-      });
-    } finally {
-      setUploading(false);
-      // Reset input value so same file can be uploaded again if needed
-      if (e.target) e.target.value = '';
-    }
-  };
 
   return (
     <section id="custom" className="py-24 bg-background overflow-hidden">
@@ -68,7 +20,7 @@ export function CustomOrder() {
               <span className="text-primary font-bold tracking-[0.3em] uppercase text-[10px] mb-4 block">Bespoke Heirlooms</span>
               <h2 className="font-headline text-5xl md:text-7xl text-primary mb-8 leading-tight">Your Vision, <br /><span className="italic text-accent">Our Loops</span></h2>
               <p className="text-xl text-muted-foreground mb-12 leading-relaxed max-w-lg italic font-medium">
-                "Every custom piece begins with a spark. Share your inspiration and let's create a forever loop together."
+                "Every custom piece begins with a spark. Share your vision and let's create a forever loop together."
               </p>
               
               <div className="space-y-8 mb-12">
@@ -86,55 +38,8 @@ export function CustomOrder() {
                   </div>
                 ))}
               </div>
-
-              <div className="bg-accent/5 p-8 rounded-[2rem] stitching-border max-w-md">
-                <h4 className="font-bold text-primary mb-4 flex items-center gap-2">
-                  <Upload className="w-4 h-4" /> Share Your Inspiration
-                </h4>
-                <div className="relative">
-                  <input 
-                    type="file" 
-                    onChange={handleImageUpload}
-                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20"
-                    disabled={uploading}
-                    accept="image/png, image/jpeg, image/jpg, image/webp"
-                  />
-                  <div className="bg-white border-2 border-dashed border-accent/40 rounded-xl p-8 text-center group hover:border-accent transition-all duration-300 min-h-[160px] flex items-center justify-center">
-                    {uploading ? (
-                      <div className="flex flex-col items-center gap-3">
-                        <Loader2 className="w-8 h-8 animate-spin text-accent" />
-                        <span className="text-xs font-bold text-primary uppercase tracking-widest">Weaving into Storage...</span>
-                      </div>
-                    ) : uploadedUrl ? (
-                      <div className="flex flex-col items-center gap-3 text-primary animate-in zoom-in">
-                        <CheckCircle2 className="w-8 h-8 text-primary" />
-                        <span className="text-xs font-bold uppercase tracking-widest">Image Secured ✨</span>
-                        <div className="mt-2 text-[10px] text-muted-foreground break-all px-4 bg-muted/30 py-1 rounded-md line-clamp-1">
-                          Successfully uploaded to uploads bucket
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="flex flex-col items-center gap-3">
-                        <div className="p-4 bg-accent/10 rounded-full group-hover:scale-110 transition-transform">
-                          <Sparkles className="w-8 h-8 text-accent" />
-                        </div>
-                        <span className="text-xs font-bold text-primary uppercase tracking-widest">Click to upload photo</span>
-                        <p className="text-[10px] text-muted-foreground">PNG, JPG or WEBP up to 5MB</p>
-                      </div>
-                    )}
-                  </div>
-                </div>
-                {!uploadedUrl && !uploading && (
-                  <div className="mt-4 flex flex-col items-center gap-1">
-                    <div className="flex items-center gap-2 text-primary/40 text-[9px] uppercase tracking-widest justify-center">
-                      <AlertCircle className="w-3 h-3" />
-                      Requires "uploads" bucket (Public)
-                    </div>
-                  </div>
-                )}
-              </div>
               
-              <Button asChild className="mt-12 bg-primary hover:bg-primary/90 text-white h-16 px-10 rounded-2xl font-bold uppercase tracking-widest text-xs shadow-xl shadow-primary/20 transition-all hover:scale-105">
+              <Button asChild className="mt-6 bg-primary hover:bg-primary/90 text-white h-16 px-10 rounded-2xl font-bold uppercase tracking-widest text-xs shadow-xl shadow-primary/20 transition-all hover:scale-105">
                 <a href="#contact">Start Your Consultation <ArrowRight className="ml-3 w-4 h-4" /></a>
               </Button>
             </div>

@@ -21,7 +21,6 @@ export function Navigation() {
 
   const navLinks = [
     { name: 'Collections 🎁', href: '#shop' },
-    { name: 'Bespoke Heirlooms ✨', href: '#custom' },
     { name: 'The Heritage 📖', href: '#story' },
     { name: 'Contact Us 👋', href: '#contact' },
   ];

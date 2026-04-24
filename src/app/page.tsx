@@ -5,7 +5,6 @@ import React, { useEffect, useRef } from 'react';
 import { Navigation } from '@/components/Navigation';
 import { Hero } from '@/components/Hero';
 import { FeaturedProducts } from '@/components/FeaturedProducts';
-import { CustomOrder } from '@/components/CustomOrder';
 import { Footer } from '@/components/Footer';
 import { Heart, Sparkles, Star, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -100,10 +99,6 @@ export default function Home() {
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent/10 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl floating [animation-delay:2s]"></div>
       </section>
 
-      <section ref={(el) => { if (el) scrollRefs.current[2] = el }} className="reveal-on-scroll">
-        <CustomOrder />
-      </section>
-      
       {/* Contact Section */}
       <section id="contact" className="py-32 relative overflow-hidden bg-white/50">
         <div className="container mx-auto px-6">

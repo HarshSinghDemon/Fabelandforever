@@ -1,3 +1,4 @@
+
 "use client";
 
 import React from 'react';
@@ -34,7 +35,6 @@ export function Footer() {
             <h4 className="font-bold uppercase tracking-[0.3em] text-[10px] mb-10 text-accent">Archive Index</h4>
             <ul className="space-y-5 text-sm font-bold uppercase tracking-widest">
               <li><Link href="#shop" className="text-primary-foreground/60 hover:text-accent transition-colors">The Boutique</Link></li>
-              <li><Link href="#custom" className="text-primary-foreground/60 hover:text-accent transition-colors">Custom Heirlooms</Link></li>
               <li><Link href="#story" className="text-primary-foreground/60 hover:text-accent transition-colors">The Artisan</Link></li>
               <li><Link href="#contact" className="text-primary-foreground/60 hover:text-accent transition-colors">Write to Us</Link></li>
             </ul>

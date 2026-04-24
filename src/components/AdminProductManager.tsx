@@ -1,14 +1,14 @@
 
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useFirestore, useCollection } from '@/firebase';
 import { collection, addDoc, deleteDoc, doc } from 'firebase/firestore';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
-import { Plus, Trash2, Package, ImageIcon, Loader2, Sparkles, ShieldAlert } from 'lucide-react';
+import { Plus, Trash2, Package, ImageIcon, Loader2, Sparkles, ShieldAlert, AlertCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import Image from 'next/image';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -19,6 +19,7 @@ export function AdminProductManager() {
   const { toast } = useToast();
   const [adding, setAdding] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [envCheck, setEnvCheck] = useState<{ ok: boolean; missing: string[] }>({ ok: true, missing: [] });
   
   const [formData, setFormData] = useState({
     title: '',
@@ -28,7 +29,16 @@ export function AdminProductManager() {
     description: ''
   });
 
-  // Simple query to avoid index requirement
+  // Check if Firebase keys are provided in .env
+  useEffect(() => {
+    const required = [
+      'NEXT_PUBLIC_FIREBASE_API_KEY',
+      'NEXT_PUBLIC_FIREBASE_PROJECT_ID'
+    ];
+    const missing = required.filter(key => !process.env[key]);
+    setEnvCheck({ ok: missing.length === 0, missing });
+  }, []);
+
   const productsQuery = React.useMemo(() => {
     return collection(db, 'products');
   }, [db]);
@@ -61,7 +71,7 @@ export function AdminProductManager() {
       toast({ 
         variant: "destructive", 
         title: "Upload Failed", 
-        description: error.message || "Could not reach Supabase. Check your URL and Key."
+        description: error.message || "Could not reach Supabase. Check your .env credentials."
       });
     } finally {
       setUploading(false);
@@ -98,14 +108,16 @@ export function AdminProductManager() {
       setFormData({ title: '', price: '', category: '', image: '', description: '' });
       toast({ 
         title: "Magic Manifested! ✨", 
-        description: `${productData.title} is now in your grimoire and live on the site.` 
+        description: `${productData.title} is now live in your boutique.` 
       });
     } catch (error: any) {
       console.error("Firestore Write Error:", error);
       toast({
         variant: "destructive",
         title: "Creation Failed",
-        description: error.message || "Check your Firestore Rules in Firebase Console."
+        description: error.code === 'permission-denied' 
+          ? "Check your Firestore Rules. You need to allow writes." 
+          : error.message
       });
     } finally {
       setAdding(false);
@@ -127,12 +139,22 @@ export function AdminProductManager() {
 
   return (
     <div className="space-y-12">
+      {!envCheck.ok && (
+        <Alert variant="destructive" className="rounded-[2rem] p-8">
+          <AlertCircle className="h-6 w-6" />
+          <AlertTitle className="font-bold">Missing Firebase Config</AlertTitle>
+          <AlertDescription className="mt-2">
+            You must add these to your .env file: {envCheck.missing.join(', ')}.
+          </AlertDescription>
+        </Alert>
+      )}
+
       <Alert className="bg-amber-50 border-amber-200 rounded-[2rem] p-8">
         <ShieldAlert className="h-6 w-6 text-amber-600" />
         <AlertTitle className="text-amber-800 font-bold ml-2">Database Access Note</AlertTitle>
         <AlertDescription className="text-amber-700/80 ml-2 mt-2">
           If items don't appear after saving, go to the <a href="https://console.firebase.google.com/project/fabel-57315/firestore/rules" target="_blank" className="underline font-bold">Firebase Rules</a> tab and ensure your rules allow reads and writes.
-          <code className="block mt-2 p-2 bg-amber-100 rounded text-xs">allow read, write: if true; // For testing only</code>
+          <code className="block mt-2 p-2 bg-amber-100 rounded text-xs">allow read, write: if request.auth != null;</code>
         </AlertDescription>
       </Alert>
 
@@ -180,7 +202,7 @@ export function AdminProductManager() {
               <Label className="text-[10px] font-bold uppercase tracking-widest text-primary/50 ml-4">Treasure Visual</Label>
               <div className="flex gap-4">
                 <Input 
-                  placeholder="Image URL will appear here..." 
+                  placeholder="Image URL..." 
                   value={formData.image}
                   readOnly
                   className="h-14 rounded-2xl border-2 border-primary/5 bg-muted/20 flex-1 overflow-hidden text-ellipsis"
@@ -212,7 +234,7 @@ export function AdminProductManager() {
             <Button 
               type="submit" 
               disabled={adding || uploading || !formData.image}
-              className="md:col-span-2 h-20 rounded-[2rem] bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-[0.3em] shadow-2xl shadow-primary/20 transition-all hover:scale-[1.01]"
+              className="md:col-span-2 h-20 rounded-[2rem] bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-[0.3em] shadow-2xl shadow-primary/30 transition-all hover:scale-[1.01]"
             >
               {adding ? <Loader2 className="animate-spin mr-2" /> : <Sparkles className="mr-2 h-5 w-5" />}
               {adding ? "Binding Threads..." : "Cast the Creation Spell"}
@@ -233,7 +255,7 @@ export function AdminProductManager() {
           <div className="flex justify-center py-20"><Loader2 className="animate-spin text-primary w-10 h-10" /></div>
         ) : products.length === 0 ? (
           <div className="p-20 bg-white/40 rounded-[3rem] border-2 border-dashed border-primary/10 text-center italic text-muted-foreground">
-            Your grimoire is empty. Loom your first treasure above!
+            Your inventory is empty. Loom your first treasure above!
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

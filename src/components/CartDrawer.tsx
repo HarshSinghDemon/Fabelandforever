@@ -1,4 +1,3 @@
-
 "use client";
 
 import React from 'react';
@@ -15,12 +14,12 @@ export function CartDrawer() {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <button className="relative bg-primary text-white px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-primary/90 transition-all shadow-md group active:scale-95">
-          <span className="flex items-center gap-2">
-            Basket <ShoppingBasket className="w-4 h-4 group-hover:rotate-12 transition-transform" />
+        <button className="relative bg-primary text-white px-3 py-1.5 sm:px-6 sm:py-2 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-widest hover:bg-primary/90 transition-all shadow-md group active:scale-95">
+          <span className="flex items-center gap-1.5 sm:gap-2">
+            <span className="hidden xs:inline">Basket</span> <ShoppingBasket className="w-3 h-3 sm:w-4 sm:h-4 group-hover:rotate-12 transition-transform" />
           </span>
           {cartCount > 0 && (
-            <span className="absolute -top-2 -right-2 bg-accent text-accent-foreground w-6 h-6 rounded-full flex items-center justify-center text-[10px] border-2 border-white shadow-sm font-bold animate-in zoom-in">
+            <span className="absolute -top-1.5 -right-1.5 bg-accent text-accent-foreground w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center text-[8px] sm:text-[10px] border-2 border-white shadow-sm font-bold animate-in zoom-in">
               {cartCount}
             </span>
           )}

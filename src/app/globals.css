@@ -115,14 +115,14 @@
 /* Fluid Scroll Revelations */
 .reveal-on-scroll {
   opacity: 0;
-  transform: translateY(30px);
-  transition: all 0.8s cubic-bezier(0.33, 1, 0.68, 1);
+  transform: translateX(-30px);
+  transition: all 1s cubic-bezier(0.33, 1, 0.68, 1);
   will-change: transform, opacity;
 }
 
 .reveal-on-scroll.active {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateX(0);
 }
 
 .btn-squish:active {
@@ -144,5 +144,15 @@
 @media (max-width: 768px) {
   .font-headline {
     letter-spacing: -0.02em;
+  }
+  
+  .reveal-on-scroll {
+    transform: translateX(-20px);
+  }
+}
+
+@layer utilities {
+  .perspective-1000 {
+    perspective: 1000px;
   }
 }

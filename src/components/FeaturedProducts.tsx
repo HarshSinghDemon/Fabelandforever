@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
-import { ShoppingCart, Sparkles, Loader2, Star } from 'lucide-react';
+import { ShoppingCart, Sparkles, Loader2, Star, ShoppingBag } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useToast } from '@/hooks/use-toast';
 import { useCollection, useFirestore } from '@/firebase';
@@ -14,7 +14,6 @@ export function FeaturedProducts() {
   const { toast } = useToast();
   const db = useFirestore();
 
-  // Reference to the 'products' collection
   const productsQuery = React.useMemo(() => {
     return collection(db, 'products');
   }, [db]);
@@ -57,9 +56,9 @@ export function FeaturedProducts() {
 
         {!products || products.length === 0 ? (
           <div className="text-center py-24 p-12 md:p-32 border-4 border-dashed border-primary/10 rounded-[5rem] bg-white/60 max-w-5xl mx-auto shadow-inner">
-            <Sparkles className="w-16 h-16 text-accent mx-auto mb-10 opacity-50 animate-pulse" />
+            <ShoppingBag className="w-16 h-16 text-accent mx-auto mb-10 opacity-50 animate-pulse" />
             <p className="text-primary/70 italic text-3xl font-medium leading-relaxed max-w-2xl mx-auto">
-              "The boutique shelves are resting... once you loom items in your portal, they will manifest here instantly."
+              "The boutique shelves are resting... check back soon for hand-stitched wonders."
             </p>
           </div>
         ) : (
@@ -67,7 +66,7 @@ export function FeaturedProducts() {
             {products.map((product: any) => (
               <Card key={product.id} className="group border-none shadow-none bg-transparent overflow-visible">
                 <CardContent className="p-0">
-                  <div className="relative aspect-[4/5] overflow-hidden rounded-[4rem] mb-10 border-[15px] border-white shadow-2xl transition-all duration-700 group-hover:-translate-y-6 hover:shadow-primary/20">
+                  <div className="relative aspect-[4/5] overflow-hidden rounded-[4rem] mb-10 border-[15px] border-white shadow-2xl transition-all duration-700 group-hover:-translate-y-6 hover:shadow-primary/20 bg-muted">
                     <Image
                       src={product.image || "https://picsum.photos/seed/tale/600/800"}
                       alt={product.title}

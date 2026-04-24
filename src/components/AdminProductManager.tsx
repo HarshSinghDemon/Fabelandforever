@@ -1,16 +1,15 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useFirestore, useCollection } from '@/firebase';
 import { collection, addDoc, deleteDoc, doc } from 'firebase/firestore';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
-import { Plus, Trash2, ImageIcon, Loader2, Sparkles, ShieldAlert, Copy, CheckCircle2 } from 'lucide-react';
+import { Plus, Trash2, ImageIcon, Loader2, Sparkles } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import Image from 'next/image';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { uploadToSupabase } from '@/app/actions/supabase-upload';
 
 export function AdminProductManager() {
@@ -18,7 +17,6 @@ export function AdminProductManager() {
   const { toast } = useToast();
   const [adding, setAdding] = useState(false);
   const [uploading, setUploading] = useState(false);
-  const [copied, setCopied] = useState(false);
   
   const [formData, setFormData] = useState({
     title: '',
@@ -30,23 +28,6 @@ export function AdminProductManager() {
 
   const productsCollection = collection(db, 'products');
   const { data: products, loading } = useCollection(productsCollection);
-
-  const rulesText = `rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    match /{document=**} {
-      allow read: if true;
-      allow write: if request.auth != null;
-    }
-  }
-}`;
-
-  const copyRules = () => {
-    navigator.clipboard.writeText(rulesText);
-    setCopied(true);
-    toast({ title: "Rules Copied!", description: "Paste this into Firestore > Rules tab." });
-    setTimeout(() => setCopied(false), 2000);
-  };
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -60,7 +41,7 @@ service cloud.firestore {
       const result = await uploadToSupabase(uploadFormData);
       if (result.success && result.url) {
         setFormData(prev => ({ ...prev, image: result.url! }));
-        toast({ title: "Visual Captured! ✨", description: "Your treasure photo is safely stored." });
+        toast({ title: "Visual Captured! ✨", description: "Your treasure photo is safely stored in Supabase." });
       } else {
         throw new Error(result.error || "Failed to upload image");
       }
@@ -95,7 +76,7 @@ service cloud.firestore {
       toast({ 
         variant: "destructive", 
         title: "Creation Failed", 
-        description: "Your database rules are likely blocking this action. See the warning below." 
+        description: "There was an error saving to the database." 
       });
     } finally {
       setAdding(false);
@@ -114,32 +95,6 @@ service cloud.firestore {
 
   return (
     <div className="space-y-12">
-      {/* Enhanced Helper Alert for Firestore Rules */}
-      <Alert className="bg-amber-50 border-amber-200 rounded-[2rem] p-8 border-2">
-        <ShieldAlert className="h-8 w-8 text-amber-600 mb-2" />
-        <AlertTitle className="text-amber-800 font-bold text-xl mb-4">Urgent: Database Rule Fix</AlertTitle>
-        <AlertDescription className="text-amber-700/90 space-y-4 text-sm leading-relaxed">
-          <p>The "Parse Error" happens when you use the **Realtime Database** tab. You <strong>MUST</strong> use the <strong>Firestore Database</strong> tab.</p>
-          <div className="bg-white/50 p-6 rounded-2xl border border-amber-100">
-            <p className="font-bold mb-2">How to fix it:</p>
-            <ol className="list-decimal ml-5 space-y-2">
-              <li>Open <a href="https://console.firebase.google.com/project/fabel-57315/firestore/rules" target="_blank" className="underline font-bold text-amber-900">Firestore Rules</a>.</li>
-              <li>Delete <strong>everything</strong> currently in the code editor.</li>
-              <li>Paste the block below and click <strong>"Publish"</strong>.</li>
-            </ol>
-          </div>
-          <div className="relative mt-6">
-            <pre className="p-6 bg-slate-900 text-slate-100 rounded-2xl text-[11px] font-mono overflow-x-auto border-4 border-amber-200 shadow-xl">
-              {rulesText}
-            </pre>
-            <Button size="sm" variant="secondary" className="absolute top-4 right-4 bg-white hover:bg-white/90" onClick={copyRules}>
-              {copied ? <CheckCircle2 className="w-4 h-4 mr-2 text-emerald-500" /> : <Copy className="w-4 h-4 mr-2" />}
-              {copied ? "Copied!" : "Copy Rules"}
-            </Button>
-          </div>
-        </AlertDescription>
-      </Alert>
-
       <Card className="border-none shadow-xl rounded-[3rem] overflow-hidden bg-white">
         <CardContent className="p-12">
           <div className="flex items-center gap-4 mb-10">
@@ -232,13 +187,19 @@ service cloud.firestore {
             {products.map((product: any) => (
               <Card key={product.id} className="border-none shadow-lg rounded-[2.5rem] overflow-hidden bg-white group hover:shadow-2xl transition-all">
                 <CardContent className="p-0 flex items-center h-48">
-                  <div className="relative w-40 h-full">
-                    <Image 
-                      src={product.image || "https://picsum.photos/seed/tale/400/400"} 
-                      alt={product.title} 
-                      fill 
-                      className="object-cover" 
-                    />
+                  <div className="relative w-40 h-full bg-muted">
+                    {product.image ? (
+                      <Image 
+                        src={product.image} 
+                        alt={product.title} 
+                        fill 
+                        className="object-cover" 
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-muted-foreground/30">
+                        <ImageIcon className="w-8 h-8" />
+                      </div>
+                    )}
                   </div>
                   <div className="flex-1 p-8 flex flex-col justify-between h-full">
                     <div className="flex justify-between items-start">

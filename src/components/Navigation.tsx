@@ -20,10 +20,10 @@ export function Navigation() {
   }, []);
 
   const navLinks = [
-    { name: 'The Shop 🛍️', href: '#shop' },
-    { name: 'Custom 🧶', href: '#custom' },
-    { name: 'Our Story 📖', href: '#story' },
-    { name: 'Contact 💌', href: '#contact' },
+    { name: 'The Shop 🛍️', href: '/#shop' },
+    { name: 'Custom 🧶', href: '/#custom' },
+    { name: 'Our Story 📖', href: '/#story' },
+    { name: 'Contact 💌', href: '/#contact' },
   ];
 
   return (
@@ -38,7 +38,7 @@ export function Navigation() {
       )}>
         <Link href="/" className="flex items-center gap-2 sm:gap-4 hover:scale-105 transition-all group">
           <Logo className="w-8 h-8 sm:w-10 sm:h-10 text-primary" />
-          <span className="font-headline text-lg sm:text-2xl text-primary font-bold">
+          <span className="font-headline text-lg sm:text-2xl text-primary font-bold whitespace-nowrap">
             Fable & Forever
           </span>
         </Link>
@@ -76,7 +76,7 @@ export function Navigation() {
 
       {/* Mobile Menu Overlay */}
       <div className={cn(
-        "md:hidden fixed inset-x-4 top-20 bg-white/95 backdrop-blur-2xl rounded-[2.5rem] p-8 sm:p-10 flex flex-col space-y-6 shadow-[0_40px_80px_-20px_rgba(0,0,0,0.2)] border border-white/30 transition-all duration-500 origin-top",
+        "md:hidden fixed inset-x-4 top-20 bg-white/95 backdrop-blur-2xl rounded-[2.5rem] p-8 sm:p-10 flex flex-col space-y-6 shadow-[0_40px_80px_-20px_rgba(0,0,0,0.2)] border border-white/30 transition-all duration-500 origin-top z-[60]",
         isMobileMenuOpen ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-95 -translate-y-4 pointer-events-none"
       )}>
         {navLinks.map((link) => (

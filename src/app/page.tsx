@@ -5,6 +5,7 @@ import { Navigation } from '@/components/Navigation';
 import { Hero } from '@/components/Hero';
 import { FeaturedProducts } from '@/components/FeaturedProducts';
 import { CustomOrder } from '@/components/CustomOrder';
+import { AICrochetTool } from '@/components/AICrochetTool';
 import { Footer } from '@/components/Footer';
 import { Heart, Sparkles, Send, Scissors, Star, BookOpen, Coffee, Wind } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -71,7 +72,7 @@ export default function Home() {
           </div>
           <div className="h-[1px] w-12 sm:w-24 bg-gradient-to-l from-transparent to-accent/50"></div>
         </div>
-        <p className="text-[10px] font-bold uppercase tracking-[0.5em] text-accent/60">The Tale Continues</p>
+        <p className="text-[10px] font-bold uppercase tracking-[0.5em] text-accent/60 italic">The Tale Continues • সুতোয় বোনা গল্প</p>
       </div>
 
       <section ref={(el) => { if (el) scrollRefs.current[0] = el }} className="reveal-on-scroll">
@@ -81,10 +82,20 @@ export default function Home() {
       <section ref={(el) => { if (el) scrollRefs.current[1] = el }} className="reveal-on-scroll">
         <CustomOrder />
       </section>
+
+      <section className="py-24 sm:py-32 bg-white/30 reveal-on-scroll" ref={(el) => { if (el) scrollRefs.current[2] = el }}>
+        <div className="container mx-auto px-6 max-w-5xl">
+          <div className="mb-16 text-center">
+            <h2 className="font-headline text-4xl sm:text-6xl text-primary mb-4">Inspiration Spell</h2>
+            <p className="text-muted-foreground italic">"Let the grimoire whisper a custom design just for you."</p>
+          </div>
+          <AICrochetTool />
+        </div>
+      </section>
       
       <section 
         id="story" 
-        ref={(el) => { if (el) scrollRefs.current[2] = el }}
+        ref={(el) => { if (el) scrollRefs.current[3] = el }}
         className="py-24 sm:py-40 bg-white relative overflow-hidden reveal-on-scroll"
       >
         <div className="container mx-auto px-6 relative z-10">
@@ -110,7 +121,7 @@ export default function Home() {
 
             <div className="max-w-3xl mx-auto mb-20 space-y-6">
               <p className="text-xl sm:text-2xl text-muted-foreground leading-relaxed italic">
-                "Fable & Forever didn't start in a workshop or a business meeting. It started in the quiet hours of 2 AM, with the rhythmic 'click-pull' of a single hook and a ball of yarn that felt like a promise."
+                "Fable & Forever started in the quiet hours of midnight, with the rhythmic 'click-pull' of a single hook and a ball of yarn that felt like a promise of something timeless."
               </p>
               
               <div className="py-6 space-y-4">
@@ -126,7 +137,7 @@ export default function Home() {
               </div>
 
               <p className="text-lg text-primary/70 leading-relaxed font-medium">
-                We believe that in a world of machines and 'fast' fashion, there is a profound magic in something that takes hours to grow. Our studio is built on the belief that a gift should hold the heartbeat of the person who made it. We don't just count stitches; we count memories.
+                We believe that in a world of machines, there is a profound magic in something that takes hours to grow. Our studio is built on the belief that a gift should hold the heartbeat of the person who made it. We don't just count stitches; we count memories.
               </p>
             </div>
             
@@ -135,7 +146,7 @@ export default function Home() {
                 { 
                   icon: <Coffee className="w-8 h-8 text-primary" />, 
                   title: "Slow-Steeped Craft", 
-                  desc: "ধীর গতির শৈল্পিকতা—Like a good cup of tea, our treasures can't be rushed. We embrace the slow, deliberate pace of hand-crochet to ensure every loop is intentional." 
+                  desc: "ধীর গতির শৈল্পিকতা—Like a good cup of tea, our treasures can't be rushed. We embrace the deliberate pace of hand-crochet to ensure every loop is intentional." 
                 },
                 { 
                   icon: <Wind className="w-8 h-8 text-primary" />, 
@@ -166,7 +177,7 @@ export default function Home() {
       <section 
         id="contact" 
         className="py-24 sm:py-40 relative bg-background"
-        ref={(el) => { if (el) scrollRefs.current[3] = el }}
+        ref={(el) => { if (el) scrollRefs.current[4] = el }}
       >
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-6xl mx-auto bg-white rounded-[3rem] sm:rounded-[5rem] p-8 sm:p-24 shadow-[0_50px_120px_-30px_rgba(45,115,107,0.2)] border-2 border-accent/5 relative overflow-hidden group">

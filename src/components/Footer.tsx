@@ -27,7 +27,7 @@ export function Footer() {
               <Logo className="w-16 h-16 text-white" />
               <div className="flex flex-col">
                 <h2 className="font-headline text-5xl">Fable & Forever</h2>
-                <span className="text-accent font-bold text-sm tracking-widest mt-2">সুতোয় বোনা গল্প</span>
+                <span className="text-accent font-bold text-sm tracking-widest mt-2 uppercase">সুতোয় বোনা প্রতিটি গল্প</span>
               </div>
             </div>
             <p className="text-primary-foreground/70 max-w-sm mb-10 leading-relaxed font-medium text-lg italic">
@@ -66,11 +66,11 @@ export function Footer() {
             <ul className="space-y-6 text-sm font-medium text-primary-foreground/70">
               <li className="flex gap-4">
                 <MapPin className="w-6 h-6 shrink-0 text-accent" />
-                <span>Handcrafted in India<br />Bespoke Crochet Studio</span>
+                <span>Handcrafted with Love<br />Bespoke Crochet Studio</span>
               </li>
               <li className="flex gap-4">
                 <span className="text-accent font-bold uppercase text-[10px] tracking-widest mt-1">Status:</span>
-                <span>Needles resting for the night. Creating at dawn.</span>
+                <span>Creating magic one loop at a time.</span>
               </li>
             </ul>
           </div>
@@ -79,7 +79,7 @@ export function Footer() {
         <div className="pt-10 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-8 text-[10px] font-bold text-primary-foreground/40 uppercase tracking-[0.4em]">
           <div className="flex items-center gap-3">
             <Logo className="w-5 h-5 text-accent" />
-            <span>Fable & Forever</span>
+            <span>Fable & Forever • সুতোয় বোনা গল্প</span>
           </div>
           <div className="flex gap-10">
             <Link href="/privacy" className="hover:text-accent transition-colors">Privacy Policy ✨</Link>

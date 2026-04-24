@@ -7,7 +7,7 @@ import { FirebaseErrorListener } from '@/components/FirebaseErrorListener';
 
 export const metadata: Metadata = {
   title: 'Fable & Forever | Artisanal Crochet Tales',
-  description: 'Bespoke, luxury crochet items woven with care and elegance.',
+  description: 'Bespoke, luxury crochet treasures woven with care and elegance. সুতোয় বোনা প্রতিটি গল্প।',
 };
 
 export default function RootLayout({

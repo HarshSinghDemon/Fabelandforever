@@ -105,15 +105,15 @@
   "firestore": {
     "/products/{productId}": {
       "schema": "Product",
-      "description": "The live inventory of crochet items."
+      "description": "The live inventory of crochet items. Public read access is required."
     },
     "/orders/{orderId}": {
       "schema": "Order",
-      "description": "Historical records of customer orders."
+      "description": "Historical records of customer orders. Only admin can read/write."
     },
     "/settings/{settingId}": {
       "schema": "Setting",
-      "description": "Global website settings like hero images."
+      "description": "Global website settings like hero images. Public read access is required."
     }
   }
 }

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { Menu, X, Sparkles } from 'lucide-react';
+import { CartDrawer } from './CartDrawer';
 
 export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -50,18 +51,19 @@ export function Navigation() {
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all group-hover:w-full"></span>
             </Link>
           ))}
-          <button className="bg-primary text-white px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-primary/90 transition-all shadow-md">
-            Basket 🧺
-          </button>
+          <CartDrawer />
         </div>
 
         {/* Mobile Toggle */}
-        <button 
-          className="md:hidden text-primary p-2"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        >
-          {isMobileMenuOpen ? <X /> : <Menu />}
-        </button>
+        <div className="flex items-center gap-4 md:hidden">
+          <CartDrawer />
+          <button 
+            className="text-primary p-2"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? <X /> : <Menu />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}

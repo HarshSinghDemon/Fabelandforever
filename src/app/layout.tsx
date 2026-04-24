@@ -1,5 +1,7 @@
 import type {Metadata} from 'next';
 import './globals.css';
+import { CartProvider } from '@/context/CartContext';
+import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
   title: 'Cloudy Crochet | Handcrafted Cuteness',
@@ -19,7 +21,10 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Pacifico&display=swap" rel="stylesheet" />
       </head>
       <body className="font-cute antialiased bg-background text-foreground scroll-smooth">
-        {children}
+        <CartProvider>
+          {children}
+          <Toaster />
+        </CartProvider>
       </body>
     </html>
   );

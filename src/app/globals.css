@@ -4,26 +4,26 @@
 
 @layer base {
   :root {
-    --background: 180 30% 98%;
+    --background: 40 30% 98%; /* Creamy white */
     --foreground: 185 50% 15%;
     --card: 0 0% 100%;
     --card-foreground: 185 50% 15%;
     --popover: 0 0% 100%;
     --popover-foreground: 185 50% 15%;
-    --primary: 175 45% 45%;
+    --primary: 175 45% 45%; /* Tale Teal */
     --primary-foreground: 180 30% 98%;
     --secondary: 160 30% 90%;
     --secondary-foreground: 185 50% 20%;
     --muted: 180 20% 94%;
     --muted-foreground: 185 20% 45%;
-    --accent: 265 60% 75%;
+    --accent: 265 70% 85%; /* Soft Light Lavender */
     --accent-foreground: 265 40% 15%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --border: 175 20% 90%;
     --input: 175 20% 90%;
-    --ring: 175 45% 45%;
-    --radius: 2rem;
+    --ring: 265 70% 85%;
+    --radius: 1.5rem;
   }
 }
 
@@ -32,20 +32,29 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-cute;
   }
 }
 
-.tale-gradient {
-  background: linear-gradient(135deg, hsla(180, 40%, 95%, 1) 0%, hsla(160, 30%, 95%, 1) 100%);
+.font-fancy {
+  font-family: 'Pacifico', cursive;
+}
+
+.font-cute {
+  font-family: 'Quicksand', sans-serif;
+}
+
+.bg-dots {
+  background-image: radial-gradient(hsla(175, 45%, 45%, 0.1) 1px, transparent 1px);
+  background-size: 24px 24px;
 }
 
 .stitching-border {
-  border: 3px dashed hsla(175, 45%, 45%, 0.3);
+  border: 3px dashed hsla(265, 70%, 85%, 0.6);
 }
 
-.magic-shadow {
-  box-shadow: 0 20px 40px -15px rgba(20, 100, 100, 0.15);
+.watercolor-lavender {
+  background: radial-gradient(circle at center, hsla(265, 70%, 85%, 0.4) 0%, transparent 70%);
 }
 
 .floating {
@@ -66,15 +75,6 @@
   50% { opacity: 1; transform: scale(1.2); }
 }
 
-.font-fancy {
-  font-family: 'Pacifico', cursive;
-}
-
-.font-cute {
-  font-family: 'Quicksand', sans-serif;
-}
-
-.bg-dots {
-  background-image: radial-gradient(hsla(175, 45%, 45%, 0.1) 1px, transparent 1px);
-  background-size: 24px 24px;
+.btn-squish:active {
+  transform: scale(0.95);
 }

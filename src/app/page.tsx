@@ -5,6 +5,7 @@ import React, { useEffect, useRef } from 'react';
 import { Navigation } from '@/components/Navigation';
 import { Hero } from '@/components/Hero';
 import { FeaturedProducts } from '@/components/FeaturedProducts';
+import { CustomOrder } from '@/components/CustomOrder';
 import { Footer } from '@/components/Footer';
 import { Heart, Sparkles, Send, Scissors } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -50,11 +51,15 @@ export default function Home() {
       <section ref={(el) => { if (el) scrollRefs.current[0] = el }} className="reveal-on-scroll">
         <FeaturedProducts />
       </section>
+
+      <section ref={(el) => { if (el) scrollRefs.current[1] = el }} className="reveal-on-scroll">
+        <CustomOrder />
+      </section>
       
       {/* Story Section */}
       <section 
         id="story" 
-        ref={(el) => { if (el) scrollRefs.current[1] = el }}
+        ref={(el) => { if (el) scrollRefs.current[2] = el }}
         className="py-32 bg-secondary/10 relative overflow-hidden reveal-on-scroll"
       >
         <div className="container mx-auto px-6 relative z-10">
@@ -99,7 +104,7 @@ export default function Home() {
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent/5 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl floating [animation-delay:2s]"></div>
       </section>
 
-      {/* Contact Us Box (Replaced Join the Fable) */}
+      {/* Contact Us Box */}
       <section id="contact" className="py-32 relative overflow-hidden bg-white/50">
         <div className="container mx-auto px-6">
           <div className="max-w-4xl mx-auto bg-white rounded-[4rem] p-12 md:p-20 shadow-[0_40px_100px_-20px_rgba(45,115,107,0.15)] border-2 border-accent/10 relative overflow-hidden group">

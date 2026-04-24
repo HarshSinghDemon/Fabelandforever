@@ -22,6 +22,7 @@ export function Navigation() {
 
   const navLinks = [
     { name: 'The Shop 🛍️', href: '#shop' },
+    { name: 'Custom 🧶', href: '#custom' },
     { name: 'Our Story 📖', href: '#story' },
     { name: 'Contact 💌', href: '#contact' },
   ];

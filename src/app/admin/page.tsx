@@ -1,13 +1,14 @@
 
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useUser, useAuth } from '@/firebase';
+import { useUser, useAuth, useFirestore } from '@/firebase';
 import { AdminProductManager } from '@/components/AdminProductManager';
 import { AdminOrderManager } from '@/components/AdminOrderManager';
 import { Navigation } from '@/components/Navigation';
 import { Button } from '@/components/ui/button';
+import { collection, limit, onSnapshot, query } from 'firebase/firestore';
 import { 
   LogOut, 
   Package, 
@@ -16,21 +17,38 @@ import {
   Loader2, 
   Sparkles,
   ExternalLink,
-  ChevronRight
+  ChevronRight,
+  ShieldCheck,
+  ShieldAlert
 } from 'lucide-react';
 import { signOut } from 'firebase/auth';
 
 export default function AdminDashboard() {
   const { user, loading } = useUser();
   const auth = useAuth();
+  const db = useFirestore();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<'inventory' | 'orders' | 'settings'>('inventory');
+  const [dbStatus, setDbStatus] = useState<'checking' | 'connected' | 'error'>('checking');
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!loading && !user) {
       router.push('/admin/login');
     }
   }, [user, loading, router]);
+
+  useEffect(() => {
+    if (!user) return;
+    
+    // Quick health check for Firestore
+    const q = query(collection(db, 'products'), limit(1));
+    const unsubscribe = onSnapshot(q, 
+      () => setDbStatus('connected'),
+      () => setDbStatus('error')
+    );
+    
+    return () => unsubscribe();
+  }, [db, user]);
 
   if (loading) {
     return (
@@ -82,7 +100,6 @@ export default function AdminDashboard() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-16">
-          {/* Sidebar Menu */}
           <div className="lg:col-span-1 space-y-4 animate-fade-in-up [animation-delay:200ms]">
             {[
               { id: 'inventory', icon: Package, label: 'Inventory' },
@@ -108,23 +125,32 @@ export default function AdminDashboard() {
             
             <div className="p-10 bg-accent/5 rounded-[3rem] border border-dashed border-accent/20 mt-12 relative overflow-hidden group">
                <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-               <h4 className="font-headline text-xl text-primary mb-4 italic relative z-10">Backend Blueprint</h4>
-               <p className="text-[10px] text-muted-foreground leading-relaxed uppercase tracking-widest font-bold mb-4 relative z-10">
-                 Config: docs/backend.json
-               </p>
+               <h4 className="font-headline text-xl text-primary mb-4 italic relative z-10">System Pulse</h4>
+               
                <div className="space-y-4 relative z-10">
-                  <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest opacity-60">
-                    <span>Database Status</span>
-                    <span className="text-primary">Connected</span>
+                  <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-widest opacity-60">
+                    <span>Database</span>
+                    <span className="flex items-center gap-2">
+                      {dbStatus === 'connected' && <><ShieldCheck className="w-3 h-3 text-emerald-500" /> Connected</>}
+                      {dbStatus === 'error' && <><ShieldAlert className="w-3 h-3 text-destructive" /> Rule Required</>}
+                      {dbStatus === 'checking' && <><Loader2 className="w-3 h-3 animate-spin" /> Verifying...</>}
+                    </span>
                   </div>
                   <div className="h-1.5 w-full bg-white rounded-full overflow-hidden">
-                    <div className="h-full w-full bg-accent rounded-full animate-weave shadow-[0_0_10px_rgba(265,50,70,0.5)]"></div>
+                    <div className={`h-full transition-all duration-1000 ${
+                      dbStatus === 'connected' ? 'w-full bg-emerald-400' : 
+                      dbStatus === 'error' ? 'w-1/3 bg-destructive' : 'w-1/2 bg-accent animate-pulse'
+                    }`}></div>
                   </div>
+                  {dbStatus === 'error' && (
+                    <p className="text-[8px] text-destructive font-bold uppercase tracking-tighter leading-tight mt-2">
+                      Check your Security Rules in Firebase Console.
+                    </p>
+                  )}
                </div>
             </div>
           </div>
 
-          {/* Main Content Area */}
           <div className="lg:col-span-3 animate-fade-in-up [animation-delay:400ms]">
             <div className="bg-white/40 backdrop-blur-sm p-2 rounded-[4.5rem] border border-white/50 shadow-inner">
               <div className="bg-transparent rounded-[4rem] overflow-hidden">

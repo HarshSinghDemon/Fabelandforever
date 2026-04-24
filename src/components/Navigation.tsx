@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useEffect } from 'react';
@@ -20,9 +21,9 @@ export function Navigation() {
 
   const navLinks = [
     { name: 'Collections 🎁', href: '#shop' },
-    { name: 'Custom Magic ✨', href: '#custom' },
-    { name: 'Our Story 📖', href: '#story' },
-    { name: 'Contact 👋', href: '#contact' },
+    { name: 'Bespoke Heirlooms ✨', href: '#custom' },
+    { name: 'The Heritage 📖', href: '#story' },
+    { name: 'Contact Us 👋', href: '#contact' },
   ];
 
   return (
@@ -40,7 +41,7 @@ export function Navigation() {
             <Sparkles className="text-accent fill-accent w-5 h-5 group-hover:rotate-45 transition-transform duration-500" />
             <Heart className="absolute -top-2 -right-2 text-primary w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
           </div>
-          Fable & Forever
+          Fable and Forever
         </Link>
 
         {/* Desktop Menu */}

@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useEffect, useRef } from 'react';
@@ -6,7 +7,10 @@ import { Hero } from '@/components/Hero';
 import { FeaturedProducts } from '@/components/FeaturedProducts';
 import { CustomOrder } from '@/components/CustomOrder';
 import { Footer } from '@/components/Footer';
-import { Heart, Sparkles, Star } from 'lucide-react';
+import { Heart, Sparkles, Star, Send } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 
 export default function Home() {
   const scrollRefs = useRef<(HTMLElement | null)[]>([]);
@@ -100,27 +104,44 @@ export default function Home() {
         <CustomOrder />
       </section>
       
-      {/* Newsletter Section */}
-      <section className="py-32 relative overflow-hidden">
+      {/* Contact Section */}
+      <section id="contact" className="py-32 relative overflow-hidden bg-white/50">
         <div className="container mx-auto px-6">
-          <div className="max-w-5xl mx-auto bg-primary rounded-[4rem] p-16 text-center text-primary-foreground shadow-[0_30px_60px_-15px_rgba(45,115,107,0.3)] relative overflow-hidden group">
-             <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.1),transparent)] opacity-40"></div>
-             <div className="relative z-10">
-               <span className="text-accent font-bold tracking-[0.4em] uppercase text-[10px] mb-6 block">The Inner Circle</span>
-               <h2 className="font-headline text-5xl md:text-7xl mb-8 uppercase tracking-tight">Join the Fable</h2>
-               <p className="mb-12 text-primary-foreground/90 max-w-xl mx-auto text-lg font-medium italic">
-                 "Sign your name in our Book of Forever and receive a sprinkle of magic in your inbox every full moon."
-               </p>
-               <div className="flex flex-col sm:flex-row gap-5 max-w-lg mx-auto">
-                 <input 
-                   type="email" 
-                   placeholder="Your magical email address" 
-                   className="flex-1 bg-white/10 border-2 border-white/20 rounded-2xl px-8 py-5 text-white placeholder:text-white/60 focus:outline-none focus:ring-4 focus:ring-accent/40 backdrop-blur-md transition-all"
-                 />
-                 <button className="btn-squish bg-accent text-accent-foreground px-12 py-5 rounded-2xl hover:bg-white hover:text-primary transition-all font-bold whitespace-nowrap shadow-xl uppercase tracking-widest text-xs">
-                   Subscribe ✨
-                 </button>
+          <div className="max-w-4xl mx-auto bg-white rounded-[4rem] p-12 md:p-20 shadow-[0_40px_100px_-20px_rgba(45,115,107,0.15)] border-2 border-accent/10 relative overflow-hidden group">
+             <div className="absolute top-0 right-0 w-64 h-64 bg-accent/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+             
+             <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+               <div>
+                 <span className="text-accent font-bold tracking-[0.4em] uppercase text-[10px] mb-6 block">Write to the Atelier</span>
+                 <h2 className="font-headline text-5xl md:text-6xl text-primary mb-8 leading-tight">Send a <br /><span className="italic text-accent">Love Note</span></h2>
+                 <p className="text-muted-foreground font-medium italic mb-10 leading-relaxed text-lg">
+                   "Whether you're dreaming of a bespoke heirloom or just want to share a story, our needles are waiting for your word."
+                 </p>
+                 <div className="space-y-4">
+                    <div className="flex items-center gap-4 text-primary font-bold uppercase tracking-widest text-[10px]">
+                        <Heart className="w-4 h-4 fill-accent text-accent" />
+                        Response time: 2-3 Moon-rises
+                    </div>
+                 </div>
                </div>
+
+               <form className="space-y-6 bg-accent/5 p-8 md:p-10 rounded-[3rem] stitching-border">
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-primary/60 ml-2">Your Name</label>
+                    <Input placeholder="E.g. Elara Vance" className="bg-white border-2 border-primary/5 h-14 rounded-2xl focus:border-accent transition-all" />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-primary/60 ml-2">Email Address</label>
+                    <Input type="email" placeholder="elara@fable.com" className="bg-white border-2 border-primary/5 h-14 rounded-2xl focus:border-accent transition-all" />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-primary/60 ml-2">Your Message</label>
+                    <Textarea placeholder="What is the story you want to tell?" className="bg-white border-2 border-primary/5 min-h-[150px] rounded-3xl focus:border-accent transition-all" />
+                  </div>
+                  <Button className="w-full h-16 rounded-2xl bg-primary hover:bg-primary/90 text-white font-bold text-sm uppercase tracking-[0.2em] shadow-xl shadow-primary/20 transition-all hover:scale-[1.02] active:scale-[0.98]">
+                    Send Message <Send className="ml-2 w-4 h-4" />
+                  </Button>
+               </form>
              </div>
           </div>
         </div>

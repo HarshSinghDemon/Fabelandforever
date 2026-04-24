@@ -37,7 +37,7 @@ export function FirebaseProvider({
 
 export const useFirebase = () => {
   const context = useContext(FirebaseContext);
-  if (!context) throw new Error('useFirebase must be used within FirebaseProvider');
+  if (!context) return { app: null, db: null, auth: null, storage: null };
   return context;
 };
 

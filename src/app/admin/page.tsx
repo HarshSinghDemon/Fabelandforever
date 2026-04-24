@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useEffect, useMemo } from 'react';
@@ -19,8 +20,7 @@ import {
   ShieldCheck,
   ShieldAlert,
   BarChart3,
-  TrendingUp,
-  ShoppingBag
+  Info
 } from 'lucide-react';
 import { signOut } from 'firebase/auth';
 
@@ -170,6 +170,13 @@ export default function AdminDashboard() {
                     }`}></div>
                   </div>
                </div>
+               
+               {dbStatus === 'error' && (
+                 <div className="mt-6 p-4 bg-white/50 rounded-2xl border border-destructive/20 text-[9px] leading-relaxed text-destructive font-bold uppercase tracking-wider">
+                   <Info className="w-3 h-3 mb-2" />
+                   Action Required: Go to Firestore Rules and allow writes for Authenticated users.
+                 </div>
+               )}
             </div>
           </div>
 

@@ -11,15 +11,20 @@ export function FirebaseErrorListener() {
 
   useEffect(() => {
     const handlePermissionError = (error: FirestorePermissionError) => {
-      // Surface the error to the developer/admin
-      toast({
-        variant: "destructive",
-        title: "Magic Boundary Encountered",
-        description: `The loom blocked a ${error.context.operation} at ${error.context.path}. Check your Security Rules.`,
-      });
+      // We only toast for specific paths or if in an admin context to avoid 
+      // spamming visitors if the rules aren't perfect yet.
+      const isProductRead = error.context.path.includes('products') && error.context.operation === 'list';
       
-      // In development, this will also be caught by the Next.js error overlay 
-      // if we throw it here, but emitting is enough for UI feedback.
+      if (isProductRead) {
+        console.warn('Shop Visibility: Visitors cannot see products. Update Firestore rules to allow public read.');
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Magic Boundary Encountered",
+          description: `The loom blocked a ${error.context.operation} at ${error.context.path}. Check your Security Rules.`,
+        });
+      }
+      
       console.error('Firestore Permission Denied:', error.context);
     };
 

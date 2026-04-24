@@ -6,7 +6,8 @@ import {
   Query, 
   onSnapshot, 
   QuerySnapshot, 
-  DocumentData 
+  DocumentData,
+  CollectionReference
 } from 'firebase/firestore';
 import { errorEmitter } from '../error-emitter';
 import { FirestorePermissionError } from '../errors';
@@ -21,15 +22,19 @@ export function useCollection<T = DocumentData>(query: Query<T> | null) {
     const unsubscribe = onSnapshot(
       query,
       (snapshot: QuerySnapshot<T>) => {
-        setData(snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id })));
+        setData(snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id } as T & { id: string })));
         setLoading(false);
       },
-      async (error) => {
-        const permissionError = new FirestorePermissionError({
-          path: (query as any)._query?.path?.toString() || 'unknown',
-          operation: 'list',
-        });
-        errorEmitter.emit('permission-error', permissionError);
+      (error: any) => {
+        // Handle permission-denied specifically
+        if (error.code === 'permission-denied') {
+          const path = (query as any)._query?.path?.toString() || 'unknown collection';
+          const permissionError = new FirestorePermissionError({
+            path: path,
+            operation: 'list',
+          });
+          errorEmitter.emit('permission-error', permissionError);
+        }
         setLoading(false);
       }
     );

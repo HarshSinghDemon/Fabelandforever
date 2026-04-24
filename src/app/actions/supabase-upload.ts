@@ -2,28 +2,32 @@
 
 /**
  * @fileOverview Server action to handle secure uploads to Supabase Storage.
- * This acts as the "Cloud Function" equivalent in a Next.js architecture.
+ * This acts as the secure bridge to Supabase while keeping keys on the server.
  */
 
 export async function uploadToSupabase(formData: FormData) {
   const file = formData.get('file') as File;
+  if (!file) {
+    return { success: false, error: 'No file provided' };
+  }
+
   const bucket = 'uploads';
-  const filePath = `inspiration/${Date.now()}-${file.name}`;
+  const filePath = `inspiration/${Date.now()}-${file.name.replace(/\s+/g, '_')}`;
 
   const supabaseUrl = process.env.SUPABASE_URL;
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
   if (!supabaseUrl || !serviceRoleKey) {
-    throw new Error('Supabase environment variables are not configured.');
+    console.error('Supabase configuration missing');
+    return { success: false, error: 'Storage service is not configured.' };
   }
 
-  // Convert File to ArrayBuffer for the REST API
-  const arrayBuffer = await file.arrayBuffer();
-
-  // POST /storage/v1/object/{bucket}/{filePath}
-  const uploadUrl = `${supabaseUrl}/storage/v1/object/${bucket}/${filePath}`;
-
   try {
+    const arrayBuffer = await file.arrayBuffer();
+
+    // REST API call to Supabase Storage
+    const uploadUrl = `${supabaseUrl}/storage/v1/object/${bucket}/${filePath}`;
+
     const response = await fetch(uploadUrl, {
       method: 'POST',
       headers: {
@@ -39,7 +43,7 @@ export async function uploadToSupabase(formData: FormData) {
       throw new Error(errorData.message || 'Failed to upload to Supabase');
     }
 
-    // Public URL format: https://<project-id>.supabase.co/storage/v1/object/public/<bucket>/<filePath>
+    // Format the public URL for retrieval
     const publicUrl = `${supabaseUrl}/storage/v1/object/public/${bucket}/${filePath}`;
 
     return {
@@ -50,7 +54,7 @@ export async function uploadToSupabase(formData: FormData) {
     console.error('Supabase Upload Error:', error);
     return {
       success: false,
-      error: error.message,
+      error: error.message || 'An unexpected error occurred during upload.',
     };
   }
 }

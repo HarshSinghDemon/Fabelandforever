@@ -18,6 +18,16 @@ export function CustomOrder() {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    // Basic file size check (e.g., 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast({
+        variant: "destructive",
+        title: "File too large",
+        description: "Please upload an image smaller than 5MB.",
+      });
+      return;
+    }
+
     setUploading(true);
     try {
       const formData = new FormData();
@@ -37,8 +47,8 @@ export function CustomOrder() {
     } catch (error: any) {
       toast({
         variant: "destructive",
-        title: "Magic Interrupted",
-        description: error.message || "We couldn't upload your image to Supabase.",
+        title: "Upload Failed",
+        description: error.message || "We couldn't reach Supabase Storage.",
       });
     } finally {
       setUploading(false);

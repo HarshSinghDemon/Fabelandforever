@@ -6,7 +6,6 @@ import { Hero } from '@/components/Hero';
 import { FeaturedProducts } from '@/components/FeaturedProducts';
 import { CustomOrder } from '@/components/CustomOrder';
 import { Footer } from '@/components/Footer';
-import { AICrochetTool } from '@/components/AICrochetTool';
 import { Heart, Sparkles, Send, Scissors, Star, Cloud } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -60,23 +59,6 @@ export default function Home() {
 
       <section ref={(el) => { if (el) scrollRefs.current[0] = el }} className="reveal-on-scroll">
         <FeaturedProducts />
-      </section>
-
-      {/* AI Tool Section - Centered and Magical */}
-      <section className="py-24 relative overflow-hidden bg-secondary/5">
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-16">
-              <span className="text-accent font-bold tracking-[0.4em] uppercase text-[10px] mb-4 block">The Loom of Imagination</span>
-              <h2 className="font-fancy text-5xl text-primary mb-6">Manifest Your Dreams ✨</h2>
-              <p className="text-muted-foreground italic font-medium">Can't decide on a pattern? Let our AI Artisan whisper some secrets.</p>
-            </div>
-            <AICrochetTool />
-          </div>
-        </div>
-        {/* Decorative background blobs for AI section */}
-        <div className="absolute top-1/2 left-0 w-96 h-96 bg-accent/10 rounded-full blur-[100px] -translate-x-1/2 -translate-y-1/2"></div>
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-[100px] translate-x-1/2 translate-y-1/2"></div>
       </section>
 
       <section ref={(el) => { if (el) scrollRefs.current[1] = el }} className="reveal-on-scroll">

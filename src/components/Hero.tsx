@@ -4,10 +4,8 @@
 import React from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { Sparkles, ArrowRight, Heart, Star, Scissors } from 'lucide-react';
+import { Sparkles, ArrowRight, Heart, Star, Scissors, ImageIcon } from 'lucide-react';
 import Link from 'next/link';
-import { Logo } from './Logo';
 import { useFirestore, useDoc, useMemoFirebase } from '@/firebase';
 import { doc } from 'firebase/firestore';
 
@@ -16,8 +14,7 @@ export function Hero() {
   const heroSettingRef = useMemoFirebase(() => doc(db, 'settings', 'hero'), [db]);
   const { data: heroSetting } = useDoc(heroSettingRef);
   
-  const defaultHeroData = PlaceHolderImages.find(img => img.id === 'hero-image');
-  const heroImageUrl = heroSetting?.value || defaultHeroData?.imageUrl || "https://picsum.photos/seed/fable-hero/1200/1200";
+  const heroImageUrl = heroSetting?.value;
 
   return (
     <section className="relative min-h-[100vh] flex items-center overflow-hidden pt-40 pb-20 bg-paper">
@@ -70,14 +67,21 @@ export function Hero() {
           </div>
 
           <div className="relative group perspective-1000">
-            <div className="relative aspect-[4/5] lg:aspect-square w-full rounded-[5rem] overflow-hidden shadow-[0_60px_100px_-20px_rgba(0,0,0,0.15)] border-[25px] border-white group-hover:shadow-primary/20 transition-all duration-1000 group-hover:rotate-1 ring-8 ring-accent/5">
-              <Image
-                src={heroImageUrl}
-                alt="Handmade crochet visual"
-                fill
-                className="object-cover transition-transform duration-[2000ms] group-hover:scale-110"
-                priority
-              />
+            <div className="relative aspect-[4/5] lg:aspect-square w-full rounded-[5rem] overflow-hidden shadow-[0_60px_100px_-20px_rgba(0,0,0,0.15)] border-[25px] border-white group-hover:shadow-primary/20 transition-all duration-1000 group-hover:rotate-1 ring-8 ring-accent/5 bg-muted/20">
+              {heroImageUrl ? (
+                <Image
+                  src={heroImageUrl}
+                  alt="Handmade crochet visual"
+                  fill
+                  className="object-cover transition-transform duration-[2000ms] group-hover:scale-110"
+                  priority
+                />
+              ) : (
+                <div className="w-full h-full flex flex-col items-center justify-center text-primary/10 gap-4">
+                  <ImageIcon className="w-20 h-20" />
+                  <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-center px-10">Use the Admin Panel to loom your hero visual</p>
+                </div>
+              )}
               
               <div className="absolute top-14 left-12 bg-white/95 backdrop-blur-xl text-primary px-10 py-5 rounded-[2rem] shadow-2xl font-bold text-base floating border border-primary/5 flex items-center gap-4">
                 <span className="w-3 h-3 rounded-full bg-accent animate-ping"></span>

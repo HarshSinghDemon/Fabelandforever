@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useEffect, useRef } from 'react';
@@ -6,7 +7,7 @@ import { Hero } from '@/components/Hero';
 import { FeaturedProducts } from '@/components/FeaturedProducts';
 import { CustomOrder } from '@/components/CustomOrder';
 import { Footer } from '@/components/Footer';
-import { Heart, Sparkles, Send, Scissors, Star, Cloud } from 'lucide-react';
+import { Heart, Sparkles, Send, Scissors, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -37,13 +38,11 @@ export default function Home() {
     <main className="min-h-screen bg-paper overflow-x-hidden selection:bg-accent/30">
       <Navigation />
       
-      {/* Hero with extra magic particles */}
       <div className="relative">
         <Hero />
         <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-background to-transparent z-10"></div>
       </div>
       
-      {/* Whimsical Transition Divider */}
       <div className="py-20 flex flex-col items-center justify-center gap-4">
         <div className="flex gap-8 items-center">
           <div className="h-[1px] w-24 bg-gradient-to-r from-transparent to-accent/50"></div>
@@ -65,7 +64,6 @@ export default function Home() {
         <CustomOrder />
       </section>
       
-      {/* Story Section with Parallax Backgrounds */}
       <section 
         id="story" 
         ref={(el) => { if (el) scrollRefs.current[2] = el }}
@@ -110,16 +108,12 @@ export default function Home() {
           </div>
         </div>
         
-        {/* Floating Icons Background */}
-        <div className="absolute top-20 right-[10%] opacity-20 floating"><Cloud className="w-16 h-16 text-primary" /></div>
         <div className="absolute bottom-40 left-[5%] opacity-10 floating [animation-delay:3s]"><Star className="w-20 h-20 text-accent fill-current" /></div>
       </section>
 
-      {/* Contact Section - More Dramatic */}
       <section id="contact" className="py-40 relative bg-background">
         <div className="container mx-auto px-6">
           <div className="max-w-5xl mx-auto bg-white rounded-[5rem] p-12 md:p-24 shadow-[0_50px_120px_-30px_rgba(45,115,107,0.2)] border-2 border-accent/5 relative overflow-hidden group">
-             {/* Dynamic background element */}
              <div className="absolute -top-24 -right-24 w-96 h-96 bg-accent/5 rounded-full blur-3xl transition-transform duration-1000 group-hover:scale-150"></div>
              
              <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
@@ -130,7 +124,7 @@ export default function Home() {
                    "Questions about a pattern, or just want to say hi? Drop us a line and let's start a new story together."
                  </p>
                  <div className="flex items-center gap-6">
-                    <div className="w-16 h-[2px] bg-accent/30"></div>
+                    <div className="h-16 h-[2px] bg-accent/30"></div>
                     <div className="text-primary font-bold uppercase tracking-[0.3em] text-[10px] flex items-center gap-3">
                       <Sparkles className="w-4 h-4 text-accent animate-pulse" />
                       Next Batch: Early Summer

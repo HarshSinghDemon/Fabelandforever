@@ -2,12 +2,6 @@
 {
   "placeholderImages": [
     {
-      "id": "hero-image",
-      "description": "A handmade pink and white crochet lily flower with a green stem, held by a hand against a crumpled white paper background with a tiny pink bow and star accents.",
-      "imageUrl": "https://picsum.photos/seed/fable-lily-lily-v2/1200/1600",
-      "imageHint": "pink crochet lily"
-    },
-    {
       "id": "product-1",
       "description": "A small teal crochet forest sprite amigurumi with tiny wings.",
       "imageUrl": "https://picsum.photos/seed/teal-sprite/600/600",

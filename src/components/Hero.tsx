@@ -1,11 +1,10 @@
-
 "use client";
 
 import React from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { Sparkles, ArrowRight, Heart, Star } from 'lucide-react';
+import { Sparkles, ArrowRight, Heart, Star, Scissors } from 'lucide-react';
 import Link from 'next/link';
 import { Logo } from './Logo';
 
@@ -13,89 +12,97 @@ export function Hero() {
   const heroData = PlaceHolderImages.find(img => img.id === 'hero-image');
 
   return (
-    <section className="relative min-h-[95vh] flex items-center overflow-hidden pt-32 pb-20 bg-paper">
-      <div className="container mx-auto px-6 relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+    <section className="relative min-h-[100vh] flex items-center overflow-hidden pt-40 pb-20 bg-paper">
+      {/* Decorative SVG Patterns in background */}
+      <div className="absolute inset-0 bg-dots opacity-40 pointer-events-none"></div>
+      
+      <div className="container mx-auto px-6 relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
         <div className="animate-fade-in-up">
-          <div className="mb-12">
-            <Logo className="w-24 h-24 text-primary mb-6" showText />
+          <div className="mb-16 inline-flex items-center gap-6 group cursor-pointer">
+            <div className="p-1 bg-white rounded-full shadow-lg border border-accent/10 group-hover:rotate-12 transition-all">
+              <Logo className="w-20 h-20 text-primary" />
+            </div>
+            <div className="h-10 w-[1px] bg-primary/20"></div>
+            <span className="font-headline text-lg tracking-[0.3em] uppercase text-primary/60 group-hover:text-primary transition-colors">Artisan Studio</span>
           </div>
           
-          <h1 className="font-headline text-7xl md:text-8xl lg:text-9xl text-primary leading-[0.95] mb-10 relative">
+          <h1 className="font-headline text-8xl md:text-9xl lg:text-[10rem] text-primary leading-[0.85] mb-12 relative">
             Stitches <br />
-            <span className="text-accent relative inline-block group cursor-default italic font-light">
+            <span className="text-accent relative inline-block group cursor-default italic font-light py-2">
               Woven
-              <span className="absolute -top-4 -right-8 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                <Sparkles className="w-8 h-8 text-accent animate-pulse" />
-              </span>
+              <div className="absolute -top-8 -right-12 opacity-0 group-hover:opacity-100 transition-all duration-700 scale-150">
+                <Sparkles className="w-10 h-10 text-accent animate-pulse" />
+              </div>
+              <svg className="absolute -bottom-4 left-0 w-full" viewBox="0 0 100 10" preserveAspectRatio="none">
+                 <path d="M0 5 Q 25 10 50 5 T 100 5" fill="none" stroke="currentColor" strokeWidth="0.5" className="text-accent/40" />
+              </svg>
             </span>
             <br />
             With Love
           </h1>
           
-          <p className="text-2xl text-muted-foreground max-w-md mb-14 leading-relaxed font-medium italic">
+          <p className="text-2xl md:text-3xl text-muted-foreground max-w-lg mb-16 leading-relaxed font-medium italic">
             "Capturing the magic of handmade craft in every loop. Timeless crochet treasures for your heart and home." 🧶✨
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-6">
-            <Button asChild size="lg" className="btn-squish bg-primary hover:bg-primary/90 text-primary-foreground px-14 py-8 text-xl rounded-[2rem] shadow-2xl shadow-primary/30 transition-all hover:scale-105 group">
+          <div className="flex flex-col sm:flex-row gap-8">
+            <Button asChild size="lg" className="btn-squish glow-hover bg-primary hover:bg-primary/90 text-primary-foreground px-16 py-10 text-xl rounded-[2.5rem] shadow-[0_25px_60px_-15px_rgba(45,115,107,0.4)] transition-all hover:scale-105 group">
               <Link href="#shop" className="flex items-center">
-                Adopt a Piece <ArrowRight className="ml-3 group-hover:translate-x-2 transition-transform" />
+                Adopt a Piece <ArrowRight className="ml-4 group-hover:translate-x-3 transition-transform duration-500" />
               </Link>
             </Button>
-            <Button variant="outline" size="lg" className="btn-squish border-primary/20 text-primary hover:bg-primary/5 px-14 py-8 text-xl rounded-[2rem] backdrop-blur-sm group">
+            <Button variant="outline" size="lg" className="btn-squish border-primary/20 text-primary hover:bg-primary/5 px-16 py-10 text-xl rounded-[2.5rem] backdrop-blur-md group hover:border-accent transition-all">
               <Link href="#contact" className="flex items-center">
-                Contact Studio <Heart className="ml-3 w-5 h-5 group-hover:fill-primary group-hover:scale-110 transition-all" />
+                Our Story <Heart className="ml-4 w-6 h-6 group-hover:fill-primary group-hover:scale-125 transition-all duration-500 text-primary" />
               </Link>
             </Button>
           </div>
         </div>
 
-        <div className="relative group">
-          {/* Whimsical Decorative Stars to match user's image */}
-          <div className="absolute -left-12 top-1/2 -translate-y-1/2 flex flex-col gap-2 z-20">
-            {[1, 2, 3, 4, 5].map((i) => (
-              <Star key={i} className={`w-${2+i} h-${2+i} text-primary/40 star-animation`} style={{ animationDelay: `${i * 0.3}s` }} fill="currentColor" />
-            ))}
-          </div>
-          
-          {/* Decorative Bow at the top right of image */}
-          <div className="absolute -top-6 -right-6 z-30 rotate-12 scale-150 animate-bounce">
-            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-               <path d="M20 20C20 20 5 10 5 5C5 0 15 0 20 15C25 0 35 0 35 5C35 10 20 20 20 20Z" fill="var(--accent)" stroke="var(--accent-foreground)" strokeWidth="1" />
-               <path d="M20 20L15 35L20 30L25 35L20 20Z" fill="var(--accent)" stroke="var(--accent-foreground)" strokeWidth="1" />
-               <circle cx="20" cy="20" r="3" fill="var(--accent-foreground)" />
-            </svg>
+        <div className="relative">
+          {/* Animated decorative orbit */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] border border-accent/20 rounded-full animate-[spin_20s_linear_infinite] pointer-events-none">
+             <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 bg-white rounded-full shadow-xl border border-accent/10">
+                <Scissors className="w-6 h-6 text-primary" />
+             </div>
           </div>
 
-          <div className="relative aspect-[4/5] lg:aspect-square w-full rounded-[3.8rem] overflow-hidden shadow-[0_40px_80px_-15px_rgba(0,0,0,0.1)] border-[18px] border-white group-hover:shadow-primary/10 transition-all duration-700 ring-4 ring-accent/20">
-            <Image
-              src={heroData?.imageUrl || "https://picsum.photos/seed/fable-hero/1200/1200"}
-              alt="Handmade pink crochet lily"
-              fill
-              className="object-cover transition-transform duration-1000 group-hover:scale-105"
-              priority
-              data-ai-hint="pink crochet lily"
-            />
+          <div className="relative group perspective-1000">
+            <div className="relative aspect-[4/5] lg:aspect-square w-full rounded-[5rem] overflow-hidden shadow-[0_60px_100px_-20px_rgba(0,0,0,0.15)] border-[25px] border-white group-hover:shadow-primary/20 transition-all duration-1000 group-hover:rotate-1 ring-8 ring-accent/5">
+              <Image
+                src={heroData?.imageUrl || "https://picsum.photos/seed/fable-hero/1200/1200"}
+                alt="Handmade pink crochet lily"
+                fill
+                className="object-cover transition-transform duration-[2000ms] group-hover:scale-110"
+                priority
+                data-ai-hint="pink crochet lily"
+              />
+              
+              {/* Luxury Floating Labels */}
+              <div className="absolute top-14 left-12 bg-white/95 backdrop-blur-xl text-primary px-10 py-5 rounded-[2rem] shadow-2xl font-bold text-base floating border border-primary/5 flex items-center gap-4">
+                <span className="w-3 h-3 rounded-full bg-accent animate-ping"></span>
+                Bespoke Fiber Arts 🌿
+              </div>
+              
+              <div className="absolute bottom-14 right-12 bg-primary/95 backdrop-blur-xl text-white px-10 py-5 rounded-[2rem] shadow-2xl font-bold text-base floating [animation-delay:1.5s] flex items-center gap-4">
+                Forever Loop ✨
+                <Heart className="w-5 h-5 fill-accent text-accent" />
+              </div>
+            </div>
             
-            {/* Elegant Floating Tags */}
-            <div className="absolute top-12 left-10 bg-white/95 backdrop-blur-md text-primary px-8 py-4 rounded-[1.5rem] shadow-xl font-bold text-sm floating border border-primary/5 flex items-center gap-3">
-              <span className="w-2 h-2 rounded-full bg-accent animate-ping"></span>
-              Fable Fiber 🌿
-            </div>
-            <div className="absolute bottom-12 right-10 bg-primary/95 backdrop-blur-md text-white px-8 py-4 rounded-[1.5rem] shadow-xl font-bold text-sm floating [animation-delay:1.5s] flex items-center gap-3">
-              Forever Loop ✨
-              <Heart className="w-4 h-4 fill-accent text-accent" />
-            </div>
+            {/* Background Magic Glow */}
+            <div className="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[130%] h-[130%] bg-accent/20 rounded-full blur-[120px] animate-pulse"></div>
           </div>
-          
-          {/* Background Glow */}
-          <div className="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-accent/15 rounded-full blur-[100px] animate-pulse"></div>
         </div>
       </div>
       
-      {/* Dynamic Background elements */}
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[120px] -translate-y-1/3 translate-x-1/3"></div>
-      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-accent/10 rounded-full blur-[100px] translate-y-1/3 -translate-x-1/3"></div>
+      {/* Dynamic Floating particles */}
+      <div className="absolute top-10 right-10 opacity-20 floating [animation-duration:10s]">
+        <Star className="w-24 h-24 text-accent fill-current" />
+      </div>
+      <div className="absolute bottom-20 left-10 opacity-10 floating [animation-duration:8s] [animation-delay:2s]">
+        <Scissors className="w-32 h-32 text-primary" />
+      </div>
     </section>
   );
 }

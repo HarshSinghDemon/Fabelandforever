@@ -5,7 +5,7 @@ import { generateCustomCrochetIdeas } from '@/ai/flows/generate-custom-crochet-i
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Sparkles, Loader2, Wand2, BookOpen, Star, Heart } from 'lucide-react';
+import { Sparkles, Loader2, Wand2, BookOpen, Star, Heart, Scroll } from 'lucide-react';
 
 export function AICrochetTool() {
   const [loading, setLoading] = useState(false);
@@ -33,97 +33,96 @@ export function AICrochetTool() {
   };
 
   return (
-    <div className="bg-white/95 backdrop-blur-xl p-10 rounded-[3rem] border-[3px] border-accent/20 shadow-2xl relative overflow-hidden stitching-border">
-      <div className="absolute -top-10 -right-10 w-40 h-40 bg-accent/15 rounded-full blur-2xl"></div>
+    <div className="bg-white p-1 md:p-12 rounded-[4rem] border-[4px] border-accent/10 shadow-[0_50px_100px_-20px_rgba(45,115,107,0.1)] relative overflow-hidden group">
+      {/* Decorative inner pattern */}
+      <div className="absolute inset-4 border border-dashed border-accent/20 rounded-[3.5rem] pointer-events-none"></div>
       
-      <div className="relative z-10">
-        <div className="text-center mb-10">
-          <div className="inline-block p-4 bg-accent/20 rounded-full mb-4 relative">
-            <div className="absolute inset-0 bg-accent/40 rounded-full animate-ping opacity-20"></div>
-            <BookOpen className="text-primary w-8 h-8 relative z-10" />
+      <div className="relative z-10 p-10">
+        <div className="text-center mb-16">
+          <div className="inline-block p-6 bg-accent/10 rounded-full mb-6 relative group-hover:scale-110 transition-transform duration-700">
+            <div className="absolute inset-0 bg-accent/30 rounded-full animate-ping opacity-20"></div>
+            <BookOpen className="text-primary w-10 h-10 relative z-10" />
           </div>
-          <h3 className="font-fancy text-4xl text-primary">Inspiration Grimoire 📖</h3>
-          <p className="text-sm text-muted-foreground mt-3 font-medium">Whisper your wishes, and let the magic begin! ✨</p>
+          <h3 className="font-fancy text-5xl text-primary mb-4">Inspiration Grimoire 📖</h3>
+          <p className="text-lg text-muted-foreground font-medium italic">"Whisper your wishes, and let the magical loops reveal themselves."</p>
         </div>
         
-        <form onSubmit={handleGenerate} className="space-y-8 mb-10">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-            <div className="space-y-2">
-              <Label htmlFor="itemType" className="text-[10px] font-bold uppercase tracking-widest text-primary/60 ml-2">I dream of a... 🧸</Label>
-              <Input 
-                id="itemType"
-                placeholder="e.g., Forest Dragon"
-                className="bg-white border-2 border-primary/10 focus:border-accent rounded-2xl h-14 px-6 text-lg focus:ring-accent"
-                value={formData.itemType}
-                onChange={(e) => setFormData({...formData, itemType: e.target.value})}
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="color" className="text-[10px] font-bold uppercase tracking-widest text-primary/60 ml-2">Color Magic 🎨</Label>
-              <Input 
-                id="color"
-                placeholder="e.g., Deep Teal & Lavender"
-                className="bg-white border-2 border-primary/10 focus:border-accent rounded-2xl h-14 px-6 text-lg focus:ring-accent"
-                value={formData.color}
-                onChange={(e) => setFormData({...formData, color: e.target.value})}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="style" className="text-[10px] font-bold uppercase tracking-widest text-primary/60 ml-2">Vibe Essence ✨</Label>
-              <Input 
-                id="style"
-                placeholder="e.g., Ethereal & Soft"
-                className="bg-white border-2 border-primary/10 focus:border-accent rounded-2xl h-14 px-6 text-lg focus:ring-accent"
-                value={formData.style}
-                onChange={(e) => setFormData({...formData, style: e.target.value})}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="occasion" className="text-[10px] font-bold uppercase tracking-widest text-primary/60 ml-2">The Gift Of... 🎁</Label>
-              <Input 
-                id="occasion"
-                placeholder="e.g., A New Home"
-                className="bg-white border-2 border-primary/10 focus:border-accent rounded-2xl h-14 px-6 text-lg focus:ring-accent"
-                value={formData.occasion}
-                onChange={(e) => setFormData({...formData, occasion: e.target.value})}
-              />
-            </div>
+        <form onSubmit={handleGenerate} className="space-y-10 mb-16">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
+            {[
+              { id: 'itemType', label: 'I dream of a... 🧸', placeholder: 'e.g., Forest Dragon', value: formData.itemType, key: 'itemType' },
+              { id: 'color', label: 'Color Magic 🎨', placeholder: 'e.g., Deep Teal & Gold', value: formData.color, key: 'color' },
+              { id: 'style', label: 'Vibe Essence ✨', placeholder: 'e.g., Ethereal & Soft', value: formData.style, key: 'style' },
+              { id: 'occasion', label: 'The Gift Of... 🎁', placeholder: 'e.g., A New Home', value: formData.occasion, key: 'occasion' }
+            ].map((field) => (
+              <div key={field.id} className="space-y-3">
+                <Label htmlFor={field.id} className="text-[10px] font-bold uppercase tracking-[0.3em] text-primary/60 ml-4">{field.label}</Label>
+                <Input 
+                  id={field.id}
+                  placeholder={field.placeholder}
+                  className="bg-paper border-2 border-primary/5 focus:border-accent rounded-[2rem] h-16 px-8 text-lg focus:ring-accent transition-all shadow-sm"
+                  value={field.value}
+                  onChange={(e) => setFormData({...formData, [field.key]: e.target.value})}
+                  required={field.id === 'itemType'}
+                />
+              </div>
+            ))}
           </div>
           
           <Button 
             disabled={loading}
-            className="w-full bg-primary hover:bg-primary/90 py-8 rounded-2xl text-xl font-bold group transition-all shadow-xl shadow-primary/20 active:scale-[0.98]"
+            className="w-full bg-primary hover:bg-primary/90 h-24 rounded-[2.5rem] text-2xl font-bold group transition-all shadow-2xl shadow-primary/20 active:scale-[0.98] glow-hover"
           >
             {loading ? (
-              <Loader2 className="mr-3 h-6 w-6 animate-spin" />
+              <div className="flex items-center gap-4">
+                <Loader2 className="h-8 w-8 animate-spin" />
+                <span>Weaving Prophecies...</span>
+              </div>
             ) : (
-              <Wand2 className="mr-3 h-6 w-6 group-hover:rotate-45 transition-transform" />
+              <div className="flex items-center gap-4">
+                <Wand2 className="h-8 w-8 group-hover:rotate-45 transition-transform duration-500" />
+                <span>Cast the Weaving Spell ✨</span>
+              </div>
             )}
-            Cast the Spell ✨
           </Button>
         </form>
 
         {ideas.length > 0 && (
-          <div className="space-y-5 animate-in fade-in slide-in-from-bottom-6 duration-700">
-            <h4 className="text-[10px] font-bold text-accent text-center uppercase tracking-[0.4em]">Prophetic Visions:</h4>
-            <div className="grid gap-4">
+          <div className="space-y-8 animate-in fade-in slide-in-from-bottom-10 duration-1000">
+            <div className="flex items-center justify-center gap-6">
+              <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent to-accent/30"></div>
+              <h4 className="text-[10px] font-bold text-accent uppercase tracking-[0.5em] flex items-center gap-3">
+                <Scroll className="w-4 h-4" />
+                Visions From The Loom
+              </h4>
+              <div className="h-[1px] flex-1 bg-gradient-to-l from-transparent to-accent/30"></div>
+            </div>
+
+            <div className="grid gap-6">
               {ideas.map((idea, idx) => (
                 <div 
                   key={idx} 
-                  className="p-6 bg-accent/5 rounded-3xl border border-accent/20 text-primary font-medium leading-relaxed shadow-sm hover:shadow-md transition-all flex items-start gap-4 group"
+                  className="p-10 bg-paper rounded-[3rem] border border-accent/10 text-primary font-medium text-xl leading-relaxed shadow-md hover:shadow-xl hover:-translate-y-1 transition-all flex items-start gap-6 group/item"
+                  style={{ animationDelay: `${idx * 0.2}s` }}
                 >
-                  <span className="text-xl group-hover:scale-125 transition-transform">📜</span>
+                  <span className="text-3xl group-hover/item:scale-150 group-hover/item:rotate-12 transition-all duration-500">📜</span>
                   {idea}
                 </div>
               ))}
             </div>
-            <div className="flex justify-center pt-4">
-              <Heart className="text-accent animate-bounce w-5 h-5" />
+            
+            <div className="flex justify-center pt-8">
+              <div className="p-4 bg-accent/10 rounded-full animate-bounce">
+                <Heart className="text-accent fill-accent w-6 h-6" />
+              </div>
             </div>
           </div>
         )}
       </div>
+      
+      {/* Floating magic background elements */}
+      <div className="absolute -top-10 -right-10 w-64 h-64 bg-accent/5 rounded-full blur-[80px] group-hover:bg-accent/10 transition-colors"></div>
+      <div className="absolute -bottom-10 -left-10 w-64 h-64 bg-primary/5 rounded-full blur-[80px] group-hover:bg-primary/10 transition-colors"></div>
     </div>
   );
 }

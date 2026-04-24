@@ -1,9 +1,8 @@
-
 "use client";
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
-import { useUser, useAuth, useFirestore, useCollection } from '@/firebase';
+import { useUser, useAuth, useFirestore, useCollection, useMemoFirebase } from '@/firebase';
 import { AdminProductManager } from '@/components/AdminProductManager';
 import { AdminOrderManager } from '@/components/AdminOrderManager';
 import { AdminSettingsManager } from '@/components/AdminSettingsManager';
@@ -21,10 +20,11 @@ import {
   ShieldCheck,
   ShieldAlert,
   BarChart3,
-  Info,
-  Settings
+  Settings,
+  AlertCircle
 } from 'lucide-react';
 import { signOut } from 'firebase/auth';
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 
 export default function AdminDashboard() {
   const { user, loading } = useUser();
@@ -34,8 +34,8 @@ export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState<'inventory' | 'orders' | 'settings'>('inventory');
   const [dbStatus, setDbStatus] = useState<'checking' | 'connected' | 'error'>('checking');
 
-  const productsQuery = useMemo(() => collection(db, 'products'), [db]);
-  const ordersQuery = useMemo(() => collection(db, 'orders'), [db]);
+  const productsQuery = useMemoFirebase(() => collection(db, 'products'), [db]);
+  const ordersQuery = useMemoFirebase(() => collection(db, 'orders'), [db]);
 
   const { data: products } = useCollection(productsQuery);
   const { data: orders } = useCollection(ordersQuery);
@@ -73,14 +73,14 @@ export default function AdminDashboard() {
 
   if (!user) return null;
 
-  const firebaseConsoleUrl = "https://console.firebase.google.com/project/fabel-57315/firestore/rules";
+  const firebaseConsoleUrl = `https://console.firebase.google.com/project/${process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID}/firestore/rules`;
 
   return (
     <div className="min-h-screen bg-paper pb-40 selection:bg-accent/20">
       <Navigation />
       
       <div className="pt-40 container mx-auto px-6">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-20 gap-8">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-8">
           <div className="animate-fade-in-up">
             <div className="flex items-center gap-4 mb-4">
               <Sparkles className="text-accent w-6 h-6 animate-pulse" />
@@ -110,6 +110,37 @@ export default function AdminDashboard() {
             </Button>
           </div>
         </div>
+
+        {dbStatus === 'error' && (
+          <Alert variant="destructive" className="mb-10 rounded-[2rem] border-2 bg-white p-8 shadow-xl animate-in slide-in-from-top-4 duration-500">
+            <AlertCircle className="h-6 w-6" />
+            <AlertTitle className="font-headline text-2xl mb-2">The Loom is Blocked</AlertTitle>
+            <AlertDescription className="text-base space-y-4">
+              <p>Your current <strong>Firestore Rules</strong> are preventing the dashboard from loading data. To fix this, click the button above and ensure your rules look exactly like this:</p>
+              <pre className="bg-muted p-6 rounded-2xl text-xs overflow-x-auto border-2 border-primary/10">
+{`rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Allow public read for shop items
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    // Allow public read for hero settings
+    match /settings/hero {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    // Secure everything else
+    match /{document=**} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}`}
+              </pre>
+            </AlertDescription>
+          </Alert>
+        )}
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-16">
           <div className="lg:col-span-1 space-y-6 animate-fade-in-up">
@@ -159,10 +190,10 @@ export default function AdminDashboard() {
                <h4 className="font-headline text-xl text-primary mb-4 italic">System Pulse</h4>
                <div className="space-y-4">
                   <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-widest opacity-60">
-                    <span>Admin Access</span>
+                    <span>Database Connection</span>
                     <span className="flex items-center gap-2">
                       {dbStatus === 'connected' && <><ShieldCheck className="w-3 h-3 text-emerald-500" /> Authorized</>}
-                      {dbStatus === 'error' && <><ShieldAlert className="w-3 h-3 text-destructive" /> Blocked</>}
+                      {dbStatus === 'error' && <><ShieldAlert className="w-3 h-3 text-destructive" /> Permission Error</>}
                       {dbStatus === 'checking' && <><Loader2 className="w-3 h-3 animate-spin" /> Checking...</>}
                     </span>
                   </div>

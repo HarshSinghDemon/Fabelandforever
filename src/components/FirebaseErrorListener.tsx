@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useEffect } from 'react';
@@ -11,17 +10,31 @@ export function FirebaseErrorListener() {
 
   useEffect(() => {
     const handlePermissionError = (error: FirestorePermissionError) => {
-      const isProductRead = error.context.path.includes('products') && error.context.operation === 'list';
+      // Define paths that are expected to be public
+      const isPublicPath = 
+        error.context.path.includes('products') || 
+        error.context.path.includes('settings/hero');
       
-      if (isProductRead) {
-        console.warn('Public Access Restricted: Visitors cannot see your treasures yet. Please update Firestore rules to allow public read for the products collection.');
-      } else {
-        toast({
-          variant: "destructive",
-          title: "Magic Boundary Encountered",
-          description: `The loom blocked a ${error.context.operation} at ${error.context.path}. Check your Security Rules.`,
-        });
+      const isReadOperation = 
+        error.context.operation === 'list' || 
+        error.context.operation === 'get';
+
+      // If a visitor can't read public data yet, we log it silently to the console 
+      // instead of showing a disruptive toast.
+      if (isPublicPath && isReadOperation) {
+        console.warn(
+          `Public Access Note: The loom is currently restricted at ${error.context.path}. ` +
+          `To show this content to visitors, update your Firestore Rules to allow public read.`
+        );
+        return;
       }
+
+      // For actual write failures or restricted admin data, show the toast.
+      toast({
+        variant: "destructive",
+        title: "Magic Boundary Encountered",
+        description: `The loom blocked a ${error.context.operation} at ${error.context.path}. Check your Security Rules.`,
+      });
     };
 
     errorEmitter.on('permission-error', handlePermissionError);

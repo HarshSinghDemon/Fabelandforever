@@ -20,7 +20,6 @@ export function AdminProductManager() {
   const { toast } = useToast();
   const [adding, setAdding] = useState(false);
   const [uploading, setUploading] = useState(false);
-  const [uploadError, setUploadError] = useState<string | null>(null);
   
   const [formData, setFormData] = useState({
     title: '',
@@ -40,7 +39,6 @@ export function AdminProductManager() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    setUploadError(null);
     setUploading(true);
 
     const uploadFormData = new FormData();
@@ -53,18 +51,17 @@ export function AdminProductManager() {
         setFormData(prev => ({ ...prev, image: result.url! }));
         toast({ 
           title: "Visual Captured! ✨", 
-          description: "Your treasure photo is safely stored in Supabase." 
+          description: "Your treasure photo is safely stored." 
         });
       } else {
         throw new Error(result.error || "Failed to upload image");
       }
     } catch (error: any) {
       console.error("Upload Error:", error);
-      setUploadError(error.message);
       toast({ 
         variant: "destructive", 
         title: "Upload Failed", 
-        description: error.message 
+        description: error.message || "Could not reach Supabase."
       });
     } finally {
       setUploading(false);
@@ -78,7 +75,7 @@ export function AdminProductManager() {
       toast({
         variant: "destructive",
         title: "Incomplete Spell",
-        description: "Please provide a title, price, and image to cast this treasure."
+        description: "Please provide a title, price, and image."
       });
       return;
     }
@@ -101,20 +98,14 @@ export function AdminProductManager() {
       setFormData({ title: '', price: '', category: '', image: '', description: '' });
       toast({ 
         title: "Magic Manifested! ✨", 
-        description: `${productData.title} has been added to your inventory.` 
+        description: `${productData.title} is now in your grimoire.` 
       });
     } catch (error: any) {
       console.error("Firestore Write Error:", error);
-      const permissionError = new FirestorePermissionError({
-        path: 'products',
-        operation: 'create',
-      });
-      errorEmitter.emit('permission-error', permissionError);
-      
       toast({
         variant: "destructive",
-        title: "Database Blocked",
-        description: "Firestore rejected the save. Check your Security Rules in the console."
+        title: "Creation Failed",
+        description: error.message || "The looms are blocked. Check your Firestore Rules."
       });
     } finally {
       setAdding(false);
@@ -122,25 +113,20 @@ export function AdminProductManager() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to unravel this creation? This cannot be undone.")) return;
+    if (!confirm("Are you sure you want to unravel this creation?")) return;
     
     try {
       const docRef = doc(db, 'products', id);
       await deleteDoc(docRef);
-      toast({ title: "Treasure Unraveled", description: "The item has been removed from your shop." });
+      toast({ title: "Treasure Unraveled" });
     } catch (error: any) {
       console.error("Delete Error:", error);
-      const permissionError = new FirestorePermissionError({
-        path: `products/${id}`,
-        operation: 'delete',
-      });
-      errorEmitter.emit('permission-error', permissionError);
+      toast({ variant: "destructive", title: "Unraveling Failed" });
     }
   };
 
   return (
     <div className="space-y-12">
-      {/* Security Rule Helper */}
       <Alert className="bg-amber-50 border-amber-200 rounded-[2rem] p-8">
         <ShieldAlert className="h-6 w-6 text-amber-600" />
         <AlertTitle className="text-amber-800 font-bold ml-2">Database Access Note</AlertTitle>
@@ -197,9 +183,8 @@ export function AdminProductManager() {
                 <Input 
                   placeholder="Paste URL or upload..." 
                   value={formData.image}
-                  onChange={(e) => setFormData({...formData, image: e.target.value})}
-                  className="h-14 rounded-2xl border-2 border-primary/5 focus:border-accent flex-1"
-                  required
+                  readOnly
+                  className="h-14 rounded-2xl border-2 border-primary/5 bg-muted/20 flex-1"
                 />
                 <div className="relative">
                   <input 
@@ -218,7 +203,7 @@ export function AdminProductManager() {
             <div className="md:col-span-2 space-y-4">
               <Label className="text-[10px] font-bold uppercase tracking-widest text-primary/50 ml-4">The Item's Story</Label>
               <Input 
-                placeholder="Once upon a time, this yarn became..." 
+                placeholder="Once upon a time..." 
                 value={formData.description}
                 onChange={(e) => setFormData({...formData, description: e.target.value})}
                 className="h-14 rounded-2xl border-2 border-primary/5 focus:border-accent"
@@ -227,18 +212,11 @@ export function AdminProductManager() {
             
             <Button 
               type="submit" 
-              disabled={adding || uploading}
+              disabled={adding || uploading || !formData.image}
               className="md:col-span-2 h-20 rounded-[2rem] bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-[0.3em] shadow-2xl shadow-primary/20 transition-all hover:scale-[1.01]"
             >
-              {adding ? (
-                <div className="flex items-center gap-3">
-                  <Loader2 className="w-5 h-5 animate-spin" /> Binding Threads...
-                </div>
-              ) : (
-                <div className="flex items-center gap-3">
-                  <Sparkles className="w-5 h-5" /> Cast the Creation Spell
-                </div>
-              )}
+              {adding ? <Loader2 className="animate-spin" /> : <Sparkles className="mr-2 h-5 w-5" />}
+              {adding ? "Binding Threads..." : "Cast the Creation Spell"}
             </Button>
           </form>
         </CardContent>
@@ -250,23 +228,18 @@ export function AdminProductManager() {
             <Package className="text-accent w-6 h-6" />
             <h3 className="font-headline text-3xl text-primary">Live Inventory</h3>
           </div>
-          <span className="bg-white/50 border border-primary/10 px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest text-primary">
-            {products.length} Items on the Shelves
-          </span>
         </div>
 
         {loading ? (
-          <div className="flex justify-center py-20">
-            <Loader2 className="w-12 h-12 text-primary animate-spin" />
-          </div>
+          <div className="flex justify-center py-20"><Loader2 className="animate-spin" /></div>
         ) : products.length === 0 ? (
           <div className="p-20 bg-white/40 rounded-[3rem] border-2 border-dashed border-primary/10 text-center italic text-muted-foreground">
-            No treasures found in the loom. Start by creating one above!
+            No treasures found in the loom.
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {products.map((product: any) => (
-              <Card key={product.id} className="group border-none shadow-lg rounded-[2.5rem] overflow-hidden bg-white hover:shadow-2xl transition-all duration-500">
+              <Card key={product.id} className="group border-none shadow-lg rounded-[2.5rem] overflow-hidden bg-white hover:shadow-2xl transition-all">
                 <CardContent className="p-0 flex items-center h-48">
                   <div className="relative w-40 h-full bg-muted">
                     <Image 
@@ -277,24 +250,15 @@ export function AdminProductManager() {
                     />
                   </div>
                   <div className="flex-1 p-8 flex flex-col justify-between h-full">
-                    <div>
-                      <div className="flex justify-between items-start mb-2">
-                        <h4 className="font-bold text-xl text-primary leading-tight">{product.title}</h4>
-                        <button 
-                          onClick={() => handleDelete(product.id)}
-                          className="p-2 text-primary/20 hover:text-destructive transition-colors"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
-                      <div className="flex items-center gap-2 mb-4">
-                        <Tag className="w-3 h-3 text-accent" />
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-accent">{product.category}</span>
-                      </div>
+                    <div className="flex justify-between items-start">
+                      <h4 className="font-bold text-xl text-primary">{product.title}</h4>
+                      <button onClick={() => handleDelete(product.id)} className="text-muted-foreground hover:text-destructive">
+                        <Trash2 className="w-4 h-4" />
+                      </button>
                     </div>
-                    <div className="flex items-center justify-between mt-auto">
+                    <div className="flex items-center justify-between">
                       <span className="font-bold text-primary">₹ {Number(product.price).toLocaleString('en-IN')}</span>
-                      <Sparkles className="w-4 h-4 text-primary/10 group-hover:text-accent transition-colors" />
+                      <span className="text-[10px] font-bold uppercase text-accent">{product.category}</span>
                     </div>
                   </div>
                 </CardContent>

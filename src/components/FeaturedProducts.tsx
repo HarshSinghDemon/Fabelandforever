@@ -53,15 +53,12 @@ export function FeaturedProducts() {
           </div>
           <span className="text-primary font-bold tracking-[0.5em] uppercase text-[10px] mb-6 block">The Latest Looms</span>
           <h2 className="font-fancy text-6xl md:text-7xl text-primary mb-8">Ethereal Keepsakes</h2>
-          <p className="text-muted-foreground text-xl italic max-w-xl mx-auto font-medium">
-            "Hand-picked from the loom of our artisan hollow, just for you."
-          </p>
         </div>
 
         {products.length === 0 ? (
           <div className="text-center py-20 p-20 border-2 border-dashed border-primary/10 rounded-[4rem] bg-white/50">
             <p className="text-muted-foreground italic text-xl">
-              "The shelves are currently light as a cloud. Check back after the next solstice or add treasures in the admin portal!"
+              "The shelves are currently light as a cloud. Add treasures in the admin portal to fill them!"
             </p>
           </div>
         ) : (
@@ -69,37 +66,27 @@ export function FeaturedProducts() {
             {products.map((product: any) => (
               <Card key={product.id} className="group border-none shadow-none bg-transparent overflow-visible">
                 <CardContent className="p-0">
-                  <div className="relative aspect-[4/5] overflow-hidden rounded-[3.5rem] mb-10 border-[12px] border-white shadow-xl transition-all duration-700 group-hover:-translate-y-4 group-hover:shadow-[0_40px_80px_-20px_rgba(45,115,107,0.2)]">
+                  <div className="relative aspect-[4/5] overflow-hidden rounded-[3.5rem] mb-10 border-[12px] border-white shadow-xl transition-all duration-700 group-hover:-translate-y-4">
                     <Image
                       src={product.image || "https://picsum.photos/seed/tale/600/800"}
                       alt={product.title}
                       fill
                       className="object-cover transition-transform duration-1000 group-hover:scale-110"
                     />
-                    
-                    <div className="absolute top-8 left-8 bg-accent/90 backdrop-blur-md px-5 py-2 rounded-full text-[10px] font-bold text-primary border border-white/50 opacity-0 group-hover:opacity-100 transition-all duration-500 -translate-x-4 group-hover:translate-x-0">
-                      Rare Craft ✨
-                    </div>
-
-                    <div className="absolute top-8 right-8 bg-white/95 p-4 rounded-full shadow-lg text-primary hover:bg-primary hover:text-white transition-all cursor-pointer group/heart active:scale-90 opacity-0 group-hover:opacity-100">
-                      <Heart className="w-5 h-5 group-hover/heart:fill-current" />
-                    </div>
-                    
-                    <div className="absolute inset-0 bg-gradient-to-t from-primary/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-primary/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                   </div>
                   
                   <div className="text-center">
                     <div className="flex items-center justify-center gap-2 mb-4">
                       <Sparkles className="w-3 h-3 text-accent" />
                       <span className="text-[10px] uppercase tracking-[0.3em] text-accent font-bold">{product.category}</span>
-                      <Sparkles className="w-3 h-3 text-accent" />
                     </div>
-                    <h3 className="font-bold text-3xl text-primary mb-3 group-hover:text-accent transition-colors duration-500">{product.title}</h3>
+                    <h3 className="font-bold text-3xl text-primary mb-3">{product.title}</h3>
                     <p className="text-primary/70 font-bold text-xl mb-8">₹ {Number(product.price).toLocaleString('en-IN')}</p>
                     
                     <button 
                       onClick={() => handleAddToCart(product)}
-                      className="btn-squish glow-hover bg-primary text-white font-bold px-12 py-4 rounded-[1.5rem] text-sm hover:shadow-2xl hover:shadow-primary/20 transition-all hover:scale-105 active:scale-95 flex items-center gap-3 mx-auto"
+                      className="bg-primary text-white font-bold px-12 py-4 rounded-[1.5rem] text-sm hover:scale-105 transition-all flex items-center gap-3 mx-auto"
                     >
                       Adopt Treasure <ShoppingCart className="w-4 h-4" />
                     </button>

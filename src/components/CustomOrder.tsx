@@ -18,7 +18,6 @@ export function CustomOrder() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Client-side size check (5MB)
     if (file.size > 5 * 1024 * 1024) {
       toast({
         variant: "destructive",
@@ -54,6 +53,8 @@ export function CustomOrder() {
       });
     } finally {
       setUploading(false);
+      // Reset input value so same file can be uploaded again if needed
+      if (e.target) e.target.value = '';
     }
   };
 
@@ -86,7 +87,6 @@ export function CustomOrder() {
                 ))}
               </div>
 
-              {/* Upload Box */}
               <div className="bg-accent/5 p-8 rounded-[2rem] stitching-border max-w-md">
                 <h4 className="font-bold text-primary mb-4 flex items-center gap-2">
                   <Upload className="w-4 h-4" /> Share Your Inspiration
@@ -99,18 +99,18 @@ export function CustomOrder() {
                     disabled={uploading}
                     accept="image/png, image/jpeg, image/jpg, image/webp"
                   />
-                  <div className="bg-white border-2 border-dashed border-accent/40 rounded-xl p-8 text-center group hover:border-accent transition-all duration-300">
+                  <div className="bg-white border-2 border-dashed border-accent/40 rounded-xl p-8 text-center group hover:border-accent transition-all duration-300 min-h-[160px] flex items-center justify-center">
                     {uploading ? (
                       <div className="flex flex-col items-center gap-3">
                         <Loader2 className="w-8 h-8 animate-spin text-accent" />
                         <span className="text-xs font-bold text-primary uppercase tracking-widest">Weaving into Storage...</span>
                       </div>
                     ) : uploadedUrl ? (
-                      <div className="flex flex-col items-center gap-3 text-primary">
-                        <CheckCircle2 className="w-8 h-8 text-primary animate-in zoom-in" />
+                      <div className="flex flex-col items-center gap-3 text-primary animate-in zoom-in">
+                        <CheckCircle2 className="w-8 h-8 text-primary" />
                         <span className="text-xs font-bold uppercase tracking-widest">Image Secured ✨</span>
                         <div className="mt-2 text-[10px] text-muted-foreground break-all px-4 bg-muted/30 py-1 rounded-md line-clamp-1">
-                          {uploadedUrl}
+                          Successfully uploaded to uploads bucket
                         </div>
                       </div>
                     ) : (
@@ -118,7 +118,7 @@ export function CustomOrder() {
                         <div className="p-4 bg-accent/10 rounded-full group-hover:scale-110 transition-transform">
                           <Sparkles className="w-8 h-8 text-accent" />
                         </div>
-                        <span className="text-xs font-bold text-primary uppercase tracking-widest">Click or drag a photo</span>
+                        <span className="text-xs font-bold text-primary uppercase tracking-widest">Click to upload photo</span>
                         <p className="text-[10px] text-muted-foreground">PNG, JPG or WEBP up to 5MB</p>
                       </div>
                     )}
@@ -128,7 +128,7 @@ export function CustomOrder() {
                   <div className="mt-4 flex flex-col items-center gap-1">
                     <div className="flex items-center gap-2 text-primary/40 text-[9px] uppercase tracking-widest justify-center">
                       <AlertCircle className="w-3 h-3" />
-                      Requires "uploads" bucket in Supabase (Public)
+                      Requires "uploads" bucket (Public)
                     </div>
                   </div>
                 )}
@@ -140,7 +140,6 @@ export function CustomOrder() {
             </div>
           </div>
 
-          {/* Decorative Image Column */}
           <div className="relative">
              <div className="relative aspect-square w-full rounded-[4rem] overflow-hidden border-[15px] border-white shadow-2xl transition-all duration-700 hover:-translate-y-2">
                 <Image

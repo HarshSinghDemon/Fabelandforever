@@ -1,7 +1,8 @@
 'use server';
 
 /**
- * @fileOverview Server action to handle image uploads to Supabase Storage via REST API.
+ * @fileOverview Refined server action to handle image uploads to Supabase Storage.
+ * Improved to prevent HTML error parsing issues and handle binary data correctly.
  */
 
 export async function uploadToSupabase(formData: FormData) {
@@ -10,15 +11,11 @@ export async function uploadToSupabase(formData: FormData) {
     return { success: false, error: 'No file provided' };
   }
 
-  // Basic validation
+  // Support common web image types
   const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'];
   if (!allowedTypes.includes(file.type)) {
-    return { success: false, error: `Unsupported file type. Please use PNG, JPG, or WEBP.` };
+    return { success: false, error: `Format ${file.type} is not supported. Use PNG, JPG, or WEBP.` };
   }
-
-  const bucket = 'uploads';
-  const fileName = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.]/g, '_')}`;
-  const filePath = `inspiration/${fileName}`;
 
   const supabaseUrl = process.env.SUPABASE_URL;
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -26,17 +23,20 @@ export async function uploadToSupabase(formData: FormData) {
   if (!supabaseUrl || !serviceRoleKey || supabaseUrl.includes('placeholder')) {
     return { 
       success: false, 
-      error: 'Supabase credentials missing. Please check your .env file and ensure SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are set.' 
+      error: 'Credentials missing. Please ensure SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are correctly saved in your .env file.' 
     };
   }
 
+  const bucket = 'uploads';
+  const fileName = `inspiration/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.]/g, '_')}`;
+  
   try {
     const arrayBuffer = await file.arrayBuffer();
     const body = Buffer.from(arrayBuffer);
 
-    // Clean the URL to ensure it's the base project URL
+    // Normalize URL
     const baseUrl = supabaseUrl.replace(/\/$/, '').replace('/storage/v1', '');
-    const uploadUrl = `${baseUrl}/storage/v1/object/${bucket}/${filePath}`;
+    const uploadUrl = `${baseUrl}/storage/v1/object/${bucket}/${fileName}`;
 
     const response = await fetch(uploadUrl, {
       method: 'POST',
@@ -50,25 +50,31 @@ export async function uploadToSupabase(formData: FormData) {
     });
 
     if (!response.ok) {
-      if (response.status === 404) {
-        throw new Error(`Bucket "${bucket}" not found. Please go to your Supabase Storage dashboard and create a bucket named "${bucket}".`);
+      const responseText = await response.text();
+      let errorMessage = `Supabase Error (${response.status})`;
+      
+      try {
+        const errorData = JSON.parse(responseText);
+        errorMessage = errorData.message || errorData.error || errorMessage;
+      } catch (e) {
+        if (responseText.includes('<!DOCTYPE html>')) {
+          errorMessage = "Supabase returned an HTML error. This usually means the URL is wrong or the bucket 'uploads' doesn't exist.";
+        }
       }
-      const errorData = await response.json().catch(() => ({ message: `Upload failed with status ${response.status}` }));
-      throw new Error(errorData.message || errorData.error || 'An error occurred during upload.');
+      throw new Error(errorMessage);
     }
 
-    // This URL works if the bucket is set to "Public"
-    const publicUrl = `${baseUrl}/storage/v1/object/public/${bucket}/${filePath}`;
+    const publicUrl = `${baseUrl}/storage/v1/object/public/${bucket}/${fileName}`;
 
     return {
       success: true,
       url: publicUrl,
     };
   } catch (error: any) {
-    console.error('Supabase Upload Error:', error);
+    console.error('Supabase Upload Failure:', error);
     return {
       success: false,
-      error: error.message || 'An unexpected error occurred while weaving your image into storage.',
+      error: error.message || 'An unexpected error occurred during the weaving process.',
     };
   }
 }

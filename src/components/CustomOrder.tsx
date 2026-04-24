@@ -18,6 +18,7 @@ export function CustomOrder() {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    // Client-side size check (5MB)
     if (file.size > 5 * 1024 * 1024) {
       toast({
         variant: "destructive",
@@ -85,6 +86,7 @@ export function CustomOrder() {
                 ))}
               </div>
 
+              {/* Upload Box */}
               <div className="bg-accent/5 p-8 rounded-[2rem] stitching-border max-w-md">
                 <h4 className="font-bold text-primary mb-4 flex items-center gap-2">
                   <Upload className="w-4 h-4" /> Share Your Inspiration
@@ -126,7 +128,7 @@ export function CustomOrder() {
                   <div className="mt-4 flex flex-col items-center gap-1">
                     <div className="flex items-center gap-2 text-primary/40 text-[9px] uppercase tracking-widest justify-center">
                       <AlertCircle className="w-3 h-3" />
-                      Requires "uploads" bucket in Supabase
+                      Requires "uploads" bucket in Supabase (Public)
                     </div>
                   </div>
                 )}
@@ -138,6 +140,7 @@ export function CustomOrder() {
             </div>
           </div>
 
+          {/* Decorative Image Column */}
           <div className="relative">
              <div className="relative aspect-square w-full rounded-[4rem] overflow-hidden border-[15px] border-white shadow-2xl transition-all duration-700 hover:-translate-y-2">
                 <Image

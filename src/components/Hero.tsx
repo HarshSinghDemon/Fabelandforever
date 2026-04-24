@@ -1,3 +1,4 @@
+
 "use client";
 
 import React from 'react';
@@ -10,7 +11,10 @@ import { doc } from 'firebase/firestore';
 
 export function Hero() {
   const db = useFirestore();
-  const heroSettingRef = useMemoFirebase(() => doc(db, 'settings', 'hero'), [db]);
+  const heroSettingRef = useMemoFirebase(() => {
+    if (!db) return null;
+    return doc(db, 'settings', 'hero');
+  }, [db]);
   const { data: heroSetting } = useDoc(heroSettingRef);
   
   const heroImageUrl = heroSetting?.value;

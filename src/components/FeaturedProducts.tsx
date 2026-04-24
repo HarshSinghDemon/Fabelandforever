@@ -1,3 +1,4 @@
+
 "use client";
 
 import React from 'react';
@@ -15,6 +16,8 @@ export function FeaturedProducts() {
   const db = useFirestore();
 
   const productsQuery = useMemoFirebase(() => {
+    // Handle cases where db might be null during build
+    if (!db) return null;
     return collection(db, 'products');
   }, [db]);
 

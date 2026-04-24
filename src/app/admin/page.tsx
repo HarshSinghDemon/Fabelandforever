@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useUser, useAuth, useFirestore, useCollection, useMemoFirebase } from '@/firebase';
 import { AdminProductManager } from '@/components/AdminProductManager';
@@ -65,7 +65,7 @@ export default function AdminDashboard() {
       <div className="min-h-screen flex items-center justify-center bg-paper">
         <div className="flex flex-col items-center gap-6">
           <Loader2 className="w-16 h-16 text-primary animate-spin" />
-          <p className="text-accent font-bold uppercase tracking-[0.5em] text-[10px] animate-pulse">Authenticating Weaver...</p>
+          <p className="text-accent font-bold uppercase tracking-[0.5em] text-[10px] animate-pulse">Authenticating Artisan...</p>
         </div>
       </div>
     );
@@ -88,7 +88,7 @@ export default function AdminDashboard() {
             </div>
             <h1 className="font-headline text-6xl md:text-7xl text-primary mb-4 leading-tight">Studio Control</h1>
             <p className="text-muted-foreground font-medium italic text-xl max-w-2xl">
-              "Welcome back, Master Weaver. The threads of your boutique await your command."
+              "Welcome back, Master Artisan. The magical loops of your boutique await your command."
             </p>
           </div>
           <div className="flex flex-wrap gap-4">
@@ -114,30 +114,9 @@ export default function AdminDashboard() {
         {dbStatus === 'error' && (
           <Alert variant="destructive" className="mb-10 rounded-[2rem] border-2 bg-white p-8 shadow-xl animate-in slide-in-from-top-4 duration-500">
             <AlertCircle className="h-6 w-6" />
-            <AlertTitle className="font-headline text-2xl mb-2">The Loom is Blocked</AlertTitle>
+            <AlertTitle className="font-headline text-2xl mb-2">The Hook is Blocked</AlertTitle>
             <AlertDescription className="text-base space-y-4">
-              <p>Your current <strong>Firestore Rules</strong> are preventing the dashboard from loading data. To fix this, click the button above and ensure your rules look exactly like this:</p>
-              <pre className="bg-muted p-6 rounded-2xl text-xs overflow-x-auto border-2 border-primary/10">
-{`rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    // Allow public read for shop items
-    match /products/{productId} {
-      allow read: if true;
-      allow write: if request.auth != null;
-    }
-    // Allow public read for hero settings
-    match /settings/hero {
-      allow read: if true;
-      allow write: if request.auth != null;
-    }
-    // Secure everything else
-    match /{document=**} {
-      allow read, write: if request.auth != null;
-    }
-  }
-}`}
-              </pre>
+              <p>Your <strong>Firestore Rules</strong> are preventing the dashboard from loading data. To fix this, click the button above and ensure your rules allow public access to products and settings.</p>
             </AlertDescription>
           </Alert>
         )}
@@ -148,7 +127,7 @@ service cloud.firestore {
               <label className="text-[10px] font-bold uppercase tracking-[0.3em] text-primary/40 ml-4">Navigation</label>
               {[
                 { id: 'inventory', icon: Package, label: 'Inventory' },
-                { id: 'orders', icon: History, label: 'Order Scrolls' },
+                { id: 'orders', icon: History, label: 'Stitch Scrolls' },
                 { id: 'settings', icon: Settings, label: 'Site Settings' },
               ].map((item) => (
                 <button 

@@ -41,7 +41,7 @@ export function AdminProductManager() {
       const result = await uploadToSupabase(uploadFormData);
       if (result.success && result.url) {
         setFormData(prev => ({ ...prev, image: result.url! }));
-        toast({ title: "Visual Captured! ✨", description: "Your treasure photo is safely stored in Supabase." });
+        toast({ title: "Visual Captured! ✨", description: "Your crochet treasure photo is safely stored." });
       } else {
         throw new Error(result.error || "Failed to upload image");
       }
@@ -76,7 +76,7 @@ export function AdminProductManager() {
       toast({ 
         variant: "destructive", 
         title: "Creation Failed", 
-        description: "There was an error saving to the database." 
+        description: "There was an error saving the stitch to the database." 
       });
     } finally {
       setAdding(false);
@@ -101,7 +101,7 @@ export function AdminProductManager() {
             <div className="p-3 bg-primary/10 rounded-2xl">
               <Plus className="text-primary w-6 h-6" />
             </div>
-            <h3 className="font-headline text-3xl text-primary">Loom a New Treasure</h3>
+            <h3 className="font-headline text-3xl text-primary">Stitch a New Treasure</h3>
           </div>
 
           <form onSubmit={handleAddProduct} className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -168,7 +168,7 @@ export function AdminProductManager() {
               className="md:col-span-2 h-20 rounded-[2rem] bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-[0.3em] transition-all shadow-xl active:scale-95"
             >
               {adding ? <Loader2 className="animate-spin mr-2" /> : <Sparkles className="mr-2 h-5 w-5" />}
-              {adding ? "Binding Threads..." : "Cast the Creation Spell"}
+              {adding ? "Binding Loops..." : "Cast the Creation Spell"}
             </Button>
           </form>
         </CardContent>
@@ -180,7 +180,7 @@ export function AdminProductManager() {
           <div className="flex justify-center py-20"><Loader2 className="animate-spin text-primary w-10 h-10" /></div>
         ) : !products || products.length === 0 ? (
           <div className="p-20 bg-white/40 rounded-[3rem] border-2 border-dashed border-primary/10 text-center italic text-muted-foreground">
-            Your inventory is empty. Loom your first treasure above!
+            Your inventory is empty. Stitch your first treasure above!
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

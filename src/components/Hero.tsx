@@ -1,4 +1,3 @@
-
 "use client";
 
 import React from 'react';
@@ -23,7 +22,7 @@ export function Hero() {
       <div className="container mx-auto px-6 relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
         <div className="animate-fade-in-up">
           <div className="mb-16 inline-flex items-center gap-6 group cursor-pointer">
-            <span className="font-headline text-lg tracking-[0.3em] uppercase text-primary/60 group-hover:text-primary transition-colors">Bespoke Crochet Stitchery</span>
+            <span className="font-headline text-lg tracking-[0.3em] uppercase text-primary/60 group-hover:text-primary transition-colors">Hand-Stitched Crochet Stitchery</span>
           </div>
           
           <h1 className="font-headline text-8xl md:text-9xl lg:text-[10rem] text-primary leading-[0.85] mb-12 relative">
@@ -79,13 +78,13 @@ export function Hero() {
               ) : (
                 <div className="w-full h-full flex flex-col items-center justify-center text-primary/10 gap-4">
                   <ImageIcon className="w-20 h-20" />
-                  <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-center px-10">Use the Admin Panel to loom your hero visual</p>
+                  <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-center px-10">Use the Admin Panel to loom your crochet visual</p>
                 </div>
               )}
               
               <div className="absolute top-14 left-12 bg-white/95 backdrop-blur-xl text-primary px-10 py-5 rounded-[2rem] shadow-2xl font-bold text-base floating border border-primary/5 flex items-center gap-4">
                 <span className="w-3 h-3 rounded-full bg-accent animate-ping"></span>
-                Bespoke Fiber Arts 🌿
+                Bespoke Crochet Arts 🌿
               </div>
               
               <div className="absolute bottom-14 right-12 bg-primary/95 backdrop-blur-xl text-white px-10 py-5 rounded-[2rem] shadow-2xl font-bold text-base floating [animation-delay:1.5s] flex items-center gap-4">

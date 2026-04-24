@@ -1,4 +1,3 @@
-
 "use client";
 
 import React from 'react';
@@ -17,17 +16,17 @@ export function CustomOrder() {
           <div className="relative">
             <div className="absolute -top-10 -left-10 w-64 h-64 bg-accent/10 rounded-full blur-3xl opacity-40"></div>
             <div className="relative z-10">
-              <span className="text-primary font-bold tracking-[0.3em] uppercase text-[10px] mb-4 block">Bespoke Heirlooms</span>
+              <span className="text-primary font-bold tracking-[0.3em] uppercase text-[10px] mb-4 block">Bespoke Crochet Heirlooms</span>
               <h2 className="font-headline text-5xl md:text-7xl text-primary mb-8 leading-tight">Your Vision, <br /><span className="italic text-accent">Our Loops</span></h2>
               <p className="text-xl text-muted-foreground mb-12 leading-relaxed max-w-lg italic font-medium">
-                "Every custom piece begins with a spark. Share your vision and let's create a forever loop together."
+                "Every custom crochet piece begins with a spark. Share your vision and let's create a forever loop together."
               </p>
               
               <div className="space-y-8 mb-12">
                 {[
-                  { step: '01', title: 'Fiber Selection', desc: 'Curating the softest ethically-sourced yarns for your vision.' },
-                  { step: '02', title: 'Pattern Magic', desc: 'Translating your inspiration into a hand-crafted crochet chart.' },
-                  { step: '03', title: 'The Final Stitch', desc: 'Execution with heirloom precision and a weaver\'s care.' }
+                  { step: '01', title: 'Yarn Selection', desc: 'Curating the softest ethically-sourced cotton and wool for your vision.' },
+                  { step: '02', title: 'Pattern Magic', desc: 'Translating your inspiration into a hand-crafted crochet chart and loops.' },
+                  { step: '03', title: 'The Final Stitch', desc: 'Execution with heirloom precision and a master crocheter\'s care.' }
                 ].map((item) => (
                   <div key={item.step} className="flex gap-8 group">
                     <span className="font-headline text-3xl text-accent/30 group-hover:text-accent transition-colors duration-500">{item.step}</span>
@@ -49,7 +48,7 @@ export function CustomOrder() {
              <div className="relative aspect-square w-full rounded-[4rem] overflow-hidden border-[15px] border-white shadow-2xl transition-all duration-700 hover:-translate-y-2">
                 <Image
                   src={bgImage?.imageUrl || "https://picsum.photos/seed/yarn-custom/800/800"}
-                  alt="Luxury yarn and craft materials"
+                  alt="Luxury crochet yarn and materials"
                   fill
                   className="object-cover transition-transform duration-1000 hover:scale-110"
                 />
@@ -58,7 +57,7 @@ export function CustomOrder() {
                 <div className="absolute top-10 right-10 bg-white/95 backdrop-blur-md p-6 rounded-[2rem] shadow-xl border border-accent/10 floating">
                     <div className="flex items-center gap-3 mb-2">
                         <Sparkles className="text-accent w-4 h-4" />
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-primary">Master Weaver</span>
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-primary">Master Artisan</span>
                     </div>
                     <p className="text-xs font-medium text-muted-foreground italic">"Every loop is a promise of forever."</p>
                 </div>
@@ -69,7 +68,7 @@ export function CustomOrder() {
                     </div>
                     <div className="text-white">
                         <p className="text-xs font-bold uppercase tracking-widest opacity-80 mb-1">Authentic</p>
-                        <p className="font-headline text-2xl">Fiber Arts</p>
+                        <p className="font-headline text-2xl">Crochet Arts</p>
                     </div>
                 </div>
              </div>

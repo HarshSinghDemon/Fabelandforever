@@ -11,12 +11,10 @@ export function FirebaseErrorListener() {
 
   useEffect(() => {
     const handlePermissionError = (error: FirestorePermissionError) => {
-      // We only toast for specific paths or if in an admin context to avoid 
-      // spamming visitors if the rules aren't perfect yet.
       const isProductRead = error.context.path.includes('products') && error.context.operation === 'list';
       
       if (isProductRead) {
-        console.warn('Shop Visibility: Visitors cannot see products. Update Firestore rules to allow public read.');
+        console.warn('Public Access Restricted: Visitors cannot see your treasures yet. Please update Firestore rules to allow public read for the products collection.');
       } else {
         toast({
           variant: "destructive",
@@ -24,8 +22,6 @@ export function FirebaseErrorListener() {
           description: `The loom blocked a ${error.context.operation} at ${error.context.path}. Check your Security Rules.`,
         });
       }
-      
-      console.error('Firestore Permission Denied:', error.context);
     };
 
     errorEmitter.on('permission-error', handlePermissionError);

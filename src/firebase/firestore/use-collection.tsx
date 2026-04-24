@@ -26,9 +26,14 @@ export function useCollection<T = DocumentData>(query: Query<T> | null) {
         setLoading(false);
       },
       (error: any) => {
-        // Handle permission-denied specifically
         if (error.code === 'permission-denied') {
-          const path = (query as any)._query?.path?.toString() || 'unknown collection';
+          // Attempt to extract a clean path from the query object
+          let path = 'unknown collection';
+          try {
+            // Safely try to find path info in various SDK versions/internal structures
+            path = (query as any)._query?.path?.toString() || (query as any).path || 'collection';
+          } catch (e) {}
+          
           const permissionError = new FirestorePermissionError({
             path: path,
             operation: 'list',

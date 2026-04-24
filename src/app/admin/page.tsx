@@ -156,10 +156,10 @@ export default function AdminDashboard() {
                <h4 className="font-headline text-xl text-primary mb-4 italic">System Pulse</h4>
                <div className="space-y-4">
                   <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-widest opacity-60">
-                    <span>Database</span>
+                    <span>Admin Access</span>
                     <span className="flex items-center gap-2">
-                      {dbStatus === 'connected' && <><ShieldCheck className="w-3 h-3 text-emerald-500" /> Connected</>}
-                      {dbStatus === 'error' && <><ShieldAlert className="w-3 h-3 text-destructive" /> Rules Blocked</>}
+                      {dbStatus === 'connected' && <><ShieldCheck className="w-3 h-3 text-emerald-500" /> Authorized</>}
+                      {dbStatus === 'error' && <><ShieldAlert className="w-3 h-3 text-destructive" /> Blocked</>}
                       {dbStatus === 'checking' && <><Loader2 className="w-3 h-3 animate-spin" /> Checking...</>}
                     </span>
                   </div>
@@ -172,9 +172,16 @@ export default function AdminDashboard() {
                </div>
                
                {dbStatus === 'error' && (
-                 <div className="mt-6 p-4 bg-white/50 rounded-2xl border border-destructive/20 text-[9px] leading-relaxed text-destructive font-bold uppercase tracking-wider">
-                   <Info className="w-3 h-3 mb-2" />
-                   Action Required: Go to Firestore Rules and allow writes for Authenticated users.
+                 <div className="mt-6 p-6 bg-white/80 rounded-2xl border border-destructive/20 space-y-4">
+                   <div className="flex items-center gap-2 text-destructive font-bold uppercase tracking-wider text-[10px]">
+                     <Info className="w-4 h-4" /> Action Required
+                   </div>
+                   <p className="text-[11px] leading-relaxed text-muted-foreground font-medium italic">
+                     "The loom is stuck! Please ensure your Firestore Rules allow reads for everyone so customers can see your work."
+                   </p>
+                   <Button asChild size="sm" variant="outline" className="w-full text-[9px] h-8 rounded-xl border-destructive/20 text-destructive hover:bg-destructive/10">
+                     <a href={firebaseConsoleUrl} target="_blank">View Rules Tutorial</a>
+                   </Button>
                  </div>
                )}
             </div>

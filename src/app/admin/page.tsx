@@ -71,8 +71,7 @@ export default function AdminDashboard() {
 
   if (!user) return null;
 
-  // Direct link to your fabel-57315 project
-  const firebaseConsoleUrl = "https://console.firebase.google.com/project/fabel-57315/overview";
+  const firebaseConsoleUrl = "https://console.firebase.google.com/project/fabel-57315/firestore/rules";
 
   return (
     <div className="min-h-screen bg-paper pb-40 selection:bg-accent/20">
@@ -97,7 +96,7 @@ export default function AdminDashboard() {
               className="rounded-full px-8 h-14 border-accent/20 text-accent hover:bg-accent hover:text-white transition-all shadow-lg"
             >
               <a href={firebaseConsoleUrl} target="_blank" rel="noopener noreferrer">
-                <ExternalLink className="w-4 h-4 mr-2" /> Open Firebase Console
+                <ExternalLink className="w-4 h-4 mr-2" /> Open Firestore Rules
               </a>
             </Button>
             <Button 
@@ -111,7 +110,7 @@ export default function AdminDashboard() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-16">
-          <div className="lg:col-span-1 space-y-6 animate-fade-in-up [animation-delay:200ms]">
+          <div className="lg:col-span-1 space-y-6 animate-fade-in-up">
             <div className="space-y-4">
               <label className="text-[10px] font-bold uppercase tracking-[0.3em] text-primary/40 ml-4">Navigation</label>
               {[
@@ -124,14 +123,14 @@ export default function AdminDashboard() {
                   className={`w-full flex items-center justify-between px-10 py-6 rounded-[2.5rem] font-bold text-xs uppercase tracking-[0.2em] transition-all group ${
                     activeTab === item.id 
                       ? 'bg-primary text-white shadow-2xl shadow-primary/30 scale-[1.02]' 
-                      : 'bg-white/60 text-primary/50 hover:bg-white hover:text-primary hover:shadow-xl hover:-translate-y-1'
+                      : 'bg-white/60 text-primary/50 hover:bg-white hover:text-primary'
                   }`}
                 >
                   <div className="flex items-center gap-5">
-                    <item.icon className={`w-5 h-5 ${activeTab === item.id ? 'text-white' : 'text-accent group-hover:text-primary'}`} />
+                    <item.icon className={`w-5 h-5 ${activeTab === item.id ? 'text-white' : 'text-accent'}`} />
                     {item.label}
                   </div>
-                  {activeTab === item.id ? <Sparkles className="w-4 h-4 animate-pulse" /> : <ChevronRight className="w-4 h-4 opacity-20 group-hover:opacity-100 transition-opacity" />}
+                  {activeTab === item.id ? <Sparkles className="w-4 h-4 animate-pulse" /> : <ChevronRight className="w-4 h-4 opacity-20" />}
                 </button>
               ))}
             </div>
@@ -141,50 +140,40 @@ export default function AdminDashboard() {
                 <BarChart3 className="w-4 h-4 text-accent" />
                 <h4 className="font-bold text-[10px] uppercase tracking-[0.3em] text-primary/60">Studio Insights</h4>
               </div>
-              
               <div className="grid gap-6">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <TrendingUp className="w-4 h-4 text-emerald-500" />
-                    <span className="text-xs font-medium text-muted-foreground">Total Revenue</span>
-                  </div>
+                  <span className="text-xs font-medium text-muted-foreground">Revenue</span>
                   <span className="font-bold text-primary">₹ {totalRevenue.toLocaleString('en-IN')}</span>
                 </div>
-                
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <ShoppingBag className="w-4 h-4 text-accent" />
-                    <span className="text-xs font-medium text-muted-foreground">Items Listed</span>
-                  </div>
+                  <span className="text-xs font-medium text-muted-foreground">Products</span>
                   <span className="font-bold text-primary">{products?.length || 0}</span>
                 </div>
               </div>
             </div>
             
-            <div className="p-10 bg-accent/5 rounded-[3rem] border border-dashed border-accent/20 relative overflow-hidden group">
-               <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-               <h4 className="font-headline text-xl text-primary mb-4 italic relative z-10">System Pulse</h4>
-               
-               <div className="space-y-4 relative z-10">
+            <div className="p-10 bg-accent/5 rounded-[3rem] border border-dashed border-accent/20">
+               <h4 className="font-headline text-xl text-primary mb-4 italic">System Pulse</h4>
+               <div className="space-y-4">
                   <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-widest opacity-60">
                     <span>Database</span>
                     <span className="flex items-center gap-2">
                       {dbStatus === 'connected' && <><ShieldCheck className="w-3 h-3 text-emerald-500" /> Connected</>}
-                      {dbStatus === 'error' && <><ShieldAlert className="w-3 h-3 text-destructive" /> Rule Required</>}
-                      {dbStatus === 'checking' && <><Loader2 className="w-3 h-3 animate-spin" /> Verifying...</>}
+                      {dbStatus === 'error' && <><ShieldAlert className="w-3 h-3 text-destructive" /> Rules Blocked</>}
+                      {dbStatus === 'checking' && <><Loader2 className="w-3 h-3 animate-spin" /> Checking...</>}
                     </span>
                   </div>
                   <div className="h-1.5 w-full bg-white rounded-full overflow-hidden">
                     <div className={`h-full transition-all duration-1000 ${
                       dbStatus === 'connected' ? 'w-full bg-emerald-400' : 
-                      dbStatus === 'error' ? 'w-1/3 bg-destructive' : 'w-1/2 bg-accent animate-pulse'
+                      dbStatus === 'error' ? 'w-1/3 bg-destructive' : 'w-1/2 bg-accent'
                     }`}></div>
                   </div>
                </div>
             </div>
           </div>
 
-          <div className="lg:col-span-3 animate-fade-in-up [animation-delay:400ms]">
+          <div className="lg:col-span-3">
             <div className="bg-white/40 backdrop-blur-sm p-2 rounded-[4.5rem] border border-white/50 shadow-inner">
               <div className="bg-transparent rounded-[4rem] overflow-hidden">
                 {activeTab === 'inventory' && <AdminProductManager />}

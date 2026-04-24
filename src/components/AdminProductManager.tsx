@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useEffect } from 'react';
@@ -8,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
-import { Plus, Trash2, Package, ImageIcon, Loader2, Sparkles, ShieldAlert, AlertCircle } from 'lucide-react';
+import { Plus, Trash2, Package, ImageIcon, Loader2, Sparkles, ShieldAlert, AlertCircle, Copy } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import Image from 'next/image';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -29,7 +28,15 @@ export function AdminProductManager() {
     description: ''
   });
 
-  // Check if Firebase keys are provided in .env
+  const rulesText = `rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}`;
+
   useEffect(() => {
     const required = [
       'NEXT_PUBLIC_FIREBASE_API_KEY',
@@ -45,34 +52,29 @@ export function AdminProductManager() {
 
   const { data: products, loading } = useCollection(productsQuery);
 
+  const copyRules = () => {
+    navigator.clipboard.writeText(rulesText);
+    toast({ title: "Rules Copied!", description: "Paste this into Firestore > Rules tab." });
+  };
+
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     setUploading(true);
-
     const uploadFormData = new FormData();
     uploadFormData.append('file', file);
 
     try {
       const result = await uploadToSupabase(uploadFormData);
-      
       if (result.success && result.url) {
         setFormData(prev => ({ ...prev, image: result.url! }));
-        toast({ 
-          title: "Visual Captured! ✨", 
-          description: "Your treasure photo is safely stored in Supabase." 
-        });
+        toast({ title: "Visual Captured! ✨", description: "Your treasure photo is safely stored in Supabase." });
       } else {
         throw new Error(result.error || "Failed to upload image");
       }
     } catch (error: any) {
-      console.error("Upload Error:", error);
-      toast({ 
-        variant: "destructive", 
-        title: "Upload Failed", 
-        description: error.message || "Could not reach Supabase. Check your .env credentials."
-      });
+      toast({ variant: "destructive", title: "Upload Failed", description: error.message });
     } finally {
       setUploading(false);
     }
@@ -80,81 +82,60 @@ export function AdminProductManager() {
 
   const handleAddProduct = async (e: React.FormEvent) => {
     e.preventDefault();
-    
     if (!formData.title || !formData.price || !formData.image) {
-      toast({
-        variant: "destructive",
-        title: "Incomplete Spell",
-        description: "Please provide a title, price, and image."
-      });
+      toast({ variant: "destructive", title: "Incomplete Spell", description: "Title, price, and image are required." });
       return;
     }
 
     setAdding(true);
-    
     try {
-      const productData = {
+      await addDoc(collection(db, 'products'), {
         title: formData.title.trim(),
         price: parseFloat(formData.price),
         category: formData.category.trim() || 'Bespoke',
         image: formData.image,
         description: formData.description.trim(),
         createdAt: new Date().toISOString()
-      };
-
-      const productsRef = collection(db, 'products');
-      await addDoc(productsRef, productData);
-
+      });
       setFormData({ title: '', price: '', category: '', image: '', description: '' });
-      toast({ 
-        title: "Magic Manifested! ✨", 
-        description: `${productData.title} is now live in your boutique.` 
-      });
+      toast({ title: "Magic Manifested! ✨", description: "Item is now live." });
     } catch (error: any) {
-      console.error("Firestore Write Error:", error);
-      toast({
-        variant: "destructive",
-        title: "Creation Failed",
-        description: error.code === 'permission-denied' 
-          ? "Check your Firestore Rules. You need to allow writes." 
-          : error.message
-      });
+      toast({ variant: "destructive", title: "Creation Failed", description: "Database error. Check your Firestore Rules." });
     } finally {
       setAdding(false);
     }
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to unravel this creation?")) return;
-    
+    if (!confirm("Unravel this creation?")) return;
     try {
-      const docRef = doc(db, 'products', id);
-      await deleteDoc(docRef);
+      await deleteDoc(doc(db, 'products', id));
       toast({ title: "Treasure Unraveled" });
     } catch (error: any) {
-      console.error("Delete Error:", error);
       toast({ variant: "destructive", title: "Unraveling Failed" });
     }
   };
 
   return (
     <div className="space-y-12">
-      {!envCheck.ok && (
-        <Alert variant="destructive" className="rounded-[2rem] p-8">
-          <AlertCircle className="h-6 w-6" />
-          <AlertTitle className="font-bold">Missing Firebase Config</AlertTitle>
-          <AlertDescription className="mt-2">
-            You must add these to your .env file: {envCheck.missing.join(', ')}.
-          </AlertDescription>
-        </Alert>
-      )}
-
       <Alert className="bg-amber-50 border-amber-200 rounded-[2rem] p-8">
         <ShieldAlert className="h-6 w-6 text-amber-600" />
-        <AlertTitle className="text-amber-800 font-bold ml-2">Database Access Note</AlertTitle>
-        <AlertDescription className="text-amber-700/80 ml-2 mt-2">
-          If items don't appear after saving, go to the <a href="https://console.firebase.google.com/project/fabel-57315/firestore/rules" target="_blank" className="underline font-bold">Firebase Rules</a> tab and ensure your rules allow reads and writes.
-          <code className="block mt-2 p-2 bg-amber-100 rounded text-xs">allow read, write: if request.auth != null;</code>
+        <AlertTitle className="text-amber-800 font-bold ml-2">CRITICAL: Fix Database Permissions</AlertTitle>
+        <AlertDescription className="text-amber-700/80 ml-2 mt-4 space-y-4">
+          <p>You likely saw an error because you were in the <b>Realtime Database</b> tab. You MUST use the <b>Firestore Database</b> tab.</p>
+          <ol className="list-decimal ml-5 space-y-2">
+            <li>Go to <a href="https://console.firebase.google.com/project/fabel-57315/firestore/rules" target="_blank" className="underline font-bold">Firestore Rules</a> (not Realtime Database).</li>
+            <li>Delete everything in that box.</li>
+            <li>Copy and Paste the code below:</li>
+          </ol>
+          <div className="relative mt-4">
+            <pre className="p-4 bg-amber-100 rounded-xl text-[10px] font-mono overflow-x-auto border border-amber-200">
+              {rulesText}
+            </pre>
+            <Button size="sm" variant="outline" className="absolute top-2 right-2 bg-white" onClick={copyRules}>
+              <Copy className="w-3 h-3 mr-1" /> Copy
+            </Button>
+          </div>
         </AlertDescription>
       </Alert>
 
@@ -192,7 +173,7 @@ export function AdminProductManager() {
             <div className="space-y-4">
               <Label className="text-[10px] font-bold uppercase tracking-widest text-primary/50 ml-4">Category</Label>
               <Input 
-                placeholder="e.g., Creature, Guardian, Accessory" 
+                placeholder="e.g., Creature, Accessory" 
                 value={formData.category}
                 onChange={(e) => setFormData({...formData, category: e.target.value})}
                 className="h-14 rounded-2xl border-2 border-primary/5 focus:border-accent"
@@ -202,20 +183,14 @@ export function AdminProductManager() {
               <Label className="text-[10px] font-bold uppercase tracking-widest text-primary/50 ml-4">Treasure Visual</Label>
               <div className="flex gap-4">
                 <Input 
-                  placeholder="Image URL..." 
+                  placeholder="Click icon to upload..." 
                   value={formData.image}
                   readOnly
-                  className="h-14 rounded-2xl border-2 border-primary/5 bg-muted/20 flex-1 overflow-hidden text-ellipsis"
+                  className="h-14 rounded-2xl border-2 border-primary/5 bg-muted/20 flex-1"
                 />
                 <div className="relative">
-                  <input 
-                    type="file" 
-                    onChange={handleImageUpload} 
-                    className="absolute inset-0 opacity-0 cursor-pointer z-10" 
-                    accept="image/*"
-                    disabled={uploading}
-                  />
-                  <Button type="button" variant="outline" className="h-14 w-14 rounded-2xl border-2 border-primary/5 relative">
+                  <input type="file" onChange={handleImageUpload} className="absolute inset-0 opacity-0 cursor-pointer z-10" accept="image/*" disabled={uploading} />
+                  <Button type="button" variant="outline" className="h-14 w-14 rounded-2xl border-2 border-primary/5">
                     {uploading ? <Loader2 className="animate-spin" /> : <ImageIcon />}
                   </Button>
                 </div>
@@ -234,7 +209,7 @@ export function AdminProductManager() {
             <Button 
               type="submit" 
               disabled={adding || uploading || !formData.image}
-              className="md:col-span-2 h-20 rounded-[2rem] bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-[0.3em] shadow-2xl shadow-primary/30 transition-all hover:scale-[1.01]"
+              className="md:col-span-2 h-20 rounded-[2rem] bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-[0.3em] transition-all hover:scale-[1.01]"
             >
               {adding ? <Loader2 className="animate-spin mr-2" /> : <Sparkles className="mr-2 h-5 w-5" />}
               {adding ? "Binding Threads..." : "Cast the Creation Spell"}
@@ -244,13 +219,7 @@ export function AdminProductManager() {
       </Card>
 
       <div className="space-y-8">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Package className="text-accent w-6 h-6" />
-            <h3 className="font-headline text-3xl text-primary">Live Inventory</h3>
-          </div>
-        </div>
-
+        <h3 className="font-headline text-3xl text-primary">Live Inventory</h3>
         {loading ? (
           <div className="flex justify-center py-20"><Loader2 className="animate-spin text-primary w-10 h-10" /></div>
         ) : products.length === 0 ? (
@@ -260,20 +229,15 @@ export function AdminProductManager() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {products.map((product: any) => (
-              <Card key={product.id} className="group border-none shadow-lg rounded-[2.5rem] overflow-hidden bg-white hover:shadow-2xl transition-all">
+              <Card key={product.id} className="border-none shadow-lg rounded-[2.5rem] overflow-hidden bg-white">
                 <CardContent className="p-0 flex items-center h-48">
-                  <div className="relative w-40 h-full bg-muted">
-                    <Image 
-                      src={product.image || "https://picsum.photos/seed/tale/400/400"} 
-                      alt={product.title} 
-                      fill 
-                      className="object-cover" 
-                    />
+                  <div className="relative w-40 h-full">
+                    <Image src={product.image} alt={product.title} fill className="object-cover" />
                   </div>
                   <div className="flex-1 p-8 flex flex-col justify-between h-full">
                     <div className="flex justify-between items-start">
                       <h4 className="font-bold text-xl text-primary">{product.title}</h4>
-                      <button onClick={() => handleDelete(product.id)} className="text-muted-foreground hover:text-destructive transition-colors">
+                      <button onClick={() => handleDelete(product.id)} className="text-muted-foreground hover:text-destructive">
                         <Trash2 className="w-4 h-4" />
                       </button>
                     </div>

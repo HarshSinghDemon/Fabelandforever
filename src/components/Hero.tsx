@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Sparkles, ArrowRight, Heart } from 'lucide-react';
+import Link from 'next/link';
 
 export function Hero() {
   const heroData = PlaceHolderImages.find(img => img.id === 'hero-image');
@@ -13,9 +14,9 @@ export function Hero() {
     <section className="relative min-h-[95vh] flex items-center overflow-hidden pt-32 pb-20">
       <div className="container mx-auto px-6 relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
         <div className="animate-fade-in-up">
-          <div className="inline-flex items-center gap-3 bg-accent/30 backdrop-blur-md px-6 py-2.5 rounded-full mb-10 border border-accent/40">
+          <div className="inline-flex items-center gap-3 bg-accent/20 backdrop-blur-md px-6 py-2.5 rounded-full mb-10 border border-accent/30">
             <Sparkles className="text-primary w-4 h-4 sparkle-slow" />
-            <span className="text-primary font-bold text-[10px] uppercase tracking-[0.3em]">Hand-Spun Fairytales</span>
+            <span className="text-primary font-bold text-[10px] uppercase tracking-[0.3em]">Hand-Spun Fairytales 🎀</span>
           </div>
           
           <h1 className="font-fancy text-7xl md:text-8xl lg:text-9xl text-primary leading-[1] mb-10 relative">
@@ -29,15 +30,19 @@ export function Hero() {
           </h1>
           
           <p className="text-2xl text-muted-foreground max-w-md mb-14 leading-relaxed font-medium italic">
-            "We don't just crochet plushies; we breathe life into the companions you've been waiting for."
+            "We don't just crochet plushies; we breathe life into the companions you've been waiting for." 🧸✨
           </p>
           
           <div className="flex flex-col sm:flex-row gap-6">
-            <Button size="lg" className="btn-squish bg-primary hover:bg-primary/90 text-primary-foreground px-14 py-8 text-xl rounded-[2rem] shadow-2xl shadow-primary/30 transition-all hover:scale-105 group">
-              Shop Now <ArrowRight className="ml-3 group-hover:translate-x-2 transition-transform" />
+            <Button asChild size="lg" className="btn-squish bg-primary hover:bg-primary/90 text-primary-foreground px-14 py-8 text-xl rounded-[2rem] shadow-2xl shadow-primary/30 transition-all hover:scale-105 group">
+              <Link href="#shop" className="flex items-center">
+                Shop Now <ArrowRight className="ml-3 group-hover:translate-x-2 transition-transform" />
+              </Link>
             </Button>
             <Button variant="outline" size="lg" className="btn-squish border-primary/20 text-primary hover:bg-primary/5 px-14 py-8 text-xl rounded-[2rem] backdrop-blur-sm group">
-              Custom Tale <Heart className="ml-3 w-5 h-5 group-hover:fill-primary group-hover:scale-110 transition-all" />
+              <Link href="#custom" className="flex items-center">
+                Custom Tale <Heart className="ml-3 w-5 h-5 group-hover:fill-primary group-hover:scale-110 transition-all" />
+              </Link>
             </Button>
           </div>
         </div>
@@ -75,7 +80,7 @@ export function Hero() {
       
       {/* Dynamic Background elements */}
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[120px] -translate-y-1/3 translate-x-1/3"></div>
-      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-accent/10 rounded-full blur-[100px] translate-y-1/3 -translate-x-1/3"></div>
+      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-accent/15 rounded-full blur-[100px] translate-y-1/3 -translate-x-1/3"></div>
     </section>
   );
 }

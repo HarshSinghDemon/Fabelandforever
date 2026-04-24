@@ -9,11 +9,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
-import { Plus, Trash2, Package, Tag, Image as ImageIcon, Loader2, Sparkles } from 'lucide-react';
+import { Plus, Trash2, Package, Tag, Image as ImageIcon, Loader2, Sparkles, AlertCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import Image from 'next/image';
 import { errorEmitter } from '@/firebase/error-emitter';
 import { FirestorePermissionError } from '@/firebase/errors';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 export function AdminProductManager() {
   const db = useFirestore();
@@ -21,6 +22,7 @@ export function AdminProductManager() {
   const { toast } = useToast();
   const [adding, setAdding] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
   
   const [formData, setFormData] = useState({
     title: '',
@@ -40,19 +42,40 @@ export function AdminProductManager() {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    // Reset error state
+    setUploadError(null);
     setUploading(true);
+
     try {
-      const storageRef = ref(storage, `products/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.]/g, '_')}`);
+      if (!storage) throw new Error("Firebase Storage is not initialized.");
+
+      // Create a unique path for the image
+      const fileName = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.]/g, '_')}`;
+      const storagePath = `products/${fileName}`;
+      const storageRef = ref(storage, storagePath);
+      
+      // Perform the upload
       const snapshot = await uploadBytes(storageRef, file);
+      
+      // Get the public URL
       const url = await getDownloadURL(snapshot.ref);
       
-      setFormData({ ...formData, image: url });
-      toast({ title: "Image Loomed! ✨", description: "Your product visual is ready." });
+      setFormData(prev => ({ ...prev, image: url }));
+      toast({ 
+        title: "Image Loomed! ✨", 
+        description: "Your product visual is ready and secured in the vault." 
+      });
     } catch (error: any) {
+      console.error("Storage Error:", error);
+      const message = error.code === 'storage/unauthorized' 
+        ? "Access Denied: Please check your Firebase Storage rules."
+        : error.message || "An unknown error occurred during upload.";
+      
+      setUploadError(message);
       toast({ 
         variant: "destructive", 
-        title: "Upload Failed", 
-        description: "Please ensure Firebase Storage is enabled in your Firebase Console." 
+        title: "Looming Failed", 
+        description: message 
       });
     } finally {
       setUploading(false);
@@ -61,7 +84,14 @@ export function AdminProductManager() {
 
   const handleAddProduct = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.title || !formData.price) return;
+    if (!formData.title || !formData.price || !formData.image) {
+      toast({
+        variant: "destructive",
+        title: "Missing Threads",
+        description: "Please provide a title, price, and image to finish the piece."
+      });
+      return;
+    }
 
     setAdding(true);
     const productData = {
@@ -118,6 +148,16 @@ export function AdminProductManager() {
             <h3 className="font-headline text-3xl text-primary">Add New Treasure</h3>
           </div>
 
+          {uploadError && (
+            <Alert variant="destructive" className="mb-8 rounded-2xl">
+              <AlertCircle className="h-4 w-4" />
+              <AlertTitle>Storage Problem</AlertTitle>
+              <AlertDescription>
+                {uploadError} Make sure you have enabled "Storage" in the Firebase Console and updated your rules.
+              </AlertDescription>
+            </Alert>
+          )}
+
           <form onSubmit={handleAddProduct} className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="space-y-4">
               <Label className="text-[10px] font-bold uppercase tracking-widest text-primary/50 ml-4">Product Name</Label>
@@ -158,6 +198,7 @@ export function AdminProductManager() {
                   value={formData.image}
                   onChange={(e) => setFormData({...formData, image: e.target.value})}
                   className="h-14 rounded-2xl border-2 border-primary/5 focus:border-accent flex-1"
+                  required
                 />
                 <div className="relative">
                   <input 
@@ -165,12 +206,18 @@ export function AdminProductManager() {
                     onChange={handleImageUpload} 
                     className="absolute inset-0 opacity-0 cursor-pointer z-10" 
                     accept="image/*"
+                    disabled={uploading}
                   />
-                  <Button type="button" variant="outline" className="h-14 w-14 rounded-2xl border-2 border-primary/5">
+                  <Button type="button" variant="outline" className="h-14 w-14 rounded-2xl border-2 border-primary/5 relative">
                     {uploading ? <Loader2 className="animate-spin" /> : <ImageIcon />}
                   </Button>
                 </div>
               </div>
+              {formData.image && (
+                <div className="mt-2 text-[10px] text-emerald-600 font-bold uppercase tracking-wider flex items-center gap-2">
+                  <Sparkles className="w-3 h-3" /> Image Captured Successfully
+                </div>
+              )}
             </div>
             <div className="md:col-span-2 space-y-4">
               <Label className="text-[10px] font-bold uppercase tracking-widest text-primary/50 ml-4">Story / Description</Label>
@@ -184,9 +231,13 @@ export function AdminProductManager() {
             <Button 
               type="submit" 
               disabled={adding || uploading}
-              className="md:col-span-2 h-16 rounded-2xl bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-widest shadow-xl shadow-primary/20"
+              className="md:col-span-2 h-16 rounded-2xl bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-widest shadow-xl shadow-primary/20 transition-all hover:scale-[1.01]"
             >
-              {adding ? "Weaving into database..." : "Cast Product Spell"}
+              {adding ? (
+                <div className="flex items-center gap-3">
+                  <Loader2 className="w-5 h-5 animate-spin" /> Weaving into database...
+                </div>
+              ) : "Cast Product Spell"}
             </Button>
           </form>
         </CardContent>
@@ -212,7 +263,7 @@ export function AdminProductManager() {
             {products.map((product: any) => (
               <Card key={product.id} className="group border-none shadow-lg rounded-[2.5rem] overflow-hidden bg-white hover:shadow-2xl transition-all duration-500">
                 <CardContent className="p-0 flex items-center h-48">
-                  <div className="relative w-40 h-full">
+                  <div className="relative w-40 h-full bg-muted">
                     <Image 
                       src={product.image || "https://picsum.photos/seed/tale/400/400"} 
                       alt={product.title} 

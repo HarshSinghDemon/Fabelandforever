@@ -6,29 +6,24 @@ import { getStorage, FirebaseStorage } from 'firebase/storage';
 import { firebaseConfig } from './config';
 import React from 'react';
 
-/**
- * Initializes Firebase safely. 
- * During build time (SSR), it handles missing environment variables 
- * to prevent the build from failing.
- */
 export function initializeFirebase() {
-  // If we are on the server and the API key is missing (typical during Vercel build),
-  // return dummy objects to prevent the Firebase SDK from throwing an error.
-  if (typeof window === 'undefined' && !firebaseConfig.apiKey) {
-    return {
-      app: null as any as FirebaseApp,
-      db: null as any as Firestore,
-      auth: null as any as Auth,
-      storage: null as any as FirebaseStorage
-    };
+  // Check if we have a valid API key. During Vercel build, these might be missing.
+  // We return nulls to prevent the build from crashing.
+  if (!firebaseConfig.apiKey || firebaseConfig.apiKey === 'undefined') {
+    return { app: null, db: null, auth: null, storage: null };
   }
 
-  const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  const auth = getAuth(app);
-  const storage = getStorage(app);
+  try {
+    const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+    const storage = getStorage(app);
 
-  return { app, db, auth, storage };
+    return { app, db, auth, storage };
+  } catch (error) {
+    console.error("Firebase initialization failed:", error);
+    return { app: null, db: null, auth: null, storage: null };
+  }
 }
 
 /**

@@ -8,10 +8,10 @@ import { Auth } from 'firebase/auth';
 import { FirebaseStorage } from 'firebase/storage';
 
 interface FirebaseContextType {
-  app: FirebaseApp;
-  db: Firestore;
-  auth: Auth;
-  storage: FirebaseStorage;
+  app: FirebaseApp | null;
+  db: Firestore | null;
+  auth: Auth | null;
+  storage: FirebaseStorage | null;
 }
 
 const FirebaseContext = createContext<FirebaseContextType | null>(null);
@@ -24,10 +24,10 @@ export function FirebaseProvider({
   storage
 }: { 
   children: React.ReactNode;
-  app: FirebaseApp;
-  db: Firestore;
-  auth: Auth;
-  storage: FirebaseStorage;
+  app: FirebaseApp | null;
+  db: Firestore | null;
+  auth: Auth | null;
+  storage: FirebaseStorage | null;
 }) {
   return (
     <FirebaseContext.Provider value={{ app, db, auth, storage }}>
@@ -42,7 +42,26 @@ export const useFirebase = () => {
   return context;
 };
 
-export const useFirestore = () => useFirebase().db;
-export const useAuth = () => useFirebase().auth;
-export const useFirebaseApp = () => useFirebase().app;
-export const useStorage = () => useFirebase().storage;
+export const useFirestore = () => {
+  const db = useFirebase().db;
+  if (!db) throw new Error("Firestore not initialized. Check your environment variables.");
+  return db;
+};
+
+export const useAuth = () => {
+  const auth = useFirebase().auth;
+  if (!auth) throw new Error("Auth not initialized. Check your environment variables.");
+  return auth;
+};
+
+export const useFirebaseApp = () => {
+  const app = useFirebase().app;
+  if (!app) throw new Error("Firebase App not initialized. Check your environment variables.");
+  return app;
+};
+
+export const useStorage = () => {
+  const storage = useFirebase().storage;
+  if (!storage) throw new Error("Storage not initialized. Check your environment variables.");
+  return storage;
+};

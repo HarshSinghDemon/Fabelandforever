@@ -6,8 +6,7 @@ import {
   Query, 
   onSnapshot, 
   QuerySnapshot, 
-  DocumentData,
-  CollectionReference
+  DocumentData
 } from 'firebase/firestore';
 import { errorEmitter } from '../error-emitter';
 import { FirestorePermissionError } from '../errors';
@@ -17,7 +16,10 @@ export function useCollection<T = DocumentData>(query: Query<T> | null) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!query) return;
+    if (!query) {
+      setLoading(false);
+      return;
+    }
 
     const unsubscribe = onSnapshot(
       query,
@@ -27,10 +29,8 @@ export function useCollection<T = DocumentData>(query: Query<T> | null) {
       },
       (error: any) => {
         if (error.code === 'permission-denied') {
-          // Attempt to extract a clean path from the query object
           let path = 'unknown collection';
           try {
-            // Safely try to find path info in various SDK versions/internal structures
             path = (query as any)._query?.path?.toString() || (query as any).path || 'collection';
           } catch (e) {}
           

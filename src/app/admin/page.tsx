@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useEffect, useMemo } from 'react';
@@ -72,7 +71,8 @@ export default function AdminDashboard() {
 
   if (!user) return null;
 
-  const firebaseProjectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || 'fabel-57315';
+  // Direct link to your fabel-57315 project
+  const firebaseConsoleUrl = "https://console.firebase.google.com/project/fabel-57315/overview";
 
   return (
     <div className="min-h-screen bg-paper pb-40 selection:bg-accent/20">
@@ -96,7 +96,7 @@ export default function AdminDashboard() {
               asChild
               className="rounded-full px-8 h-14 border-accent/20 text-accent hover:bg-accent hover:text-white transition-all shadow-lg"
             >
-              <a href={`https://console.firebase.google.com/project/${firebaseProjectId}/overview`} target="_blank" rel="noopener noreferrer">
+              <a href={firebaseConsoleUrl} target="_blank" rel="noopener noreferrer">
                 <ExternalLink className="w-4 h-4 mr-2" /> Open Firebase Console
               </a>
             </Button>

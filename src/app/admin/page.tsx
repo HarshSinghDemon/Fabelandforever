@@ -1,19 +1,29 @@
 
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useUser, useAuth } from '@/firebase';
 import { AdminProductManager } from '@/components/AdminProductManager';
+import { AdminOrderManager } from '@/components/AdminOrderManager';
 import { Navigation } from '@/components/Navigation';
 import { Button } from '@/components/ui/button';
-import { LogOut, LayoutDashboard, Package, History, Settings, Loader2, Sparkles } from 'lucide-react';
+import { 
+  LogOut, 
+  Package, 
+  History, 
+  Settings, 
+  Loader2, 
+  Sparkles,
+  ExternalLink
+} from 'lucide-react';
 import { signOut } from 'firebase/auth';
 
 export default function AdminDashboard() {
   const { user, loading } = useUser();
   const auth = useAuth();
   const router = useRouter();
+  const [activeTab, setActiveTab] = useState<'inventory' | 'orders' | 'settings'>('inventory');
 
   React.useEffect(() => {
     if (!loading && !user) {
@@ -50,49 +60,63 @@ export default function AdminDashboard() {
               "Welcome back, Master Weaver. The threads of fate await your command."
             </p>
           </div>
-          <Button 
-            variant="outline" 
-            onClick={() => signOut(auth)}
-            className="rounded-full px-10 h-14 border-primary/20 text-primary hover:bg-destructive hover:text-white hover:border-destructive transition-all shadow-lg active:scale-95"
-          >
-            <LogOut className="w-4 h-4 mr-2" /> Sign Out
-          </Button>
+          <div className="flex gap-4">
+            <Button 
+              variant="outline" 
+              asChild
+              className="rounded-full px-8 h-14 border-accent/20 text-accent hover:bg-accent hover:text-white transition-all shadow-lg"
+            >
+              <a href="https://console.firebase.google.com" target="_blank" rel="noopener noreferrer">
+                <ExternalLink className="w-4 h-4 mr-2" /> Firebase Console
+              </a>
+            </Button>
+            <Button 
+              variant="outline" 
+              onClick={() => signOut(auth)}
+              className="rounded-full px-8 h-14 border-primary/20 text-primary hover:bg-destructive hover:text-white hover:border-destructive transition-all shadow-lg active:scale-95"
+            >
+              <LogOut className="w-4 h-4 mr-2" /> Sign Out
+            </Button>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-16">
           {/* Sidebar Menu - Magical Style */}
-          <div className="lg:col-span-1 space-y-6 animate-fade-in-up [animation-delay:200ms]">
+          <div className="lg:col-span-1 space-y-4 animate-fade-in-up [animation-delay:200ms]">
             {[
-              { icon: LayoutDashboard, label: 'Dashboard', active: true },
-              { icon: Package, label: 'Inventory', active: false },
-              { icon: History, label: 'Order Scrolls', active: false },
-              { icon: Settings, label: 'Studio Settings', active: false },
-            ].map((item, i) => (
+              { id: 'inventory', icon: Package, label: 'Inventory' },
+              { id: 'orders', icon: History, label: 'Order Scrolls' },
+              { id: 'settings', icon: Settings, label: 'Studio Settings' },
+            ].map((item) => (
               <button 
-                key={i}
+                key={item.id}
+                onClick={() => setActiveTab(item.id as any)}
                 className={`w-full flex items-center justify-between px-10 py-6 rounded-[2.5rem] font-bold text-xs uppercase tracking-[0.2em] transition-all group ${
-                  item.active 
+                  activeTab === item.id 
                     ? 'bg-primary text-white shadow-2xl shadow-primary/30 scale-[1.02]' 
                     : 'bg-white/60 text-primary/50 hover:bg-white hover:text-primary hover:shadow-xl hover:-translate-y-1'
                 }`}
               >
                 <div className="flex items-center gap-5">
-                  <item.icon className={`w-5 h-5 ${item.active ? 'text-white' : 'text-accent group-hover:text-primary'}`} />
+                  <item.icon className={`w-5 h-5 ${activeTab === item.id ? 'text-white' : 'text-accent group-hover:text-primary'}`} />
                   {item.label}
                 </div>
-                {item.active && <Sparkles className="w-4 h-4 animate-pulse" />}
+                {activeTab === item.id && <Sparkles className="w-4 h-4 animate-pulse" />}
               </button>
             ))}
             
             <div className="p-10 bg-accent/5 rounded-[3rem] border border-dashed border-accent/20 mt-12">
-               <h4 className="font-headline text-xl text-primary mb-4 italic">Studio Health</h4>
+               <h4 className="font-headline text-xl text-primary mb-4 italic">Backend Blueprint</h4>
+               <p className="text-[10px] text-muted-foreground leading-relaxed uppercase tracking-widest font-bold mb-4">
+                 Config: docs/backend.json
+               </p>
                <div className="space-y-4">
                   <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest opacity-60">
-                    <span>Loom Status</span>
-                    <span className="text-primary">Perfect</span>
+                    <span>Database Status</span>
+                    <span className="text-primary">Connected</span>
                   </div>
                   <div className="h-1 w-full bg-white rounded-full overflow-hidden">
-                    <div className="h-full w-[95%] bg-accent rounded-full animate-weave"></div>
+                    <div className="h-full w-full bg-accent rounded-full"></div>
                   </div>
                </div>
             </div>
@@ -100,7 +124,18 @@ export default function AdminDashboard() {
 
           {/* Main Content Area */}
           <div className="lg:col-span-3 animate-fade-in-up [animation-delay:400ms]">
-            <AdminProductManager />
+            {activeTab === 'inventory' && <AdminProductManager />}
+            {activeTab === 'orders' && <AdminOrderManager />}
+            {activeTab === 'settings' && (
+              <div className="bg-white p-20 rounded-[4rem] shadow-xl text-center stitching-border">
+                <Settings className="w-20 h-20 text-accent mx-auto mb-8 animate-[spin_10s_linear_infinite]" />
+                <h3 className="font-headline text-4xl text-primary mb-6">Studio Configuration</h3>
+                <p className="text-muted-foreground italic text-lg max-w-md mx-auto leading-relaxed">
+                  To manage advanced settings like Security Rules or Authentication providers, please use the 
+                  <a href="https://console.firebase.google.com" target="_blank" className="text-accent underline ml-1 hover:text-primary transition-colors">Firebase Console</a>.
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>

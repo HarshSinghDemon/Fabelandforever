@@ -1,8 +1,7 @@
-
 "use client";
 
 import React from 'react';
-import { useFirestore, useCollection } from '@/firebase';
+import { useFirestore, useCollection, useMemoFirebase } from '@/firebase';
 import { collection, query, orderBy } from 'firebase/firestore';
 import { Card, CardContent } from '@/components/ui/card';
 import { History, Loader2, Package, User, CreditCard, Clock } from 'lucide-react';
@@ -11,7 +10,7 @@ import { format } from 'date-fns';
 export function AdminOrderManager() {
   const db = useFirestore();
 
-  const ordersQuery = React.useMemo(() => {
+  const ordersQuery = useMemoFirebase(() => {
     return query(collection(db, 'orders'), orderBy('createdAt', 'desc'));
   }, [db]);
 

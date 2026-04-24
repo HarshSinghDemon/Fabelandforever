@@ -1,8 +1,7 @@
-
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { useFirestore, useDoc } from '@/firebase';
+import { useFirestore, useDoc, useMemoFirebase } from '@/firebase';
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -19,7 +18,7 @@ export function AdminSettingsManager() {
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
 
-  const heroSettingRef = doc(db, 'settings', 'hero');
+  const heroSettingRef = useMemoFirebase(() => doc(db, 'settings', 'hero'), [db]);
   const { data: heroSetting, loading: loadingSetting } = useDoc(heroSettingRef);
 
   const [heroImageUrl, setHeroImageUrl] = useState('');

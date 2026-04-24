@@ -1,4 +1,3 @@
-
 "use client";
 
 import React from 'react';
@@ -8,12 +7,12 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Sparkles, ArrowRight, Heart, Star, Scissors } from 'lucide-react';
 import Link from 'next/link';
 import { Logo } from './Logo';
-import { useFirestore, useDoc } from '@/firebase';
+import { useFirestore, useDoc, useMemoFirebase } from '@/firebase';
 import { doc } from 'firebase/firestore';
 
 export function Hero() {
   const db = useFirestore();
-  const heroSettingRef = doc(db, 'settings', 'hero');
+  const heroSettingRef = useMemoFirebase(() => doc(db, 'settings', 'hero'), [db]);
   const { data: heroSetting } = useDoc(heroSettingRef);
   
   const defaultHeroData = PlaceHolderImages.find(img => img.id === 'hero-image');

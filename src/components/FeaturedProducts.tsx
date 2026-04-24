@@ -6,7 +6,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { ShoppingCart, Sparkles, Loader2, Star, ShoppingBag } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useToast } from '@/hooks/use-toast';
-import { useCollection, useFirestore } from '@/firebase';
+import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
 import { collection } from 'firebase/firestore';
 
 export function FeaturedProducts() {
@@ -14,7 +14,7 @@ export function FeaturedProducts() {
   const { toast } = useToast();
   const db = useFirestore();
 
-  const productsQuery = React.useMemo(() => {
+  const productsQuery = useMemoFirebase(() => {
     return collection(db, 'products');
   }, [db]);
 

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { useFirestore, useCollection } from '@/firebase';
+import { useFirestore, useCollection, useMemoFirebase } from '@/firebase';
 import { collection, addDoc, deleteDoc, doc } from 'firebase/firestore';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -26,7 +26,7 @@ export function AdminProductManager() {
     description: ''
   });
 
-  const productsCollection = collection(db, 'products');
+  const productsCollection = useMemoFirebase(() => collection(db, 'products'), [db]);
   const { data: products, loading } = useCollection(productsCollection);
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {

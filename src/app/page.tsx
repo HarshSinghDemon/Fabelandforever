@@ -133,14 +133,22 @@ export default function Home() {
         ref={(el) => { if (el) scrollRefs.current[3] = el }}
       >
         <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-5xl mx-auto bg-white rounded-[3rem] sm:rounded-[5rem] p-8 sm:p-24 shadow-[0_50px_120px_-30px_rgba(45,115,107,0.2)] border-2 border-accent/5 relative overflow-hidden group">
+          <div className="max-w-6xl mx-auto bg-white rounded-[3rem] sm:rounded-[5rem] p-8 sm:p-24 shadow-[0_50px_120px_-30px_rgba(45,115,107,0.2)] border-2 border-accent/5 relative overflow-hidden group">
              <div className="absolute -top-24 -right-24 w-64 h-64 sm:w-96 sm:h-96 bg-accent/5 rounded-full blur-3xl transition-transform duration-1000 group-hover:scale-150"></div>
              
              <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-16 sm:gap-24 items-center">
                <div className="animate-fade-in-up">
-                 <span className="text-accent font-bold tracking-[0.5em] uppercase text-[10px] mb-6 sm:mb-8 block text-center lg:text-left">The Crochet Inbox</span>
-                 <h2 className="font-headline text-4xl sm:text-6xl md:text-7xl text-primary mb-6 sm:mb-10 leading-[1.1] text-center lg:text-left">Stitch <br className="hidden sm:block" /><span className="italic text-accent">With Us</span></h2>
-                 <p className="text-muted-foreground font-medium italic mb-8 sm:mb-12 leading-relaxed text-lg sm:text-xl max-w-sm mx-auto lg:mx-0 text-center lg:text-left">
+                 <span className="text-accent font-bold tracking-[0.5em] uppercase text-[10px] mb-6 sm:mb-10 block text-center lg:text-left">The Crochet Inbox</span>
+                 <h2 className="font-headline text-5xl sm:text-7xl md:text-8xl lg:text-9xl text-primary mb-6 sm:mb-10 leading-[0.9] tracking-tight text-center lg:text-left">
+                   Stitch <br className="hidden sm:block" />
+                   <span className="italic text-accent relative inline-block">
+                     With Us
+                     <svg className="absolute -bottom-2 left-0 w-full" viewBox="0 0 100 10" preserveAspectRatio="none">
+                       <path d="M0 5 Q 25 10 50 5 T 100 5" fill="none" stroke="currentColor" strokeWidth="0.5" className="text-accent/30" />
+                     </svg>
+                   </span>
+                 </h2>
+                 <p className="text-muted-foreground font-medium italic mb-8 sm:mb-12 leading-relaxed text-lg sm:text-2xl max-w-sm mx-auto lg:mx-0 text-center lg:text-left">
                    "Questions about a pattern, or just want to say hi? Drop us a line and let's start a new crochet story together."
                  </p>
                </div>

@@ -1,83 +1,123 @@
-import React from 'react';
+"use client";
+
+import React, { useEffect, useRef } from 'react';
 import { Navigation } from '@/components/Navigation';
 import { Hero } from '@/components/Hero';
 import { FeaturedProducts } from '@/components/FeaturedProducts';
 import { CustomOrder } from '@/components/CustomOrder';
 import { Footer } from '@/components/Footer';
+import { Heart, Sparkles, Star } from 'lucide-react';
 
 export default function Home() {
+  const scrollRefs = useRef<(HTMLElement | null)[]>([]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('active');
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    scrollRefs.current.forEach((ref) => {
+      if (ref) observer.observe(ref);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <main className="min-h-screen bg-dots">
+    <main className="min-h-screen bg-dots overflow-x-hidden">
       <Navigation />
       <Hero />
       
-      {/* Whimsical Divider */}
-      <div className="h-24 bg-gradient-to-b from-transparent to-white/50"></div>
+      {/* Whimsical Transition */}
+      <div className="h-32 bg-gradient-to-b from-transparent to-white/50 flex items-center justify-center">
+        <div className="flex gap-4">
+          <Sparkles className="text-accent w-6 h-6 animate-pulse" />
+          <Heart className="text-primary w-4 h-4 animate-bounce delay-100" />
+          <Sparkles className="text-accent w-6 h-6 animate-pulse delay-200" />
+        </div>
+      </div>
 
-      <FeaturedProducts />
+      <section ref={(el) => { if (el) scrollRefs.current[0] = el }} className="reveal-on-scroll">
+        <FeaturedProducts />
+      </section>
       
       {/* Story / About Section */}
-      <section id="story" className="py-24 bg-secondary/30 relative overflow-hidden">
+      <section 
+        id="story" 
+        ref={(el) => { if (el) scrollRefs.current[1] = el }}
+        className="py-32 bg-secondary/20 relative overflow-hidden reveal-on-scroll"
+      >
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
-            <span className="text-primary font-bold tracking-[0.2em] uppercase text-sm mb-4 block">A Tale of Threads</span>
-            <h2 className="font-fancy text-4xl md:text-5xl text-primary mb-8 leading-tight">
-              Crafting stories, one <br />
-              <span className="text-accent italic">magical loop</span> at a time.
+            <div className="flex justify-center mb-6">
+              <div className="relative">
+                <div className="absolute inset-0 bg-accent/30 rounded-full blur-xl animate-pulse"></div>
+                <Star className="text-primary w-10 h-10 relative z-10 fill-primary/10" />
+              </div>
+            </div>
+            <span className="text-primary font-bold tracking-[0.3em] uppercase text-[10px] mb-4 block">Our Enchanted Path</span>
+            <h2 className="font-fancy text-5xl md:text-6xl text-primary mb-12 leading-tight">
+              Where every loop is a <br />
+              <span className="text-accent italic relative">
+                love letter
+                <svg className="absolute -bottom-2 left-0 w-full" viewBox="0 0 100 10" preserveAspectRatio="none">
+                  <path d="M0 5 Q 25 0 50 5 T 100 5" fill="none" stroke="currentColor" strokeWidth="2" className="text-accent/60" />
+                </svg>
+              </span>
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mt-16 text-left">
-              <div className="bg-white/60 backdrop-blur-sm p-8 rounded-[2rem] stitching-border magic-shadow">
-                <h4 className="font-bold text-xl text-primary mb-4 flex items-center gap-2">
-                  <span>🌿</span> Fair Source
-                </h4>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  We use the softest, ethically harvested fibers that feel like a warm hug from nature herself.
-                </p>
-              </div>
-              <div className="bg-white/60 backdrop-blur-sm p-8 rounded-[2rem] stitching-border magic-shadow">
-                <h4 className="font-bold text-xl text-primary mb-4 flex items-center gap-2">
-                  <span>📖</span> Storybound
-                </h4>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  Each creation is unique, carrying its own tiny history and character to your home.
-                </p>
-              </div>
-              <div className="bg-white/60 backdrop-blur-sm p-8 rounded-[2rem] stitching-border magic-shadow">
-                <h4 className="font-bold text-xl text-primary mb-4 flex items-center gap-2">
-                  <span>✨</span> Artisan Magic
-                </h4>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  Slow-made by hand, ensuring every stitch is filled with love, patience, and magic.
-                </p>
-              </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mt-20 text-left">
+              {[
+                { icon: "🌿", title: "Softest Hugs", desc: "Premium ethical yarns that feel like clouds against your skin." },
+                { icon: "📖", title: "Living Tales", desc: "Each amigurumi arrives with its own tiny, hand-written birth certificate." },
+                { icon: "✨", title: "Heart-Stitched", desc: "Slow-made magic that values patience and precision above all else." }
+              ].map((item, i) => (
+                <div key={i} className="group bg-white/70 backdrop-blur-md p-10 rounded-[2.5rem] stitching-border hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 hover:-translate-y-2">
+                  <div className="text-4xl mb-6 transform group-hover:scale-125 transition-transform duration-500">{item.icon}</div>
+                  <h4 className="font-bold text-xl text-primary mb-4">{item.title}</h4>
+                  <p className="text-sm text-muted-foreground leading-relaxed font-medium">
+                    {item.desc}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
-        {/* Decorative elements */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent/5 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl"></div>
+        
+        {/* Decorative Floating Blobs */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl floating"></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent/10 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl floating [animation-delay:2s]"></div>
       </section>
 
-      <CustomOrder />
+      <section ref={(el) => { if (el) scrollRefs.current[2] = el }} className="reveal-on-scroll">
+        <CustomOrder />
+      </section>
       
-      {/* Newsletter / CTA Section */}
-      <section className="py-24 relative overflow-hidden">
+      {/* Newsletter Section */}
+      <section className="py-32 relative overflow-hidden">
         <div className="container mx-auto px-6">
-          <div className="max-w-4xl mx-auto bg-primary rounded-[3rem] p-12 text-center text-primary-foreground shadow-2xl relative overflow-hidden group">
-             <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/pinstripe.png')] opacity-10"></div>
+          <div className="max-w-5xl mx-auto bg-primary rounded-[4rem] p-16 text-center text-primary-foreground shadow-[0_30px_60px_-15px_rgba(45,115,107,0.3)] relative overflow-hidden group">
+             <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.1),transparent)] opacity-40"></div>
              <div className="relative z-10">
-               <span className="text-accent font-bold tracking-[0.3em] uppercase text-xs mb-4 block">Join the Studio Circle</span>
-               <h2 className="font-fancy text-4xl md:text-5xl mb-6">Never miss a stitch!</h2>
-               <p className="mb-10 text-primary-foreground/80 max-w-lg mx-auto font-medium">
-                 Be the first to hear about new collection drops and magical crochet patterns from our dreamy valley.
+               <span className="text-accent font-bold tracking-[0.4em] uppercase text-[10px] mb-6 block">The Inner Circle</span>
+               <h2 className="font-fancy text-5xl md:text-7xl mb-8">Join the Whimsy</h2>
+               <p className="mb-12 text-primary-foreground/90 max-w-xl mx-auto text-lg font-medium italic">
+                 "Sign your name in our Book of Dreams and receive a sprinkle of magic in your inbox every full moon."
                </p>
-               <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+               <div className="flex flex-col sm:flex-row gap-5 max-w-lg mx-auto">
                  <input 
                    type="email" 
                    placeholder="Your magical email address" 
-                   className="flex-1 bg-white/20 border border-white/30 rounded-full px-8 py-4 text-white placeholder:text-white/60 focus:outline-none focus:ring-2 focus:ring-accent/50 backdrop-blur-sm"
+                   className="flex-1 bg-white/10 border-2 border-white/20 rounded-2xl px-8 py-5 text-white placeholder:text-white/60 focus:outline-none focus:ring-4 focus:ring-accent/40 backdrop-blur-md transition-all"
                  />
-                 <button className="bg-accent text-accent-foreground px-10 py-4 rounded-full hover:bg-accent/90 transition-all font-bold whitespace-nowrap shadow-lg">
+                 <button className="btn-squish bg-accent text-accent-foreground px-12 py-5 rounded-2xl hover:bg-white hover:text-primary transition-all font-bold whitespace-nowrap shadow-xl">
                    Subscribe ✨
                  </button>
                </div>

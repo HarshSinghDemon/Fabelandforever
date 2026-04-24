@@ -16,8 +16,8 @@
     --secondary-foreground: 185 50% 20%;
     --muted: 180 20% 94%;
     --muted-foreground: 185 20% 45%;
-    --accent: 265 70% 85%; /* Soft Light Lavender */
-    --accent-foreground: 265 40% 15%;
+    --accent: 265 70% 92%; /* Very Light Lavender */
+    --accent-foreground: 265 40% 30%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --border: 175 20% 90%;
@@ -44,37 +44,71 @@
   font-family: 'Quicksand', sans-serif;
 }
 
+/* Elegant Patterns */
 .bg-dots {
-  background-image: radial-gradient(hsla(175, 45%, 45%, 0.1) 1px, transparent 1px);
-  background-size: 24px 24px;
+  background-image: radial-gradient(hsla(175, 45%, 45%, 0.05) 1.5px, transparent 1.5px);
+  background-size: 32px 32px;
 }
 
 .stitching-border {
-  border: 3px dashed hsla(265, 70%, 85%, 0.6);
+  border: 3px dashed hsla(265, 70%, 85%, 0.8);
 }
 
 .watercolor-lavender {
   background: radial-gradient(circle at center, hsla(265, 70%, 85%, 0.4) 0%, transparent 70%);
 }
 
-.floating {
-  animation: floating 3s ease-in-out infinite;
-}
-
+/* Animations */
 @keyframes floating {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(2deg); }
 }
 
-.sparkle-slow {
-  animation: sparkle 4s ease-in-out infinite;
+.floating {
+  animation: floating 4s ease-in-out infinite;
 }
 
 @keyframes sparkle {
-  0%, 100% { opacity: 0.3; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.2); }
+  0%, 100% { opacity: 0.4; transform: scale(1) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1.3) rotate(15deg); }
+}
+
+.sparkle-slow {
+  animation: sparkle 3s ease-in-out infinite;
+}
+
+@keyframes magic-glow {
+  0%, 100% { box-shadow: 0 0 10px hsla(265, 70%, 85%, 0.3); }
+  50% { box-shadow: 0 0 30px hsla(265, 70%, 85%, 0.6); }
+}
+
+.glow-hover:hover {
+  animation: magic-glow 2s ease-in-out infinite;
 }
 
 .btn-squish:active {
-  transform: scale(0.95);
+  transform: scale(0.92);
+}
+
+/* Reveal Animations */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.reveal-on-scroll.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-background;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-accent rounded-full;
 }

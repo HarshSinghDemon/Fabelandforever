@@ -2,8 +2,9 @@
 "use client";
 
 import React, { useState } from 'react';
-import { useFirestore, useCollection } from '@/firebase';
+import { useFirestore, useCollection, useStorage } from '@/firebase';
 import { collection, addDoc, deleteDoc, doc, query, orderBy } from 'firebase/firestore';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -11,12 +12,12 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Plus, Trash2, Package, Tag, Image as ImageIcon, Loader2, Sparkles } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import Image from 'next/image';
-import { uploadToSupabase } from '@/app/actions/supabase-upload';
 import { errorEmitter } from '@/firebase/error-emitter';
 import { FirestorePermissionError } from '@/firebase/errors';
 
 export function AdminProductManager() {
   const db = useFirestore();
+  const storage = useStorage();
   const { toast } = useToast();
   const [adding, setAdding] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -40,17 +41,22 @@ export function AdminProductManager() {
     if (!file) return;
 
     setUploading(true);
-    const uploadFormData = new FormData();
-    uploadFormData.append('file', file);
-
-    const result = await uploadToSupabase(uploadFormData);
-    if (result.success) {
-      setFormData({ ...formData, image: result.url || '' });
+    try {
+      const storageRef = ref(storage, `products/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.]/g, '_')}`);
+      const snapshot = await uploadBytes(storageRef, file);
+      const url = await getDownloadURL(snapshot.ref);
+      
+      setFormData({ ...formData, image: url });
       toast({ title: "Image Loomed! ✨", description: "Your product visual is ready." });
-    } else {
-      toast({ variant: "destructive", title: "Upload Failed", description: result.error });
+    } catch (error: any) {
+      toast({ 
+        variant: "destructive", 
+        title: "Upload Failed", 
+        description: "Please ensure Firebase Storage is enabled in your Firebase Console." 
+      });
+    } finally {
+      setUploading(false);
     }
-    setUploading(false);
   };
 
   const handleAddProduct = (e: React.FormEvent) => {

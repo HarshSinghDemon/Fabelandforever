@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { createContext, useContext } from 'react';
@@ -44,24 +43,19 @@ export const useFirebase = () => {
 
 export const useFirestore = () => {
   const db = useFirebase().db;
-  if (!db) throw new Error("Firestore not initialized. Check your environment variables.");
-  return db;
+  if (!db) {
+    console.warn("Firestore accessed before initialization. Check environment variables.");
+  }
+  return db!;
 };
 
 export const useAuth = () => {
   const auth = useFirebase().auth;
-  if (!auth) throw new Error("Auth not initialized. Check your environment variables.");
-  return auth;
+  if (!auth) {
+    console.warn("Auth accessed before initialization. Check environment variables.");
+  }
+  return auth!;
 };
 
-export const useFirebaseApp = () => {
-  const app = useFirebase().app;
-  if (!app) throw new Error("Firebase App not initialized. Check your environment variables.");
-  return app;
-};
-
-export const useStorage = () => {
-  const storage = useFirebase().storage;
-  if (!storage) throw new Error("Storage not initialized. Check your environment variables.");
-  return storage;
-};
+export const useFirebaseApp = () => useFirebase().app!;
+export const useStorage = () => useFirebase().storage!;

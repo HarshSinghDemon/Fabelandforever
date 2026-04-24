@@ -1,29 +1,28 @@
-
-import { initializeApp, getApps, getApp, FirebaseApp } from 'firebase/app';
-import { getFirestore, Firestore } from 'firebase/firestore';
-import { getAuth, Auth } from 'firebase/auth';
-import { getStorage, FirebaseStorage } from 'firebase/storage';
+import { initializeApp, getApps, getApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
+import { getStorage } from 'firebase/storage';
 import { firebaseConfig } from './config';
 import React from 'react';
 
 export function initializeFirebase() {
-  // Check if we have a valid API key. During Vercel build, these might be missing.
-  // We return nulls to prevent the build from crashing.
-  if (!firebaseConfig.apiKey || firebaseConfig.apiKey === 'undefined') {
-    return { app: null, db: null, auth: null, storage: null };
+  const hasValidConfig = firebaseConfig.apiKey && firebaseConfig.apiKey !== 'undefined';
+
+  if (!hasValidConfig) {
+    return { 
+      app: null as any, 
+      db: null as any, 
+      auth: null as any, 
+      storage: null as any 
+    };
   }
 
-  try {
-    const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const auth = getAuth(app);
-    const storage = getStorage(app);
+  const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
+  const storage = getStorage(app);
 
-    return { app, db, auth, storage };
-  } catch (error) {
-    console.error("Firebase initialization failed:", error);
-    return { app: null, db: null, auth: null, storage: null };
-  }
+  return { app, db, auth, storage };
 }
 
 /**

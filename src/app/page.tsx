@@ -1,6 +1,7 @@
+
 "use client";
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Navigation } from '@/components/Navigation';
 import { Hero } from '@/components/Hero';
 import { FeaturedProducts } from '@/components/FeaturedProducts';
@@ -13,6 +14,11 @@ import { Textarea } from '@/components/ui/textarea';
 
 export default function Home() {
   const scrollRefs = useRef<(HTMLElement | null)[]>([]);
+  const [contactForm, setContactForm] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -32,6 +38,26 @@ export default function Home() {
 
     return () => observer.disconnect();
   }, []);
+
+  const handleContactSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    const recipient = "fableandforevercompany@gmail.com";
+    const subject = encodeURIComponent(`New Crochet Inquiry from ${contactForm.name}`);
+    const body = encodeURIComponent(
+      `Artisan Inquiry Details:\n` +
+      `--------------------------\n` +
+      `Name: ${contactForm.name}\n` +
+      `Sender Email: ${contactForm.email}\n\n` +
+      `The Story / Message:\n` +
+      `${contactForm.message}\n` +
+      `--------------------------\n` +
+      `Sent via Fable and Forever Boutique`
+    );
+
+    // Using mailto: to trigger the user's default mail client
+    window.location.href = `mailto:${recipient}?subject=${subject}&body=${body}`;
+  };
 
   return (
     <main className="min-h-screen bg-paper overflow-x-hidden selection:bg-accent/30">
@@ -91,9 +117,9 @@ export default function Home() {
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-32">
               {[
-                { icon: "🧶", title: "Hand-Picked Yarn", desc: "Sourcing the softest cotton and ethically-farmed wool for our crochet creations." },
-                { icon: "✨", title: "Whimsical Details", desc: "Each piece is adorned with subtle charms and delicate, precise loop tension." },
-                { icon: "🍃", title: "Eco-Conscious Craft", desc: "Reducing our footprint by using sustainable yarns and plastic-free packaging." }
+                { icon: "🧶", title: "Selected Yarn", desc: "Sourcing the softest cotton and ethically-farmed wool for our crochet creations." },
+                { icon: "✨", title: "Hand-Crafted Details", desc: "Each piece is adorned with subtle charms and delicate, precise crochet tension." },
+                { icon: "🍃", title: "Eco-Conscious Loop", desc: "Reducing our footprint by using sustainable yarns and plastic-free packaging." }
               ].map((item, i) => (
                 <div key={i} className="group bg-paper p-12 rounded-[3.5rem] stitching-border hover:shadow-2xl hover:shadow-primary/10 transition-all duration-700 hover:-translate-y-4">
                   <div className="text-5xl mb-8 transform group-hover:scale-125 group-hover:rotate-12 transition-all duration-500">{item.icon}</div>
@@ -117,13 +143,13 @@ export default function Home() {
              
              <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
                <div className="animate-fade-in-up">
-                 <span className="text-accent font-bold tracking-[0.5em] uppercase text-[10px] mb-8 block">The Hook & Needle Mailbox</span>
-                 <h2 className="font-headline text-6xl md:text-7xl text-primary mb-10 leading-[1.1]">Let's Stitch <br /><span className="italic text-accent">Something New</span></h2>
+                 <span className="text-accent font-bold tracking-[0.5em] uppercase text-[10px] mb-8 block">The Crochet Inbox</span>
+                 <h2 className="font-headline text-6xl md:text-7xl text-primary mb-10 leading-[1.1]">Stitch <br /><span className="italic text-accent">With Us</span></h2>
                  <p className="text-muted-foreground font-medium italic mb-12 leading-relaxed text-xl max-w-sm">
                    "Questions about a pattern, or just want to say hi? Drop us a line and let's start a new crochet story together."
                  </p>
                  <div className="flex items-center gap-6">
-                    <div className="h-16 h-[2px] bg-accent/30"></div>
+                    <div className="h-[2px] w-16 bg-accent/30"></div>
                     <div className="text-primary font-bold uppercase tracking-[0.3em] text-[10px] flex items-center gap-3">
                       <Sparkles className="w-4 h-4 text-accent animate-pulse" />
                       Next Batch: Early Summer
@@ -131,20 +157,39 @@ export default function Home() {
                  </div>
                </div>
 
-               <form className="space-y-8 bg-paper p-10 md:p-14 rounded-[4rem] stitching-border shadow-inner">
+               <form onSubmit={handleContactSubmit} className="space-y-8 bg-paper p-10 md:p-14 rounded-[4rem] stitching-border shadow-inner">
                   <div className="space-y-3">
                     <label className="text-[10px] font-bold uppercase tracking-widest text-primary/50 ml-4">Full Name</label>
-                    <Input placeholder="Your lovely name" className="bg-white border-2 border-primary/5 h-16 rounded-3xl focus:border-accent transition-all px-8 text-lg" />
+                    <Input 
+                      required
+                      value={contactForm.name}
+                      onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
+                      placeholder="Your lovely name" 
+                      className="bg-white border-2 border-primary/5 h-16 rounded-3xl focus:border-accent transition-all px-8 text-lg" 
+                    />
                   </div>
                   <div className="space-y-3">
                     <label className="text-[10px] font-bold uppercase tracking-widest text-primary/50 ml-4">Email Address</label>
-                    <Input type="email" placeholder="your@email.com" className="bg-white border-2 border-primary/5 h-16 rounded-3xl focus:border-accent transition-all px-8 text-lg" />
+                    <Input 
+                      required
+                      type="email" 
+                      value={contactForm.email}
+                      onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
+                      placeholder="your@email.com" 
+                      className="bg-white border-2 border-primary/5 h-16 rounded-3xl focus:border-accent transition-all px-8 text-lg" 
+                    />
                   </div>
                   <div className="space-y-3">
                     <label className="text-[10px] font-bold uppercase tracking-widest text-primary/50 ml-4">The Story</label>
-                    <Textarea placeholder="What are we stitching today?" className="bg-white border-2 border-primary/5 min-h-[180px] rounded-[2.5rem] focus:border-accent transition-all p-8 text-lg leading-relaxed" />
+                    <Textarea 
+                      required
+                      value={contactForm.message}
+                      onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
+                      placeholder="What are we stitching today?" 
+                      className="bg-white border-2 border-primary/5 min-h-[180px] rounded-[2.5rem] focus:border-accent transition-all p-8 text-lg leading-relaxed" 
+                    />
                   </div>
-                  <Button className="w-full h-20 rounded-[2rem] bg-primary hover:bg-primary/90 text-white font-bold text-base uppercase tracking-[0.3em] shadow-2xl shadow-primary/30 transition-all hover:scale-[1.03] active:scale-[0.97] group">
+                  <Button type="submit" className="w-full h-20 rounded-[2rem] bg-primary hover:bg-primary/90 text-white font-bold text-base uppercase tracking-[0.3em] shadow-2xl shadow-primary/30 transition-all hover:scale-[1.03] active:scale-[0.97] group">
                     Send Message <Send className="ml-3 w-5 h-5 group-hover:translate-x-2 transition-transform" />
                   </Button>
                </form>

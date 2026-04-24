@@ -5,20 +5,12 @@ import React from 'react';
 import { useCart } from '@/context/CartContext';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
-import { ShoppingBasket, Trash2, Plus, Minus, ShoppingBag } from 'lucide-react';
+import { ShoppingBasket, Trash2, Plus, Minus, ShoppingBag, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
-import { useToast } from '@/hooks/use-toast';
+import Link from 'next/link';
 
 export function CartDrawer() {
   const { cart, cartTotal, cartCount, removeFromCart, updateQuantity, clearCart } = useCart();
-  const { toast } = useToast();
-
-  const handleCheckout = () => {
-    toast({
-      title: "Processing Magic ✨",
-      description: "Redirecting you to our secure checkout...",
-    });
-  };
 
   return (
     <Sheet>
@@ -48,7 +40,9 @@ export function CartDrawer() {
                 <ShoppingBasket className="w-12 h-12 text-primary/40" />
               </div>
               <p className="text-muted-foreground font-medium">Your basket is currently as light as a cloud!</p>
-              <Button variant="outline" className="rounded-full px-8">Browse Shop</Button>
+              <SheetTrigger asChild>
+                <Button variant="outline" className="rounded-full px-8">Browse Shop</Button>
+              </SheetTrigger>
             </div>
           ) : (
             cart.map((item) => (
@@ -100,9 +94,13 @@ export function CartDrawer() {
             <p className="text-[10px] text-muted-foreground italic text-center">
               * Hand-stitched with love. Free shipping on orders over ₹2000!
             </p>
-            <Button onClick={handleCheckout} className="w-full py-6 rounded-2xl bg-primary hover:bg-primary/90 text-lg font-bold shadow-xl shadow-primary/20">
-              Checkout Now ✨
-            </Button>
+            <SheetTrigger asChild>
+              <Button asChild className="w-full py-6 rounded-2xl bg-primary hover:bg-primary/90 text-lg font-bold shadow-xl shadow-primary/20">
+                <Link href="/checkout">
+                  Checkout Now <ArrowRight className="ml-2 w-5 h-5" />
+                </Link>
+              </Button>
+            </SheetTrigger>
             <button 
               onClick={clearCart}
               className="w-full text-xs text-muted-foreground hover:text-primary transition-colors uppercase tracking-widest font-bold"

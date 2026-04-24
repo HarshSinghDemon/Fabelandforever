@@ -2,13 +2,12 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Instagram, Facebook, Mail, MapPin, Scissors, Lock } from 'lucide-react';
+import { Instagram, Mail, MapPin, Lock } from 'lucide-react';
 import { Logo } from './Logo';
 
 export function Footer() {
   const socialLinks = [
     { Icon: Instagram, href: "https://www.instagram.com/fable.and.forever/", label: "Instagram" },
-    { Icon: Facebook, href: "#", label: "Facebook" },
     { Icon: Mail, href: "mailto:fableandforevercompany@gmail.com", label: "Email" },
   ];
 
@@ -50,9 +49,9 @@ export function Footer() {
           <div>
             <h4 className="font-bold uppercase tracking-[0.3em] text-[10px] mb-10 text-accent">Navigation</h4>
             <ul className="space-y-5 text-sm font-bold uppercase tracking-widest">
-              <li><Link href="#shop" className="text-primary-foreground/60 hover:text-accent transition-colors">Collections</Link></li>
-              <li><Link href="#story" className="text-primary-foreground/60 hover:text-accent transition-colors">Our Story</Link></li>
-              <li><Link href="#contact" className="text-primary-foreground/60 hover:text-accent transition-colors">Contact</Link></li>
+              <li><Link href="/#shop" className="text-primary-foreground/60 hover:text-accent transition-colors">Collections</Link></li>
+              <li><Link href="/#story" className="text-primary-foreground/60 hover:text-accent transition-colors">Our Story</Link></li>
+              <li><Link href="/#contact" className="text-primary-foreground/60 hover:text-accent transition-colors">Contact</Link></li>
               <li><Link href="/admin/login" className="text-primary-foreground/20 hover:text-accent transition-colors flex items-center gap-2 group">
                 <Lock className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" /> Weaver Portal
               </Link></li>
@@ -64,7 +63,7 @@ export function Footer() {
             <ul className="space-y-6 text-sm font-medium text-primary-foreground/70">
               <li className="flex gap-4">
                 <MapPin className="w-6 h-6 shrink-0 text-accent" />
-                <span>123 Hook & Needle Ave,<br />Artisan District, FL 33101</span>
+                <span>Handcrafted in India<br />Bespoke Crochet Studio</span>
               </li>
               <li className="flex gap-4">
                 <span className="text-accent font-bold uppercase text-[10px] tracking-widest mt-1">Status:</span>
@@ -75,10 +74,13 @@ export function Footer() {
         </div>
 
         <div className="pt-10 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-8 text-[10px] font-bold text-primary-foreground/40 uppercase tracking-[0.4em]">
-          <p className="flex items-center gap-3">Woven with <Scissors className="text-accent w-4 h-4" /> & Care</p>
+          <div className="flex items-center gap-3">
+            <Logo className="w-5 h-5 text-accent" />
+            <span>Fable and Forever</span>
+          </div>
           <div className="flex gap-10">
-            <Link href="#" className="hover:text-accent transition-colors">Privacy Policy ✨</Link>
-            <Link href="#" className="hover:text-accent transition-colors">Studio Terms 📜</Link>
+            <Link href="/privacy" className="hover:text-accent transition-colors">Privacy Policy ✨</Link>
+            <Link href="/terms" className="hover:text-accent transition-colors">Studio Terms 📜</Link>
           </div>
         </div>
       </div>

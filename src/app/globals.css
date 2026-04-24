@@ -16,13 +16,13 @@
     --secondary-foreground: 185 50% 20%;
     --muted: 180 20% 94%;
     --muted-foreground: 185 20% 45%;
-    --accent: 265 70% 92%; /* Very Light Lavender */
-    --accent-foreground: 265 40% 30%;
+    --accent: 265 65% 85%; /* Slightly Deeper, Prominent Lavender */
+    --accent-foreground: 265 45% 35%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --border: 175 20% 90%;
     --input: 175 20% 90%;
-    --ring: 265 70% 85%;
+    --ring: 265 65% 80%;
     --radius: 1.5rem;
   }
 }
@@ -51,11 +51,11 @@
 }
 
 .stitching-border {
-  border: 3px dashed hsla(265, 70%, 85%, 0.8);
+  border: 3px dashed hsla(265, 65%, 80%, 0.8);
 }
 
 .watercolor-lavender {
-  background: radial-gradient(circle at center, hsla(265, 70%, 85%, 0.4) 0%, transparent 70%);
+  background: radial-gradient(circle at center, hsla(265, 65%, 85%, 0.4) 0%, transparent 70%);
 }
 
 /* Animations */
@@ -78,8 +78,8 @@
 }
 
 @keyframes magic-glow {
-  0%, 100% { box-shadow: 0 0 10px hsla(265, 70%, 85%, 0.3); }
-  50% { box-shadow: 0 0 30px hsla(265, 70%, 85%, 0.6); }
+  0%, 100% { box-shadow: 0 0 10px hsla(265, 65%, 85%, 0.3); }
+  50% { box-shadow: 0 0 30px hsla(265, 65%, 85%, 0.6); }
 }
 
 .glow-hover:hover {

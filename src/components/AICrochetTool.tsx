@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState } from 'react';
@@ -6,8 +5,7 @@ import { generateCustomCrochetIdeas } from '@/ai/flows/generate-custom-crochet-i
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Sparkles, Loader2, Wand2 } from 'lucide-react';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Sparkles, Loader2, Wand2, Heart, Star } from 'lucide-react';
 
 export function AICrochetTool() {
   const [loading, setLoading] = useState(false);
@@ -35,56 +33,59 @@ export function AICrochetTool() {
   };
 
   return (
-    <div className="bg-white/40 backdrop-blur-sm p-8 rounded-3xl border border-primary/10 shadow-xl relative overflow-hidden">
-      <div className="absolute -top-10 -right-10 w-40 h-40 watercolor-accent rounded-full opacity-20"></div>
+    <div className="bg-white/80 backdrop-blur-md p-8 rounded-[2.5rem] border-4 border-primary/10 shadow-xl relative overflow-hidden">
+      <div className="absolute top-0 right-0 p-4">
+        <Star className="text-accent fill-accent w-6 h-6 floating-sparkle" />
+      </div>
       
       <div className="relative z-10">
-        <div className="flex items-center gap-3 mb-6">
-          <div className="p-2 bg-primary/10 rounded-lg">
-            <Sparkles className="text-primary w-5 h-5" />
+        <div className="text-center mb-8">
+          <div className="inline-block p-3 bg-primary/10 rounded-full mb-3">
+            <Heart className="text-primary fill-primary w-6 h-6" />
           </div>
-          <h3 className="font-headline text-2xl text-primary">Design Concierge</h3>
+          <h3 className="font-fancy text-3xl text-primary">Inspiration Magic Box</h3>
+          <p className="text-sm text-muted-foreground mt-2">Not sure what you want? Let's dream together! ✨</p>
         </div>
         
-        <form onSubmit={handleGenerate} className="space-y-4 mb-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <form onSubmit={handleGenerate} className="space-y-6 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <Label htmlFor="itemType" className="text-xs uppercase tracking-wider text-muted-foreground font-bold">What should we make?</Label>
+              <Label htmlFor="itemType" className="text-xs font-bold uppercase tracking-widest text-primary/60">I want to make a...</Label>
               <Input 
                 id="itemType"
-                placeholder="e.g., Baby blanket, Wall hanging"
-                className="bg-background/50 border-primary/20 focus:border-primary rounded-xl"
+                placeholder="e.g., Smiley Strawberry"
+                className="bg-white border-2 border-primary/10 focus:border-primary rounded-2xl h-12"
                 value={formData.itemType}
                 onChange={(e) => setFormData({...formData, itemType: e.target.value})}
                 required
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="color" className="text-xs uppercase tracking-wider text-muted-foreground font-bold">Color Palette</Label>
+              <Label htmlFor="color" className="text-xs font-bold uppercase tracking-widest text-primary/60">Color Palette 🍭</Label>
               <Input 
                 id="color"
-                placeholder="e.g., Sage and cream, Sunset"
-                className="bg-background/50 border-primary/20 focus:border-primary rounded-xl"
+                placeholder="e.g., Pastel rainbow"
+                className="bg-white border-2 border-primary/10 focus:border-primary rounded-2xl h-12"
                 value={formData.color}
                 onChange={(e) => setFormData({...formData, color: e.target.value})}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="style" className="text-xs uppercase tracking-wider text-muted-foreground font-bold">Aesthetic Style</Label>
+              <Label htmlFor="style" className="text-xs font-bold uppercase tracking-widest text-primary/60">Vibe Check ✨</Label>
               <Input 
                 id="style"
-                placeholder="e.g., Boho-chic, Minimalist"
-                className="bg-background/50 border-primary/20 focus:border-primary rounded-xl"
+                placeholder="e.g., Super Kawaii"
+                className="bg-white border-2 border-primary/10 focus:border-primary rounded-2xl h-12"
                 value={formData.style}
                 onChange={(e) => setFormData({...formData, style: e.target.value})}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="occasion" className="text-xs uppercase tracking-wider text-muted-foreground font-bold">Occasion</Label>
+              <Label htmlFor="occasion" className="text-xs font-bold uppercase tracking-widest text-primary/60">For who/what? 🎁</Label>
               <Input 
                 id="occasion"
-                placeholder="e.g., Wedding, Housewarming"
-                className="bg-background/50 border-primary/20 focus:border-primary rounded-xl"
+                placeholder="e.g., Bestie's Bday"
+                className="bg-white border-2 border-primary/10 focus:border-primary rounded-2xl h-12"
                 value={formData.occasion}
                 onChange={(e) => setFormData({...formData, occasion: e.target.value})}
               />
@@ -93,26 +94,27 @@ export function AICrochetTool() {
           
           <Button 
             disabled={loading}
-            className="w-full bg-primary hover:bg-primary/90 py-6 rounded-xl text-lg group transition-all"
+            className="w-full bg-primary hover:bg-primary/90 py-7 rounded-2xl text-xl font-bold group transition-all shadow-lg shadow-primary/20"
           >
             {loading ? (
-              <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+              <Loader2 className="mr-2 h-6 w-6 animate-spin" />
             ) : (
-              <Wand2 className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
+              <Wand2 className="mr-2 h-6 w-6 group-hover:rotate-45 transition-transform" />
             )}
-            Inspire Me
+            Make Magic! ✨
           </Button>
         </form>
 
         {ideas.length > 0 && (
           <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <h4 className="text-sm font-bold text-primary uppercase tracking-widest">Tailored Suggestions:</h4>
-            <div className="grid gap-3">
+            <h4 className="text-sm font-bold text-primary text-center uppercase tracking-[0.2em]">Magical Suggestions:</h4>
+            <div className="grid gap-4">
               {ideas.map((idea, idx) => (
                 <div 
                   key={idx} 
-                  className="p-4 bg-background/80 rounded-xl border border-primary/5 text-sm text-foreground leading-relaxed shadow-sm hover:shadow-md transition-shadow"
+                  className="p-5 bg-white rounded-2xl border-2 border-primary/5 text-sm text-foreground leading-relaxed shadow-sm hover:shadow-md transition-shadow flex items-start gap-3"
                 >
+                  <span className="text-lg">🎀</span>
                   {idea}
                 </div>
               ))}

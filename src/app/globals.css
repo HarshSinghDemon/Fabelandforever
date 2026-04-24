@@ -1,30 +1,29 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 180 10% 97%;
-    --foreground: 189 60% 10%;
+    --background: 350 100% 98%;
+    --foreground: 350 40% 20%;
     --card: 0 0% 100%;
-    --card-foreground: 189 60% 10%;
+    --card-foreground: 350 40% 20%;
     --popover: 0 0% 100%;
-    --popover-foreground: 189 60% 10%;
-    --primary: 189 61% 30%;
-    --primary-foreground: 180 10% 97%;
-    --secondary: 166 25% 54%;
-    --secondary-foreground: 180 10% 97%;
-    --muted: 180 10% 90%;
-    --muted-foreground: 189 20% 40%;
-    --accent: 166 25% 54%;
-    --accent-foreground: 180 10% 97%;
+    --popover-foreground: 350 40% 20%;
+    --primary: 330 70% 70%;
+    --primary-foreground: 350 100% 98%;
+    --secondary: 160 60% 85%;
+    --secondary-foreground: 160 40% 25%;
+    --muted: 350 30% 95%;
+    --muted-foreground: 350 20% 50%;
+    --accent: 30 100% 85%;
+    --accent-foreground: 30 40% 25%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 189 20% 85%;
-    --input: 189 20% 85%;
-    --ring: 189 61% 30%;
-    --radius: 0.75rem;
+    --border: 350 30% 90%;
+    --input: 350 30% 90%;
+    --ring: 330 70% 70%;
+    --radius: 1.5rem;
   }
 }
 
@@ -37,15 +36,38 @@
   }
 }
 
-.watercolor-accent {
-  background: radial-gradient(circle at 50% 50%, hsla(189, 61%, 30%, 0.05) 0%, transparent 70%);
-  filter: blur(40px);
+.cute-gradient {
+  background: linear-gradient(135deg, hsla(330, 70%, 95%, 1) 0%, hsla(30, 100% , 95%, 1) 100%);
 }
 
-.line-art-bg {
-  background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 10 Q 50 0 90 10 T 90 90 T 10 90 T 10 10' fill='none' stroke='hsl(189, 61%25, 30%25)' stroke-width='0.2' opacity='0.1'/%3E%3C/svg%3E");
+.scallop-border {
+  position: relative;
 }
 
-.playfair {
-  font-family: 'Playfair Display', serif;
+.scallop-border::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 100%;
+  height: 20px;
+  background-image: radial-gradient(circle at 10px 0, transparent 10px, white 11px);
+  background-size: 20px 20px;
+}
+
+.floating-sparkle {
+  animation: sparkle 3s ease-in-out infinite;
+}
+
+@keyframes sparkle {
+  0%, 100% { transform: scale(1) translateY(0); opacity: 0.5; }
+  50% { transform: scale(1.2) translateY(-10px); opacity: 1; }
+}
+
+.font-cute {
+  font-family: 'Quicksand', sans-serif;
+}
+
+.font-fancy {
+  font-family: 'Pacifico', cursive;
 }

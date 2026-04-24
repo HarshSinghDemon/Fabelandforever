@@ -4,13 +4,34 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
-import { Menu, X, Sparkles, Search } from 'lucide-react';
+import { Menu, X, Sparkles, Search, ShoppingBag, ArrowRight, Loader2 } from 'lucide-react';
 import { CartDrawer } from './CartDrawer';
 import { Logo } from './Logo';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { useFirestore, useCollection, useMemoFirebase } from '@/firebase';
+import { collection } from 'firebase/firestore';
+import Image from 'next/image';
 
 export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+
+  const db = useFirestore();
+  const productsQuery = useMemoFirebase(() => {
+    if (!db) return null;
+    return collection(db, 'products');
+  }, [db]);
+
+  const { data: allProducts, loading: loadingProducts } = useCollection(productsQuery);
+
+  const filteredProducts = allProducts?.filter(product => 
+    product.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    product.category?.toLowerCase().includes(searchQuery.toLowerCase())
+  ) || [];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -26,6 +47,69 @@ export function Navigation() {
     { name: 'Our Story 📖', href: '/#story' },
     { name: 'Contact 💌', href: '/#contact' },
   ];
+
+  const SearchButton = () => (
+    <Dialog open={isSearchOpen} onOpenChange={setIsSearchOpen}>
+      <DialogTrigger asChild>
+        <button className="text-primary/60 hover:text-primary transition-colors p-2 rounded-full hover:bg-primary/5 active:scale-90">
+          <Search className="w-4 h-4 sm:w-5 sm:h-5" />
+        </button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[600px] rounded-[2.5rem] border-none shadow-2xl p-0 overflow-hidden">
+        <DialogHeader className="p-8 pb-4 bg-paper">
+          <DialogTitle className="font-headline text-3xl text-primary mb-4">Find a Treasure</DialogTitle>
+          <div className="relative">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-primary/30" />
+            <Input 
+              placeholder="Search for toys, blankets, or magic..." 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-12 h-16 rounded-2xl border-2 border-primary/5 focus:border-accent bg-white text-lg"
+              autoFocus
+            />
+          </div>
+        </DialogHeader>
+        <ScrollArea className="h-[400px] p-8 pt-0 bg-white">
+          <div className="space-y-6">
+            {loadingProducts ? (
+              <div className="flex justify-center py-10">
+                <Loader2 className="w-8 h-8 text-primary animate-spin" />
+              </div>
+            ) : searchQuery && filteredProducts.length === 0 ? (
+              <div className="text-center py-10">
+                <p className="text-muted-foreground italic">"No treasures match your whisper... try another spell."</p>
+              </div>
+            ) : searchQuery === '' ? (
+              <div className="text-center py-10">
+                <p className="text-muted-foreground italic text-sm">"What are you looking for today?"</p>
+              </div>
+            ) : (
+              filteredProducts.map((product) => (
+                <Link 
+                  key={product.id} 
+                  href="/#shop" 
+                  onClick={() => setIsSearchOpen(false)}
+                  className="flex items-center gap-6 p-4 rounded-3xl hover:bg-paper transition-all group border border-transparent hover:border-accent/10"
+                >
+                  <div className="relative w-20 h-20 rounded-2xl overflow-hidden border-2 border-accent/10">
+                    <Image src={product.image} alt={product.title} fill className="object-cover" />
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="font-bold text-primary text-lg group-hover:text-accent transition-colors">{product.title}</h4>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-accent">{product.category}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-bold text-primary">₹ {product.price.toLocaleString('en-IN')}</p>
+                    <ArrowRight className="w-4 h-4 ml-auto text-primary/20 group-hover:text-accent group-hover:translate-x-1 transition-all" />
+                  </div>
+                </Link>
+              ))
+            )}
+          </div>
+        </ScrollArea>
+      </DialogContent>
+    </Dialog>
+  );
 
   return (
     <nav className={cn(
@@ -57,18 +141,14 @@ export function Navigation() {
             </Link>
           ))}
           <div className="flex items-center gap-4 pl-4 border-l border-primary/10">
-            <button className="text-primary/60 hover:text-primary transition-colors p-2 rounded-full hover:bg-primary/5 active:scale-90">
-              <Search className="w-4 h-4" />
-            </button>
+            <SearchButton />
             <CartDrawer />
           </div>
         </div>
 
         {/* Mobile Toggle */}
-        <div className="flex md:hidden items-center gap-2">
-          <button className="text-primary/60 p-2 hover:bg-primary/5 rounded-full transition-colors active:scale-90">
-            <Search className="w-4 h-4" />
-          </button>
+        <div className="flex md:hidden items-center gap-1 sm:gap-2">
+          <SearchButton />
           <CartDrawer />
           <button 
             className="text-primary p-2 hover:bg-accent/20 rounded-full transition-colors active:scale-90"

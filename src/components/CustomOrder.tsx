@@ -18,7 +18,6 @@ export function CustomOrder() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Check file size (5MB limit)
     if (file.size > 5 * 1024 * 1024) {
       toast({
         variant: "destructive",
@@ -29,6 +28,8 @@ export function CustomOrder() {
     }
 
     setUploading(true);
+    setUploadedUrl(null);
+    
     try {
       const formData = new FormData();
       formData.append('file', file);
@@ -48,7 +49,7 @@ export function CustomOrder() {
       toast({
         variant: "destructive",
         title: "Upload Interrupted",
-        description: error.message || "We couldn't reach the Supabase loom.",
+        description: error.message || "Connection to the storage loom failed.",
       });
     } finally {
       setUploading(false);
@@ -100,7 +101,7 @@ export function CustomOrder() {
                     {uploading ? (
                       <div className="flex flex-col items-center gap-3">
                         <Loader2 className="w-8 h-8 animate-spin text-accent" />
-                        <span className="text-xs font-bold text-primary uppercase tracking-widest">Weaving into Supabase...</span>
+                        <span className="text-xs font-bold text-primary uppercase tracking-widest">Weaving into Storage...</span>
                       </div>
                     ) : uploadedUrl ? (
                       <div className="flex flex-col items-center gap-3 text-primary">
@@ -122,9 +123,11 @@ export function CustomOrder() {
                   </div>
                 </div>
                 {!uploadedUrl && !uploading && (
-                  <div className="mt-4 flex items-center gap-2 text-primary/40 text-[9px] uppercase tracking-widest justify-center">
-                    <AlertCircle className="w-3 h-3" />
-                    Bypasses Row Level Security via Service Role
+                  <div className="mt-4 flex flex-col items-center gap-1">
+                    <div className="flex items-center gap-2 text-primary/40 text-[9px] uppercase tracking-widest justify-center">
+                      <AlertCircle className="w-3 h-3" />
+                      Requires "uploads" bucket in Supabase
+                    </div>
                   </div>
                 )}
               </div>

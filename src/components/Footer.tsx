@@ -1,4 +1,3 @@
-
 "use client";
 
 import React from 'react';
@@ -7,6 +6,12 @@ import { Instagram, Facebook, Mail, MapPin, Scissors, Lock } from 'lucide-react'
 import { Logo } from './Logo';
 
 export function Footer() {
+  const socialLinks = [
+    { Icon: Instagram, href: "https://www.instagram.com/fable.and.forever/", label: "Instagram" },
+    { Icon: Facebook, href: "#", label: "Facebook" },
+    { Icon: Mail, href: "mailto:fableandforevercompany@gmail.com", label: "Email" },
+  ];
+
   return (
     <footer id="footer" className="bg-primary text-primary-foreground py-24 relative overflow-hidden">
       {/* Wave shape divider */}
@@ -27,9 +32,16 @@ export function Footer() {
               "Weaving the whispers of your imagination into hand-stitched treasures that carry heartbeat and history. Every loop tells a story."
             </p>
             <div className="flex gap-5">
-              {[Instagram, Facebook, Mail].map((Icon, i) => (
-                <Link key={i} href="#" className="w-14 h-14 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center text-white hover:bg-accent hover:text-accent-foreground transition-all shadow-lg backdrop-blur-sm">
-                  <Icon className="w-6 h-6" />
+              {socialLinks.map((social, i) => (
+                <Link 
+                  key={i} 
+                  href={social.href} 
+                  target={social.href.startsWith('http') ? "_blank" : undefined}
+                  rel={social.href.startsWith('http') ? "noopener noreferrer" : undefined}
+                  className="w-14 h-14 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center text-white hover:bg-accent hover:text-accent-foreground transition-all shadow-lg backdrop-blur-sm"
+                  aria-label={social.label}
+                >
+                  <social.Icon className="w-6 h-6" />
                 </Link>
               ))}
             </div>

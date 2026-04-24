@@ -1,17 +1,16 @@
+
 "use client";
 
 import React, { useState } from 'react';
 import { useFirestore, useCollection } from '@/firebase';
-import { collection, addDoc, deleteDoc, doc, query, orderBy } from 'firebase/firestore';
+import { collection, addDoc, deleteDoc, doc } from 'firebase/firestore';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
-import { Plus, Trash2, Package, Tag, Image as ImageIcon, Loader2, Sparkles, AlertCircle, ShieldAlert } from 'lucide-react';
+import { Plus, Trash2, Package, ImageIcon, Loader2, Sparkles, ShieldAlert } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import Image from 'next/image';
-import { errorEmitter } from '@/firebase/error-emitter';
-import { FirestorePermissionError } from '@/firebase/errors';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { uploadToSupabase } from '@/app/actions/supabase-upload';
 
@@ -29,8 +28,9 @@ export function AdminProductManager() {
     description: ''
   });
 
+  // Simple query to avoid index requirement
   const productsQuery = React.useMemo(() => {
-    return query(collection(db, 'products'), orderBy('title', 'asc'));
+    return collection(db, 'products');
   }, [db]);
 
   const { data: products, loading } = useCollection(productsQuery);
@@ -51,7 +51,7 @@ export function AdminProductManager() {
         setFormData(prev => ({ ...prev, image: result.url! }));
         toast({ 
           title: "Visual Captured! ✨", 
-          description: "Your treasure photo is safely stored." 
+          description: "Your treasure photo is safely stored in Supabase." 
         });
       } else {
         throw new Error(result.error || "Failed to upload image");
@@ -61,7 +61,7 @@ export function AdminProductManager() {
       toast({ 
         variant: "destructive", 
         title: "Upload Failed", 
-        description: error.message || "Could not reach Supabase."
+        description: error.message || "Could not reach Supabase. Check your URL and Key."
       });
     } finally {
       setUploading(false);
@@ -98,14 +98,14 @@ export function AdminProductManager() {
       setFormData({ title: '', price: '', category: '', image: '', description: '' });
       toast({ 
         title: "Magic Manifested! ✨", 
-        description: `${productData.title} is now in your grimoire.` 
+        description: `${productData.title} is now in your grimoire and live on the site.` 
       });
     } catch (error: any) {
       console.error("Firestore Write Error:", error);
       toast({
         variant: "destructive",
         title: "Creation Failed",
-        description: error.message || "The looms are blocked. Check your Firestore Rules."
+        description: error.message || "Check your Firestore Rules in Firebase Console."
       });
     } finally {
       setAdding(false);
@@ -131,9 +131,8 @@ export function AdminProductManager() {
         <ShieldAlert className="h-6 w-6 text-amber-600" />
         <AlertTitle className="text-amber-800 font-bold ml-2">Database Access Note</AlertTitle>
         <AlertDescription className="text-amber-700/80 ml-2 mt-2">
-          If your items don't save, ensure your <b>Firestore Rules</b> allow writes. 
-          Go to <a href="https://console.firebase.google.com/project/fabel-57315/firestore/rules" target="_blank" className="underline font-bold">Firebase Rules</a> and set: 
-          <code className="block mt-2 p-2 bg-amber-100 rounded text-xs">allow read, write: if request.auth != null;</code>
+          If items don't appear after saving, go to the <a href="https://console.firebase.google.com/project/fabel-57315/firestore/rules" target="_blank" className="underline font-bold">Firebase Rules</a> tab and ensure your rules allow reads and writes.
+          <code className="block mt-2 p-2 bg-amber-100 rounded text-xs">allow read, write: if true; // For testing only</code>
         </AlertDescription>
       </Alert>
 
@@ -181,10 +180,10 @@ export function AdminProductManager() {
               <Label className="text-[10px] font-bold uppercase tracking-widest text-primary/50 ml-4">Treasure Visual</Label>
               <div className="flex gap-4">
                 <Input 
-                  placeholder="Paste URL or upload..." 
+                  placeholder="Image URL will appear here..." 
                   value={formData.image}
                   readOnly
-                  className="h-14 rounded-2xl border-2 border-primary/5 bg-muted/20 flex-1"
+                  className="h-14 rounded-2xl border-2 border-primary/5 bg-muted/20 flex-1 overflow-hidden text-ellipsis"
                 />
                 <div className="relative">
                   <input 
@@ -215,7 +214,7 @@ export function AdminProductManager() {
               disabled={adding || uploading || !formData.image}
               className="md:col-span-2 h-20 rounded-[2rem] bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-[0.3em] shadow-2xl shadow-primary/20 transition-all hover:scale-[1.01]"
             >
-              {adding ? <Loader2 className="animate-spin" /> : <Sparkles className="mr-2 h-5 w-5" />}
+              {adding ? <Loader2 className="animate-spin mr-2" /> : <Sparkles className="mr-2 h-5 w-5" />}
               {adding ? "Binding Threads..." : "Cast the Creation Spell"}
             </Button>
           </form>
@@ -231,10 +230,10 @@ export function AdminProductManager() {
         </div>
 
         {loading ? (
-          <div className="flex justify-center py-20"><Loader2 className="animate-spin" /></div>
+          <div className="flex justify-center py-20"><Loader2 className="animate-spin text-primary w-10 h-10" /></div>
         ) : products.length === 0 ? (
           <div className="p-20 bg-white/40 rounded-[3rem] border-2 border-dashed border-primary/10 text-center italic text-muted-foreground">
-            No treasures found in the loom.
+            Your grimoire is empty. Loom your first treasure above!
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -252,13 +251,13 @@ export function AdminProductManager() {
                   <div className="flex-1 p-8 flex flex-col justify-between h-full">
                     <div className="flex justify-between items-start">
                       <h4 className="font-bold text-xl text-primary">{product.title}</h4>
-                      <button onClick={() => handleDelete(product.id)} className="text-muted-foreground hover:text-destructive">
+                      <button onClick={() => handleDelete(product.id)} className="text-muted-foreground hover:text-destructive transition-colors">
                         <Trash2 className="w-4 h-4" />
                       </button>
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="font-bold text-primary">₹ {Number(product.price).toLocaleString('en-IN')}</span>
-                      <span className="text-[10px] font-bold uppercase text-accent">{product.category}</span>
+                      <span className="text-[10px] font-bold uppercase text-accent bg-accent/10 px-3 py-1 rounded-full">{product.category}</span>
                     </div>
                   </div>
                 </CardContent>

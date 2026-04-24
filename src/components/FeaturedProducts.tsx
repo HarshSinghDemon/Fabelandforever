@@ -1,3 +1,4 @@
+
 "use client";
 
 import React from 'react';
@@ -7,15 +8,16 @@ import { Heart, Star, ShoppingCart, Sparkles, Loader2 } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useToast } from '@/hooks/use-toast';
 import { useCollection, useFirestore } from '@/firebase';
-import { collection, query, orderBy } from 'firebase/firestore';
+import { collection, query } from 'firebase/firestore';
 
 export function FeaturedProducts() {
   const { addToCart } = useCart();
   const { toast } = useToast();
   const db = useFirestore();
 
+  // Simple query without orderBy to avoid index requirement issues
   const productsQuery = React.useMemo(() => {
-    return query(collection(db, 'products'), orderBy('createdAt', 'desc'));
+    return collection(db, 'products');
   }, [db]);
 
   const { data: products, loading } = useCollection(productsQuery);
@@ -56,15 +58,16 @@ export function FeaturedProducts() {
         </div>
 
         {products.length === 0 ? (
-          <div className="text-center py-20 p-20 border-2 border-dashed border-primary/10 rounded-[4rem] bg-white/50">
-            <p className="text-muted-foreground italic text-xl">
-              "The shelves are currently light as a cloud. Add treasures in the admin portal to fill them!"
+          <div className="text-center py-20 p-10 md:p-24 border-2 border-dashed border-primary/10 rounded-[4rem] bg-white/50 max-w-4xl mx-auto">
+            <Sparkles className="w-12 h-12 text-accent mx-auto mb-6 opacity-40" />
+            <p className="text-primary/60 italic text-2xl font-medium leading-relaxed">
+              "The shelves are currently as light as a cloud. Once you add treasures in the Master Weaver Portal, they will magically appear here for the world to see."
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16">
             {products.map((product: any) => (
-              <Card key={product.id} className="group border-none shadow-none bg-transparent overflow-visible">
+              <Card key={product.id} className="group border-none shadow-none bg-transparent overflow-visible animate-in fade-in slide-in-from-bottom-5 duration-700">
                 <CardContent className="p-0">
                   <div className="relative aspect-[4/5] overflow-hidden rounded-[3.5rem] mb-10 border-[12px] border-white shadow-xl transition-all duration-700 group-hover:-translate-y-4">
                     <Image
@@ -72,11 +75,12 @@ export function FeaturedProducts() {
                       alt={product.title}
                       fill
                       className="object-cover transition-transform duration-1000 group-hover:scale-110"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-primary/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                   </div>
                   
-                  <div className="text-center">
+                  <div className="text-center px-4">
                     <div className="flex items-center justify-center gap-2 mb-4">
                       <Sparkles className="w-3 h-3 text-accent" />
                       <span className="text-[10px] uppercase tracking-[0.3em] text-accent font-bold">{product.category}</span>
@@ -86,7 +90,7 @@ export function FeaturedProducts() {
                     
                     <button 
                       onClick={() => handleAddToCart(product)}
-                      className="bg-primary text-white font-bold px-12 py-4 rounded-[1.5rem] text-sm hover:scale-105 transition-all flex items-center gap-3 mx-auto"
+                      className="bg-primary text-white font-bold px-12 py-4 rounded-[1.5rem] text-sm hover:scale-105 transition-all flex items-center gap-3 mx-auto shadow-lg shadow-primary/20"
                     >
                       Adopt Treasure <ShoppingCart className="w-4 h-4" />
                     </button>

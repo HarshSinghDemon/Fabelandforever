@@ -11,15 +11,16 @@ export async function uploadToSupabase(formData: FormData) {
     return { success: false, error: 'No file provided' };
   }
 
-  const bucket = 'uploads';
+  // Ensure this bucket exists in your Supabase Storage dashboard
+  const bucket = 'uploads'; 
   const filePath = `inspiration/${Date.now()}-${file.name.replace(/\s+/g, '_')}`;
 
   const supabaseUrl = process.env.SUPABASE_URL;
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-  if (!supabaseUrl || !serviceRoleKey) {
-    console.error('Supabase configuration missing');
-    return { success: false, error: 'Storage service is not configured.' };
+  if (!supabaseUrl || !serviceRoleKey || supabaseUrl === 'your-supabase-project-url') {
+    console.error('Supabase configuration missing or placeholder detected');
+    return { success: false, error: 'Storage service is not configured. Please update your .env file.' };
   }
 
   try {

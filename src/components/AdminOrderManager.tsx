@@ -1,10 +1,11 @@
+
 "use client";
 
 import React from 'react';
 import { useFirestore, useCollection, useMemoFirebase } from '@/firebase';
 import { collection, query, orderBy } from 'firebase/firestore';
 import { Card, CardContent } from '@/components/ui/card';
-import { History, Loader2, Package, User, CreditCard, Clock } from 'lucide-react';
+import { History, Loader2, Package, User, CreditCard, Clock, Phone, MapPin } from 'lucide-react';
 import { format } from 'date-fns';
 
 export function AdminOrderManager() {
@@ -49,17 +50,39 @@ export function AdminOrderManager() {
               <CardContent className="p-10">
                 <div className="flex flex-col md:flex-row justify-between gap-8">
                   <div className="space-y-6 flex-1">
-                    <div className="flex items-center gap-4">
-                      <div className="p-3 bg-primary/10 rounded-2xl">
-                        <User className="text-primary w-5 h-5" />
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="flex items-center gap-4">
+                        <div className="p-3 bg-primary/10 rounded-2xl">
+                          <User className="text-primary w-5 h-5" />
+                        </div>
+                        <div>
+                          <p className="text-[10px] font-bold uppercase tracking-widest text-primary/50">Customer</p>
+                          <p className="font-bold text-primary text-base">{order.customerName || 'Guest'}</p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-[10px] font-bold uppercase tracking-widest text-primary/50">Customer UID</p>
-                        <p className="font-bold text-primary text-sm">{order.userId || 'Anonymous Customer'}</p>
+
+                      <div className="flex items-center gap-4">
+                        <div className="p-3 bg-accent/10 rounded-2xl">
+                          <Phone className="text-accent w-5 h-5" />
+                        </div>
+                        <div>
+                          <p className="text-[10px] font-bold uppercase tracking-widest text-accent/50">Phone</p>
+                          <p className="font-bold text-primary text-base">{order.customerPhone || 'N/A'}</p>
+                        </div>
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-start gap-4">
+                      <div className="p-3 bg-primary/5 rounded-2xl">
+                        <MapPin className="text-primary w-5 h-5" />
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-[10px] font-bold uppercase tracking-widest text-primary/50">Delivery Address</p>
+                        <p className="text-sm font-medium text-muted-foreground leading-relaxed italic">{order.customerAddress || 'N/A'}</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-4">
                       <div className="p-3 bg-accent/10 rounded-2xl">
                         <Package className="text-accent w-5 h-5" />
                       </div>
@@ -94,7 +117,7 @@ export function AdminOrderManager() {
                       <div>
                         <p className="text-[10px] font-bold uppercase tracking-widest text-accent/50">Stitch Date</p>
                         <p className="text-sm font-medium text-primary">
-                          {order.createdAt ? format(new Date(order.createdAt), 'MMM dd, yyyy') : 'Just now'}
+                          {order.createdAt ? format(new Date(order.createdAt), 'MMM dd, yyyy HH:mm') : 'Just now'}
                         </p>
                       </div>
                     </div>

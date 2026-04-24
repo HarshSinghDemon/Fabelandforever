@@ -44,7 +44,19 @@
       "properties": {
         "userId": {
           "type": "string",
-          "description": "The UID of the customer."
+          "description": "The UID of the customer (if logged in)."
+        },
+        "customerName": {
+          "type": "string",
+          "description": "Full name of the customer."
+        },
+        "customerPhone": {
+          "type": "string",
+          "description": "Contact phone number."
+        },
+        "customerAddress": {
+          "type": "string",
+          "description": "Shipping address."
         },
         "items": {
           "type": "array",

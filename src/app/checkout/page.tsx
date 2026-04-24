@@ -9,63 +9,92 @@ import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { ShoppingBag, Package, Truck, Heart, ArrowLeft, Send, Mail, Instagram, CheckCircle2, Copy } from 'lucide-react';
+import { ShoppingBag, Package, Heart, ArrowLeft, Send, CheckCircle2, Loader2, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useToast } from '@/hooks/use-toast';
+import { useFirestore, useUser } from '@/firebase';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 export default function CheckoutPage() {
   const { cart, cartTotal, clearCart } = useCart();
   const { toast } = useToast();
-  const [step, setStep] = useState(1);
+  const { user } = useUser();
+  const db = useFirestore();
+  const router = useRouter();
+  
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [orderComplete, setOrderComplete] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
     address: ''
   });
 
-  const getOrderSummaryText = () => {
-    const itemsList = cart.map(item => `- ${item.title} (x${item.quantity}) - ₹${item.price * item.quantity}`).join('\n');
-    return (
-      `NEW ORDER INQUIRY\n` +
-      `-----------------\n` +
-      `Customer: ${formData.name}\n` +
-      `Phone: ${formData.phone}\n` +
-      `Address: ${formData.address}\n\n` +
-      `ITEMS:\n` +
-      `${itemsList}\n\n` +
-      `TOTAL: ₹${cartTotal.toLocaleString('en-IN')}`
-    );
-  };
-
-  const handleNext = (e: React.FormEvent) => {
+  const handleSubmitOrder = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (formData.name && formData.phone && formData.address) {
-      setStep(2);
-    }
-  };
+    if (!formData.name || !formData.phone || !formData.address) return;
 
-  const handleEmailFinish = () => {
-    const recipient = "fableandforevercompany@gmail.com";
-    const subject = encodeURIComponent(`Order Inquiry: ${formData.name}`);
-    const body = encodeURIComponent(getOrderSummaryText());
-    window.open(`mailto:${recipient}?subject=${subject}&body=${body}`, '_blank');
-  };
-
-  const handleInstagramFinish = async () => {
+    setIsSubmitting(true);
     try {
-      await navigator.clipboard.writeText(getOrderSummaryText());
+      const orderData = {
+        userId: user?.uid || 'guest',
+        customerName: formData.name,
+        customerPhone: formData.phone,
+        customerAddress: formData.address,
+        items: cart.map(item => ({
+          id: item.id,
+          title: item.title,
+          price: item.price,
+          quantity: item.quantity,
+          category: item.category
+        })),
+        total: cartTotal,
+        status: 'pending',
+        createdAt: new Date().toISOString()
+      };
+
+      await addDoc(collection(db, 'orders'), orderData);
+      
+      setOrderComplete(true);
+      clearCart();
       toast({
-        title: "Details Copied! ✨",
-        description: "Your order info is on your clipboard. Just paste it in our DM!",
+        title: "Order Received ✨",
+        description: "Your treasures are being prepared in our grimoire.",
       });
-      setTimeout(() => {
-        window.open('https://www.instagram.com/fable.and.forever/', '_blank');
-      }, 1000);
-    } catch (err) {
-      window.open('https://www.instagram.com/fable.and.forever/', '_blank');
+    } catch (error: any) {
+      console.error("Order Submission Error:", error);
+      toast({
+        variant: "destructive",
+        title: "Magic Interrupted",
+        description: "There was a glitch in the loom. Please try again.",
+      });
+    } finally {
+      setIsSubmitting(false);
     }
   };
+
+  if (orderComplete) {
+    return (
+      <main className="min-h-screen bg-paper">
+        <Navigation />
+        <div className="pt-40 pb-24 container mx-auto px-6 flex flex-col items-center justify-center text-center">
+          <div className="w-32 h-32 bg-primary/10 rounded-full flex items-center justify-center mb-10 relative">
+            <div className="absolute inset-0 bg-primary/20 rounded-full animate-ping opacity-20"></div>
+            <CheckCircle2 className="w-16 h-16 text-primary relative z-10" />
+          </div>
+          <h1 className="font-headline text-5xl md:text-7xl text-primary mb-6">Order Received! ✨</h1>
+          <p className="text-xl text-muted-foreground italic mb-10 max-w-2xl leading-relaxed">
+            "Thank you for adopting our treasures. We have safely recorded your details in our studio scrolls. We will contact you shortly via phone or email for confirmation and payment instructions."
+          </p>
+          <Button asChild className="rounded-full px-10 h-16 bg-primary hover:bg-primary/90 text-lg font-bold">
+            <Link href="/">Return to Boutique</Link>
+          </Button>
+        </div>
+        <Footer />
+      </main>
+    );
+  }
 
   if (cart.length === 0) {
     return (
@@ -94,22 +123,14 @@ export default function CheckoutPage() {
       
       <div className="pt-40 pb-24 container mx-auto px-6 max-w-6xl">
         <div className="mb-12">
-          <button 
-            onClick={() => step === 1 ? undefined : setStep(1)} 
+          <Link 
+            href="/#shop" 
             className="inline-flex items-center text-primary/60 hover:text-primary transition-colors gap-2 font-bold uppercase tracking-widest text-[10px]"
           >
-            {step === 1 ? (
-              <Link href="/" className="flex items-center gap-2"><ArrowLeft className="w-4 h-4" /> Back to Boutique</Link>
-            ) : (
-              <span className="flex items-center gap-2"><ArrowLeft className="w-4 h-4" /> Edit Details</span>
-            )}
-          </button>
-          <h1 className="font-headline text-5xl md:text-7xl text-primary mt-6">
-            {step === 1 ? "Order Details" : "Complete Adoption"}
-          </h1>
-          <p className="text-accent font-bold uppercase tracking-[0.4em] text-[10px] mt-4">
-            {step === 1 ? "Finalizing Your Forever Loop" : "Choose your preferred platform"}
-          </p>
+            <ArrowLeft className="w-4 h-4" /> Back to Boutique
+          </Link>
+          <h1 className="font-headline text-5xl md:text-7xl text-primary mt-6">Order Details</h1>
+          <p className="text-accent font-bold uppercase tracking-[0.4em] text-[10px] mt-4">Finalizing Your Forever Loop</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
@@ -146,109 +167,70 @@ export default function CheckoutPage() {
             </div>
           </div>
 
-          {/* Form Step or Platform Choice Step */}
+          {/* Form Step */}
           <div className="lg:col-span-7">
-            {step === 1 ? (
-              <div className="bg-white rounded-[4rem] p-10 md:p-16 shadow-2xl relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-full h-2 bg-primary"></div>
-                <div className="mb-10 text-center md:text-left">
-                  <h3 className="font-headline text-3xl text-primary mb-3">Customer Information</h3>
-                  <p className="text-muted-foreground font-medium italic">"Tell us where these treasures should travel."</p>
-                </div>
+            <div className="bg-white rounded-[4rem] p-10 md:p-16 shadow-2xl relative overflow-hidden">
+              <div className="absolute top-0 left-0 w-full h-2 bg-primary"></div>
+              <div className="mb-10 text-center md:text-left">
+                <h3 className="font-headline text-3xl text-primary mb-3">Customer Information</h3>
+                <p className="text-muted-foreground font-medium italic">"Tell us where these treasures should travel."</p>
+              </div>
 
-                <form onSubmit={handleNext} className="space-y-8">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-bold uppercase tracking-widest text-primary/50 ml-4">Full Name</label>
-                      <Input 
-                        required
-                        placeholder="Your lovely name" 
-                        value={formData.name}
-                        onChange={(e) => setFormData({...formData, name: e.target.value})}
-                        className="bg-paper border-2 border-primary/5 h-16 rounded-3xl focus:border-accent transition-all px-8 text-lg" 
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-bold uppercase tracking-widest text-primary/50 ml-4">Phone Number</label>
-                      <Input 
-                        required
-                        type="tel"
-                        placeholder="For delivery updates" 
-                        value={formData.phone}
-                        onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                        className="bg-paper border-2 border-primary/5 h-16 rounded-3xl focus:border-accent transition-all px-8 text-lg" 
-                      />
-                    </div>
-                  </div>
-
+              <form onSubmit={handleSubmitOrder} className="space-y-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold uppercase tracking-widest text-primary/50 ml-4">Delivery Address</label>
-                    <Textarea 
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-primary/50 ml-4">Full Name</label>
+                    <Input 
                       required
-                      placeholder="Where should we send your package?" 
-                      value={formData.address}
-                      onChange={(e) => setFormData({...formData, address: e.target.value})}
-                      className="bg-paper border-2 border-primary/5 min-h-[150px] rounded-[2.5rem] focus:border-accent transition-all p-8 text-lg leading-relaxed" 
+                      placeholder="Your lovely name" 
+                      value={formData.name}
+                      onChange={(e) => setFormData({...formData, name: e.target.value})}
+                      className="bg-paper border-2 border-primary/5 h-16 rounded-3xl focus:border-accent transition-all px-8 text-lg" 
                     />
                   </div>
-
-                  <div className="pt-6">
-                    <Button 
-                      type="submit" 
-                      className="w-full h-20 rounded-[2rem] bg-primary hover:bg-primary/90 text-white font-bold text-lg uppercase tracking-[0.3em] shadow-2xl shadow-primary/30 transition-all hover:scale-[1.02] active:scale-97 group"
-                    >
-                      Continue to Finalize <Send className="ml-3 w-5 h-5 group-hover:translate-x-2 transition-transform" />
-                    </Button>
-                  </div>
-                </form>
-              </div>
-            ) : (
-              <div className="bg-white rounded-[4rem] p-10 md:p-16 shadow-2xl relative overflow-hidden animate-in fade-in slide-in-from-right-10 duration-500">
-                <div className="absolute top-0 left-0 w-full h-2 bg-accent"></div>
-                
-                <div className="mb-12 text-center md:text-left">
-                  <h3 className="font-headline text-3xl text-primary mb-3">How should we connect?</h3>
-                  <p className="text-muted-foreground font-medium italic">"Pick your preferred way to send us the order details."</p>
-                </div>
-
-                <div className="grid grid-cols-1 gap-6">
-                  <button 
-                    onClick={handleEmailFinish}
-                    className="flex items-center gap-6 p-8 bg-paper rounded-[2.5rem] border-2 border-primary/5 hover:border-primary/20 hover:bg-white transition-all group text-left"
-                  >
-                    <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
-                      <Mail className="w-8 h-8 text-primary" />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-primary text-xl">Continue with Email</h4>
-                      <p className="text-sm text-muted-foreground font-medium">Opens your mail app with pre-filled details.</p>
-                    </div>
-                  </button>
-
-                  <button 
-                    onClick={handleInstagramFinish}
-                    className="flex items-center gap-6 p-8 bg-paper rounded-[2.5rem] border-2 border-primary/5 hover:border-accent/20 hover:bg-white transition-all group text-left"
-                  >
-                    <div className="w-16 h-16 bg-accent/10 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
-                      <Instagram className="w-8 h-8 text-accent" />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-primary text-xl">Continue with Instagram</h4>
-                      <p className="text-sm text-muted-foreground font-medium">Copies details & opens our Instagram DM.</p>
-                    </div>
-                  </button>
-                </div>
-
-                <div className="mt-12 p-8 bg-accent/5 rounded-[2rem] border border-dashed border-accent/20">
-                  <div className="flex items-start gap-4">
-                    <CheckCircle2 className="w-5 h-5 text-accent shrink-0 mt-1" />
-                    <p className="text-xs font-medium text-muted-foreground leading-relaxed italic">
-                      "After you send the details, we'll confirm stock availability and send payment instructions to finalize your treasures."
-                    </p>
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-primary/50 ml-4">Phone Number</label>
+                    <Input 
+                      required
+                      type="tel"
+                      placeholder="For confirmation" 
+                      value={formData.phone}
+                      onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                      className="bg-paper border-2 border-primary/5 h-16 rounded-3xl focus:border-accent transition-all px-8 text-lg" 
+                    />
                   </div>
                 </div>
-              </div>
-            )}
+
+                <div className="space-y-2">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-primary/50 ml-4">Delivery Address</label>
+                  <Textarea 
+                    required
+                    placeholder="Where should we send your package?" 
+                    value={formData.address}
+                    onChange={(e) => setFormData({...formData, address: e.target.value})}
+                    className="bg-paper border-2 border-primary/5 min-h-[150px] rounded-[2.5rem] focus:border-accent transition-all p-8 text-lg leading-relaxed" 
+                  />
+                </div>
+
+                <div className="pt-6">
+                  <Button 
+                    type="submit" 
+                    disabled={isSubmitting}
+                    className="w-full h-20 rounded-[2rem] bg-primary hover:bg-primary/90 text-white font-bold text-lg uppercase tracking-[0.3em] shadow-2xl shadow-primary/30 transition-all hover:scale-[1.02] active:scale-97 group"
+                  >
+                    {isSubmitting ? (
+                      <div className="flex items-center gap-3">
+                        <Loader2 className="w-6 h-6 animate-spin" /> Recording Magic...
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-3">
+                        Submit Order <Sparkles className="w-6 h-6 group-hover:rotate-45 transition-transform" />
+                      </div>
+                    )}
+                  </Button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       </div>

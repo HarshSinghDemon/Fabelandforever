@@ -1,4 +1,3 @@
-
 'use server';
 
 /**
@@ -24,6 +23,7 @@ export async function uploadToSupabase(formData: FormData) {
   }
 
   const bucket = 'uploads';
+  // Use a simple folder structure in the bucket
   const fileName = `products/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.]/g, '_')}`;
   
   try {
@@ -43,13 +43,16 @@ export async function uploadToSupabase(formData: FormData) {
     });
 
     if (!response.ok) {
-      throw new Error(`Supabase error: ${response.statusText}`);
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.message || `Supabase error: ${response.statusText}`);
     }
 
+    // Public URL format for Supabase Storage
     const publicUrl = `${supabaseUrl.replace(/\/$/, '')}/storage/v1/object/public/${bucket}/${fileName}`;
 
     return { success: true, url: publicUrl };
   } catch (error: any) {
+    console.error('Supabase upload failed:', error);
     return { success: false, error: error.message };
   }
 }

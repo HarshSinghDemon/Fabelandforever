@@ -1,10 +1,9 @@
-
 "use client";
 
 import React from 'react';
 import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
-import { Heart, Star, ShoppingCart, Sparkles, Loader2 } from 'lucide-react';
+import { ShoppingCart, Sparkles, Loader2, Star } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useToast } from '@/hooks/use-toast';
 import { useCollection, useFirestore } from '@/firebase';
@@ -15,7 +14,7 @@ export function FeaturedProducts() {
   const { toast } = useToast();
   const db = useFirestore();
 
-  // Simple query for reliability
+  // Reference to the 'products' collection
   const productsQuery = React.useMemo(() => {
     return collection(db, 'products');
   }, [db]);
@@ -38,9 +37,9 @@ export function FeaturedProducts() {
 
   if (loading) {
     return (
-      <div className="py-32 flex flex-col items-center justify-center gap-4">
-        <Loader2 className="w-10 h-10 text-primary animate-spin" />
-        <p className="text-accent font-bold uppercase tracking-widest text-[10px]">Calling the Threads...</p>
+      <div className="py-40 flex flex-col items-center justify-center gap-4">
+        <Loader2 className="w-12 h-12 text-primary animate-spin" />
+        <p className="text-accent font-bold uppercase tracking-[0.5em] text-[10px]">Calling the Threads...</p>
       </div>
     );
   }
@@ -56,11 +55,11 @@ export function FeaturedProducts() {
           <h2 className="font-fancy text-6xl md:text-7xl text-primary mb-8">Ethereal Keepsakes</h2>
         </div>
 
-        {products.length === 0 ? (
-          <div className="text-center py-20 p-10 md:p-24 border-2 border-dashed border-primary/10 rounded-[4rem] bg-white/50 max-w-4xl mx-auto">
-            <Sparkles className="w-12 h-12 text-accent mx-auto mb-6 opacity-40" />
-            <p className="text-primary/60 italic text-2xl font-medium leading-relaxed">
-              "The shelves are currently as light as a cloud. Once you add items in your Weaver Portal, they will appear here."
+        {!products || products.length === 0 ? (
+          <div className="text-center py-24 p-12 md:p-32 border-4 border-dashed border-primary/10 rounded-[5rem] bg-white/60 max-w-5xl mx-auto shadow-inner">
+            <Sparkles className="w-16 h-16 text-accent mx-auto mb-10 opacity-50 animate-pulse" />
+            <p className="text-primary/70 italic text-3xl font-medium leading-relaxed max-w-2xl mx-auto">
+              "The boutique shelves are resting... once you loom items in your portal, they will manifest here instantly."
             </p>
           </div>
         ) : (
@@ -68,29 +67,30 @@ export function FeaturedProducts() {
             {products.map((product: any) => (
               <Card key={product.id} className="group border-none shadow-none bg-transparent overflow-visible">
                 <CardContent className="p-0">
-                  <div className="relative aspect-[4/5] overflow-hidden rounded-[3.5rem] mb-10 border-[12px] border-white shadow-xl transition-all duration-700 group-hover:-translate-y-4">
+                  <div className="relative aspect-[4/5] overflow-hidden rounded-[4rem] mb-10 border-[15px] border-white shadow-2xl transition-all duration-700 group-hover:-translate-y-6 hover:shadow-primary/20">
                     <Image
                       src={product.image || "https://picsum.photos/seed/tale/600/800"}
                       alt={product.title}
                       fill
-                      className="object-cover transition-transform duration-1000 group-hover:scale-110"
+                      className="object-cover transition-transform duration-[2000ms] group-hover:scale-110"
                       sizes="(max-width: 768px) 100vw, 33vw"
                     />
+                    <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
                   </div>
                   
                   <div className="text-center px-4">
-                    <div className="flex items-center justify-center gap-2 mb-4">
-                      <Sparkles className="w-3 h-3 text-accent" />
-                      <span className="text-[10px] uppercase tracking-[0.3em] text-accent font-bold">{product.category}</span>
+                    <div className="flex items-center justify-center gap-3 mb-4">
+                      <Sparkles className="w-4 h-4 text-accent" />
+                      <span className="text-[10px] uppercase tracking-[0.4em] text-accent font-bold">{product.category}</span>
                     </div>
-                    <h3 className="font-bold text-3xl text-primary mb-3">{product.title}</h3>
-                    <p className="text-primary/70 font-bold text-xl mb-8">₹ {Number(product.price).toLocaleString('en-IN')}</p>
+                    <h3 className="font-bold text-3xl text-primary mb-4 leading-tight group-hover:text-accent transition-colors">{product.title}</h3>
+                    <p className="text-primary font-bold text-2xl mb-10">₹ {Number(product.price).toLocaleString('en-IN')}</p>
                     
                     <button 
                       onClick={() => handleAddToCart(product)}
-                      className="bg-primary text-white font-bold px-12 py-4 rounded-[1.5rem] text-sm hover:scale-105 transition-all flex items-center gap-3 mx-auto shadow-lg shadow-primary/20"
+                      className="bg-primary text-white font-bold px-14 py-5 rounded-[2rem] text-sm hover:scale-105 transition-all flex items-center gap-4 mx-auto shadow-2xl shadow-primary/30 active:scale-95 group/btn"
                     >
-                      Adopt Treasure <ShoppingCart className="w-4 h-4" />
+                      Adopt Treasure <ShoppingCart className="w-5 h-5 group-hover/btn:rotate-12 transition-transform" />
                     </button>
                   </div>
                 </CardContent>

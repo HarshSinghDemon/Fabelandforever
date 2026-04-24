@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
-import { Plus, Trash2, Package, ImageIcon, Loader2, Sparkles, ShieldAlert, AlertCircle, Copy } from 'lucide-react';
+import { Plus, Trash2, ImageIcon, Loader2, Sparkles, ShieldAlert, Copy, CheckCircle2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import Image from 'next/image';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -18,7 +18,7 @@ export function AdminProductManager() {
   const { toast } = useToast();
   const [adding, setAdding] = useState(false);
   const [uploading, setUploading] = useState(false);
-  const [envCheck, setEnvCheck] = useState<{ ok: boolean; missing: string[] }>({ ok: true, missing: [] });
+  const [copied, setCopied] = useState(false);
   
   const [formData, setFormData] = useState({
     title: '',
@@ -28,33 +28,24 @@ export function AdminProductManager() {
     description: ''
   });
 
+  const productsCollection = collection(db, 'products');
+  const { data: products, loading } = useCollection(productsCollection);
+
   const rulesText = `rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     match /{document=**} {
-      allow read, write: if request.auth != null;
+      allow read: if true;
+      allow write: if request.auth != null;
     }
   }
 }`;
 
-  useEffect(() => {
-    const required = [
-      'NEXT_PUBLIC_FIREBASE_API_KEY',
-      'NEXT_PUBLIC_FIREBASE_PROJECT_ID'
-    ];
-    const missing = required.filter(key => !process.env[key]);
-    setEnvCheck({ ok: missing.length === 0, missing });
-  }, []);
-
-  const productsQuery = React.useMemo(() => {
-    return collection(db, 'products');
-  }, [db]);
-
-  const { data: products, loading } = useCollection(productsQuery);
-
   const copyRules = () => {
     navigator.clipboard.writeText(rulesText);
+    setCopied(true);
     toast({ title: "Rules Copied!", description: "Paste this into Firestore > Rules tab." });
+    setTimeout(() => setCopied(false), 2000);
   };
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -69,7 +60,7 @@ service cloud.firestore {
       const result = await uploadToSupabase(uploadFormData);
       if (result.success && result.url) {
         setFormData(prev => ({ ...prev, image: result.url! }));
-        toast({ title: "Visual Captured! ✨", description: "Your treasure photo is safely stored in Supabase." });
+        toast({ title: "Visual Captured! ✨", description: "Your treasure photo is safely stored." });
       } else {
         throw new Error(result.error || "Failed to upload image");
       }
@@ -89,7 +80,7 @@ service cloud.firestore {
 
     setAdding(true);
     try {
-      await addDoc(collection(db, 'products'), {
+      await addDoc(productsCollection, {
         title: formData.title.trim(),
         price: parseFloat(formData.price),
         category: formData.category.trim() || 'Bespoke',
@@ -98,9 +89,14 @@ service cloud.firestore {
         createdAt: new Date().toISOString()
       });
       setFormData({ title: '', price: '', category: '', image: '', description: '' });
-      toast({ title: "Magic Manifested! ✨", description: "Item is now live." });
+      toast({ title: "Magic Manifested! ✨", description: "Item is now live in the boutique." });
     } catch (error: any) {
-      toast({ variant: "destructive", title: "Creation Failed", description: "Database error. Check your Firestore Rules." });
+      console.error("Firestore Add Error:", error);
+      toast({ 
+        variant: "destructive", 
+        title: "Creation Failed", 
+        description: "Your database rules are likely blocking this action. See the warning below." 
+      });
     } finally {
       setAdding(false);
     }
@@ -118,22 +114,27 @@ service cloud.firestore {
 
   return (
     <div className="space-y-12">
-      <Alert className="bg-amber-50 border-amber-200 rounded-[2rem] p-8">
-        <ShieldAlert className="h-6 w-6 text-amber-600" />
-        <AlertTitle className="text-amber-800 font-bold ml-2">CRITICAL: Fix Database Permissions</AlertTitle>
-        <AlertDescription className="text-amber-700/80 ml-2 mt-4 space-y-4">
-          <p>You likely saw an error because you were in the <b>Realtime Database</b> tab. You MUST use the <b>Firestore Database</b> tab.</p>
-          <ol className="list-decimal ml-5 space-y-2">
-            <li>Go to <a href="https://console.firebase.google.com/project/fabel-57315/firestore/rules" target="_blank" className="underline font-bold">Firestore Rules</a> (not Realtime Database).</li>
-            <li>Delete everything in that box.</li>
-            <li>Copy and Paste the code below:</li>
-          </ol>
-          <div className="relative mt-4">
-            <pre className="p-4 bg-amber-100 rounded-xl text-[10px] font-mono overflow-x-auto border border-amber-200">
+      {/* Enhanced Helper Alert for Firestore Rules */}
+      <Alert className="bg-amber-50 border-amber-200 rounded-[2rem] p-8 border-2">
+        <ShieldAlert className="h-8 w-8 text-amber-600 mb-2" />
+        <AlertTitle className="text-amber-800 font-bold text-xl mb-4">Urgent: Database Rule Fix</AlertTitle>
+        <AlertDescription className="text-amber-700/90 space-y-4 text-sm leading-relaxed">
+          <p>The "Parse Error" happens when you use the **Realtime Database** tab. You <strong>MUST</strong> use the <strong>Firestore Database</strong> tab.</p>
+          <div className="bg-white/50 p-6 rounded-2xl border border-amber-100">
+            <p className="font-bold mb-2">How to fix it:</p>
+            <ol className="list-decimal ml-5 space-y-2">
+              <li>Open <a href="https://console.firebase.google.com/project/fabel-57315/firestore/rules" target="_blank" className="underline font-bold text-amber-900">Firestore Rules</a>.</li>
+              <li>Delete <strong>everything</strong> currently in the code editor.</li>
+              <li>Paste the block below and click <strong>"Publish"</strong>.</li>
+            </ol>
+          </div>
+          <div className="relative mt-6">
+            <pre className="p-6 bg-slate-900 text-slate-100 rounded-2xl text-[11px] font-mono overflow-x-auto border-4 border-amber-200 shadow-xl">
               {rulesText}
             </pre>
-            <Button size="sm" variant="outline" className="absolute top-2 right-2 bg-white" onClick={copyRules}>
-              <Copy className="w-3 h-3 mr-1" /> Copy
+            <Button size="sm" variant="secondary" className="absolute top-4 right-4 bg-white hover:bg-white/90" onClick={copyRules}>
+              {copied ? <CheckCircle2 className="w-4 h-4 mr-2 text-emerald-500" /> : <Copy className="w-4 h-4 mr-2" />}
+              {copied ? "Copied!" : "Copy Rules"}
             </Button>
           </div>
         </AlertDescription>
@@ -183,14 +184,14 @@ service cloud.firestore {
               <Label className="text-[10px] font-bold uppercase tracking-widest text-primary/50 ml-4">Treasure Visual</Label>
               <div className="flex gap-4">
                 <Input 
-                  placeholder="Click icon to upload..." 
+                  placeholder="Upload a photo..." 
                   value={formData.image}
                   readOnly
-                  className="h-14 rounded-2xl border-2 border-primary/5 bg-muted/20 flex-1"
+                  className="h-14 rounded-2xl border-2 border-primary/5 bg-muted/20 flex-1 truncate"
                 />
                 <div className="relative">
                   <input type="file" onChange={handleImageUpload} className="absolute inset-0 opacity-0 cursor-pointer z-10" accept="image/*" disabled={uploading} />
-                  <Button type="button" variant="outline" className="h-14 w-14 rounded-2xl border-2 border-primary/5">
+                  <Button type="button" variant="outline" className="h-14 w-14 rounded-2xl border-2 border-primary/5 shadow-sm">
                     {uploading ? <Loader2 className="animate-spin" /> : <ImageIcon />}
                   </Button>
                 </div>
@@ -209,7 +210,7 @@ service cloud.firestore {
             <Button 
               type="submit" 
               disabled={adding || uploading || !formData.image}
-              className="md:col-span-2 h-20 rounded-[2rem] bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-[0.3em] transition-all hover:scale-[1.01]"
+              className="md:col-span-2 h-20 rounded-[2rem] bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-[0.3em] transition-all shadow-xl active:scale-95"
             >
               {adding ? <Loader2 className="animate-spin mr-2" /> : <Sparkles className="mr-2 h-5 w-5" />}
               {adding ? "Binding Threads..." : "Cast the Creation Spell"}
@@ -222,23 +223,28 @@ service cloud.firestore {
         <h3 className="font-headline text-3xl text-primary">Live Inventory</h3>
         {loading ? (
           <div className="flex justify-center py-20"><Loader2 className="animate-spin text-primary w-10 h-10" /></div>
-        ) : products.length === 0 ? (
+        ) : !products || products.length === 0 ? (
           <div className="p-20 bg-white/40 rounded-[3rem] border-2 border-dashed border-primary/10 text-center italic text-muted-foreground">
             Your inventory is empty. Loom your first treasure above!
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {products.map((product: any) => (
-              <Card key={product.id} className="border-none shadow-lg rounded-[2.5rem] overflow-hidden bg-white">
+              <Card key={product.id} className="border-none shadow-lg rounded-[2.5rem] overflow-hidden bg-white group hover:shadow-2xl transition-all">
                 <CardContent className="p-0 flex items-center h-48">
                   <div className="relative w-40 h-full">
-                    <Image src={product.image} alt={product.title} fill className="object-cover" />
+                    <Image 
+                      src={product.image || "https://picsum.photos/seed/tale/400/400"} 
+                      alt={product.title} 
+                      fill 
+                      className="object-cover" 
+                    />
                   </div>
                   <div className="flex-1 p-8 flex flex-col justify-between h-full">
                     <div className="flex justify-between items-start">
                       <h4 className="font-bold text-xl text-primary">{product.title}</h4>
-                      <button onClick={() => handleDelete(product.id)} className="text-muted-foreground hover:text-destructive">
-                        <Trash2 className="w-4 h-4" />
+                      <button onClick={() => handleDelete(product.id)} className="text-muted-foreground hover:text-destructive transition-colors">
+                        <Trash2 className="w-5 h-5" />
                       </button>
                     </div>
                     <div className="flex items-center justify-between">

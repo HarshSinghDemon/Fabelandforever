@@ -6,7 +6,7 @@ import { Hero } from '@/components/Hero';
 import { FeaturedProducts } from '@/components/FeaturedProducts';
 import { CustomOrder } from '@/components/CustomOrder';
 import { Footer } from '@/components/Footer';
-import { Heart, Sparkles, Send, Scissors, Star } from 'lucide-react';
+import { Heart, Sparkles, Send, Scissors, Star, BookOpen, Coffee, Wind } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -93,7 +93,7 @@ export default function Home() {
               <div className="relative group">
                 <div className="absolute inset-0 bg-primary/20 rounded-full blur-2xl group-hover:blur-3xl transition-all duration-700"></div>
                 <div className="relative bg-white p-6 sm:p-8 rounded-full shadow-2xl border border-accent/10 group-hover:rotate-12 transition-transform duration-500">
-                  <Scissors className="text-primary w-8 h-8 sm:w-12 sm:h-12 -rotate-45" />
+                  <BookOpen className="text-primary w-8 h-8 sm:w-12 sm:h-12" />
                 </div>
               </div>
             </div>
@@ -107,15 +107,38 @@ export default function Home() {
                 </svg>
               </span>
             </h2>
+
+            <div className="max-w-3xl mx-auto mb-20 space-y-6">
+              <p className="text-xl sm:text-2xl text-muted-foreground leading-relaxed italic">
+                "Fable & Forever didn't start in a workshop or a business meeting. It started in the quiet hours of 2 AM, with the rhythmic 'click-pull' of a single hook and a ball of yarn that felt like a promise."
+              </p>
+              <p className="text-lg text-primary/70 leading-relaxed font-medium">
+                We believe that in a world of machines and 'fast' fashion, there is a profound magic in something that takes hours to grow. Our studio is built on the belief that a gift should hold the heartbeat of the person who made it. We don't just count stitches; we count memories.
+              </p>
+            </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mt-16 sm:mt-32">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
               {[
-                { icon: "🧶", title: "Selected Yarn", desc: "Sourcing the softest cotton and ethically-farmed wool for our crochet creations." },
-                { icon: "✨", title: "Hand-Crafted Details", desc: "Each piece is adorned with subtle charms and delicate, precise crochet tension." },
-                { icon: "🍃", title: "Eco-Conscious Loop", desc: "Reducing our footprint by using sustainable yarns and plastic-free packaging." }
+                { 
+                  icon: <Coffee className="w-8 h-8 text-primary" />, 
+                  title: "Slow-Steeped Craft", 
+                  desc: "Like a good cup of tea, our treasures can't be rushed. We embrace the slow, deliberate pace of hand-crochet to ensure every loop is intentional." 
+                },
+                { 
+                  icon: <Wind className="w-8 h-8 text-primary" />, 
+                  title: "Living Materials", 
+                  desc: "We source yarns that feel like a soft breeze—ethically farmed wools and organic cottons that get softer the more they are loved." 
+                },
+                { 
+                  icon: <Scissors className="w-8 h-8 text-primary" />, 
+                  title: "Artisanal Integrity", 
+                  desc: "Our hands are our most important tools. From the initial chain to the final weave-in, every piece is finished with heirloom-quality precision." 
+                }
               ].map((item, i) => (
                 <div key={i} className="group bg-paper p-8 sm:p-12 rounded-[2.5rem] sm:rounded-[3.5rem] stitching-border hover:shadow-2xl hover:shadow-primary/10 transition-all duration-700 hover:-translate-y-2 sm:hover:-translate-y-4">
-                  <div className="text-4xl sm:text-5xl mb-6 sm:mb-8 transform group-hover:scale-125 group-hover:rotate-12 transition-all duration-500">{item.icon}</div>
+                  <div className="flex justify-center mb-6 sm:mb-8 transform group-hover:scale-125 group-hover:rotate-12 transition-all duration-500">
+                    {item.icon}
+                  </div>
                   <h4 className="font-headline text-xl sm:text-2xl text-primary mb-4 sm:mb-6">{item.title}</h4>
                   <p className="text-sm sm:text-base text-muted-foreground leading-relaxed font-medium">
                     {item.desc}

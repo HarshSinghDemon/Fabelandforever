@@ -3,7 +3,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Instagram, Facebook, Mail, MapPin, Scissors } from 'lucide-react';
+import { Instagram, Facebook, Mail, MapPin, Scissors, Lock } from 'lucide-react';
 import { Logo } from './Logo';
 
 export function Footer() {
@@ -41,6 +41,9 @@ export function Footer() {
               <li><Link href="#shop" className="text-primary-foreground/60 hover:text-accent transition-colors">Collections</Link></li>
               <li><Link href="#story" className="text-primary-foreground/60 hover:text-accent transition-colors">Our Story</Link></li>
               <li><Link href="#contact" className="text-primary-foreground/60 hover:text-accent transition-colors">Contact</Link></li>
+              <li><Link href="/admin/login" className="text-primary-foreground/20 hover:text-accent transition-colors flex items-center gap-2 group">
+                <Lock className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" /> Weaver Portal
+              </Link></li>
             </ul>
           </div>
 

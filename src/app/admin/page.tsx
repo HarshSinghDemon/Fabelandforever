@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { useUser, useAuth, useFirestore, useCollection } from '@/firebase';
 import { AdminProductManager } from '@/components/AdminProductManager';
@@ -33,8 +33,12 @@ export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState<'inventory' | 'orders'>('inventory');
   const [dbStatus, setDbStatus] = useState<'checking' | 'connected' | 'error'>('checking');
 
-  const { data: products } = useCollection(collection(db, 'products'));
-  const { data: orders } = useCollection(collection(db, 'orders'));
+  // Memoize queries to prevent infinite re-render loops in useCollection
+  const productsQuery = useMemo(() => collection(db, 'products'), [db]);
+  const ordersQuery = useMemo(() => collection(db, 'orders'), [db]);
+
+  const { data: products } = useCollection(productsQuery);
+  const { data: orders } = useCollection(ordersQuery);
 
   const totalRevenue = orders?.reduce((acc, order: any) => acc + (Number(order.total) || 0), 0) || 0;
 
@@ -91,8 +95,8 @@ export default function AdminDashboard() {
               asChild
               className="rounded-full px-8 h-14 border-accent/20 text-accent hover:bg-accent hover:text-white transition-all shadow-lg"
             >
-              <a href="https://console.firebase.google.com/project/fabel-57315/overview" target="_blank" rel="noopener noreferrer">
-                <ExternalLink className="w-4 h-4 mr-2" /> Fabel-57315 Console
+              <a href={`https://console.firebase.google.com/project/${process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID}/overview`} target="_blank" rel="noopener noreferrer">
+                <ExternalLink className="w-4 h-4 mr-2" /> Open Console
               </a>
             </Button>
             <Button 

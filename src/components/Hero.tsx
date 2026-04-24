@@ -1,3 +1,4 @@
+
 "use client";
 
 import React from 'react';
@@ -25,10 +26,6 @@ export function Hero() {
       <div className="container mx-auto px-6 relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
         <div className="animate-fade-in-up">
           <div className="mb-16 inline-flex items-center gap-6 group cursor-pointer">
-            <div className="p-1 bg-white rounded-full shadow-lg border border-accent/10 group-hover:rotate-12 transition-all">
-              <Logo className="w-20 h-20 text-primary" />
-            </div>
-            <div className="h-10 w-[1px] bg-primary/20"></div>
             <span className="font-headline text-lg tracking-[0.3em] uppercase text-primary/60 group-hover:text-primary transition-colors">Bespoke Crochet Stitchery</span>
           </div>
           

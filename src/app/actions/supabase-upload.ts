@@ -11,13 +11,13 @@ export async function uploadToSupabase(formData: FormData) {
     return { success: false, error: 'No file provided' };
   }
 
-  const bucket = 'uploads'; // Ensure this bucket exists in Supabase
+  const bucket = 'uploads'; // Ensure this bucket exists in Supabase and is set to PUBLIC
   const filePath = `inspiration/${Date.now()}-${file.name.replace(/\s+/g, '_')}`;
 
   const supabaseUrl = process.env.SUPABASE_URL;
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-  if (!supabaseUrl || !serviceRoleKey || supabaseUrl === 'your-supabase-project-url') {
+  if (!supabaseUrl || !serviceRoleKey || supabaseUrl.includes('your-supabase')) {
     return { 
       success: false, 
       error: 'Supabase is not configured. Please add your URL and Service Role Key to the .env file.' 
@@ -35,7 +35,7 @@ export async function uploadToSupabase(formData: FormData) {
       headers: {
         'apikey': serviceRoleKey,
         'Authorization': `Bearer ${serviceRoleKey}`,
-        'Content-Type': file.type,
+        'Content-Type': file.type || 'application/octet-stream',
       },
       body: arrayBuffer,
     });
@@ -45,7 +45,7 @@ export async function uploadToSupabase(formData: FormData) {
       throw new Error(errorData.message || 'Failed to upload to Supabase');
     }
 
-    // Public URL format per Supabase documentation
+    // Public URL format for public buckets
     const publicUrl = `${supabaseUrl}/storage/v1/object/public/${bucket}/${filePath}`;
 
     return {

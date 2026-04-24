@@ -62,11 +62,11 @@ export default function Home() {
                 <Star className="text-primary w-10 h-10 relative z-10 fill-primary/10" />
               </div>
             </div>
-            <span className="text-primary font-bold tracking-[0.3em] uppercase text-[10px] mb-4 block">Our Enchanted Path</span>
-            <h2 className="font-fancy text-5xl md:text-6xl text-primary mb-12 leading-tight">
-              Where every loop is a <br />
-              <span className="text-accent italic relative">
-                love letter
+            <span className="text-primary font-bold tracking-[0.3em] uppercase text-[10px] mb-4 block">The Fable Heritage</span>
+            <h2 className="font-headline text-5xl md:text-6xl text-primary mb-12 leading-tight">
+              Where every stitch is a <br />
+              <span className="text-accent italic relative font-light">
+                legacy of love
                 <svg className="absolute -bottom-2 left-0 w-full" viewBox="0 0 100 10" preserveAspectRatio="none">
                   <path d="M0 5 Q 25 0 50 5 T 100 5" fill="none" stroke="currentColor" strokeWidth="2" className="text-accent/60" />
                 </svg>
@@ -76,12 +76,12 @@ export default function Home() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mt-20 text-left">
               {[
                 { icon: "🌿", title: "Softest Hugs", desc: "Premium ethical yarns that feel like clouds against your skin." },
-                { icon: "📖", title: "Living Tales", desc: "Each amigurumi arrives with its own tiny, hand-written birth certificate." },
+                { icon: "📖", title: "Forever Tales", desc: "Each creation arrives with its own hand-calligraphed birth certificate." },
                 { icon: "✨", title: "Heart-Stitched", desc: "Slow-made magic that values patience and precision above all else." }
               ].map((item, i) => (
                 <div key={i} className="group bg-white/70 backdrop-blur-md p-10 rounded-[2.5rem] stitching-border hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 hover:-translate-y-2">
                   <div className="text-4xl mb-6 transform group-hover:scale-125 transition-transform duration-500">{item.icon}</div>
-                  <h4 className="font-bold text-xl text-primary mb-4">{item.title}</h4>
+                  <h4 className="font-headline text-xl text-primary mb-4">{item.title}</h4>
                   <p className="text-sm text-muted-foreground leading-relaxed font-medium">
                     {item.desc}
                   </p>
@@ -107,9 +107,9 @@ export default function Home() {
              <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.1),transparent)] opacity-40"></div>
              <div className="relative z-10">
                <span className="text-accent font-bold tracking-[0.4em] uppercase text-[10px] mb-6 block">The Inner Circle</span>
-               <h2 className="font-fancy text-5xl md:text-7xl mb-8">Join the Whimsy</h2>
+               <h2 className="font-headline text-5xl md:text-7xl mb-8 uppercase tracking-tight">Join the Fable</h2>
                <p className="mb-12 text-primary-foreground/90 max-w-xl mx-auto text-lg font-medium italic">
-                 "Sign your name in our Book of Dreams and receive a sprinkle of magic in your inbox every full moon."
+                 "Sign your name in our Book of Forever and receive a sprinkle of magic in your inbox every full moon."
                </p>
                <div className="flex flex-col sm:flex-row gap-5 max-w-lg mx-auto">
                  <input 
@@ -117,7 +117,7 @@ export default function Home() {
                    placeholder="Your magical email address" 
                    className="flex-1 bg-white/10 border-2 border-white/20 rounded-2xl px-8 py-5 text-white placeholder:text-white/60 focus:outline-none focus:ring-4 focus:ring-accent/40 backdrop-blur-md transition-all"
                  />
-                 <button className="btn-squish bg-accent text-accent-foreground px-12 py-5 rounded-2xl hover:bg-white hover:text-primary transition-all font-bold whitespace-nowrap shadow-xl">
+                 <button className="btn-squish bg-accent text-accent-foreground px-12 py-5 rounded-2xl hover:bg-white hover:text-primary transition-all font-bold whitespace-nowrap shadow-xl uppercase tracking-widest text-xs">
                    Subscribe ✨
                  </button>
                </div>

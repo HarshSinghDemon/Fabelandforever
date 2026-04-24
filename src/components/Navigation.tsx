@@ -19,10 +19,10 @@ export function Navigation() {
   }, []);
 
   const navLinks = [
-    { name: 'Shop 🎁', href: '#shop' },
-    { name: 'Custom ✨', href: '#custom' },
-    { name: 'Story 📖', href: '#story' },
-    { name: 'Say Hi 👋', href: '#contact' },
+    { name: 'Collections 🎁', href: '#shop' },
+    { name: 'Custom Magic ✨', href: '#custom' },
+    { name: 'Our Story 📖', href: '#story' },
+    { name: 'Contact 👋', href: '#contact' },
   ];
 
   return (
@@ -35,12 +35,12 @@ export function Navigation() {
           ? "bg-white/85 backdrop-blur-xl shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] border border-white/40 py-4 scale-[0.98]" 
           : "bg-white/50 backdrop-blur-md border border-white/20"
       )}>
-        <Link href="/" className="font-fancy text-3xl text-primary flex items-center gap-3 hover:scale-105 transition-all group">
+        <Link href="/" className="font-headline text-2xl md:text-3xl text-primary flex items-center gap-3 hover:scale-105 transition-all group">
           <div className="relative">
             <Sparkles className="text-accent fill-accent w-5 h-5 group-hover:rotate-45 transition-transform duration-500" />
             <Heart className="absolute -top-2 -right-2 text-primary w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
           </div>
-          Cloudy Tale
+          Fable & Forever
         </Link>
 
         {/* Desktop Menu */}
@@ -79,7 +79,7 @@ export function Navigation() {
             <Link 
               key={link.name} 
               href={link.href}
-              className="text-3xl font-fancy text-primary hover:text-accent transition-all flex items-center justify-between group"
+              className="text-2xl font-headline text-primary hover:text-accent transition-all flex items-center justify-between group"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               {link.name}

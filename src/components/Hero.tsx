@@ -16,27 +16,29 @@ export function Hero() {
         <div className="animate-fade-in-up">
           <div className="inline-flex items-center gap-3 bg-accent/20 backdrop-blur-md px-6 py-2.5 rounded-full mb-10 border border-accent/30">
             <Sparkles className="text-primary w-4 h-4 sparkle-slow" />
-            <span className="text-primary font-bold text-[10px] uppercase tracking-[0.3em]">Hand-Spun Fairytales 🎀</span>
+            <span className="text-primary font-bold text-[10px] uppercase tracking-[0.3em]">Artisanal Heirlooms 🎀</span>
           </div>
           
-          <h1 className="font-fancy text-7xl md:text-8xl lg:text-9xl text-primary leading-[1] mb-10 relative">
-            Woven with <br />
-            <span className="text-accent relative inline-block group cursor-default">
-              Magic
+          <h1 className="font-headline text-7xl md:text-8xl lg:text-9xl text-primary leading-[0.95] mb-10 relative">
+            Stories <br />
+            <span className="text-accent relative inline-block group cursor-default italic font-light">
+              Stitched
               <span className="absolute -top-4 -right-8 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                 <Sparkles className="w-8 h-8 text-accent animate-pulse" />
               </span>
             </span>
+            <br />
+            Forever
           </h1>
           
           <p className="text-2xl text-muted-foreground max-w-md mb-14 leading-relaxed font-medium italic">
-            "We don't just crochet plushies; we breathe life into the companions you've been waiting for." 🧸✨
+            "Fable & Forever weaves the whispers of your imagination into handcrafted treasures that last a lifetime." 🧸✨
           </p>
           
           <div className="flex flex-col sm:flex-row gap-6">
             <Button asChild size="lg" className="btn-squish bg-primary hover:bg-primary/90 text-primary-foreground px-14 py-8 text-xl rounded-[2rem] shadow-2xl shadow-primary/30 transition-all hover:scale-105 group">
               <Link href="#shop" className="flex items-center">
-                Shop Now <ArrowRight className="ml-3 group-hover:translate-x-2 transition-transform" />
+                The Collection <ArrowRight className="ml-3 group-hover:translate-x-2 transition-transform" />
               </Link>
             </Button>
             <Button variant="outline" size="lg" className="btn-squish border-primary/20 text-primary hover:bg-primary/5 px-14 py-8 text-xl rounded-[2rem] backdrop-blur-sm group">
@@ -59,16 +61,16 @@ export function Hero() {
               fill
               className="object-cover transition-transform duration-1000 group-hover:scale-105"
               priority
-              data-ai-hint="teal crochet amigurumi"
+              data-ai-hint="luxury teal crochet"
             />
             
             {/* Elegant Floating Tags */}
             <div className="absolute top-12 left-10 bg-white/95 backdrop-blur-md text-primary px-8 py-4 rounded-[1.5rem] shadow-xl font-bold text-sm floating border border-primary/5 flex items-center gap-3">
               <span className="w-2 h-2 rounded-full bg-accent animate-ping"></span>
-              100% Cotton 🌿
+              Bespoke Craft 🌿
             </div>
             <div className="absolute bottom-12 right-10 bg-primary/95 backdrop-blur-md text-white px-8 py-4 rounded-[1.5rem] shadow-xl font-bold text-sm floating [animation-delay:1.5s] flex items-center gap-3">
-              Artisan Made ✨
+              Fable Quality ✨
               <Heart className="w-4 h-4 fill-accent text-accent" />
             </div>
           </div>

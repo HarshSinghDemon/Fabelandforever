@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
-import { Plus, Trash2, Package, Tag, Image as ImageIcon, Loader2, Sparkles, AlertCircle } from 'lucide-react';
+import { Plus, Trash2, Package, Tag, Image as ImageIcon, Loader2, Sparkles, AlertCircle, ShieldAlert } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import Image from 'next/image';
 import { errorEmitter } from '@/firebase/error-emitter';
@@ -52,18 +52,18 @@ export function AdminProductManager() {
       if (result.success && result.url) {
         setFormData(prev => ({ ...prev, image: result.url! }));
         toast({ 
-          title: "Image Loomed! ✨", 
-          description: "Your treasure visual is now safe in Supabase." 
+          title: "Visual Captured! ✨", 
+          description: "Your treasure photo is safely stored in Supabase." 
         });
       } else {
-        throw new Error(result.error || "Failed to upload to Supabase");
+        throw new Error(result.error || "Failed to upload image");
       }
     } catch (error: any) {
-      console.error("Supabase Upload Error:", error);
+      console.error("Upload Error:", error);
       setUploadError(error.message);
       toast({ 
         variant: "destructive", 
-        title: "Supabase Looming Failed", 
+        title: "Upload Failed", 
         description: error.message 
       });
     } finally {
@@ -71,87 +71,100 @@ export function AdminProductManager() {
     }
   };
 
-  const handleAddProduct = (e: React.FormEvent) => {
+  const handleAddProduct = async (e: React.FormEvent) => {
     e.preventDefault();
+    
     if (!formData.title || !formData.price || !formData.image) {
       toast({
         variant: "destructive",
-        title: "Missing Threads",
-        description: "Please provide a title, price, and image to finish the piece."
+        title: "Incomplete Spell",
+        description: "Please provide a title, price, and image to cast this treasure."
       });
       return;
     }
 
     setAdding(true);
-    const productData = {
-      ...formData,
-      price: parseFloat(formData.price),
-      createdAt: new Date().toISOString()
-    };
+    
+    try {
+      const productData = {
+        title: formData.title.trim(),
+        price: parseFloat(formData.price),
+        category: formData.category.trim() || 'Bespoke',
+        image: formData.image,
+        description: formData.description.trim(),
+        createdAt: new Date().toISOString()
+      };
 
-    const productsRef = collection(db, 'products');
+      const productsRef = collection(db, 'products');
+      await addDoc(productsRef, productData);
 
-    addDoc(productsRef, productData)
-      .then(() => {
-        setFormData({ title: '', price: '', category: '', image: '', description: '' });
-        toast({ title: "Product Created", description: "A new treasure has been added to the loom." });
-        setAdding(false);
-      })
-      .catch(async (error) => {
-        const permissionError = new FirestorePermissionError({
-          path: productsRef.path,
-          operation: 'create',
-          requestResourceData: productData,
-        });
-        errorEmitter.emit('permission-error', permissionError);
-        setAdding(false);
+      setFormData({ title: '', price: '', category: '', image: '', description: '' });
+      toast({ 
+        title: "Magic Manifested! ✨", 
+        description: `${productData.title} has been added to your inventory.` 
       });
+    } catch (error: any) {
+      console.error("Firestore Write Error:", error);
+      const permissionError = new FirestorePermissionError({
+        path: 'products',
+        operation: 'create',
+      });
+      errorEmitter.emit('permission-error', permissionError);
+      
+      toast({
+        variant: "destructive",
+        title: "Database Blocked",
+        description: "Firestore rejected the save. Check your Security Rules in the console."
+      });
+    } finally {
+      setAdding(false);
+    }
   };
 
-  const handleDelete = (id: string) => {
-    if (!confirm("Are you sure you want to remove this piece from existence?")) return;
+  const handleDelete = async (id: string) => {
+    if (!confirm("Are you sure you want to unravel this creation? This cannot be undone.")) return;
     
-    const docRef = doc(db, 'products', id);
-    
-    deleteDoc(docRef)
-      .then(() => {
-        toast({ title: "Product Removed", description: "The piece has been unraveled." });
-      })
-      .catch(async (error) => {
-        const permissionError = new FirestorePermissionError({
-          path: docRef.path,
-          operation: 'delete',
-        });
-        errorEmitter.emit('permission-error', permissionError);
+    try {
+      const docRef = doc(db, 'products', id);
+      await deleteDoc(docRef);
+      toast({ title: "Treasure Unraveled", description: "The item has been removed from your shop." });
+    } catch (error: any) {
+      console.error("Delete Error:", error);
+      const permissionError = new FirestorePermissionError({
+        path: `products/${id}`,
+        operation: 'delete',
       });
+      errorEmitter.emit('permission-error', permissionError);
+    }
   };
 
   return (
     <div className="space-y-12">
+      {/* Security Rule Helper */}
+      <Alert className="bg-amber-50 border-amber-200 rounded-[2rem] p-8">
+        <ShieldAlert className="h-6 w-6 text-amber-600" />
+        <AlertTitle className="text-amber-800 font-bold ml-2">Database Access Note</AlertTitle>
+        <AlertDescription className="text-amber-700/80 ml-2 mt-2">
+          If your items don't save, ensure your <b>Firestore Rules</b> allow writes. 
+          Go to <a href="https://console.firebase.google.com/project/fabel-57315/firestore/rules" target="_blank" className="underline font-bold">Firebase Rules</a> and set: 
+          <code className="block mt-2 p-2 bg-amber-100 rounded text-xs">allow read, write: if request.auth != null;</code>
+        </AlertDescription>
+      </Alert>
+
       <Card className="border-none shadow-xl rounded-[3rem] overflow-hidden bg-white">
         <CardContent className="p-12">
           <div className="flex items-center gap-4 mb-10">
             <div className="p-3 bg-primary/10 rounded-2xl">
               <Plus className="text-primary w-6 h-6" />
             </div>
-            <h3 className="font-headline text-3xl text-primary">Add New Treasure</h3>
+            <h3 className="font-headline text-3xl text-primary">Loom a New Treasure</h3>
           </div>
-
-          {uploadError && (
-            <Alert variant="destructive" className="mb-8 rounded-2xl">
-              <AlertCircle className="h-4 w-4" />
-              <AlertTitle>Supabase Problem</AlertTitle>
-              <AlertDescription>
-                {uploadError}. Ensure your SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are set in the .env file.
-              </AlertDescription>
-            </Alert>
-          )}
 
           <form onSubmit={handleAddProduct} className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="space-y-4">
-              <Label className="text-[10px] font-bold uppercase tracking-widest text-primary/50 ml-4">Product Name</Label>
+              <Label className="text-[10px] font-bold uppercase tracking-widest text-primary/50 ml-4">Treasure Name</Label>
               <Input 
-                placeholder="e.g., Starry Night Shawl" 
+                placeholder="e.g., Lavender Sprite Toy" 
                 value={formData.title}
                 onChange={(e) => setFormData({...formData, title: e.target.value})}
                 className="h-14 rounded-2xl border-2 border-primary/5 focus:border-accent"
@@ -159,10 +172,9 @@ export function AdminProductManager() {
               />
             </div>
             <div className="space-y-4">
-              <Label className="text-[10px] font-bold uppercase tracking-widest text-primary/50 ml-4">Price (INR)</Label>
+              <Label className="text-[10px] font-bold uppercase tracking-widest text-primary/50 ml-4">Price (₹ INR)</Label>
               <Input 
                 type="number" 
-                step="1"
                 placeholder="0" 
                 value={formData.price}
                 onChange={(e) => setFormData({...formData, price: e.target.value})}
@@ -173,17 +185,17 @@ export function AdminProductManager() {
             <div className="space-y-4">
               <Label className="text-[10px] font-bold uppercase tracking-widest text-primary/50 ml-4">Category</Label>
               <Input 
-                placeholder="e.g., Guardian, Creature, Accessory" 
+                placeholder="e.g., Creature, Guardian, Accessory" 
                 value={formData.category}
                 onChange={(e) => setFormData({...formData, category: e.target.value})}
                 className="h-14 rounded-2xl border-2 border-primary/5 focus:border-accent"
               />
             </div>
             <div className="space-y-4">
-              <Label className="text-[10px] font-bold uppercase tracking-widest text-primary/50 ml-4">Product Image (Supabase)</Label>
+              <Label className="text-[10px] font-bold uppercase tracking-widest text-primary/50 ml-4">Treasure Visual</Label>
               <div className="flex gap-4">
                 <Input 
-                  placeholder="Image URL" 
+                  placeholder="Paste URL or upload..." 
                   value={formData.image}
                   onChange={(e) => setFormData({...formData, image: e.target.value})}
                   className="h-14 rounded-2xl border-2 border-primary/5 focus:border-accent flex-1"
@@ -202,31 +214,31 @@ export function AdminProductManager() {
                   </Button>
                 </div>
               </div>
-              {formData.image && (
-                <div className="mt-2 text-[10px] text-emerald-600 font-bold uppercase tracking-wider flex items-center gap-2">
-                  <Sparkles className="w-3 h-3" /> Image Loomed Successfully
-                </div>
-              )}
             </div>
             <div className="md:col-span-2 space-y-4">
-              <Label className="text-[10px] font-bold uppercase tracking-widest text-primary/50 ml-4">Story / Description</Label>
+              <Label className="text-[10px] font-bold uppercase tracking-widest text-primary/50 ml-4">The Item's Story</Label>
               <Input 
-                placeholder="Tell the tale of this creation..." 
+                placeholder="Once upon a time, this yarn became..." 
                 value={formData.description}
                 onChange={(e) => setFormData({...formData, description: e.target.value})}
                 className="h-14 rounded-2xl border-2 border-primary/5 focus:border-accent"
               />
             </div>
+            
             <Button 
               type="submit" 
               disabled={adding || uploading}
-              className="md:col-span-2 h-16 rounded-2xl bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-widest shadow-xl shadow-primary/20 transition-all hover:scale-[1.01]"
+              className="md:col-span-2 h-20 rounded-[2rem] bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-[0.3em] shadow-2xl shadow-primary/20 transition-all hover:scale-[1.01]"
             >
               {adding ? (
                 <div className="flex items-center gap-3">
-                  <Loader2 className="w-5 h-5 animate-spin" /> Weaving into database...
+                  <Loader2 className="w-5 h-5 animate-spin" /> Binding Threads...
                 </div>
-              ) : "Cast Product Spell"}
+              ) : (
+                <div className="flex items-center gap-3">
+                  <Sparkles className="w-5 h-5" /> Cast the Creation Spell
+                </div>
+              )}
             </Button>
           </form>
         </CardContent>
@@ -239,13 +251,17 @@ export function AdminProductManager() {
             <h3 className="font-headline text-3xl text-primary">Live Inventory</h3>
           </div>
           <span className="bg-white/50 border border-primary/10 px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest text-primary">
-            {products.length} Items Listed
+            {products.length} Items on the Shelves
           </span>
         </div>
 
         {loading ? (
           <div className="flex justify-center py-20">
             <Loader2 className="w-12 h-12 text-primary animate-spin" />
+          </div>
+        ) : products.length === 0 ? (
+          <div className="p-20 bg-white/40 rounded-[3rem] border-2 border-dashed border-primary/10 text-center italic text-muted-foreground">
+            No treasures found in the loom. Start by creating one above!
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -273,13 +289,11 @@ export function AdminProductManager() {
                       </div>
                       <div className="flex items-center gap-2 mb-4">
                         <Tag className="w-3 h-3 text-accent" />
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-accent">{product.category || 'Bespoke'}</span>
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-accent">{product.category}</span>
                       </div>
                     </div>
                     <div className="flex items-center justify-between mt-auto">
-                      <span className="font-bold text-primary flex items-center gap-1">
-                        ₹ {Number(product.price).toLocaleString('en-IN')}
-                      </span>
+                      <span className="font-bold text-primary">₹ {Number(product.price).toLocaleString('en-IN')}</span>
                       <Sparkles className="w-4 h-4 text-primary/10 group-hover:text-accent transition-colors" />
                     </div>
                   </div>

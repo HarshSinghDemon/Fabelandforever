@@ -1,4 +1,3 @@
-
 "use client";
 
 import React from 'react';
@@ -16,7 +15,7 @@ export function FeaturedProducts() {
   const db = useFirestore();
 
   const productsQuery = React.useMemo(() => {
-    return query(collection(db, 'products'), orderBy('title', 'asc'));
+    return query(collection(db, 'products'), orderBy('createdAt', 'desc'));
   }, [db]);
 
   const { data: products, loading } = useCollection(productsQuery);
@@ -39,7 +38,7 @@ export function FeaturedProducts() {
     return (
       <div className="py-32 flex flex-col items-center justify-center gap-4">
         <Loader2 className="w-10 h-10 text-primary animate-spin" />
-        <p className="text-accent font-bold uppercase tracking-widest text-[10px]">Consulting the Loom...</p>
+        <p className="text-accent font-bold uppercase tracking-widest text-[10px]">Peering into the Hollow...</p>
       </div>
     );
   }
@@ -52,7 +51,7 @@ export function FeaturedProducts() {
              <div className="absolute inset-0 bg-accent/60 rounded-full animate-ping opacity-20"></div>
              <Star className="text-primary fill-primary w-6 h-6 relative z-10" />
           </div>
-          <span className="text-primary font-bold tracking-[0.5em] uppercase text-[10px] mb-6 block">The Summer Solstice Drops</span>
+          <span className="text-primary font-bold tracking-[0.5em] uppercase text-[10px] mb-6 block">The Latest Looms</span>
           <h2 className="font-fancy text-6xl md:text-7xl text-primary mb-8">Ethereal Keepsakes</h2>
           <p className="text-muted-foreground text-xl italic max-w-xl mx-auto font-medium">
             "Hand-picked from the loom of our artisan hollow, just for you."
@@ -60,8 +59,10 @@ export function FeaturedProducts() {
         </div>
 
         {products.length === 0 ? (
-          <div className="text-center py-20">
-            <p className="text-muted-foreground italic">The shelves are currently light as a cloud. Check back after the next solstice!</p>
+          <div className="text-center py-20 p-20 border-2 border-dashed border-primary/10 rounded-[4rem] bg-white/50">
+            <p className="text-muted-foreground italic text-xl">
+              "The shelves are currently light as a cloud. Check back after the next solstice or add treasures in the admin portal!"
+            </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
@@ -90,7 +91,7 @@ export function FeaturedProducts() {
                   <div className="text-center">
                     <div className="flex items-center justify-center gap-2 mb-4">
                       <Sparkles className="w-3 h-3 text-accent" />
-                      <span className="text-[10px] uppercase tracking-[0.3em] text-accent font-bold">{product.category || 'Bespoke'}</span>
+                      <span className="text-[10px] uppercase tracking-[0.3em] text-accent font-bold">{product.category}</span>
                       <Sparkles className="w-3 h-3 text-accent" />
                     </div>
                     <h3 className="font-bold text-3xl text-primary mb-3 group-hover:text-accent transition-colors duration-500">{product.title}</h3>

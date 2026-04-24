@@ -1,3 +1,4 @@
+
 "use client";
 
 import React from 'react';
@@ -7,13 +8,19 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Sparkles, ArrowRight, Heart, Star, Scissors } from 'lucide-react';
 import Link from 'next/link';
 import { Logo } from './Logo';
+import { useFirestore, useDoc } from '@/firebase';
+import { doc } from 'firebase/firestore';
 
 export function Hero() {
-  const heroData = PlaceHolderImages.find(img => img.id === 'hero-image');
+  const db = useFirestore();
+  const heroSettingRef = doc(db, 'settings', 'hero');
+  const { data: heroSetting } = useDoc(heroSettingRef);
+  
+  const defaultHeroData = PlaceHolderImages.find(img => img.id === 'hero-image');
+  const heroImageUrl = heroSetting?.value || defaultHeroData?.imageUrl || "https://picsum.photos/seed/fable-hero/1200/1200";
 
   return (
     <section className="relative min-h-[100vh] flex items-center overflow-hidden pt-40 pb-20 bg-paper">
-      {/* Decorative SVG Patterns in background */}
       <div className="absolute inset-0 bg-dots opacity-40 pointer-events-none"></div>
       
       <div className="container mx-auto px-6 relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
@@ -60,7 +67,6 @@ export function Hero() {
         </div>
 
         <div className="relative">
-          {/* Animated decorative orbit */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] border border-accent/20 rounded-full animate-[spin_20s_linear_infinite] pointer-events-none">
              <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 bg-white rounded-full shadow-xl border border-accent/10">
                 <Scissors className="w-6 h-6 text-primary" />
@@ -70,15 +76,13 @@ export function Hero() {
           <div className="relative group perspective-1000">
             <div className="relative aspect-[4/5] lg:aspect-square w-full rounded-[5rem] overflow-hidden shadow-[0_60px_100px_-20px_rgba(0,0,0,0.15)] border-[25px] border-white group-hover:shadow-primary/20 transition-all duration-1000 group-hover:rotate-1 ring-8 ring-accent/5">
               <Image
-                src={heroData?.imageUrl || "https://picsum.photos/seed/fable-hero/1200/1200"}
-                alt="Handmade pink crochet lily"
+                src={heroImageUrl}
+                alt="Handmade crochet visual"
                 fill
                 className="object-cover transition-transform duration-[2000ms] group-hover:scale-110"
                 priority
-                data-ai-hint="pink crochet lily"
               />
               
-              {/* Luxury Floating Labels */}
               <div className="absolute top-14 left-12 bg-white/95 backdrop-blur-xl text-primary px-10 py-5 rounded-[2rem] shadow-2xl font-bold text-base floating border border-primary/5 flex items-center gap-4">
                 <span className="w-3 h-3 rounded-full bg-accent animate-ping"></span>
                 Bespoke Fiber Arts 🌿
@@ -90,13 +94,11 @@ export function Hero() {
               </div>
             </div>
             
-            {/* Background Magic Glow */}
             <div className="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[130%] h-[130%] bg-accent/20 rounded-full blur-[120px] animate-pulse"></div>
           </div>
         </div>
       </div>
       
-      {/* Dynamic Floating particles */}
       <div className="absolute top-10 right-10 opacity-20 floating [animation-duration:10s]">
         <Star className="w-24 h-24 text-accent fill-current" />
       </div>

@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useUser, useAuth, useFirestore, useCollection } from '@/firebase';
 import { AdminProductManager } from '@/components/AdminProductManager';
 import { AdminOrderManager } from '@/components/AdminOrderManager';
+import { AdminSettingsManager } from '@/components/AdminSettingsManager';
 import { Navigation } from '@/components/Navigation';
 import { Button } from '@/components/ui/button';
 import { collection, limit, onSnapshot, query } from 'firebase/firestore';
@@ -20,7 +21,8 @@ import {
   ShieldCheck,
   ShieldAlert,
   BarChart3,
-  Info
+  Info,
+  Settings
 } from 'lucide-react';
 import { signOut } from 'firebase/auth';
 
@@ -29,7 +31,7 @@ export default function AdminDashboard() {
   const auth = useAuth();
   const db = useFirestore();
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<'inventory' | 'orders'>('inventory');
+  const [activeTab, setActiveTab] = useState<'inventory' | 'orders' | 'settings'>('inventory');
   const [dbStatus, setDbStatus] = useState<'checking' | 'connected' | 'error'>('checking');
 
   const productsQuery = useMemo(() => collection(db, 'products'), [db]);
@@ -116,6 +118,7 @@ export default function AdminDashboard() {
               {[
                 { id: 'inventory', icon: Package, label: 'Inventory' },
                 { id: 'orders', icon: History, label: 'Order Scrolls' },
+                { id: 'settings', icon: Settings, label: 'Site Settings' },
               ].map((item) => (
                 <button 
                   key={item.id}
@@ -170,20 +173,6 @@ export default function AdminDashboard() {
                     }`}></div>
                   </div>
                </div>
-               
-               {dbStatus === 'error' && (
-                 <div className="mt-6 p-6 bg-white/80 rounded-2xl border border-destructive/20 space-y-4">
-                   <div className="flex items-center gap-2 text-destructive font-bold uppercase tracking-wider text-[10px]">
-                     <Info className="w-4 h-4" /> Action Required
-                   </div>
-                   <p className="text-[11px] leading-relaxed text-muted-foreground font-medium italic">
-                     "The loom is stuck! Please ensure your Firestore Rules allow reads for everyone so customers can see your work."
-                   </p>
-                   <Button asChild size="sm" variant="outline" className="w-full text-[9px] h-8 rounded-xl border-destructive/20 text-destructive hover:bg-destructive/10">
-                     <a href={firebaseConsoleUrl} target="_blank">View Rules Tutorial</a>
-                   </Button>
-                 </div>
-               )}
             </div>
           </div>
 
@@ -192,6 +181,7 @@ export default function AdminDashboard() {
               <div className="bg-transparent rounded-[4rem] overflow-hidden">
                 {activeTab === 'inventory' && <AdminProductManager />}
                 {activeTab === 'orders' && <AdminOrderManager />}
+                {activeTab === 'settings' && <AdminSettingsManager />}
               </div>
             </div>
           </div>

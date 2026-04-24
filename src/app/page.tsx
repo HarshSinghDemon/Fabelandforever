@@ -6,7 +6,7 @@ import { Navigation } from '@/components/Navigation';
 import { Hero } from '@/components/Hero';
 import { FeaturedProducts } from '@/components/FeaturedProducts';
 import { Footer } from '@/components/Footer';
-import { Heart, Sparkles, Star, Send } from 'lucide-react';
+import { Heart, Sparkles, Star, Send, Scissors } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -62,14 +62,14 @@ export default function Home() {
             <div className="flex justify-center mb-6">
               <div className="relative">
                 <div className="absolute inset-0 bg-accent/30 rounded-full blur-xl animate-pulse"></div>
-                <Star className="text-primary w-10 h-10 relative z-10 fill-primary/10" />
+                <Scissors className="text-primary w-10 h-10 relative z-10 -rotate-45" />
               </div>
             </div>
-            <span className="text-primary font-bold tracking-[0.3em] uppercase text-[10px] mb-4 block">The Fable Heritage</span>
+            <span className="text-primary font-bold tracking-[0.3em] uppercase text-[10px] mb-4 block">The Weaver's Hand</span>
             <h2 className="font-headline text-5xl md:text-6xl text-primary mb-12 leading-tight">
-              Where every stitch is a <br />
+              Where every stitch is <br />
               <span className="text-accent italic relative font-light">
-                legacy of love
+                a legacy in every loop
                 <svg className="absolute -bottom-2 left-0 w-full" viewBox="0 0 100 10" preserveAspectRatio="none">
                   <path d="M0 5 Q 25 0 50 5 T 100 5" fill="none" stroke="currentColor" strokeWidth="2" className="text-accent/60" />
                 </svg>
@@ -78,9 +78,9 @@ export default function Home() {
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mt-20 text-left">
               {[
-                { icon: "🌿", title: "Softest Hugs", desc: "Premium ethical yarns that feel like clouds against your skin." },
-                { icon: "📖", title: "Forever Tales", desc: "Each creation arrives with its own hand-calligraphed birth certificate." },
-                { icon: "✨", title: "Heart-Stitched", desc: "Slow-made magic that values patience and precision above all else." }
+                { icon: "🧶", title: "Artisan Fiber", desc: "Hand-picked, premium cotton and alpaca blends for timeless softness." },
+                { icon: "✨", title: "The Perfect Tension", desc: "Every piece is crafted with precise tension for durability and grace." },
+                { icon: "🍃", title: "Sustainable Spells", desc: "Eco-conscious materials that honor both the craft and the earth." }
               ].map((item, i) => (
                 <div key={i} className="group bg-white/70 backdrop-blur-md p-10 rounded-[2.5rem] stitching-border hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 hover:-translate-y-2">
                   <div className="text-4xl mb-6 transform group-hover:scale-125 transition-transform duration-500">{item.icon}</div>
@@ -107,15 +107,15 @@ export default function Home() {
              
              <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
                <div>
-                 <span className="text-accent font-bold tracking-[0.4em] uppercase text-[10px] mb-6 block">Write to the Atelier</span>
-                 <h2 className="font-headline text-5xl md:text-6xl text-primary mb-8 leading-tight">Send a <br /><span className="italic text-accent">Love Note</span></h2>
+                 <span className="text-accent font-bold tracking-[0.4em] uppercase text-[10px] mb-6 block">The Maker's Mailbox</span>
+                 <h2 className="font-headline text-5xl md:text-6xl text-primary mb-8 leading-tight">Commission <br /><span className="italic text-accent">A Keepsake</span></h2>
                  <p className="text-muted-foreground font-medium italic mb-10 leading-relaxed text-lg">
-                   "Whether you're dreaming of a bespoke heirloom or just want to share a story, our needles are waiting for your word."
+                   "Share your dreams for a bespoke pattern or custom creation. Our hooks are ready to bring your thread to life."
                  </p>
                  <div className="space-y-4">
                     <div className="flex items-center gap-4 text-primary font-bold uppercase tracking-widest text-[10px]">
-                        <Heart className="w-4 h-4 fill-accent text-accent" />
-                        Response time: 2-3 Moon-rises
+                        <Scissors className="w-4 h-4 text-accent" />
+                        Next Yarn Batch: Summer Solstice
                     </div>
                  </div>
                </div>
@@ -123,18 +123,18 @@ export default function Home() {
                <form className="space-y-6 bg-accent/5 p-8 md:p-10 rounded-[3rem] stitching-border">
                   <div className="space-y-2">
                     <label className="text-[10px] font-bold uppercase tracking-widest text-primary/60 ml-2">Your Name</label>
-                    <Input placeholder="E.g. Elara Vance" className="bg-white border-2 border-primary/5 h-14 rounded-2xl focus:border-accent transition-all" />
+                    <Input placeholder="E.g. Clara Moss" className="bg-white border-2 border-primary/5 h-14 rounded-2xl focus:border-accent transition-all" />
                   </div>
                   <div className="space-y-2">
                     <label className="text-[10px] font-bold uppercase tracking-widest text-primary/60 ml-2">Email Address</label>
-                    <Input type="email" placeholder="elara@fable.com" className="bg-white border-2 border-primary/5 h-14 rounded-2xl focus:border-accent transition-all" />
+                    <Input type="email" placeholder="clara@fable.com" className="bg-white border-2 border-primary/5 h-14 rounded-2xl focus:border-accent transition-all" />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold uppercase tracking-widest text-primary/60 ml-2">Your Message</label>
-                    <Textarea placeholder="What is the story you want to tell?" className="bg-white border-2 border-primary/5 min-h-[150px] rounded-3xl focus:border-accent transition-all" />
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-primary/60 ml-2">Your Request</label>
+                    <Textarea placeholder="Describe the texture, colors, or story you'd like us to stitch..." className="bg-white border-2 border-primary/5 min-h-[150px] rounded-3xl focus:border-accent transition-all" />
                   </div>
                   <Button className="w-full h-16 rounded-2xl bg-primary hover:bg-primary/90 text-white font-bold text-sm uppercase tracking-[0.2em] shadow-xl shadow-primary/20 transition-all hover:scale-[1.02] active:scale-[0.98]">
-                    Send Message <Send className="ml-2 w-4 h-4" />
+                    Send Request <Send className="ml-2 w-4 h-4" />
                   </Button>
                </form>
              </div>

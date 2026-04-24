@@ -3,7 +3,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Instagram, Facebook, Mail, MapPin, Sparkles } from 'lucide-react';
+import { Instagram, Facebook, Mail, MapPin, Sparkles, Scissors } from 'lucide-react';
 
 export function Footer() {
   return (
@@ -20,7 +20,7 @@ export function Footer() {
           <div className="md:col-span-2">
             <h2 className="font-headline text-5xl mb-8">Fable & Forever</h2>
             <p className="text-primary-foreground/70 max-w-sm mb-10 leading-relaxed font-medium text-lg italic">
-              "Every loop holds a memory, and every stitch tells a story that lasts forever."
+              "Every loop holds a memory, and every stitch tells a story that lasts forever. Weaved with patience, heart, and hook."
             </p>
             <div className="flex gap-5">
               {[Instagram, Facebook, Mail].map((Icon, i) => (
@@ -32,11 +32,11 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="font-bold uppercase tracking-[0.3em] text-[10px] mb-10 text-accent">Archive Index</h4>
+            <h4 className="font-bold uppercase tracking-[0.3em] text-[10px] mb-10 text-accent">The Index</h4>
             <ul className="space-y-5 text-sm font-bold uppercase tracking-widest">
               <li><Link href="#shop" className="text-primary-foreground/60 hover:text-accent transition-colors">The Boutique</Link></li>
-              <li><Link href="#story" className="text-primary-foreground/60 hover:text-accent transition-colors">The Artisan</Link></li>
-              <li><Link href="#contact" className="text-primary-foreground/60 hover:text-accent transition-colors">Write to Us</Link></li>
+              <li><Link href="#story" className="text-primary-foreground/60 hover:text-accent transition-colors">The Weaver's Hand</Link></li>
+              <li><Link href="#contact" className="text-primary-foreground/60 hover:text-accent transition-colors">Custom Patterns</Link></li>
             </ul>
           </div>
 
@@ -48,18 +48,18 @@ export function Footer() {
                 <span>888 Weaver's Way,<br />Mystic Hollow, OR 97201</span>
               </li>
               <li className="flex gap-4">
-                <span className="text-accent font-bold uppercase text-[10px] tracking-widest mt-1">Hours:</span>
-                <span>By appointment & moon-rise (10am - 5pm)</span>
+                <span className="text-accent font-bold uppercase text-[10px] tracking-widest mt-1">Status:</span>
+                <span>Needles down for the day. Restitching at dawn.</span>
               </li>
             </ul>
           </div>
         </div>
 
         <div className="pt-10 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-8 text-[10px] font-bold text-primary-foreground/40 uppercase tracking-[0.4em]">
-          <p className="flex items-center gap-3">Curated with <Sparkles className="text-accent fill-accent w-4 h-4" /> & Golden Thread</p>
+          <p className="flex items-center gap-3">Stitched with <Scissors className="text-accent w-4 h-4" /> & Golden Thread</p>
           <div className="flex gap-10">
             <Link href="#" className="hover:text-accent transition-colors">Privacy Scrolls ✨</Link>
-            <Link href="#" className="hover:text-accent transition-colors">Terms of Forever 📜</Link>
+            <Link href="#" className="hover:text-accent transition-colors">The Weaver's Terms 📜</Link>
           </div>
         </div>
       </div>

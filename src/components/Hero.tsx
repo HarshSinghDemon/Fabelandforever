@@ -10,7 +10,10 @@ import { doc } from 'firebase/firestore';
 
 export function Hero() {
   const db = useFirestore();
-  const heroSettingRef = useMemoFirebase(() => doc(db, 'settings', 'hero'), [db]);
+  const heroSettingRef = useMemoFirebase(() => {
+    if (!db) return null;
+    return doc(db, 'settings', 'hero');
+  }, [db]);
   const { data: heroSetting } = useDoc(heroSettingRef);
   
   const heroImageUrl = heroSetting?.value;
@@ -67,13 +70,13 @@ export function Hero() {
           </div>
 
           <div className="relative group perspective-1000">
-            <div className="relative aspect-[4/5] sm:aspect-square w-full rounded-[3rem] sm:rounded-[5rem] overflow-hidden shadow-[0_40px_80px_-20px_rgba(0,0,0,0.1)] border-[12px] sm:border-[25px] border-white group-hover:shadow-primary/20 transition-all duration-1000 group-hover:rotate-1 ring-4 sm:ring-8 ring-accent/5 bg-muted/20">
+            <div className="relative aspect-[4/5] sm:aspect-square w-full rounded-[3rem] sm:rounded-[5rem] overflow-hidden shadow-[0_40px_80px_-20px_rgba(0,0,0,0.1)] border-[12px] sm:border-[25px] border-white group-hover:shadow-primary/20 transition-all duration-700 group-hover:rotate-1 ring-4 sm:ring-8 ring-accent/5 bg-muted/20">
               {heroImageUrl ? (
                 <Image
                   src={heroImageUrl}
                   alt="Handmade crochet visual"
                   fill
-                  className="object-cover transition-transform duration-[2s] group-hover:scale-110"
+                  className="object-cover transition-transform duration-1000 group-hover:scale-110"
                   priority
                 />
               ) : (

@@ -37,8 +37,15 @@ export default function AdminDashboard() {
   const [dbStatus, setDbStatus] = useState<'checking' | 'connected' | 'error'>('checking');
   const [copied, setCopied] = useState(false);
 
-  const productsQuery = useMemoFirebase(() => collection(db, 'products'), [db]);
-  const ordersQuery = useMemoFirebase(() => collection(db, 'orders'), [db]);
+  const productsQuery = useMemoFirebase(() => {
+    if (!db) return null;
+    return collection(db, 'products');
+  }, [db]);
+
+  const ordersQuery = useMemoFirebase(() => {
+    if (!db) return null;
+    return collection(db, 'orders');
+  }, [db]);
 
   const { data: products } = useCollection(productsQuery);
   const { data: orders } = useCollection(ordersQuery);
@@ -52,7 +59,7 @@ export default function AdminDashboard() {
   }, [user, loading, router]);
 
   useEffect(() => {
-    if (!user) return;
+    if (!user || !db) return;
     
     const q = query(collection(db, 'products'), limit(1));
     const unsubscribe = onSnapshot(q, 
@@ -129,7 +136,7 @@ service cloud.firestore {
             </Button>
             <Button 
               variant="outline" 
-              onClick={() => signOut(auth)}
+              onClick={() => auth && signOut(auth)}
               className="rounded-full px-8 h-14 border-primary/20 text-primary hover:bg-destructive hover:text-white hover:border-destructive transition-all shadow-lg active:scale-95"
             >
               <LogOut className="w-4 h-4 mr-2" /> Sign Out

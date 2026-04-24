@@ -42,20 +42,12 @@ export const useFirebase = () => {
 };
 
 export const useFirestore = () => {
-  const db = useFirebase().db;
-  if (!db) {
-    console.warn("Firestore accessed before initialization. Check environment variables.");
-  }
-  return db!;
+  return useFirebase().db;
 };
 
 export const useAuth = () => {
-  const auth = useFirebase().auth;
-  if (!auth) {
-    console.warn("Auth accessed before initialization. Check environment variables.");
-  }
-  return auth!;
+  return useFirebase().auth;
 };
 
-export const useFirebaseApp = () => useFirebase().app!;
-export const useStorage = () => useFirebase().storage!;
+export const useFirebaseApp = () => useFirebase().app;
+export const useStorage = () => useFirebase().storage;

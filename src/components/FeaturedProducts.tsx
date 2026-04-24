@@ -15,6 +15,7 @@ export function FeaturedProducts() {
   const db = useFirestore();
 
   const productsQuery = useMemoFirebase(() => {
+    if (!db) return null;
     return collection(db, 'products');
   }, [db]);
 
@@ -34,7 +35,7 @@ export function FeaturedProducts() {
     });
   };
 
-  if (loading) {
+  if (loading || !db) {
     return (
       <div className="py-24 sm:py-40 flex flex-col items-center justify-center gap-4">
         <Loader2 className="w-10 h-10 sm:w-12 sm:h-12 text-primary animate-spin" />
@@ -72,7 +73,7 @@ export function FeaturedProducts() {
                       src={product.image || "https://picsum.photos/seed/tale/600/800"}
                       alt={product.title}
                       fill
-                      className="object-cover transition-transform duration-[2s] group-hover:scale-110"
+                      className="object-cover transition-transform duration-1000 group-hover:scale-110"
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>

@@ -112,6 +112,16 @@ export default function Home() {
               <p className="text-xl sm:text-2xl text-muted-foreground leading-relaxed italic">
                 "Fable & Forever didn't start in a workshop or a business meeting. It started in the quiet hours of 2 AM, with the rhythmic 'click-pull' of a single hook and a ball of yarn that felt like a promise."
               </p>
+              
+              <div className="py-6">
+                <p className="text-2xl sm:text-3xl text-primary font-headline italic mb-2">
+                  আমাদের প্রতিটি সৃষ্টি, ভালোবাসার রঙে রাঙানো এবং যত্নে বোনা।
+                </p>
+                <p className="text-[10px] uppercase tracking-widest text-accent font-bold">
+                  (Every one of our creations is colored with love and woven with care)
+                </p>
+              </div>
+
               <p className="text-lg text-primary/70 leading-relaxed font-medium">
                 We believe that in a world of machines and 'fast' fashion, there is a profound magic in something that takes hours to grow. Our studio is built on the belief that a gift should hold the heartbeat of the person who made it. We don't just count stitches; we count memories.
               </p>

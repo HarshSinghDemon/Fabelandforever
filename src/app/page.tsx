@@ -5,7 +5,6 @@ import { Navigation } from '@/components/Navigation';
 import { Hero } from '@/components/Hero';
 import { FeaturedProducts } from '@/components/FeaturedProducts';
 import { CustomOrder } from '@/components/CustomOrder';
-import { AICrochetTool } from '@/components/AICrochetTool';
 import { Footer } from '@/components/Footer';
 import { Heart, Sparkles, Send, Scissors, Star, BookOpen, Coffee, Wind } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -82,24 +81,14 @@ export default function Home() {
       <section ref={(el) => { if (el) scrollRefs.current[1] = el }} className="reveal-on-scroll">
         <CustomOrder />
       </section>
-
-      <section className="py-16 sm:py-32 bg-white/30 reveal-on-scroll" ref={(el) => { if (el) scrollRefs.current[2] = el }}>
-        <div className="container mx-auto px-4 sm:px-6 max-w-5xl">
-          <div className="mb-10 sm:mb-16 text-center">
-            <h2 className="font-headline text-3xl sm:text-6xl text-primary mb-3 sm:mb-4">Inspiration Spell</h2>
-            <p className="text-sm sm:text-base text-muted-foreground italic">"Let the grimoire whisper a custom design just for you."</p>
-          </div>
-          <AICrochetTool />
-        </div>
-      </section>
       
       <section 
         id="story" 
-        ref={(el) => { if (el) scrollRefs.current[3] = el }}
+        ref={(el) => { if (el) scrollRefs.current[2] = el }}
         className="py-16 sm:py-40 bg-white relative overflow-hidden reveal-on-scroll"
       >
         <div className="container mx-auto px-4 sm:px-6 relative z-10">
-          <div className="max-w-5xl mx-auto text-center">
+          <div className="max-w-3xl mx-auto text-center">
             <div className="flex justify-center mb-8 sm:mb-10">
               <div className="relative group">
                 <div className="absolute inset-0 bg-primary/20 rounded-full blur-2xl group-hover:blur-3xl transition-all duration-700"></div>
@@ -177,7 +166,7 @@ export default function Home() {
       <section 
         id="contact" 
         className="py-16 sm:py-40 relative bg-background"
-        ref={(el) => { if (el) scrollRefs.current[4] = el }}
+        ref={(el) => { if (el) scrollRefs.current[3] = el }}
       >
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-6xl mx-auto bg-white rounded-[2.5rem] sm:rounded-[5rem] p-6 sm:p-24 shadow-[0_50px_120px_-30px_rgba(45,115,107,0.2)] border-2 border-accent/5 relative overflow-hidden group">

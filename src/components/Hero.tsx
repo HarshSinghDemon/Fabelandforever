@@ -5,7 +5,7 @@ import React from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { Sparkles, ArrowRight, Heart } from 'lucide-react';
+import { Sparkles, ArrowRight, Heart, Star } from 'lucide-react';
 import Link from 'next/link';
 import { Logo } from './Logo';
 
@@ -13,7 +13,7 @@ export function Hero() {
   const heroData = PlaceHolderImages.find(img => img.id === 'hero-image');
 
   return (
-    <section className="relative min-h-[95vh] flex items-center overflow-hidden pt-32 pb-20">
+    <section className="relative min-h-[95vh] flex items-center overflow-hidden pt-32 pb-20 bg-paper">
       <div className="container mx-auto px-6 relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
         <div className="animate-fade-in-up">
           <div className="mb-12">
@@ -33,7 +33,7 @@ export function Hero() {
           </h1>
           
           <p className="text-2xl text-muted-foreground max-w-md mb-14 leading-relaxed font-medium italic">
-            "Handcrafting the whispers of your imagination into treasures that carry heartbeat and history." 🧸✨
+            "Handcrafting the whispers of your imagination into treasures that carry heartbeat and history." 🧶✨
           </p>
           
           <div className="flex flex-col sm:flex-row gap-6">
@@ -51,18 +51,23 @@ export function Hero() {
         </div>
 
         <div className="relative group">
+          {/* Whimsical Decorative Stars */}
+          <Star className="absolute -top-10 -left-10 w-8 h-8 text-primary/40 star-animation" fill="currentColor" />
+          <Star className="absolute top-20 -right-4 w-6 h-6 text-accent/60 star-animation [animation-delay:0.5s]" fill="currentColor" />
+          <Star className="absolute -bottom-6 left-20 w-5 h-5 text-primary/30 star-animation [animation-delay:1.2s]" fill="currentColor" />
+          
           {/* Animated decorative frame */}
-          <div className="absolute -inset-6 border-2 border-accent/40 rounded-[4.5rem] -rotate-3 transition-transform duration-700 group-hover:rotate-0 animate-[pulse_3s_infinite]"></div>
+          <div className="absolute -inset-6 border-2 border-accent/30 rounded-[4.5rem] -rotate-3 transition-transform duration-700 group-hover:rotate-0 animate-[pulse_3s_infinite]"></div>
           <div className="absolute -inset-3 border-2 border-primary/10 rounded-[4rem] rotate-2 transition-transform duration-700 group-hover:rotate-0"></div>
           
-          <div className="relative aspect-[4/5] lg:aspect-square w-full rounded-[3.8rem] overflow-hidden shadow-[0_40px_80px_-15px_rgba(0,0,0,0.1)] border-[18px] border-white group-hover:shadow-primary/10 transition-all duration-700">
+          <div className="relative aspect-[4/5] lg:aspect-square w-full rounded-[3.8rem] overflow-hidden shadow-[0_40px_80px_-15px_rgba(0,0,0,0.1)] border-[18px] border-white group-hover:shadow-primary/10 transition-all duration-700 ring-4 ring-accent/20">
             <Image
               src={heroData?.imageUrl || "https://picsum.photos/seed/hero/1200/1200"}
-              alt="Handmade crochet treasures"
+              alt="Handmade pink crochet lily"
               fill
               className="object-cover transition-transform duration-1000 group-hover:scale-105"
               priority
-              data-ai-hint="luxury teal crochet"
+              data-ai-hint="pink crochet lily"
             />
             
             {/* Elegant Floating Tags */}
@@ -77,13 +82,13 @@ export function Hero() {
           </div>
           
           {/* Background Glow */}
-          <div className="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-accent/20 rounded-full blur-[100px] animate-pulse"></div>
+          <div className="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-accent/15 rounded-full blur-[100px] animate-pulse"></div>
         </div>
       </div>
       
       {/* Dynamic Background elements */}
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[120px] -translate-y-1/3 translate-x-1/3"></div>
-      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-accent/15 rounded-full blur-[100px] translate-y-1/3 -translate-x-1/3"></div>
+      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-accent/10 rounded-full blur-[100px] translate-y-1/3 -translate-x-1/3"></div>
     </section>
   );
 }

@@ -34,7 +34,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-dots overflow-x-hidden">
+    <main className="min-h-screen bg-paper overflow-x-hidden">
       <Navigation />
       <Hero />
       
@@ -55,13 +55,13 @@ export default function Home() {
       <section 
         id="story" 
         ref={(el) => { if (el) scrollRefs.current[1] = el }}
-        className="py-32 bg-secondary/20 relative overflow-hidden reveal-on-scroll"
+        className="py-32 bg-secondary/10 relative overflow-hidden reveal-on-scroll"
       >
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <div className="flex justify-center mb-6">
               <div className="relative">
-                <div className="absolute inset-0 bg-accent/30 rounded-full blur-xl animate-pulse"></div>
+                <div className="absolute inset-0 bg-accent/20 rounded-full blur-xl animate-pulse"></div>
                 <Scissors className="text-primary w-10 h-10 relative z-10 -rotate-45" />
               </div>
             </div>
@@ -96,7 +96,7 @@ export default function Home() {
         
         {/* Decorative Floating Blobs */}
         <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl floating"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent/10 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl floating [animation-delay:2s]"></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent/5 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl floating [animation-delay:2s]"></div>
       </section>
 
       {/* Contact Section */}

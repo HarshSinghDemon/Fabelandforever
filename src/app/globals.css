@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -16,13 +17,13 @@
     --secondary-foreground: 185 50% 20%;
     --muted: 180 20% 94%;
     --muted-foreground: 185 20% 45%;
-    --accent: 265 60% 75%; /* More prominent, deeper Lavender but still soft */
+    --accent: 265 50% 70%; /* Soft prominent Lavender */
     --accent-foreground: 265 45% 25%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --border: 175 20% 90%;
     --input: 175 20% 90%;
-    --ring: 265 60% 70%;
+    --ring: 265 50% 70%;
     --radius: 1.5rem;
   }
 }
@@ -44,18 +45,27 @@
   font-family: 'Quicksand', sans-serif;
 }
 
+.font-headline {
+  font-family: 'Playfair Display', serif;
+}
+
 /* Elegant Patterns */
 .bg-dots {
   background-image: radial-gradient(hsla(175, 45%, 45%, 0.05) 1.5px, transparent 1.5px);
   background-size: 32px 32px;
 }
 
+.bg-paper {
+  background-color: #fafaf9;
+  background-image: url("https://www.transparenttextures.com/patterns/p6.png");
+}
+
 .stitching-border {
-  border: 3px dashed hsla(265, 60% , 75%, 0.8);
+  border: 3px dashed hsla(265, 50% , 70%, 0.6);
 }
 
 .watercolor-lavender {
-  background: radial-gradient(circle at center, hsla(265, 60%, 75%, 0.3) 0%, transparent 70%);
+  background: radial-gradient(circle at center, hsla(265, 50%, 70%, 0.2) 0%, transparent 70%);
 }
 
 /* Animations */
@@ -77,9 +87,18 @@
   animation: sparkle 3s ease-in-out infinite;
 }
 
+@keyframes star-twinkle {
+  0%, 100% { opacity: 0.3; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+.star-animation {
+  animation: star-twinkle 2s ease-in-out infinite;
+}
+
 @keyframes magic-glow {
-  0%, 100% { box-shadow: 0 0 10px hsla(265, 60%, 75%, 0.3); }
-  50% { box-shadow: 0 0 30px hsla(265, 60%, 75%, 0.6); }
+  0%, 100% { box-shadow: 0 0 10px hsla(265, 50%, 70%, 0.3); }
+  50% { box-shadow: 0 0 30px hsla(265, 50%, 70%, 0.6); }
 }
 
 .glow-hover:hover {

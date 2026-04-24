@@ -1,10 +1,11 @@
+
 {
   "placeholderImages": [
     {
       "id": "hero-image",
-      "description": "A pile of fluffy pastel pink and mint green crochet plushies on a white fluffy rug.",
-      "imageUrl": "https://picsum.photos/seed/cute-crochet-hero/1200/800",
-      "imageHint": "pink crochet plushie"
+      "description": "A beautiful handmade pink and white crochet lily flower being held, with a soft whimsical vibe.",
+      "imageUrl": "https://picsum.photos/seed/crochet-lily-fable/1200/1600",
+      "imageHint": "pink crochet flower"
     },
     {
       "id": "product-1",

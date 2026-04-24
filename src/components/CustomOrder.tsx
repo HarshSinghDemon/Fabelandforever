@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState } from 'react';
@@ -6,13 +5,11 @@ import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Sparkles, Heart, ArrowRight, Upload, Loader2, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useStorage } from '@/firebase';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useToast } from '@/hooks/use-toast';
+import { uploadToSupabase } from '@/app/actions/supabase-upload';
 
 export function CustomOrder() {
   const bgImage = PlaceHolderImages.find(img => img.id === 'hero-image');
-  const storage = useStorage();
   const { toast } = useToast();
   const [uploading, setUploading] = useState(false);
   const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
@@ -23,19 +20,25 @@ export function CustomOrder() {
 
     setUploading(true);
     try {
-      const storageRef = ref(storage, `inspiration/${Date.now()}-${file.name}`);
-      await uploadBytes(storageRef, file);
-      const url = await getDownloadURL(storageRef);
-      setUploadedUrl(url);
-      toast({
-        title: "Inspiration Captured! ✨",
-        description: "Your reference image has been safely stored in our weaver's vault.",
-      });
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const result = await uploadToSupabase(formData);
+
+      if (result.success && result.url) {
+        setUploadedUrl(result.url);
+        toast({
+          title: "Inspiration Captured! ✨",
+          description: "Your reference image has been safely stored in the Supabase vault.",
+        });
+      } else {
+        throw new Error(result.error);
+      }
     } catch (error: any) {
       toast({
         variant: "destructive",
         title: "Magic Interrupted",
-        description: "We couldn't upload your image. Please try again.",
+        description: error.message || "We couldn't upload your image to Supabase.",
       });
     } finally {
       setUploading(false);
@@ -73,7 +76,7 @@ export function CustomOrder() {
 
               <div className="bg-accent/5 p-8 rounded-[2rem] stitching-border max-w-md">
                 <h4 className="font-bold text-primary mb-4 flex items-center gap-2">
-                  <Upload className="w-4 h-4" /> Upload Inspiration
+                  <Upload className="w-4 h-4" /> Upload Inspiration (via Supabase)
                 </h4>
                 <div className="relative">
                   <input 
@@ -87,7 +90,7 @@ export function CustomOrder() {
                     {uploading ? (
                       <div className="flex flex-col items-center gap-2">
                         <Loader2 className="w-6 h-6 animate-spin text-accent" />
-                        <span className="text-xs font-bold text-primary uppercase tracking-widest">Weaving Upload...</span>
+                        <span className="text-xs font-bold text-primary uppercase tracking-widest">Supabase Weaving...</span>
                       </div>
                     ) : uploadedUrl ? (
                       <div className="flex flex-col items-center gap-2 text-primary">

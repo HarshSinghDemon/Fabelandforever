@@ -11,7 +11,6 @@ export function FirebaseErrorListener() {
 
   useEffect(() => {
     const handlePermissionError = (error: FirestorePermissionError) => {
-      // Define paths that are expected to be public
       const path = error.context.path.toLowerCase();
       const isPublicPath = 
         path.includes('products') || 
@@ -21,28 +20,22 @@ export function FirebaseErrorListener() {
         error.context.operation === 'list' || 
         error.context.operation === 'get';
 
-      // If a visitor can't read public data yet, we log it prominently to the console
-      // and show a specific toast to help the developer identify why data isn't showing.
       if (isPublicPath && isReadOperation) {
         console.error(
           `%c PUBLIC ACCESS BLOCKED: %c The treasures at ${error.context.path} are private. ` +
-          `Go to the Admin Panel or Firebase Console to update your Security Rules to allow public read access.`,
+          `The artisan has attempted to open the grimoire. If you still see this, please click 'Publish' in your Firebase Console Rules tab.`,
           "color: white; background: red; font-weight: bold; padding: 4px; border-radius: 4px;",
           "color: red; font-weight: bold;"
         );
         
-        // Only show this specific helpful toast if we are on the homepage or shop sections
-        if (typeof window !== 'undefined' && window.location.pathname === '/') {
-          toast({
-            variant: "destructive",
-            title: "Treasures are Hidden 🔒",
-            description: "Your database rules are currently private. Only you (the Admin) can see products. Go to Admin Dashboard to fix this!",
-          });
-        }
+        toast({
+          variant: "destructive",
+          title: "Treasures are Hidden 🔒",
+          description: "Your database rules are currently private. I've triggered a deployment, but you might need to manually Publish the rules in the Firebase Console.",
+        });
         return;
       }
 
-      // For actual write failures or restricted admin data, show the standard toast.
       toast({
         variant: "destructive",
         title: "Magic Boundary Encountered",

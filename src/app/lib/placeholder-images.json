@@ -3,33 +3,27 @@
   "placeholderImages": [
     {
       "id": "hero-image",
-      "description": "A beautiful handmade pink and white crochet lily flower being held, with a soft whimsical vibe.",
-      "imageUrl": "https://picsum.photos/seed/crochet-lily-fable/1200/1600",
-      "imageHint": "pink crochet flower"
+      "description": "A close-up of a delicate handmade pink crochet lily flower with green stem, sitting on a soft cream background.",
+      "imageUrl": "https://picsum.photos/seed/fable-lily-99/1200/1600",
+      "imageHint": "pink crochet lily"
     },
     {
       "id": "product-1",
-      "description": "Adorable pink crochet strawberry amigurumi with a smiley face.",
-      "imageUrl": "https://picsum.photos/seed/crochet-strawberry/600/600",
-      "imageHint": "crochet strawberry"
+      "description": "A small teal crochet forest sprite amigurumi with tiny wings.",
+      "imageUrl": "https://picsum.photos/seed/teal-sprite/600/600",
+      "imageHint": "teal crochet toy"
     },
     {
       "id": "product-2",
-      "description": "Cute crochet bear with a bow tie in soft cream yarn.",
-      "imageUrl": "https://picsum.photos/seed/crochet-bear/600/600",
+      "description": "A golden crochet honey bear with a small crown.",
+      "imageUrl": "https://picsum.photos/seed/gold-bear/600/600",
       "imageHint": "crochet bear"
     },
     {
       "id": "product-3",
-      "description": "Soft pastel flower crochet coaster set.",
-      "imageUrl": "https://picsum.photos/seed/crochet-flowers/600/600",
+      "description": "A set of five pastel crochet flower coasters.",
+      "imageUrl": "https://picsum.photos/seed/flower-coasters/600/600",
       "imageHint": "crochet coasters"
-    },
-    {
-      "id": "custom-order-bg",
-      "description": "A basket of pastel colored yarn balls with a crochet hook.",
-      "imageUrl": "https://picsum.photos/seed/yarn-basket/800/600",
-      "imageHint": "pastel yarn"
     }
   ]
 }

@@ -33,7 +33,7 @@ export function Hero() {
           </h1>
           
           <p className="text-2xl text-muted-foreground max-w-md mb-14 leading-relaxed font-medium italic">
-            "Handcrafting the whispers of your imagination into treasures that carry heartbeat and history." 🧶✨
+            "Weaving the whispers of your imagination into hand-stitched treasures that carry heartbeat and history." 🧶✨
           </p>
           
           <div className="flex flex-col sm:flex-row gap-6">
@@ -62,8 +62,8 @@ export function Hero() {
           
           <div className="relative aspect-[4/5] lg:aspect-square w-full rounded-[3.8rem] overflow-hidden shadow-[0_40px_80px_-15px_rgba(0,0,0,0.1)] border-[18px] border-white group-hover:shadow-primary/10 transition-all duration-700 ring-4 ring-accent/20">
             <Image
-              src={heroData?.imageUrl || "https://picsum.photos/seed/hero/1200/1200"}
-              alt="Handmade pink crochet lily"
+              src={heroData?.imageUrl || "https://picsum.photos/seed/fable-hero/1200/1200"}
+              alt={heroData?.description || "Handmade crochet lily"}
               fill
               className="object-cover transition-transform duration-1000 group-hover:scale-105"
               priority
@@ -76,7 +76,7 @@ export function Hero() {
               Artisan Fiber 🌿
             </div>
             <div className="absolute bottom-12 right-10 bg-primary/95 backdrop-blur-md text-white px-8 py-4 rounded-[1.5rem] shadow-xl font-bold text-sm floating [animation-delay:1.5s] flex items-center gap-3">
-              Legacy Stitch ✨
+              Legacy Loop ✨
               <Heart className="w-4 h-4 fill-accent text-accent" />
             </div>
           </div>

@@ -79,7 +79,7 @@ export default function Home() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mt-20 text-left">
               {[
                 { icon: "🧶", title: "Artisan Fiber", desc: "Hand-picked, premium cotton and alpaca blends for timeless softness." },
-                { icon: "✨", title: "The Perfect Tension", desc: "Every piece is crafted with precise tension for durability and grace." },
+                { icon: "✨", title: "Perfect Tension", desc: "Every piece is crafted with precise tension for durability and grace." },
                 { icon: "🍃", title: "Sustainable Spells", desc: "Eco-conscious materials that honor both the craft and the earth." }
               ].map((item, i) => (
                 <div key={i} className="group bg-white/70 backdrop-blur-md p-10 rounded-[2.5rem] stitching-border hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 hover:-translate-y-2">

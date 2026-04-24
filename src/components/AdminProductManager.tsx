@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState } from 'react';
@@ -11,6 +12,8 @@ import { Plus, Trash2, Package, DollarSign, Tag, Image as ImageIcon, Loader2, Sp
 import { useToast } from '@/hooks/use-toast';
 import Image from 'next/image';
 import { uploadToSupabase } from '@/app/actions/supabase-upload';
+import { errorEmitter } from '@/firebase/error-emitter';
+import { FirestorePermissionError } from '@/firebase/errors';
 
 export function AdminProductManager() {
   const db = useFirestore();
@@ -50,39 +53,58 @@ export function AdminProductManager() {
     setUploading(false);
   };
 
-  const handleAddProduct = async (e: React.FormEvent) => {
+  const handleAddProduct = (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.title || !formData.price) return;
 
     setAdding(true);
-    try {
-      await addDoc(collection(db, 'products'), {
-        ...formData,
-        price: parseFloat(formData.price),
-        createdAt: new Date().toISOString()
+    const productData = {
+      ...formData,
+      price: parseFloat(formData.price),
+      createdAt: new Date().toISOString()
+    };
+
+    const productsRef = collection(db, 'products');
+
+    // Pattern 1: Non-blocking mutation with catch and error emitter
+    addDoc(productsRef, productData)
+      .then(() => {
+        setFormData({ title: '', price: '', category: '', image: '', description: '' });
+        toast({ title: "Product Created", description: "A new treasure has been added to the loom." });
+        setAdding(false);
+      })
+      .catch(async (error) => {
+        const permissionError = new FirestorePermissionError({
+          path: productsRef.path,
+          operation: 'create',
+          requestResourceData: productData,
+        });
+        errorEmitter.emit('permission-error', permissionError);
+        setAdding(false);
       });
-      setFormData({ title: '', price: '', category: '', image: '', description: '' });
-      toast({ title: "Product Created", description: "A new treasure has been added to the loom." });
-    } catch (error) {
-      toast({ variant: "destructive", title: "Error", description: "Could not add product." });
-    } finally {
-      setAdding(false);
-    }
   };
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = (id: string) => {
     if (!confirm("Are you sure you want to remove this piece from existence?")) return;
-    try {
-      await deleteDoc(doc(db, 'products', id));
-      toast({ title: "Product Removed", description: "The piece has been unraveled." });
-    } catch (error) {
-      toast({ variant: "destructive", title: "Error", description: "Could not remove product." });
-    }
+    
+    const docRef = doc(db, 'products', id);
+    
+    // Pattern 1: Non-blocking mutation
+    deleteDoc(docRef)
+      .then(() => {
+        toast({ title: "Product Removed", description: "The piece has been unraveled." });
+      })
+      .catch(async (error) => {
+        const permissionError = new FirestorePermissionError({
+          path: docRef.path,
+          operation: 'delete',
+        });
+        errorEmitter.emit('permission-error', permissionError);
+      });
   };
 
   return (
     <div className="space-y-12">
-      {/* Add Product Form */}
       <Card className="border-none shadow-xl rounded-[3rem] overflow-hidden bg-white">
         <CardContent className="p-12">
           <div className="flex items-center gap-4 mb-10">
@@ -166,7 +188,6 @@ export function AdminProductManager() {
         </CardContent>
       </Card>
 
-      {/* Inventory List */}
       <div className="space-y-8">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">

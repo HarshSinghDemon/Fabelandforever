@@ -1,3 +1,4 @@
+
 {
   "entities": {
     "Product": {
@@ -24,6 +25,10 @@
         "description": {
           "type": "string",
           "description": "The story behind this specific piece."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
         }
       },
       "required": [

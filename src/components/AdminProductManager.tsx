@@ -2,9 +2,8 @@
 "use client";
 
 import React, { useState } from 'react';
-import { useFirestore, useCollection, useStorage } from '@/firebase';
+import { useFirestore, useCollection } from '@/firebase';
 import { collection, addDoc, deleteDoc, doc, query, orderBy } from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -15,10 +14,10 @@ import Image from 'next/image';
 import { errorEmitter } from '@/firebase/error-emitter';
 import { FirestorePermissionError } from '@/firebase/errors';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { uploadToSupabase } from '@/app/actions/supabase-upload';
 
 export function AdminProductManager() {
   const db = useFirestore();
-  const storage = useStorage();
   const { toast } = useToast();
   const [adding, setAdding] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -42,40 +41,31 @@ export function AdminProductManager() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Reset error state
     setUploadError(null);
     setUploading(true);
 
-    try {
-      if (!storage) throw new Error("Firebase Storage is not initialized.");
+    const uploadFormData = new FormData();
+    uploadFormData.append('file', file);
 
-      // Create a unique path for the image
-      const fileName = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.]/g, '_')}`;
-      const storagePath = `products/${fileName}`;
-      const storageRef = ref(storage, storagePath);
+    try {
+      const result = await uploadToSupabase(uploadFormData);
       
-      // Perform the upload
-      const snapshot = await uploadBytes(storageRef, file);
-      
-      // Get the public URL
-      const url = await getDownloadURL(snapshot.ref);
-      
-      setFormData(prev => ({ ...prev, image: url }));
-      toast({ 
-        title: "Image Loomed! ✨", 
-        description: "Your product visual is ready and secured in the vault." 
-      });
+      if (result.success && result.url) {
+        setFormData(prev => ({ ...prev, image: result.url! }));
+        toast({ 
+          title: "Image Loomed! ✨", 
+          description: "Your treasure visual is now safe in Supabase." 
+        });
+      } else {
+        throw new Error(result.error || "Failed to upload to Supabase");
+      }
     } catch (error: any) {
-      console.error("Storage Error:", error);
-      const message = error.code === 'storage/unauthorized' 
-        ? "Access Denied: Please check your Firebase Storage rules."
-        : error.message || "An unknown error occurred during upload.";
-      
-      setUploadError(message);
+      console.error("Supabase Upload Error:", error);
+      setUploadError(error.message);
       toast({ 
         variant: "destructive", 
-        title: "Looming Failed", 
-        description: message 
+        title: "Supabase Looming Failed", 
+        description: error.message 
       });
     } finally {
       setUploading(false);
@@ -151,9 +141,9 @@ export function AdminProductManager() {
           {uploadError && (
             <Alert variant="destructive" className="mb-8 rounded-2xl">
               <AlertCircle className="h-4 w-4" />
-              <AlertTitle>Storage Problem</AlertTitle>
+              <AlertTitle>Supabase Problem</AlertTitle>
               <AlertDescription>
-                {uploadError} Make sure you have enabled "Storage" in the Firebase Console and updated your rules.
+                {uploadError}. Ensure your SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are set in the .env file.
               </AlertDescription>
             </Alert>
           )}
@@ -191,10 +181,10 @@ export function AdminProductManager() {
               />
             </div>
             <div className="space-y-4">
-              <Label className="text-[10px] font-bold uppercase tracking-widest text-primary/50 ml-4">Product Image</Label>
+              <Label className="text-[10px] font-bold uppercase tracking-widest text-primary/50 ml-4">Product Image (Supabase)</Label>
               <div className="flex gap-4">
                 <Input 
-                  placeholder="URL or upload file" 
+                  placeholder="Image URL" 
                   value={formData.image}
                   onChange={(e) => setFormData({...formData, image: e.target.value})}
                   className="h-14 rounded-2xl border-2 border-primary/5 focus:border-accent flex-1"
@@ -215,7 +205,7 @@ export function AdminProductManager() {
               </div>
               {formData.image && (
                 <div className="mt-2 text-[10px] text-emerald-600 font-bold uppercase tracking-wider flex items-center gap-2">
-                  <Sparkles className="w-3 h-3" /> Image Captured Successfully
+                  <Sparkles className="w-3 h-3" /> Image Loomed Successfully
                 </div>
               )}
             </div>

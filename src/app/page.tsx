@@ -124,7 +124,7 @@ export default function Home() {
              
              <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
                <div className="animate-fade-in-up">
-                 <span className="text-accent font-bold tracking-[0.5em] uppercase text-[10px] mb-8 block">The Studio Mailbox</span>
+                 <span className="text-accent font-bold tracking-[0.5em] uppercase text-[10px] mb-8 block">The Hook & Needle Mailbox</span>
                  <h2 className="font-headline text-6xl md:text-7xl text-primary mb-10 leading-[1.1]">Let's Weave <br /><span className="italic text-accent">Something New</span></h2>
                  <p className="text-muted-foreground font-medium italic mb-12 leading-relaxed text-xl max-w-sm">
                    "Questions about a pattern, or just want to say hi? Drop us a line and let's start a new story together."

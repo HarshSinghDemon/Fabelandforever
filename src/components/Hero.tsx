@@ -23,7 +23,7 @@ export function Hero() {
               <Logo className="w-20 h-20 text-primary" />
             </div>
             <div className="h-10 w-[1px] bg-primary/20"></div>
-            <span className="font-headline text-lg tracking-[0.3em] uppercase text-primary/60 group-hover:text-primary transition-colors">Artisan Studio</span>
+            <span className="font-headline text-lg tracking-[0.3em] uppercase text-primary/60 group-hover:text-primary transition-colors">Bespoke Crochet Stitchery</span>
           </div>
           
           <h1 className="font-headline text-8xl md:text-9xl lg:text-[10rem] text-primary leading-[0.85] mb-12 relative">

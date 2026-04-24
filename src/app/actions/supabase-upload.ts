@@ -1,8 +1,8 @@
 'use server';
 
 /**
- * @fileOverview Server action to handle secure uploads to Supabase Storage.
- * This acts as the secure bridge to Supabase while keeping keys on the server.
+ * @fileOverview Secure server action to handle uploads to Supabase Storage.
+ * Uses the service_role key to bypass RLS for administrative uploads while keeping the key hidden from the client.
  */
 
 export async function uploadToSupabase(formData: FormData) {
@@ -11,16 +11,17 @@ export async function uploadToSupabase(formData: FormData) {
     return { success: false, error: 'No file provided' };
   }
 
-  // Ensure this bucket exists in your Supabase Storage dashboard
-  const bucket = 'uploads'; 
+  const bucket = 'uploads'; // Ensure this bucket exists in Supabase
   const filePath = `inspiration/${Date.now()}-${file.name.replace(/\s+/g, '_')}`;
 
   const supabaseUrl = process.env.SUPABASE_URL;
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
   if (!supabaseUrl || !serviceRoleKey || supabaseUrl === 'your-supabase-project-url') {
-    console.error('Supabase configuration missing or placeholder detected');
-    return { success: false, error: 'Storage service is not configured. Please update your .env file.' };
+    return { 
+      success: false, 
+      error: 'Supabase is not configured. Please add your URL and Service Role Key to the .env file.' 
+    };
   }
 
   try {
@@ -44,7 +45,7 @@ export async function uploadToSupabase(formData: FormData) {
       throw new Error(errorData.message || 'Failed to upload to Supabase');
     }
 
-    // Format the public URL for retrieval
+    // Public URL format per Supabase documentation
     const publicUrl = `${supabaseUrl}/storage/v1/object/public/${bucket}/${filePath}`;
 
     return {

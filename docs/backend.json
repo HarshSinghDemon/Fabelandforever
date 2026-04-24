@@ -1,0 +1,83 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "A handcrafted crochet item available in the Fable and Forever boutique.",
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "The name of the crochet treasure."
+        },
+        "price": {
+          "type": "number",
+          "description": "Price in USD."
+        },
+        "category": {
+          "type": "string",
+          "description": "The collection this item belongs to (e.g., Creature, Guardian, Enchanted)."
+        },
+        "image": {
+          "type": "string",
+          "description": "URL to the product image."
+        },
+        "description": {
+          "type": "string",
+          "description": "The story behind this specific piece."
+        }
+      },
+      "required": [
+        "title",
+        "price",
+        "image"
+      ]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "A record of a treasure being adopted by a customer.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "The UID of the customer."
+        },
+        "items": {
+          "type": "array",
+          "description": "List of products purchased."
+        },
+        "total": {
+          "type": "number",
+          "description": "Total amount paid."
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "shipped",
+            "delivered"
+          ]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  },
+  "auth": {
+    "providers": [
+      "google",
+      "password"
+    ]
+  },
+  "firestore": {
+    "/products/{productId}": {
+      "schema": "Product",
+      "description": "The live inventory of crochet items."
+    },
+    "/orders/{orderId}": {
+      "schema": "Order",
+      "description": "Historical records of customer orders."
+    }
+  }
+}

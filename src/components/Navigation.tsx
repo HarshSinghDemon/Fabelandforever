@@ -1,9 +1,10 @@
+
 "use client";
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
-import { Menu, X, Sparkles } from 'lucide-react';
+import { Menu, X, Sparkles, Search } from 'lucide-react';
 import { CartDrawer } from './CartDrawer';
 import { Logo } from './Logo';
 
@@ -55,13 +56,19 @@ export function Navigation() {
               <span className="absolute bottom-0 left-1/2 w-0 h-1 bg-accent/40 rounded-full transition-all group-hover:w-full group-hover:left-0"></span>
             </Link>
           ))}
-          <div className="pl-4 border-l border-primary/10">
+          <div className="flex items-center gap-4 pl-4 border-l border-primary/10">
+            <button className="text-primary/60 hover:text-primary transition-colors p-2 rounded-full hover:bg-primary/5 active:scale-90">
+              <Search className="w-4 h-4" />
+            </button>
             <CartDrawer />
           </div>
         </div>
 
         {/* Mobile Toggle */}
         <div className="flex md:hidden items-center gap-2">
+          <button className="text-primary/60 p-2 hover:bg-primary/5 rounded-full transition-colors active:scale-90">
+            <Search className="w-4 h-4" />
+          </button>
           <CartDrawer />
           <button 
             className="text-primary p-2 hover:bg-accent/20 rounded-full transition-colors active:scale-90"

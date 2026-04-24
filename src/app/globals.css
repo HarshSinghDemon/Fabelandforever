@@ -4,26 +4,26 @@
 
 @layer base {
   :root {
-    --background: 350 100% 98%;
-    --foreground: 350 40% 20%;
+    --background: 180 30% 98%;
+    --foreground: 185 50% 15%;
     --card: 0 0% 100%;
-    --card-foreground: 350 40% 20%;
+    --card-foreground: 185 50% 15%;
     --popover: 0 0% 100%;
-    --popover-foreground: 350 40% 20%;
-    --primary: 330 70% 70%;
-    --primary-foreground: 350 100% 98%;
-    --secondary: 160 60% 85%;
-    --secondary-foreground: 160 40% 25%;
-    --muted: 350 30% 95%;
-    --muted-foreground: 350 20% 50%;
-    --accent: 30 100% 85%;
-    --accent-foreground: 30 40% 25%;
+    --popover-foreground: 185 50% 15%;
+    --primary: 175 45% 45%;
+    --primary-foreground: 180 30% 98%;
+    --secondary: 160 30% 90%;
+    --secondary-foreground: 185 50% 20%;
+    --muted: 180 20% 94%;
+    --muted-foreground: 185 20% 45%;
+    --accent: 45 90% 60%;
+    --accent-foreground: 45 40% 15%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 350 30% 90%;
-    --input: 350 30% 90%;
-    --ring: 330 70% 70%;
-    --radius: 1.5rem;
+    --border: 175 20% 90%;
+    --input: 175 20% 90%;
+    --ring: 175 45% 45%;
+    --radius: 2rem;
   }
 }
 
@@ -36,38 +36,45 @@
   }
 }
 
-.cute-gradient {
-  background: linear-gradient(135deg, hsla(330, 70%, 95%, 1) 0%, hsla(30, 100% , 95%, 1) 100%);
+.tale-gradient {
+  background: linear-gradient(135deg, hsla(180, 40%, 95%, 1) 0%, hsla(160, 30%, 95%, 1) 100%);
 }
 
-.scallop-border {
-  position: relative;
+.stitching-border {
+  border: 3px dashed hsla(175, 45%, 45%, 0.3);
 }
 
-.scallop-border::after {
-  content: "";
-  position: absolute;
-  bottom: -10px;
-  left: 0;
-  width: 100%;
-  height: 20px;
-  background-image: radial-gradient(circle at 10px 0, transparent 10px, white 11px);
-  background-size: 20px 20px;
+.magic-shadow {
+  box-shadow: 0 20px 40px -15px rgba(20, 100, 100, 0.15);
 }
 
-.floating-sparkle {
-  animation: sparkle 3s ease-in-out infinite;
+.floating {
+  animation: floating 3s ease-in-out infinite;
+}
+
+@keyframes floating {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.sparkle-slow {
+  animation: sparkle 4s ease-in-out infinite;
 }
 
 @keyframes sparkle {
-  0%, 100% { transform: scale(1) translateY(0); opacity: 0.5; }
-  50% { transform: scale(1.2) translateY(-10px); opacity: 1; }
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+.font-fancy {
+  font-family: 'Pacifico', cursive;
 }
 
 .font-cute {
   font-family: 'Quicksand', sans-serif;
 }
 
-.font-fancy {
-  font-family: 'Pacifico', cursive;
+.bg-dots {
+  background-image: radial-gradient(hsla(175, 45%, 45%, 0.1) 1px, transparent 1px);
+  background-size: 24px 24px;
 }

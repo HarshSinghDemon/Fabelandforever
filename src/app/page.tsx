@@ -43,20 +43,15 @@ export default function Home() {
     e.preventDefault();
     
     const recipient = "fableandforevercompany@gmail.com";
-    const subject = encodeURIComponent(`New Crochet Inquiry from ${contactForm.name}`);
+    const subject = encodeURIComponent(`Crochet Inquiry: ${contactForm.name}`);
     const body = encodeURIComponent(
-      `Artisan Inquiry Details:\n` +
-      `--------------------------\n` +
       `Name: ${contactForm.name}\n` +
-      `Sender Email: ${contactForm.email}\n\n` +
-      `The Story / Message:\n` +
-      `${contactForm.message}\n` +
-      `--------------------------\n` +
-      `Sent via Fable and Forever Boutique`
+      `Email: ${contactForm.email}\n\n` +
+      `Message:\n${contactForm.message}`
     );
 
-    // Using mailto: to trigger the user's default mail client
-    window.location.href = `mailto:${recipient}?subject=${subject}&body=${body}`;
+    // Using window.open with _blank to try and trigger in a new tab/window
+    window.open(`mailto:${recipient}?subject=${subject}&body=${body}`, '_blank');
   };
 
   return (

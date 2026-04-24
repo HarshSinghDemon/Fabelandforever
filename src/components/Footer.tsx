@@ -25,7 +25,10 @@ export function Footer() {
           <div className="md:col-span-2">
             <div className="flex items-center gap-6 mb-8">
               <Logo className="w-16 h-16 text-white" />
-              <h2 className="font-headline text-5xl">Fable & Forever</h2>
+              <div className="flex flex-col">
+                <h2 className="font-headline text-5xl">Fable & Forever</h2>
+                <span className="text-accent font-bold text-sm tracking-widest mt-2">সুতোয় বোনা গল্প</span>
+              </div>
             </div>
             <p className="text-primary-foreground/70 max-w-sm mb-10 leading-relaxed font-medium text-lg italic">
               "Weaving the whispers of your imagination into hand-stitched treasures that carry heartbeat and history. Every loop tells a story."

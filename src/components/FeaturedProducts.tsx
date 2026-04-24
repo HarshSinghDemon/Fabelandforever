@@ -50,7 +50,8 @@ export function FeaturedProducts() {
           <div className="inline-block p-3 sm:p-4 bg-accent/30 rounded-full mb-6 sm:mb-8 relative">
              <Star className="text-primary fill-primary w-5 h-5 sm:w-6 sm:h-6 relative z-10" />
           </div>
-          <span className="text-primary font-bold tracking-[0.4em] sm:tracking-[0.5em] uppercase text-[10px] mb-4 sm:mb-6 block">The Latest Looms</span>
+          <span className="text-primary font-bold tracking-[0.4em] sm:tracking-[0.5em] uppercase text-[10px] mb-2 sm:mb-4 block">The Latest Looms</span>
+          <p className="text-accent font-bold text-sm sm:text-lg mb-6 sm:mb-8 italic">আমাদের অনন্য সৃষ্টি (Our Unique Creations)</p>
           <h2 className="font-fancy text-4xl sm:text-6xl md:text-7xl text-primary mb-6 sm:mb-8">Ethereal Keepsakes</h2>
         </div>
 

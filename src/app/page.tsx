@@ -113,12 +113,15 @@ export default function Home() {
                 "Fable & Forever didn't start in a workshop or a business meeting. It started in the quiet hours of 2 AM, with the rhythmic 'click-pull' of a single hook and a ball of yarn that felt like a promise."
               </p>
               
-              <div className="py-6">
-                <p className="text-2xl sm:text-3xl text-primary font-headline italic mb-2">
+              <div className="py-6 space-y-4">
+                <p className="text-2xl sm:text-3xl text-primary font-headline italic">
                   আমাদের প্রতিটি সৃষ্টি, ভালোবাসার রঙে রাঙানো এবং যত্নে বোনা।
                 </p>
+                <p className="text-xl sm:text-2xl text-accent font-medium italic">
+                  গল্পের প্রতিটি স্টিচ, হৃদয়ের ছোঁয়ায়।
+                </p>
                 <p className="text-[10px] uppercase tracking-widest text-accent font-bold">
-                  (Every one of our creations is colored with love and woven with care)
+                  (Every stitch of the story, with a touch of the heart)
                 </p>
               </div>
 
@@ -132,17 +135,17 @@ export default function Home() {
                 { 
                   icon: <Coffee className="w-8 h-8 text-primary" />, 
                   title: "Slow-Steeped Craft", 
-                  desc: "Like a good cup of tea, our treasures can't be rushed. We embrace the slow, deliberate pace of hand-crochet to ensure every loop is intentional." 
+                  desc: "ধীর গতির শৈল্পিকতা—Like a good cup of tea, our treasures can't be rushed. We embrace the slow, deliberate pace of hand-crochet to ensure every loop is intentional." 
                 },
                 { 
                   icon: <Wind className="w-8 h-8 text-primary" />, 
                   title: "Living Materials", 
-                  desc: "We source yarns that feel like a soft breeze—ethically farmed wools and organic cottons that get softer the more they are loved." 
+                  desc: "প্রাণের সুতো—We source yarns that feel like a soft breeze—ethically farmed wools and organic cottons that get softer the more they are loved." 
                 },
                 { 
                   icon: <Scissors className="w-8 h-8 text-primary" />, 
                   title: "Artisanal Integrity", 
-                  desc: "Our hands are our most important tools. From the initial chain to the final weave-in, every piece is finished with heirloom-quality precision." 
+                  desc: "কারুশিল্পীর সততা—Our hands are our most important tools. From the initial chain to the final weave-in, every piece is finished with heirloom-quality precision." 
                 }
               ].map((item, i) => (
                 <div key={i} className="group bg-paper p-8 sm:p-12 rounded-[2.5rem] sm:rounded-[3.5rem] stitching-border hover:shadow-2xl hover:shadow-primary/10 transition-all duration-700 hover:-translate-y-2 sm:hover:-translate-y-4">
@@ -171,7 +174,8 @@ export default function Home() {
              
              <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-16 sm:gap-24 items-center">
                <div className="animate-fade-in-up">
-                 <span className="text-accent font-bold tracking-[0.5em] uppercase text-[10px] mb-6 sm:mb-10 block text-center lg:text-left">The Crochet Inbox</span>
+                 <span className="text-accent font-bold tracking-[0.5em] uppercase text-[10px] mb-4 sm:mb-6 block text-center lg:text-left">The Crochet Inbox</span>
+                 <p className="text-primary font-bold text-xl sm:text-2xl mb-6 sm:mb-10 text-center lg:text-left italic">আমাদের সাথে যোগাযোগ করুন (Contact Us)</p>
                  <h2 className="font-headline text-5xl sm:text-7xl md:text-8xl lg:text-9xl text-primary mb-6 sm:mb-10 leading-[0.9] tracking-tight text-center lg:text-left">
                    Stitch <br className="hidden sm:block" />
                    <span className="italic text-accent relative inline-block">

@@ -21,8 +21,9 @@ export function Hero() {
       
       <div className="container mx-auto px-6 relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 sm:gap-24 items-center">
         <div className="animate-fade-in-up text-center lg:text-left">
-          <div className="mb-8 sm:mb-16 inline-flex items-center gap-4 sm:gap-6 group cursor-pointer">
+          <div className="mb-6 sm:mb-12 inline-flex flex-col items-center lg:items-start gap-2 group cursor-pointer">
             <span className="font-headline text-sm sm:text-lg tracking-[0.2em] sm:tracking-[0.3em] uppercase text-primary/60 group-hover:text-primary transition-colors">Artisanal Crochet Boutique</span>
+            <span className="text-accent font-bold text-xs sm:text-sm tracking-widest opacity-80">ভালোবাসার সুতোয় বোনা ✨</span>
           </div>
           
           <h1 className="font-headline text-5xl sm:text-7xl md:text-8xl lg:text-[9rem] text-primary leading-[1] sm:leading-[0.85] mb-8 sm:mb-12 relative">

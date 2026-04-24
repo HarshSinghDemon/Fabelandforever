@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
-import { Menu, X, Sparkles, Heart } from 'lucide-react';
+import { Menu, X, Sparkles } from 'lucide-react';
 import { CartDrawer } from './CartDrawer';
 import { Logo } from './Logo';
 
@@ -21,9 +21,9 @@ export function Navigation() {
   }, []);
 
   const navLinks = [
-    { name: 'Collections 🎁', href: '#shop' },
-    { name: 'The Heritage 📖', href: '#story' },
-    { name: 'Contact Us 👋', href: '#contact' },
+    { name: 'The Shop 🛍️', href: '#shop' },
+    { name: 'Our Story 📖', href: '#story' },
+    { name: 'Contact 💌', href: '#contact' },
   ];
 
   return (
@@ -88,7 +88,7 @@ export function Navigation() {
           ))}
           <div className="pt-8 border-t border-primary/10">
             <button className="w-full bg-primary text-white py-6 rounded-3xl font-bold text-xl shadow-xl shadow-primary/20">
-              Visit Studio ✨
+              Visit Boutique ✨
             </button>
           </div>
         </div>

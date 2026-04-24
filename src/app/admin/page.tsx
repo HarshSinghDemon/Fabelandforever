@@ -21,7 +21,9 @@ import {
   ShieldAlert,
   BarChart3,
   Settings,
-  AlertCircle
+  AlertCircle,
+  Copy,
+  CheckCircle2
 } from 'lucide-react';
 import { signOut } from 'firebase/auth';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
@@ -33,6 +35,7 @@ export default function AdminDashboard() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<'inventory' | 'orders' | 'settings'>('inventory');
   const [dbStatus, setDbStatus] = useState<'checking' | 'connected' | 'error'>('checking');
+  const [copied, setCopied] = useState(false);
 
   const productsQuery = useMemoFirebase(() => collection(db, 'products'), [db]);
   const ordersQuery = useMemoFirebase(() => collection(db, 'orders'), [db]);
@@ -59,6 +62,29 @@ export default function AdminDashboard() {
     
     return () => unsubscribe();
   }, [db, user]);
+
+  const firestoreRules = `rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    match /settings/{settingId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    match /orders/{orderId} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}`;
+
+  const handleCopyRules = () => {
+    navigator.clipboard.writeText(firestoreRules);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   if (loading) {
     return (
@@ -114,9 +140,35 @@ export default function AdminDashboard() {
         {dbStatus === 'error' && (
           <Alert variant="destructive" className="mb-10 rounded-[2rem] border-2 bg-white p-8 shadow-xl animate-in slide-in-from-top-4 duration-500">
             <AlertCircle className="h-6 w-6" />
-            <AlertTitle className="font-headline text-2xl mb-2">The Hook is Blocked</AlertTitle>
-            <AlertDescription className="text-base space-y-4">
-              <p>Your <strong>Firestore Rules</strong> are preventing the dashboard from loading data. To fix this, click the button above and ensure your rules allow public access to products and settings.</p>
+            <AlertTitle className="font-headline text-2xl mb-4">Fix the Magic Boundary</AlertTitle>
+            <AlertDescription className="text-base space-y-6">
+              <p>Your <strong>Firestore Rules</strong> are currently blocking public access to your crochet treasures. To fix this and make your site visible to customers, please follow these steps:</p>
+              
+              <div className="bg-slate-950 text-slate-50 p-6 rounded-2xl relative group">
+                <pre className="text-xs overflow-x-auto font-mono leading-relaxed">
+                  {firestoreRules}
+                </pre>
+                <Button 
+                  size="sm"
+                  variant="secondary"
+                  onClick={handleCopyRules}
+                  className="absolute top-4 right-4 rounded-xl"
+                >
+                  {copied ? <CheckCircle2 className="w-4 h-4 mr-2 text-emerald-400" /> : <Copy className="w-4 h-4 mr-2" />}
+                  {copied ? "Copied!" : "Copy Rules"}
+                </Button>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-4 pt-2">
+                <Button asChild className="rounded-full h-12 px-8 bg-primary hover:bg-primary/90">
+                  <a href={firebaseConsoleUrl} target="_blank" rel="noopener noreferrer">
+                    1. Open Firestore Rules Tab <ExternalLink className="w-4 h-4 ml-2" />
+                  </a>
+                </Button>
+                <div className="flex items-center text-sm font-medium text-muted-foreground px-4">
+                  2. Paste code & click "Publish"
+                </div>
+              </div>
             </AlertDescription>
           </Alert>
         )}
@@ -172,7 +224,7 @@ export default function AdminDashboard() {
                     <span>Database Connection</span>
                     <span className="flex items-center gap-2">
                       {dbStatus === 'connected' && <><ShieldCheck className="w-3 h-3 text-emerald-500" /> Authorized</>}
-                      {dbStatus === 'error' && <><ShieldAlert className="w-3 h-3 text-destructive" /> Permission Error</>}
+                      {dbStatus === 'error' && <><ShieldAlert className="w-3 h-3 text-destructive" /> Rule Error</>}
                       {dbStatus === 'checking' && <><Loader2 className="w-3 h-3 animate-spin" /> Checking...</>}
                     </span>
                   </div>

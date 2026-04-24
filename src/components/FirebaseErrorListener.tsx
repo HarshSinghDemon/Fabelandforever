@@ -11,19 +11,20 @@ export function FirebaseErrorListener() {
   useEffect(() => {
     const handlePermissionError = (error: FirestorePermissionError) => {
       // Define paths that are expected to be public
+      const path = error.context.path.toLowerCase();
       const isPublicPath = 
-        error.context.path.includes('products') || 
-        error.context.path.includes('settings/hero');
+        path.includes('products') || 
+        path.includes('settings');
       
       const isReadOperation = 
         error.context.operation === 'list' || 
         error.context.operation === 'get';
 
       // If a visitor can't read public data yet, we log it silently to the console 
-      // instead of showing a disruptive toast.
+      // instead of showing a disruptive toast. This happens when rules aren't set to public read.
       if (isPublicPath && isReadOperation) {
         console.warn(
-          `Public Access Note: The loom is currently restricted at ${error.context.path}. ` +
+          `Public Access Note: The crochet loops at ${error.context.path} are currently protected. ` +
           `To show this content to visitors, update your Firestore Rules to allow public read.`
         );
         return;

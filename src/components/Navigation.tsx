@@ -39,7 +39,7 @@ export function Navigation() {
         <Link href="/" className="flex items-center gap-2 sm:gap-4 hover:scale-105 transition-all group">
           <Logo className="w-8 h-8 sm:w-10 sm:h-10 text-primary" />
           <span className="font-headline text-lg sm:text-2xl text-primary font-bold">
-            F&F
+            Fable and Forever
           </span>
         </Link>
 
@@ -62,13 +62,15 @@ export function Navigation() {
 
         {/* Mobile Toggle */}
         <div className="flex items-center gap-3 sm:gap-5 md:hidden">
-          <CartDrawer />
-          <button 
-            className="text-primary p-2 hover:bg-accent/20 rounded-full transition-colors active:scale-90"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
+          <div className="flex items-center gap-3">
+            <CartDrawer />
+            <button 
+              className="text-primary p-2 hover:bg-accent/20 rounded-full transition-colors active:scale-90"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+              {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+          </div>
         </div>
       </div>
 

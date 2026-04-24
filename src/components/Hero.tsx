@@ -1,3 +1,4 @@
+
 "use client";
 
 import React from 'react';
@@ -6,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Sparkles, ArrowRight, Heart } from 'lucide-react';
 import Link from 'next/link';
+import { Logo } from './Logo';
 
 export function Hero() {
   const heroData = PlaceHolderImages.find(img => img.id === 'hero-image');
@@ -14,9 +16,8 @@ export function Hero() {
     <section className="relative min-h-[95vh] flex items-center overflow-hidden pt-32 pb-20">
       <div className="container mx-auto px-6 relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
         <div className="animate-fade-in-up">
-          <div className="inline-flex items-center gap-3 bg-accent/20 backdrop-blur-md px-6 py-2.5 rounded-full mb-10 border border-accent/30">
-            <Sparkles className="text-primary w-4 h-4 sparkle-slow" />
-            <span className="text-primary font-bold text-[10px] uppercase tracking-[0.3em]">Artisanal Heirlooms 🎀</span>
+          <div className="mb-12">
+            <Logo className="w-24 h-24 text-primary mb-6" showText />
           </div>
           
           <h1 className="font-headline text-7xl md:text-8xl lg:text-9xl text-primary leading-[0.95] mb-10 relative">
@@ -32,7 +33,7 @@ export function Hero() {
           </h1>
           
           <p className="text-2xl text-muted-foreground max-w-md mb-14 leading-relaxed font-medium italic">
-            "Fable & Forever weaves the whispers of your imagination into handcrafted treasures that last a lifetime." 🧸✨
+            "Handcrafting the whispers of your imagination into treasures that carry heartbeat and history." 🧸✨
           </p>
           
           <div className="flex flex-col sm:flex-row gap-6">
@@ -42,8 +43,8 @@ export function Hero() {
               </Link>
             </Button>
             <Button variant="outline" size="lg" className="btn-squish border-primary/20 text-primary hover:bg-primary/5 px-14 py-8 text-xl rounded-[2rem] backdrop-blur-sm group">
-              <Link href="#custom" className="flex items-center">
-                Custom Tale <Heart className="ml-3 w-5 h-5 group-hover:fill-primary group-hover:scale-110 transition-all" />
+              <Link href="#contact" className="flex items-center">
+                Contact Studio <Heart className="ml-3 w-5 h-5 group-hover:fill-primary group-hover:scale-110 transition-all" />
               </Link>
             </Button>
           </div>
@@ -57,7 +58,7 @@ export function Hero() {
           <div className="relative aspect-[4/5] lg:aspect-square w-full rounded-[3.8rem] overflow-hidden shadow-[0_40px_80px_-15px_rgba(0,0,0,0.1)] border-[18px] border-white group-hover:shadow-primary/10 transition-all duration-700">
             <Image
               src={heroData?.imageUrl || "https://picsum.photos/seed/hero/1200/1200"}
-              alt="Adorable crochet plushies"
+              alt="Handmade crochet treasures"
               fill
               className="object-cover transition-transform duration-1000 group-hover:scale-105"
               priority
@@ -67,10 +68,10 @@ export function Hero() {
             {/* Elegant Floating Tags */}
             <div className="absolute top-12 left-10 bg-white/95 backdrop-blur-md text-primary px-8 py-4 rounded-[1.5rem] shadow-xl font-bold text-sm floating border border-primary/5 flex items-center gap-3">
               <span className="w-2 h-2 rounded-full bg-accent animate-ping"></span>
-              Bespoke Craft 🌿
+              Artisan Fiber 🌿
             </div>
             <div className="absolute bottom-12 right-10 bg-primary/95 backdrop-blur-md text-white px-8 py-4 rounded-[1.5rem] shadow-xl font-bold text-sm floating [animation-delay:1.5s] flex items-center gap-3">
-              Fable Quality ✨
+              Legacy Stitch ✨
               <Heart className="w-4 h-4 fill-accent text-accent" />
             </div>
           </div>

@@ -39,7 +39,7 @@ export function Navigation() {
         <Link href="/" className="flex items-center gap-2 sm:gap-4 hover:scale-105 transition-all group">
           <Logo className="w-8 h-8 sm:w-10 sm:h-10 text-primary" />
           <span className="font-headline text-lg sm:text-2xl text-primary font-bold">
-            Fable and Forever
+            Fable & Forever
           </span>
         </Link>
 

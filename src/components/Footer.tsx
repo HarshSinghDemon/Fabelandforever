@@ -76,7 +76,7 @@ export function Footer() {
         <div className="pt-10 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-8 text-[10px] font-bold text-primary-foreground/40 uppercase tracking-[0.4em]">
           <div className="flex items-center gap-3">
             <Logo className="w-5 h-5 text-accent" />
-            <span>Fable and Forever</span>
+            <span>Fable & Forever</span>
           </div>
           <div className="flex gap-10">
             <Link href="/privacy" className="hover:text-accent transition-colors">Privacy Policy ✨</Link>

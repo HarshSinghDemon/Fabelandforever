@@ -1,4 +1,3 @@
-
 "use client";
 
 import React from 'react';
@@ -53,12 +52,12 @@ export function Logo({ className = "w-12 h-12", showText = false }: LogoProps) {
           fill="currentColor" 
           style={{ fontSize: '22px', fontStyle: 'italic' }}
         >
-          f&f
+          f&amp;f
         </text>
       </svg>
       {showText && (
         <span className="font-headline text-[10px] tracking-[0.4em] uppercase text-primary mt-1">
-          Fable and Forever
+          Fable & Forever
         </span>
       )}
     </div>

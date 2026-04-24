@@ -1,4 +1,3 @@
-
 import type {Metadata} from 'next';
 import './globals.css';
 import { CartProvider } from '@/context/CartContext';
@@ -7,7 +6,7 @@ import { FirebaseClientProvider } from '@/firebase/client-provider';
 import { FirebaseErrorListener } from '@/components/FirebaseErrorListener';
 
 export const metadata: Metadata = {
-  title: 'Fable and Forever | Artisanal Crochet Tales',
+  title: 'Fable & Forever | Artisanal Crochet Tales',
   description: 'Bespoke, luxury crochet items woven with care and elegance.',
 };
 

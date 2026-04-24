@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
-import { Plus, Trash2, Package, DollarSign, Tag, Image as ImageIcon, Loader2, Sparkles } from 'lucide-react';
+import { Plus, Trash2, Package, Tag, Image as ImageIcon, Loader2, Sparkles } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import Image from 'next/image';
 import { uploadToSupabase } from '@/app/actions/supabase-upload';
@@ -66,7 +66,6 @@ export function AdminProductManager() {
 
     const productsRef = collection(db, 'products');
 
-    // Pattern 1: Non-blocking mutation with catch and error emitter
     addDoc(productsRef, productData)
       .then(() => {
         setFormData({ title: '', price: '', category: '', image: '', description: '' });
@@ -89,7 +88,6 @@ export function AdminProductManager() {
     
     const docRef = doc(db, 'products', id);
     
-    // Pattern 1: Non-blocking mutation
     deleteDoc(docRef)
       .then(() => {
         toast({ title: "Product Removed", description: "The piece has been unraveled." });
@@ -126,11 +124,11 @@ export function AdminProductManager() {
               />
             </div>
             <div className="space-y-4">
-              <Label className="text-[10px] font-bold uppercase tracking-widest text-primary/50 ml-4">Price (USD)</Label>
+              <Label className="text-[10px] font-bold uppercase tracking-widest text-primary/50 ml-4">Price (INR)</Label>
               <Input 
                 type="number" 
-                step="0.01"
-                placeholder="0.00" 
+                step="1"
+                placeholder="0" 
                 value={formData.price}
                 onChange={(e) => setFormData({...formData, price: e.target.value})}
                 className="h-14 rounded-2xl border-2 border-primary/5 focus:border-accent"
@@ -234,8 +232,7 @@ export function AdminProductManager() {
                     </div>
                     <div className="flex items-center justify-between mt-auto">
                       <span className="font-bold text-primary flex items-center gap-1">
-                        <DollarSign className="w-4 h-4" />
-                        {Number(product.price).toFixed(2)}
+                        ₹ {Number(product.price).toLocaleString('en-IN')}
                       </span>
                       <Sparkles className="w-4 h-4 text-primary/10 group-hover:text-accent transition-colors" />
                     </div>

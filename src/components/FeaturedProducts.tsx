@@ -1,9 +1,9 @@
+
 "use client";
 
 import React from 'react';
 import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Heart, Star, ShoppingCart, Sparkles, Loader2 } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useToast } from '@/hooks/use-toast';
@@ -94,7 +94,7 @@ export function FeaturedProducts() {
                       <Sparkles className="w-3 h-3 text-accent" />
                     </div>
                     <h3 className="font-bold text-3xl text-primary mb-3 group-hover:text-accent transition-colors duration-500">{product.title}</h3>
-                    <p className="text-primary/70 font-bold text-xl mb-8">${Number(product.price).toFixed(2)}</p>
+                    <p className="text-primary/70 font-bold text-xl mb-8">₹ {Number(product.price).toLocaleString('en-IN')}</p>
                     
                     <button 
                       onClick={() => handleAddToCart(product)}

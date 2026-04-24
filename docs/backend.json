@@ -12,7 +12,7 @@
         },
         "price": {
           "type": "number",
-          "description": "Price in USD."
+          "description": "Price in INR."
         },
         "category": {
           "type": "string",
@@ -52,7 +52,7 @@
         },
         "total": {
           "type": "number",
-          "description": "Total amount paid."
+          "description": "Total amount paid in INR."
         },
         "status": {
           "type": "string",

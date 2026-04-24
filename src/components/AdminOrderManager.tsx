@@ -84,7 +84,7 @@ export function AdminOrderManager() {
                       </div>
                       <div>
                         <p className="text-[10px] font-bold uppercase tracking-widest text-primary/50">Revenue</p>
-                        <p className="text-2xl font-bold text-primary">${Number(order.total).toFixed(2)}</p>
+                        <p className="text-2xl font-bold text-primary">₹ {Number(order.total).toLocaleString('en-IN')}</p>
                       </div>
                     </div>
 

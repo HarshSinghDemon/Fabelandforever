@@ -1,3 +1,4 @@
+
 "use client";
 
 import React from 'react';
@@ -15,9 +16,8 @@ export function CartDrawer() {
   const handleCheckout = () => {
     toast({
       title: "Processing Magic ✨",
-      description: "Redirecting you to our secure fairy-tale checkout...",
+      description: "Redirecting you to our secure checkout...",
     });
-    // In a real app, this would go to a checkout page or Stripe
   };
 
   return (
@@ -77,7 +77,7 @@ export function CartDrawer() {
                         <Plus className="w-3 h-3" />
                       </button>
                     </div>
-                    <span className="font-bold text-primary">${(item.price * item.quantity).toFixed(2)}</span>
+                    <span className="font-bold text-primary">₹ {(item.price * item.quantity).toLocaleString('en-IN')}</span>
                   </div>
                 </div>
                 <button 
@@ -95,10 +95,10 @@ export function CartDrawer() {
           <div className="pt-6 border-t space-y-4">
             <div className="flex justify-between items-center text-lg font-bold">
               <span className="text-primary">Total Magic:</span>
-              <span className="text-primary">${cartTotal.toFixed(2)}</span>
+              <span className="text-primary">₹ {cartTotal.toLocaleString('en-IN')}</span>
             </div>
             <p className="text-[10px] text-muted-foreground italic text-center">
-              * Hand-stitched with love in Mystic Hollow. Free shipping on orders over $50!
+              * Hand-stitched with love. Free shipping on orders over ₹2000!
             </p>
             <Button onClick={handleCheckout} className="w-full py-6 rounded-2xl bg-primary hover:bg-primary/90 text-lg font-bold shadow-xl shadow-primary/20">
               Checkout Now ✨

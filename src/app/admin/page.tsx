@@ -33,7 +33,6 @@ export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState<'inventory' | 'orders'>('inventory');
   const [dbStatus, setDbStatus] = useState<'checking' | 'connected' | 'error'>('checking');
 
-  // Fetch real stats for the "more things" section
   const { data: products } = useCollection(collection(db, 'products'));
   const { data: orders } = useCollection(collection(db, 'orders'));
 
@@ -132,7 +131,6 @@ export default function AdminDashboard() {
               ))}
             </div>
 
-            {/* Studio Insights - More Things Section */}
             <div className="p-10 bg-white/60 rounded-[3rem] border border-white/50 shadow-sm space-y-8">
               <div className="flex items-center gap-3">
                 <BarChart3 className="w-4 h-4 text-accent" />
@@ -145,7 +143,7 @@ export default function AdminDashboard() {
                     <TrendingUp className="w-4 h-4 text-emerald-500" />
                     <span className="text-xs font-medium text-muted-foreground">Total Revenue</span>
                   </div>
-                  <span className="font-bold text-primary">${totalRevenue.toFixed(0)}</span>
+                  <span className="font-bold text-primary">₹ {totalRevenue.toLocaleString('en-IN')}</span>
                 </div>
                 
                 <div className="flex items-center justify-between">

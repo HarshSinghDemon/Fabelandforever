@@ -12,7 +12,7 @@ import Link from 'next/link';
 import { useCart } from '@/context/CartContext';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
-import { ShoppingBasket, ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
+import { ShoppingBasket, ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export default function ShopPage() {
@@ -133,9 +133,9 @@ export default function ShopPage() {
         <div className="absolute inset-0 z-0">
           <Image 
             src={heritageBanner?.imageUrl || "https://picsum.photos/seed/shop-hero/1920/1080"} 
-            alt="Boutique Catalog" 
+            alt="Shop Catalog" 
             fill 
-            className="object-cover opacity-80" 
+            className="object-cover opacity-70" 
             priority
             data-ai-hint="crochet hands"
           />
@@ -146,7 +146,7 @@ export default function ShopPage() {
           <div className="reveal-on-scroll active">
             <span className="text-white/60 font-bold tracking-[1em] uppercase text-[9px] mb-6 block">The Collective</span>
             <h1 className="font-headline text-6xl sm:text-8xl leading-none mb-8 tracking-tighter drop-shadow-2xl">
-              Boutique <span className="italic">Catalog.</span>
+              Shop <span className="italic">Catalog.</span>
             </h1>
             <p className="text-white/80 font-bold uppercase tracking-[0.4em] text-[10px] max-w-md mx-auto leading-relaxed italic drop-shadow-lg">
               "Curated treasures for the heritage home, hand-stitched with love and slow-woven loops."
@@ -244,7 +244,7 @@ export default function ShopPage() {
             >
               <div className="container mx-auto px-6 max-w-7xl">
                 
-                {/* Minimalist Category Header */}
+                {/* Minimalist Category Header - No transparency, solid and clean */}
                 <div className="mb-12 py-12 px-8 rounded-[2.5rem] bg-primary/5 text-center">
                   <div className="flex items-center justify-center gap-4 mb-3">
                     <div className="w-8 h-[1px] bg-primary/20"></div>
@@ -257,8 +257,8 @@ export default function ShopPage() {
                   </p>
                 </div>
 
-                {/* 2x1 Minimalist Matrix Grid - Strictly 2 columns on small screens */}
-                <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-12">
+                {/* 2x1 Minimalist Matrix Grid - Strictly 2 columns for a high-end look */}
+                <div className="grid grid-cols-2 gap-4 md:gap-12">
                   {catProducts.map((product) => (
                     <div 
                       key={product.id} 
@@ -271,7 +271,7 @@ export default function ShopPage() {
                             alt={product.title}
                             fill
                             className="object-cover transition-transform duration-700 group-hover:scale-105"
-                            sizes="(max-width: 768px) 50vw, 33vw"
+                            sizes="(max-width: 768px) 50vw, 50vw"
                           />
                         </div>
                       </Link>

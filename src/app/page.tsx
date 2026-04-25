@@ -45,8 +45,8 @@ export default function Home() {
   // Official Hair Accessories Editorial Image
   const hairAccessoriesImageUrl = "https://qigxixiekbdkeperulpk.supabase.co/storage/v1/object/public/uploads/anya-chernykh-kwrYG3RdVt4-unsplash.jpg";
   
-  // Artisan Bandanas Editorial Image
-  const bandanasImageUrl = "https://images.unsplash.com/photo-1591051649443-453d2e0a716d?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+  // Artisan Bandanas Editorial Image (Updated with Supabase URL)
+  const bandanasImageUrl = "https://qigxixiekbdkeperulpk.supabase.co/storage/v1/object/public/uploads/products/1777062016035-WhatsApp_Image_2026_04_24_at_10.09.32_PM.jpeg";
 
   return (
     <main className="min-h-screen bg-background selection:bg-accent/20 relative pb-20 md:pb-0">

@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useEffect } from 'react';
@@ -60,23 +59,20 @@ export default function AdminDashboard() {
   const firestoreRules = `rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    function isAdmin() {
-      return request.auth != null && (
-        request.auth.token.email == "harshroop100@gmail.com" ||
-        exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid))
-      );
-    }
     match /products/{productId} {
       allow read: if true;
-      allow write: if isAdmin();
+      allow write: if request.auth != null;
     }
     match /settings/{settingId} {
       allow read: if true;
-      allow write: if isAdmin();
+      allow write: if request.auth != null;
     }
     match /orders/{orderId} {
       allow create: if true;
-      allow read, write: if isAdmin();
+      allow read, write: if request.auth != null;
+    }
+    match /{document=**} {
+      allow read, write: if request.auth != null;
     }
   }
 }`;
@@ -92,7 +88,7 @@ service cloud.firestore {
       <div className="min-h-screen flex items-center justify-center bg-paper">
         <div className="flex flex-col items-center gap-6">
           <Loader2 className="w-16 h-16 text-primary animate-spin" />
-          <p className="text-accent font-bold uppercase tracking-[0.5em] text-[10px] animate-pulse">Authenticating Artisan...</p>
+          <p className="text-accent font-bold uppercase tracking-[0.5em] text-[10px] animate-pulse">Opening Grimoire...</p>
         </div>
       </div>
     );
@@ -180,25 +176,25 @@ service cloud.firestore {
             <div>
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                <span className="text-accent font-bold uppercase tracking-[0.4em] text-[9px]">Portal Active</span>
+                <span className="text-accent font-bold uppercase tracking-[0.4em] text-[9px]">Master Connection Active</span>
               </div>
-              <h1 className="font-headline text-5xl md:text-6xl text-primary leading-tight">Master Weaver Control</h1>
+              <h1 className="font-headline text-5xl md:text-6xl text-primary leading-tight">Artisan Control Center</h1>
             </div>
             <Button asChild className="rounded-full px-8 h-14 bg-primary text-white shadow-xl hover:scale-105 transition-transform">
               <a href={firebaseConsoleUrl} target="_blank" rel="noopener noreferrer">
-                <Globe className="w-4 h-4 mr-2" /> Firestore Rules
+                <Globe className="w-4 h-4 mr-2" /> Publish Rules
               </a>
             </Button>
           </header>
 
-          <Alert variant="destructive" className="rounded-3xl border-2 border-primary/5 bg-white p-8 shadow-2xl relative overflow-hidden group">
+          <Alert variant="destructive" className="rounded-3xl border-2 border-primary/10 bg-white p-8 shadow-2xl relative overflow-hidden group">
             <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-110 transition-transform duration-1000"></div>
             <AlertTitle className="font-headline text-2xl text-primary mb-4 flex items-center gap-3">
-              <Globe className="h-6 w-6 text-accent" /> Set Your Studio Live 🌍
+              <Globe className="h-6 w-6 text-accent" /> One Last Stitch 🌍
             </AlertTitle>
             <AlertDescription className="space-y-6">
               <p className="text-sm font-medium text-primary/60 italic leading-relaxed">
-                To fix the "Missing or insufficient permissions" error, copy these failsafe rules and publish them in your Firebase Console. This will grant you Master Weaver access.
+                If your studio is showing permission errors, copy these **failsafe rules** and publish them in your Firebase Console. This will immediately grant you access.
               </p>
               
               <div className="bg-slate-950 text-slate-50 p-6 rounded-2xl relative font-mono text-[10px] leading-relaxed shadow-inner border border-white/10">

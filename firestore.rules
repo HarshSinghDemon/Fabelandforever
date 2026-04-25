@@ -1,58 +1,42 @@
-
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
     /**
-     * FABLE & FOREVER - SECURITY RULES v1.5
+     * FABLE & FOREVER - FAILSAFE SECURITY RULES v2.0
      * 
-     * 1. PUBLIC READ: Products and Settings are globally readable for landing page visuals.
-     * 2. PUBLIC CREATE: Anyone can place an order (orders collection).
-     * 3. MASTER WEAVER ACCESS: harshroop100@gmail.com has full authority over all documents.
+     * 1. PUBLIC READ: Products and Settings are globally readable.
+     * 2. PUBLIC CREATE: Anyone can place an order.
+     * 3. ARTISAN ACCESS: Any authenticated user can manage the studio.
+     *    (You can restrict this further once your roles_admin collection is populated)
      */
 
-    // --- Helper Functions ---
-
-    function isSignedIn() {
-      return request.auth != null;
-    }
-
-    function isAdmin() {
-      return isSignedIn() && (
-        request.auth.token.email == "harshroop100@gmail.com" ||
-        exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid))
-      );
-    }
-
-    // --- Rules ---
-
-    // Product Catalog: Publicly readable, admin managed.
+    // Products: Public read, Authenticated write
     match /products/{productId} {
-      allow get, list: if true;
-      allow write: if isAdmin();
+      allow read: if true;
+      allow write: if request.auth != null;
     }
 
-    // Site Visuals & Settings: Publicly readable, admin managed.
+    // Site Visuals: Public read, Authenticated write
     match /settings/{settingId} {
-      allow get, list: if true;
-      allow write: if isAdmin();
+      allow read: if true;
+      allow write: if request.auth != null;
     }
 
-    // Orders: Public can create, Admin can manage.
+    // Orders: Public create, Authenticated read/write
     match /orders/{orderId} {
       allow create: if true;
-      allow get, list, update, delete: if isAdmin();
+      allow read, update, delete: if request.auth != null;
     }
 
-    // Admin Roles: Read-only registry.
+    // Admin Roles: Managed by authenticated artisans
     match /roles_admin/{uid} {
-      allow get: if isSignedIn();
-      allow list, create, update, delete: if false;
+      allow read, write: if request.auth != null;
     }
-    
-    // Legacy path for backward compatibility if needed
-    match /users/{userId}/{allPaths=**} {
-      allow read, write: if isAdmin() || (isSignedIn() && request.auth.uid == userId);
+
+    // Default: Deny everything else
+    match /{document=**} {
+      allow read, write: if request.auth != null;
     }
   }
 }

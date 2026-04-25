@@ -1,80 +1,138 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Navigation } from '@/components/Navigation';
 import { Footer } from '@/components/Footer';
-import { Heart, Sparkles, Feather, Palette, BookOpen } from 'lucide-react';
+import { Heart, Sparkles, Feather, Palette, BookOpen, Scroll, Quote } from 'lucide-react';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export default function AboutPage() {
-  const customPlaceholder = PlaceHolderImages.find(img => img.id === 'custom-section');
+  const heritageBanner = PlaceHolderImages.find(img => img.id === 'heritage-banner');
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('active');
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    const elements = document.querySelectorAll('.reveal-on-scroll');
+    elements.forEach((el) => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <main className="min-h-screen bg-paper">
+    <main className="min-h-screen bg-paper selection:bg-accent/20">
       <Navigation />
       
-      <div className="pt-48 pb-24 container mx-auto px-6 max-w-6xl">
-        <div className="text-center mb-32 reveal-on-scroll active">
-          <span className="text-accent font-bold tracking-[0.6em] uppercase text-[10px] mb-10 block">Our History</span>
-          <h1 className="font-headline text-6xl sm:text-8xl text-primary leading-tight mb-10">
-            Our <span className="italic">Story.</span>
-          </h1>
-          <div className="w-24 h-[1px] bg-accent/30 mx-auto mb-16"></div>
-          <p className="text-2xl sm:text-3xl text-primary font-headline italic leading-relaxed max-w-4xl mx-auto">
-            আমাদের প্রতিটি সৃষ্টি, ভালোবাসার রঙে রাঙানো এবং যত্নে বোনা। গল্পের প্রতিটি স্টিচ, হৃদয়ের ছোঁয়ায়।
-          </p>
+      {/* Hero Section */}
+      <section className="relative pt-48 pb-32 overflow-hidden">
+        <div className="absolute top-0 right-0 w-1/3 h-full bg-accent/5 -skew-x-12 translate-x-1/2 pointer-events-none"></div>
+        <div className="container mx-auto px-6 max-w-6xl relative z-10">
+          <div className="text-center mb-24 reveal-on-scroll">
+            <span className="text-accent font-bold tracking-[0.8em] uppercase text-[10px] mb-8 block">The Foundation</span>
+            <h1 className="font-headline text-6xl sm:text-9xl text-primary leading-none mb-12">
+              Our <span className="italic">Story.</span>
+            </h1>
+            <p className="text-primary/40 font-bold uppercase tracking-[0.5em] text-[10px] mb-16">সুতোয় বোনা প্রতিটি গল্প • EVERY STORY WOVEN IN THREAD</p>
+            <div className="w-24 h-[1px] bg-accent/30 mx-auto"></div>
+          </div>
         </div>
+      </section>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-32 items-center mb-48 reveal-on-scroll">
-          <div className="space-y-10 leading-relaxed text-xl text-primary/90 font-medium">
-            <p>
-              Fable & Forever started as a small passion for high-quality handmade crafts. We believe in the beauty of items that take time to create—objects that carry the personal touch and heartbeat of the maker.
-            </p>
-            <p>
-              Every loop we weave and every stitch we place is part of a larger narrative. We don't just make crochet items; we create "forever loops" that are designed to be cherished across generations.
-            </p>
-            <div className="pt-10 flex items-center gap-8">
-              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
-                <Heart className="w-6 h-6 text-primary" />
+      {/* The Narrative */}
+      <section className="pb-32 container mx-auto px-6 max-w-6xl">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center mb-48">
+          <div className="space-y-12 reveal-on-scroll">
+            <div className="relative">
+              <Quote className="absolute -top-12 -left-12 w-24 h-24 text-accent/10 -z-10" />
+              <h2 className="font-headline text-4xl sm:text-5xl text-primary leading-tight">
+                A Single Thread, <br /><span className="italic">A Lifetime of Memories.</span>
+              </h2>
+            </div>
+            <div className="space-y-8 text-lg text-primary/70 leading-relaxed font-medium italic">
+              <p>
+                Fable & Forever was born from a simple realization: in a world of fast fashion, there is something deeply sacred about a "forever loop." A stitch that doesn't just hold fabric together, but holds a moment in time.
+              </p>
+              <p>
+                Based in the heart of Kolkata, our studio is dedicated to the meditative art of slow stitching. We believe that when an artisan spends days on a single piece, that piece inherits a soul.
+              </p>
+            </div>
+            <div className="pt-8 flex items-center gap-6 group">
+              <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-500">
+                <Heart className="w-6 h-6 text-white" />
               </div>
-              <p className="font-fancy text-3xl text-primary">Hand-stitched with love</p>
+              <p className="font-fancy text-3xl text-primary">Stitched by a single pair of hands</p>
             </div>
           </div>
-          <div className="relative aspect-[4/5] rounded-[4rem] overflow-hidden shadow-2xl">
+          
+          <div className="relative aspect-[3/4] rounded-[4rem] overflow-hidden shadow-2xl reveal-on-scroll stagger-2">
             <Image 
-              src={customPlaceholder?.imageUrl || "https://picsum.photos/seed/about/800/1000"} 
-              alt="Artisan hands" 
+              src={heritageBanner?.imageUrl || "https://picsum.photos/seed/story-1/800/1000"} 
+              alt="Artisan at work" 
               fill 
               className="object-cover"
+              data-ai-hint="crochet hands"
             />
+            <div className="absolute inset-0 border-[20px] border-white/10 m-8 rounded-[3rem] pointer-events-none"></div>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-24 py-32 border-y border-primary/10 reveal-on-scroll">
+        {/* Values Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-16 py-32 border-y border-primary/5 mb-48">
           {[
-            { icon: Feather, title: 'Fine Materials', desc: 'We only use soft, durable, and ethically sourced yarns for our creations.' },
-            { icon: Palette, title: 'Artisan Colors', desc: 'Each color combination is picked to look beautiful in your home and lifestyle.' },
-            { icon: Sparkles, title: 'Perfect Finish', desc: 'Detailed craftsmanship ensures every piece is built to last a lifetime.' }
+            { 
+              icon: Feather, 
+              title: 'The Fiber', 
+              desc: 'We source only the softest cottons and premium wool blends that age beautifully with time.' 
+            },
+            { 
+              icon: Palette, 
+              title: 'The Palette', 
+              desc: 'Our colors are inspired by the heritage landscapes of Kolkata—muted, earthy, and timeless.' 
+            },
+            { 
+              icon: Sparkles, 
+              title: 'The Finish', 
+              desc: 'Every "forever loop" is inspected for perfection, ensuring it can be passed down generations.' 
+            }
           ].map((item, idx) => (
-            <div key={idx} className="space-y-8">
-              <item.icon className="w-10 h-10 text-accent" />
+            <div key={idx} className="space-y-8 text-center reveal-on-scroll" style={{ transitionDelay: `${idx * 0.2}s` }}>
+              <div className="w-20 h-20 bg-paper rounded-full flex items-center justify-center mx-auto stitching-border">
+                <item.icon className="w-6 h-6 text-accent" />
+              </div>
               <h3 className="font-headline text-3xl text-primary">{item.title}</h3>
-              <p className="text-primary/70 text-base leading-relaxed font-medium">
+              <p className="text-primary/50 text-sm leading-relaxed max-w-[250px] mx-auto italic">
                 {item.desc}
               </p>
             </div>
           ))}
         </div>
 
-        <div className="mt-48 text-center space-y-16 reveal-on-scroll">
-          <BookOpen className="w-16 h-16 text-primary/20 mx-auto" />
-          <h2 className="font-headline text-5xl sm:text-6xl text-primary">A Legacy in Every Stitch</h2>
-          <p className="text-primary/60 text-lg max-w-2xl mx-auto italic font-medium leading-relaxed">
-            "We aren't just selling products. we are sharing a piece of our history, one stitch at a time. Thank you for being part of our story."
-          </p>
+        {/* Closing statement */}
+        <div className="text-center space-y-16 reveal-on-scroll">
+          <div className="inline-block p-10 bg-white rounded-[4rem] shadow-xl border border-primary/5">
+            <BookOpen className="w-12 h-12 text-accent mx-auto mb-10" />
+            <h2 className="font-headline text-4xl sm:text-6xl text-primary mb-8">A Legacy in Every Loop</h2>
+            <p className="text-primary/60 text-xl max-w-3xl mx-auto italic font-medium leading-relaxed px-6">
+              "We aren't just creating products. We are weaving a tapestry of history, one stitch at a time. When you hold a Fable & Forever treasure, you aren't just holding yarn—you're holding a piece of our story."
+            </p>
+          </div>
+          
+          <div className="pt-20">
+             <div className="w-16 h-16 bg-primary/5 rounded-full flex items-center justify-center mx-auto animate-float">
+                <Scroll className="w-6 h-6 text-primary/20" />
+             </div>
+          </div>
         </div>
-      </div>
+      </section>
       
       <Footer />
     </main>

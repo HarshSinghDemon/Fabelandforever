@@ -4,10 +4,10 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
-import { Menu, X, Search, ShoppingBag, User, Loader2 } from 'lucide-react';
+import { Menu, X, Search, User, Loader2 } from 'lucide-react';
 import { CartDrawer } from './CartDrawer';
 import { Logo } from './Logo';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useFirestore, useCollection, useMemoFirebase } from '@/firebase';
@@ -42,7 +42,10 @@ export function Navigation() {
   }, []);
 
   const navLinks = [
-    { name: 'Collection', href: '/#shop' },
+    { name: 'Candles', href: '/#shop' },
+    { name: 'Forever Flowers', href: '/#shop' },
+    { name: 'Gift Sets', href: '/#shop' },
+    { name: 'Decor Essentials', href: '/#shop' },
     { name: 'Our Story', href: '/about' },
     { name: 'Contact Us', href: '/#contact' },
   ];
@@ -113,13 +116,13 @@ export function Navigation() {
             </div>
           </div>
 
-          <div className="mt-6 flex justify-center items-center gap-12 hidden lg:flex">
+          <div className="mt-6 flex justify-center items-center gap-8 hidden lg:flex">
             {navLinks.map((link) => (
               <Link 
                 key={link.name} 
                 href={link.href}
                 className={cn(
-                  "text-[10px] font-bold uppercase tracking-[0.4em] transition-all hover:text-accent",
+                  "text-[10px] font-bold uppercase tracking-[0.2em] transition-all hover:text-accent",
                   isScrolled ? "text-primary/60" : "text-white/60"
                 )}
               >

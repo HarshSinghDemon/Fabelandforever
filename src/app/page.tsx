@@ -69,6 +69,8 @@ export default function Home() {
         <FeaturedProducts 
           title="Most Loved Flowers" 
           categoryFilter="Flowers" 
+          sideImage="https://picsum.photos/seed/flower-banner/800/1000"
+          sideTitle="Flowers"
         />
 
         <EditorialBanner 
@@ -81,6 +83,8 @@ export default function Home() {
         <FeaturedProducts 
           title="Most Loved Candles" 
           categoryFilter="Candles" 
+          sideImage="https://picsum.photos/seed/candle-banner/800/1000"
+          sideTitle="Candles"
         />
 
         <CategoryGrid />

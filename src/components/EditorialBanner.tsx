@@ -1,4 +1,3 @@
-
 "use client";
 
 import React from 'react';
@@ -27,7 +26,7 @@ export function EditorialBanner({
   className
 }: EditorialBannerProps) {
   return (
-    <section className={cn("relative w-full h-[400px] sm:h-[600px] flex items-center justify-center overflow-hidden my-0", className)}>
+    <section className={cn("relative w-full h-[250px] sm:h-[350px] flex items-center justify-center overflow-hidden my-0", className)}>
       <div className="absolute inset-0 z-0">
         <Image
           src={imageUrl}
@@ -46,10 +45,10 @@ export function EditorialBanner({
               {subtitle}
             </span>
           )}
-          <h2 className="font-headline text-4xl sm:text-7xl leading-tight mb-8 drop-shadow-xl">
+          <h2 className="font-headline text-3xl sm:text-5xl leading-tight mb-6 drop-shadow-xl">
             {title}
           </h2>
-          <Button asChild className="bg-white text-black hover:bg-white/90 px-10 h-12 rounded-none text-[9px] font-bold uppercase tracking-[0.4em] transition-all hover:scale-105 active:scale-95 shadow-2xl">
+          <Button asChild className="bg-white text-black hover:bg-white/90 px-8 h-10 rounded-none text-[8px] font-bold uppercase tracking-[0.4em] transition-all hover:scale-105 active:scale-95 shadow-2xl">
             <Link href={link}>{buttonText}</Link>
           </Button>
         </div>

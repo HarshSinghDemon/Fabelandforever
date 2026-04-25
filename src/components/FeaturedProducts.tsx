@@ -1,4 +1,3 @@
-
 "use client";
 
 import React from 'react';
@@ -30,12 +29,12 @@ export function FeaturedProducts() {
       id: product.id,
       title: product.title,
       price: product.price,
-      category: product.category || 'Enchanted',
+      category: product.category || 'General',
       image: product.image || productPlaceholders[0].imageUrl
     });
     toast({
-      title: "Added to Basket",
-      description: `${product.title} has joined your collection.`,
+      title: "Added to Bag",
+      description: `${product.title} has been added to your order.`,
     });
   };
 
@@ -43,19 +42,18 @@ export function FeaturedProducts() {
     return (
       <div className="py-40 flex flex-col items-center justify-center gap-4">
         <Loader2 className="w-8 h-8 text-primary animate-spin" />
-        <p className="text-[10px] font-bold uppercase tracking-widest opacity-40">Loading Treasures...</p>
+        <p className="text-[10px] font-bold uppercase tracking-widest opacity-40">Loading Shop...</p>
       </div>
     );
   }
 
-  // If no products in DB, show curated placeholders for a better "First Look"
   const displayProducts = products && products.length > 0 
     ? products 
     : productPlaceholders.map((p, i) => ({
         id: `placeholder-${i}`,
         title: p.description.split('.')[0],
         price: 1500 + (i * 200),
-        category: i % 2 === 0 ? 'Creatures' : 'Lifestyle',
+        category: i % 2 === 0 ? 'Toys' : 'Accessories',
         image: p.imageUrl,
         imageHint: p.imageHint
       }));
@@ -64,14 +62,13 @@ export function FeaturedProducts() {
     <section id="shop" className="py-24 sm:py-40 bg-background">
       <div className="container mx-auto px-6">
         
-        {/* Category Header (Floriy Dynamic) */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
           <div className="max-w-2xl">
-            <span className="text-accent font-bold text-[10px] uppercase tracking-[0.4em] mb-4 block">The Loom Report</span>
-            <h2 className="font-headline text-4xl sm:text-6xl text-primary leading-tight">Hand-stitched <br /><span className="italic">curations.</span></h2>
+            <span className="text-accent font-bold text-[10px] uppercase tracking-[0.4em] mb-4 block">New Arrivals</span>
+            <h2 className="font-headline text-5xl sm:text-6xl text-primary leading-tight">Our <span className="italic">Collection.</span></h2>
           </div>
           <div className="flex gap-8 overflow-x-auto pb-4 no-scrollbar">
-            {['All', 'Creatures', 'Guardians', 'Lifestyle'].map((cat) => (
+            {['All', 'Toys', 'Clothing', 'Home Decor'].map((cat) => (
               <button 
                 key={cat}
                 className="whitespace-nowrap text-[11px] font-bold uppercase tracking-widest text-primary/40 hover:text-primary transition-colors pb-1 border-b-2 border-transparent hover:border-primary"
@@ -83,7 +80,7 @@ export function FeaturedProducts() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-24">
-          {displayProducts.map((product: any, idx: number) => (
+          {displayProducts.map((product: any) => (
             <div key={product.id} className="group cursor-pointer block">
               <div className="relative aspect-[4/5] overflow-hidden bg-muted mb-8 img-hover-zoom">
                 <Image
@@ -95,7 +92,6 @@ export function FeaturedProducts() {
                   data-ai-hint={product.imageHint || "crochet"}
                 />
                 
-                {/* Quick Add Overlay */}
                 <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-8 p-4">
                    <button 
                     onClick={(e) => {
@@ -104,7 +100,7 @@ export function FeaturedProducts() {
                     }}
                     className="bg-white text-primary text-[10px] font-bold uppercase tracking-widest px-8 h-12 w-full max-w-[200px] shadow-2xl hover:bg-primary hover:text-white transition-all transform translate-y-4 group-hover:translate-y-0"
                    >
-                     Quick Add +
+                     Add to Bag
                    </button>
                 </div>
               </div>
@@ -114,16 +110,15 @@ export function FeaturedProducts() {
                   <h3 className="font-bold text-lg text-primary">{product.title}</h3>
                   <span className="font-medium text-primary/60">₹ {Number(product.price).toLocaleString('en-IN')}</span>
                 </div>
-                <p className="text-[10px] uppercase tracking-widest text-primary/40 font-bold">{product.category || 'Enchanted'}</p>
+                <p className="text-[10px] uppercase tracking-widest text-primary/40 font-bold">{product.category || 'General'}</p>
               </div>
             </div>
           ))}
         </div>
 
-        {/* View All Button */}
         <div className="mt-24 text-center">
           <button className="inline-flex items-center gap-4 text-xs font-bold uppercase tracking-[0.3em] text-primary group">
-            Explore Full Boutique <div className="w-12 h-[1px] bg-primary/20 group-hover:w-20 transition-all"></div> <ArrowRight className="w-4 h-4" />
+            View All Products <div className="w-12 h-[1px] bg-primary/20 group-hover:w-20 transition-all"></div> <ArrowRight className="w-4 h-4" />
           </button>
         </div>
       </div>

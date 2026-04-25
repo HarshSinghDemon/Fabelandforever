@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useEffect, useRef, useState } from 'react';
@@ -43,7 +42,7 @@ export default function Home() {
   const handleContactSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const recipient = "fableandforevercompany@gmail.com";
-    const subject = encodeURIComponent(`Inquiry from Boutique: ${contactForm.name}`);
+    const subject = encodeURIComponent(`New Inquiry: ${contactForm.name}`);
     const body = encodeURIComponent(contactForm.message);
     window.open(`mailto:${recipient}?subject=${subject}&body=${body}`, '_blank');
   };
@@ -54,14 +53,13 @@ export default function Home() {
       
       <Hero />
       
-      {/* Category Scroll Placeholder (Floriy Dynamic) */}
       <div className="py-20 border-y border-primary/5 overflow-hidden whitespace-nowrap bg-white">
         <div className="flex animate-marquee gap-20">
           {[...Array(4)].map((_, i) => (
             <div key={i} className="flex gap-20">
-              <span className="text-[10px] font-bold uppercase tracking-[0.5em] text-primary/40">Hand-Stitched Treasures</span>
-              <span className="text-[10px] font-bold uppercase tracking-[0.5em] text-primary/40">Heirloom Quality</span>
-              <span className="text-[10px] font-bold uppercase tracking-[0.5em] text-primary/40">Slow Crafted Luxury</span>
+              <span className="text-[10px] font-bold uppercase tracking-[0.5em] text-primary/40">Handmade with care</span>
+              <span className="text-[10px] font-bold uppercase tracking-[0.5em] text-primary/40">100% Quality Yarn</span>
+              <span className="text-[10px] font-bold uppercase tracking-[0.5em] text-primary/40">Unique Designs</span>
             </div>
           ))}
         </div>
@@ -71,21 +69,20 @@ export default function Home() {
         <FeaturedProducts />
       </section>
 
-      {/* Process Section (The "Floriy" Way) */}
       <section className="py-40 bg-white border-y border-primary/5 overflow-hidden">
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-24 md:gap-12">
             {[
-              { icon: Feather, title: 'Ethical Sourcing', desc: 'We select only the finest, most sustainable fibers for every loop.' },
-              { icon: Palette, title: 'Artisanal Palette', desc: 'Each color is chosen to evoke a specific fable or feeling.' },
-              { icon: Sparkles, title: 'Heirloom Finish', desc: 'Designed to be passed down, stitch by enduring stitch.' }
+              { icon: Feather, title: 'Fine Materials', desc: 'We only use soft, durable, and ethically sourced yarns.' },
+              { icon: Palette, title: 'Artisan Colors', desc: 'Each color combination is picked to look beautiful in your home.' },
+              { icon: Sparkles, title: 'Perfect Finish', desc: 'Detailed craftsmanship ensures every piece is built to last.' }
             ].map((item, idx) => (
               <div key={idx} className="text-center space-y-6 group">
                 <div className="w-16 h-16 bg-paper rounded-full flex items-center justify-center mx-auto mb-8 transition-transform group-hover:scale-110 duration-500">
                   <item.icon className="w-6 h-6 text-accent" />
                 </div>
                 <h3 className="font-headline text-2xl text-primary">{item.title}</h3>
-                <p className="text-primary/60 text-sm leading-relaxed max-w-[250px] mx-auto italic">
+                <p className="text-primary/60 text-sm leading-relaxed max-w-[250px] mx-auto">
                   {item.desc}
                 </p>
               </div>
@@ -105,23 +102,20 @@ export default function Home() {
       >
         <div className="container mx-auto px-6">
           <div className="max-w-4xl mx-auto text-center space-y-16">
-            <span className="text-accent font-bold tracking-[0.4em] uppercase text-[10px]">The Weaver's Heart</span>
+            <span className="text-accent font-bold tracking-[0.4em] uppercase text-[10px]">About Us</span>
             
             <h2 className="font-headline text-5xl sm:text-7xl md:text-8xl text-primary leading-tight">
-              Crafted in the <br /><span className="italic">quiet moments.</span>
+              Our <span className="italic">Story.</span>
             </h2>
 
             <div className="space-y-8 max-w-2xl mx-auto">
               <p className="text-xl sm:text-2xl text-primary font-headline italic leading-relaxed">
                 আমাদের প্রতিটি সৃষ্টি, ভালোবাসার রঙে রাঙানো এবং যত্নে বোনা। গল্পের প্রতিটি স্টিচ, হৃদয়ের ছোঁয়ায়।
               </p>
-              <p className="text-sm font-bold uppercase tracking-widest text-accent opacity-60">
-                Every stitch of the story, with a touch of the heart.
-              </p>
             </div>
 
             <p className="text-lg text-primary/70 leading-relaxed font-medium max-w-3xl mx-auto">
-              Fable & Forever started with a rhythmic 'click-pull' of a single hook and a ball of yarn that felt like a promise. We believe in the magic of things that take hours to grow—in objects that carry the heartbeat of the person who made them.
+              Fable & Forever started as a passion for high-quality handmade crafts. We believe in the beauty of items that take time to create—objects that carry the personal touch of the maker.
             </p>
           </div>
         </div>
@@ -135,17 +129,17 @@ export default function Home() {
         <div className="container mx-auto px-6 max-w-7xl">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-start">
             <div>
-              <span className="text-accent font-bold tracking-[0.4em] uppercase text-[10px] mb-8 block">Inquiries</span>
+              <span className="text-accent font-bold tracking-[0.4em] uppercase text-[10px] mb-8 block">Get in Touch</span>
               <h2 className="font-headline text-6xl sm:text-8xl text-primary leading-none mb-12">
-                Stitch <br />
-                <span className="italic">with us.</span>
+                Contact <br />
+                <span className="italic">Us.</span>
               </h2>
               <p className="text-xl text-primary/60 italic leading-relaxed max-w-sm">
-                "Questions about a pattern, a commission, or just a friendly whisper? Our loom is always open."
+                Have questions about a product or a custom order? We are here to help.
               </p>
               
               <div className="mt-20 space-y-4">
-                <p className="text-[10px] font-bold uppercase tracking-widest text-primary/30">Connect Directly</p>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-primary/30">Email Us</p>
                 <Link href="mailto:fableandforevercompany@gmail.com" className="text-2xl font-headline text-primary hover:text-accent transition-colors flex items-center gap-4">
                   fableandforevercompany@gmail.com <ArrowRight className="w-6 h-6" />
                 </Link>
@@ -155,7 +149,7 @@ export default function Home() {
             <form onSubmit={handleContactSubmit} className="space-y-12">
                <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                   <div className="space-y-4 border-b border-primary/10 pb-4">
-                    <label className="text-[10px] font-bold uppercase tracking-widest text-primary/40">Your Name</label>
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-primary/40">Full Name</label>
                     <Input 
                       required
                       value={contactForm.name}
@@ -177,17 +171,17 @@ export default function Home() {
                   </div>
                </div>
                <div className="space-y-4 border-b border-primary/10 pb-4">
-                  <label className="text-[10px] font-bold uppercase tracking-widest text-primary/40">Your Story / Inquiry</label>
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-primary/40">Message</label>
                   <Textarea 
                     required
                     value={contactForm.message}
                     onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
-                    placeholder="Tell us about your forever treasure..." 
+                    placeholder="How can we help you?" 
                     className="border-none bg-transparent p-0 min-h-[150px] text-xl placeholder:text-primary/10 rounded-none focus-visible:ring-0 resize-none" 
                   />
                </div>
                <Button type="submit" className="bg-primary hover:bg-primary/90 text-white h-16 px-16 rounded-none text-[11px] font-bold uppercase tracking-[0.3em] w-full sm:w-auto">
-                 Send Inquiry <Send className="ml-4 w-4 h-4" />
+                 Send Message <Send className="ml-4 w-4 h-4" />
                </Button>
             </form>
           </div>

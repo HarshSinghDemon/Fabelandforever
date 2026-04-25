@@ -4,25 +4,25 @@
 
 @layer base {
   :root {
-    --background: 40 30% 98%; /* Warm Off-White / Paper */
-    --foreground: 185 50% 8%; /* Slightly darker for better legibility */
+    --background: 265 20% 98%; /* Soft Lavender-tinted Off-White */
+    --foreground: 0 0% 10%; /* Deepest Black */
     --card: 0 0% 100%;
-    --card-foreground: 185 50% 10%;
+    --card-foreground: 0 0% 10%;
     --popover: 0 0% 100%;
-    --popover-foreground: 185 50% 10%;
-    --primary: 175 45% 20%; /* Deeper Forest Teal for better contrast */
+    --popover-foreground: 0 0% 10%;
+    --primary: 185 55% 20%; /* Deep Midnight Teal */
     --primary-foreground: 180 30% 98%;
-    --secondary: 160 30% 94%;
-    --secondary-foreground: 185 50% 20%;
-    --muted: 180 10% 94%;
-    --muted-foreground: 185 10% 40%; /* Darker muted text */
-    --accent: 25 40% 55%; /* Richer Clay */
-    --accent-foreground: 25 45% 15%;
+    --secondary: 265 30% 94%;
+    --secondary-foreground: 185 55% 20%;
+    --muted: 185 10% 94%;
+    --muted-foreground: 185 10% 40%;
+    --accent: 265 40% 65%; /* Soft Artisan Lavender */
+    --accent-foreground: 265 45% 15%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 175 10% 88%;
-    --input: 175 10% 88%;
-    --ring: 175 45% 25%;
+    --border: 185 15% 90%;
+    --input: 185 15% 90%;
+    --ring: 185 55% 25%;
     --radius: 0rem;
   }
 }
@@ -53,7 +53,7 @@
   font-family: 'Pacifico', cursive;
 }
 
-/* Cinematic Transitions like Floriy */
+/* Cinematic Transitions */
 .reveal-on-scroll {
   opacity: 0;
   transform: translateY(30px);
@@ -77,26 +77,15 @@
   @apply bg-primary/20 rounded-full hover:bg-primary/40 transition-colors;
 }
 
-/* High-end image focus */
+/* Luxury Image Dynamics */
 .img-hover-zoom {
   overflow: hidden;
 }
 .img-hover-zoom img {
-  transition: transform 2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 2.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .img-hover-zoom:hover img {
-  transform: scale(1.05);
-}
-
-.animate-marquee {
-  display: flex;
-  width: fit-content;
-  animation: marquee 60s linear infinite;
-}
-
-@keyframes marquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  transform: scale(1.08);
 }
 
 .bg-paper {
@@ -121,10 +110,23 @@
 
 /* Luxury Fade */
 .fade-in {
-  animation: fadeIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: fadeIn 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
+}
+
+/* Stitched border effect for cards */
+.stitching-border {
+  position: relative;
+}
+.stitching-border::after {
+  content: '';
+  position: absolute;
+  inset: 10px;
+  border: 1px dashed hsl(var(--accent) / 0.3);
+  border-radius: inherit;
+  pointer-events: none;
 }

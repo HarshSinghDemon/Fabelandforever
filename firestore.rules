@@ -3,24 +3,17 @@ service cloud.firestore {
   match /databases/{database}/documents {
 
     /**
-     * CORE PHILOSOPHY - v1.3 (Master Email Boost)
-     * This ruleset implements a multi-tier authorization model.
-     * 1. Public Catalog & Visuals: Viewable by all, modifiable by admins.
-     * 2. Order Management: Created by anyone, managed by admins.
-     * 3. RBAC: Admins are identified by the 'roles_admin' collection OR a specific master email.
+     * CORE PHILOSOPHY - v1.4 (Master Email Bypass)
+     * This ruleset ensures that the master weaver (harshroop100@gmail.com) has full access
+     * to manage the boutique while visitors can browse treasures and site visuals.
      */
 
     // --- Helper Functions ---
 
-    /** Checks if the request is from a signed-in user. */
     function isSignedIn() {
       return request.auth != null;
     }
 
-    /** 
-     * Checks if the user is an administrator.
-     * For bootstrapping, we allow a specific master email.
-     */
     function isAdmin() {
       return isSignedIn() && (
         exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid)) ||
@@ -30,38 +23,26 @@ service cloud.firestore {
 
     // --- Collection Rules ---
 
-    /**
-     * @description Rules for the product catalog.
-     */
     match /products/{productId} {
       allow get, list: if true;
-      allow create, update, delete: if isAdmin();
+      allow write: if isAdmin();
     }
 
-    /**
-     * @description Rules for site-wide visual settings.
-     */
     match /settings/{settingId} {
       allow get, list: if true;
       allow write: if isAdmin();
     }
 
-    /**
-     * @description Rules for orders.
-     */
     match /orders/{orderId} {
       allow create: if true;
       allow get: if isAdmin() || (isSignedIn() && resource.data.userId == request.auth.uid);
       allow list, update, delete: if isAdmin();
     }
 
-    /**
-     * @description Admin role markers.
-     */
     match /roles_admin/{adminUid} {
       allow get: if isSignedIn();
       allow list: if isAdmin();
-      allow create, update, delete: if false; 
+      allow write: if false; 
     }
   }
 }

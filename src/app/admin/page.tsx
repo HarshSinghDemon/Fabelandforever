@@ -56,7 +56,6 @@ export default function AdminDashboard() {
     }
   }, [user, loading, router]);
 
-  // Updated firestore rules display to match the actual rules including admin email bypass
   const firestoreRules = `rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {

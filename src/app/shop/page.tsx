@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useEffect, useState, useRef } from 'react';
@@ -132,7 +131,7 @@ export default function ShopPage() {
       <Navigation />
       
       {/* Shop Hero - Elegant Editorial Entry */}
-      <section className="relative pt-32 pb-20 sm:pt-48 sm:pb-32 overflow-hidden bg-black h-[40vh] sm:h-[60vh]">
+      <section className="relative pt-24 pb-12 sm:pt-40 sm:pb-20 overflow-hidden bg-black h-[30vh] sm:h-[45vh]">
         <div className="absolute inset-0 z-0">
           <Image 
             src={heroImageUrl} 
@@ -146,13 +145,13 @@ export default function ShopPage() {
         </div>
         
         <div className="container mx-auto px-6 max-w-6xl text-center relative z-10">
-          <div className="reveal-on-scroll active space-y-4 sm:space-y-6">
-            <span className="text-white/40 font-bold tracking-[1em] uppercase text-[9px] mb-4 block">Fable & Forever</span>
-            <h1 className="font-headline text-5xl sm:text-9xl text-white leading-none tracking-tighter drop-shadow-2xl">
+          <div className="reveal-on-scroll active space-y-3 sm:space-y-4">
+            <span className="text-white/40 font-bold tracking-[1em] uppercase text-[9px] mb-2 block">Fable & Forever</span>
+            <h1 className="font-headline text-4xl sm:text-7xl text-white leading-none tracking-tighter drop-shadow-2xl">
               Shop <span className="italic">Catalog.</span>
             </h1>
-            <div className="w-12 h-[1px] bg-white/20 mx-auto"></div>
-            <p className="text-white/60 font-medium max-w-md mx-auto leading-relaxed italic text-xs sm:text-sm">
+            <div className="w-10 h-[1px] bg-white/20 mx-auto"></div>
+            <p className="text-white/60 font-medium max-w-md mx-auto leading-relaxed italic text-[10px] sm:text-xs">
               "Curated pieces for the heritage home, hand-stitched with love and slow-woven loops."
             </p>
           </div>
@@ -160,7 +159,7 @@ export default function ShopPage() {
       </section>
 
       {/* Sticky Category Bar - Minimalist Rail */}
-      <div className="sticky top-16 md:top-20 z-[40] bg-white/95 backdrop-blur-2xl border-b border-primary/5 py-4">
+      <div className="sticky top-16 md:top-20 z-[40] bg-white/95 backdrop-blur-2xl border-b border-primary/5 py-3">
         <div className="container mx-auto px-4 md:px-6 relative max-w-7xl">
           <div className="relative flex items-center max-w-5xl mx-auto">
             <button 
@@ -195,7 +194,7 @@ export default function ShopPage() {
                       }
                     }}
                     className={cn(
-                      "whitespace-nowrap px-6 py-2 rounded-none text-[9px] font-bold uppercase tracking-[0.3em] transition-all duration-500 border-b-2 shrink-0 cursor-pointer",
+                      "whitespace-nowrap px-4 py-1.5 rounded-none text-[8px] font-bold uppercase tracking-[0.3em] transition-all duration-500 border-b-2 shrink-0 cursor-pointer",
                       activeTab === id 
                         ? "text-primary border-primary" 
                         : "text-primary/30 border-transparent hover:text-primary hover:border-primary/20"
@@ -220,7 +219,7 @@ export default function ShopPage() {
         </div>
       </div>
 
-      <div className="flex-1 pb-48">
+      <div className="flex-1 pb-24">
         {categories.map((category) => {
           const catProducts = allItems.filter(p => p.category === category);
           const catId = category.toLowerCase();
@@ -229,29 +228,29 @@ export default function ShopPage() {
             <section 
               key={category} 
               id={catId} 
-              className="py-16 sm:py-32 border-b border-primary/5 scroll-mt-40"
+              className="py-12 sm:py-20 border-b border-primary/5 scroll-mt-40"
             >
               <div className="container mx-auto px-6 max-w-7xl">
                 
                 {/* Elegant Collection Header */}
-                <div className="mb-20 text-center max-w-2xl mx-auto space-y-6">
-                  <div className="flex items-center justify-center gap-4">
-                    <div className="w-8 h-[1px] bg-primary/10"></div>
-                    <span className="text-primary/40 font-bold tracking-[0.6em] uppercase text-[8px]">Curator's Note</span>
-                    <div className="w-8 h-[1px] bg-primary/10"></div>
+                <div className="mb-10 text-center max-w-2xl mx-auto space-y-4">
+                  <div className="flex items-center justify-center gap-3">
+                    <div className="w-6 h-[1px] bg-primary/10"></div>
+                    <span className="text-primary/40 font-bold tracking-[0.6em] uppercase text-[7px]">Curator's Note</span>
+                    <div className="w-6 h-[1px] bg-primary/10"></div>
                   </div>
-                  <h2 className="font-headline text-4xl sm:text-7xl text-primary tracking-tighter leading-none">{category}</h2>
-                  <p className="text-primary/50 text-xs sm:text-sm italic font-medium leading-relaxed px-4">
+                  <h2 className="font-headline text-3xl sm:text-5xl text-primary tracking-tighter leading-none">{category}</h2>
+                  <p className="text-primary/50 text-[10px] sm:text-xs italic font-medium leading-relaxed px-4">
                     "{getCategoryDescription(category)}"
                   </p>
                 </div>
 
                 {/* 2x2 Minimalist Editorial Matrix */}
-                <div className="grid grid-cols-2 lg:grid-cols-2 gap-8 md:gap-16 lg:gap-24 max-w-6xl mx-auto">
+                <div className="grid grid-cols-2 lg:grid-cols-2 gap-6 md:gap-10 lg:gap-14 max-w-6xl mx-auto">
                   {catProducts.map((product) => (
                     <div 
                       key={product.id} 
-                      className="group space-y-6"
+                      className="group space-y-4"
                     >
                       <Link href={`/products/${product.id}`} className="block">
                         <div className="relative aspect-[3/4] overflow-hidden bg-background rounded-none border border-primary/5 transition-all duration-700 shadow-sm group-hover:shadow-2xl">
@@ -265,18 +264,18 @@ export default function ShopPage() {
                         </div>
                       </Link>
                       
-                      <div className="space-y-4 text-center">
-                        <div className="space-y-2">
-                          <h3 className="font-headline text-lg sm:text-3xl text-primary tracking-tight truncate px-2">{product.title}</h3>
-                          <p className="font-bold text-primary/40 text-[10px] sm:text-xs tracking-[0.3em] uppercase italic">₹ {Number(product.price).toLocaleString('en-IN')}</p>
+                      <div className="space-y-3 text-center">
+                        <div className="space-y-1">
+                          <h3 className="font-headline text-base sm:text-2xl text-primary tracking-tight truncate px-2">{product.title}</h3>
+                          <p className="font-bold text-primary/40 text-[9px] sm:text-xs tracking-[0.3em] uppercase italic">₹ {Number(product.price).toLocaleString('en-IN')}</p>
                         </div>
                         
-                        <div className="pt-2">
+                        <div className="pt-1">
                           <button 
                             onClick={(e) => handleAddToCart(e, product)}
-                            className="inline-flex items-center gap-3 px-8 py-4 rounded-none border border-primary/10 text-primary hover:bg-primary hover:text-white transition-all duration-500 font-bold uppercase tracking-[0.4em] text-[9px] active:scale-95 group/btn"
+                            className="inline-flex items-center gap-2 px-6 py-3 rounded-none border border-primary/10 text-primary hover:bg-primary hover:text-white transition-all duration-500 font-bold uppercase tracking-[0.4em] text-[8px] active:scale-95 group/btn"
                           >
-                            Adopt Selection <ShoppingBasket className="w-4 h-4 group-hover/btn:rotate-12 transition-transform" />
+                            Adopt Selection <ShoppingBasket className="w-3 h-3 group-hover/btn:rotate-12 transition-transform" />
                           </button>
                         </div>
                       </div>

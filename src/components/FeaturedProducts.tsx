@@ -73,19 +73,19 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
     
     toast({
       title: "Added to Basket ✨",
-      description: `${product.title} is now yours.`,
+      description: `${product.title} has been selected.`,
     });
   };
 
   if (filteredProducts.length === 0) return null;
 
   return (
-    <section className="py-20 md:py-32 bg-background overflow-hidden border-t border-primary/5">
+    <section className="py-12 md:py-20 bg-background overflow-hidden border-t border-primary/5">
       <div className="container mx-auto px-6">
-        <div className="flex flex-col items-center text-center mb-16 md:mb-24 reveal-on-scroll">
-          <span className="text-accent font-bold tracking-[0.8em] uppercase text-[9px] mb-6 block">Curated Collection</span>
-          <h2 className="font-headline text-4xl md:text-6xl text-primary tracking-tight">{title}</h2>
-          <div className="w-16 h-[1px] bg-accent/30 mt-8 mb-6"></div>
+        <div className="flex flex-col items-center text-center mb-10 md:mb-14 reveal-on-scroll">
+          <span className="text-accent font-bold tracking-[0.8em] uppercase text-[9px] mb-4 block">Curated Collection</span>
+          <h2 className="font-headline text-3xl md:text-5xl text-primary tracking-tight">{title}</h2>
+          <div className="w-12 h-[1px] bg-accent/30 mt-6 mb-2"></div>
         </div>
 
         <div className="max-w-7xl mx-auto">
@@ -93,7 +93,7 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
             <CarouselContent className="-ml-6">
               {filteredProducts.map((product: any, idx: number) => (
                 <CarouselItem key={product.id} className="pl-6 basis-1/2 sm:basis-1/3 lg:basis-1/4">
-                  <div className="group space-y-6 transition-all duration-700 reveal-on-scroll" style={{ transitionDelay: `${idx * 0.1}s` }}>
+                  <div className="group space-y-4 transition-all duration-700 reveal-on-scroll" style={{ transitionDelay: `${idx * 0.1}s` }}>
                     <Link href={`/products/${product.id}`} className="block">
                       <div className="relative aspect-[3/4] overflow-hidden bg-muted rounded-[2rem] shadow-sm transition-all duration-1000 group-hover:shadow-2xl border border-primary/5 stitching-border">
                         <Image
@@ -107,18 +107,18 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
                       </div>
                     </Link>
                     
-                    <div className="space-y-4 text-center px-2">
-                      <div className="space-y-2">
-                        <h3 className="font-bold text-primary group-hover:text-accent transition-colors truncate text-[11px] md:text-xs tracking-[0.1em] uppercase">{product.title}</h3>
-                        <p className="font-bold text-primary/40 text-[10px] md:text-xs tracking-widest italic">₹ {Number(product.price).toLocaleString('en-IN')}</p>
+                    <div className="space-y-3 text-center px-2">
+                      <div className="space-y-1">
+                        <h3 className="font-bold text-primary group-hover:text-accent transition-colors truncate text-[10px] md:text-[11px] tracking-[0.1em] uppercase">{product.title}</h3>
+                        <p className="font-bold text-primary/40 text-[9px] md:text-[10px] tracking-widest italic">₹ {Number(product.price).toLocaleString('en-IN')}</p>
                       </div>
                       
                       <Button 
                         onClick={(e) => handleAddToCart(e, product)}
-                        className="w-full h-12 md:h-14 rounded-full bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-[0.3em] text-[9px] transition-all active:scale-95 shadow-lg group/btn overflow-hidden relative"
+                        className="w-full h-10 md:h-12 rounded-full bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-[0.3em] text-[8px] transition-all active:scale-95 shadow-lg group/btn overflow-hidden relative"
                       >
                         <span className="relative z-10 flex items-center justify-center gap-2">
-                          Add to Basket <ShoppingBasket className="w-4 h-4 group-hover/btn:rotate-12 transition-transform" />
+                          Add to Basket <ShoppingBasket className="w-3 h-3 group-hover/btn:rotate-12 transition-transform" />
                         </span>
                         <div className="absolute inset-0 bg-white/10 -translate-x-full group-hover/btn:translate-x-0 transition-transform duration-700"></div>
                       </Button>
@@ -128,9 +128,9 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
               ))}
             </CarouselContent>
             
-            <div className="hidden md:flex justify-center gap-6 mt-20">
-              <CarouselPrevious className="static translate-y-0 h-16 w-16 border-primary/10 hover:bg-primary hover:text-white transition-all shadow-xl rounded-full" />
-              <CarouselNext className="static translate-y-0 h-16 w-16 border-primary/10 hover:bg-primary hover:text-white transition-all shadow-xl rounded-full" />
+            <div className="hidden md:flex justify-center gap-4 mt-12">
+              <CarouselPrevious className="static translate-y-0 h-14 w-14 border-primary/10 hover:bg-primary hover:text-white transition-all shadow-xl rounded-full" />
+              <CarouselNext className="static translate-y-0 h-14 w-14 border-primary/10 hover:bg-primary hover:text-white transition-all shadow-xl rounded-full" />
             </div>
           </Carousel>
         </div>

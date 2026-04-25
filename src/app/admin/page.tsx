@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useEffect } from 'react';
@@ -103,8 +102,8 @@ export default function AdminPage() {
               </button>
             </SheetTrigger>
             <SheetContent side="left" className="p-0 border-none bg-primary w-80">
-              <SheetHeader className="p-6 border-b border-white/5">
-                <SheetTitle className="text-white font-headline text-xl">Master Weaver Navigation</SheetTitle>
+              <SheetHeader className="p-8 border-b border-white/5">
+                <SheetTitle className="text-white font-headline text-2xl">Studio Access</SheetTitle>
               </SheetHeader>
               <AdminSidebar activeView={activeView} onViewChange={handleViewChange} />
             </SheetContent>

@@ -1,4 +1,3 @@
-
 "use client";
 
 import React from 'react';
@@ -80,12 +79,12 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
   if (filteredProducts.length === 0) return null;
 
   return (
-    <section className="py-16 md:py-24 bg-background overflow-hidden border-t border-primary/5">
+    <section className="py-16 md:py-32 bg-background overflow-hidden border-t border-primary/5">
       <div className="container mx-auto px-4 md:px-6 max-w-7xl">
-        <div className="flex flex-col items-center text-center mb-10 md:mb-16 reveal-on-scroll active">
-          <span className="text-accent font-bold tracking-[0.8em] uppercase text-[8px] md:text-[9px] mb-4 block">Boutique Selection</span>
-          <h2 className="font-headline text-3xl md:text-6xl text-primary tracking-tighter">{title}</h2>
-          <div className="w-12 h-[1px] bg-accent/20 mt-4 md:mt-6"></div>
+        <div className="flex flex-col items-center text-center mb-12 md:mb-20 reveal-on-scroll active">
+          <span className="text-accent font-black tracking-[0.8em] uppercase text-[9px] mb-4 block">Boutique Selection</span>
+          <h2 className="font-headline text-4xl md:text-7xl text-primary tracking-tighter leading-none">{title}</h2>
+          <div className="w-16 h-[1px] bg-accent/20 mt-6 md:mt-8"></div>
         </div>
 
         <div className="relative px-0 md:px-14">
@@ -93,7 +92,7 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
             <CarouselContent className="-ml-2 md:-ml-4">
               {filteredProducts.map((product: any, idx: number) => (
                 <CarouselItem key={product.id} className="pl-2 md:pl-4 basis-1/2 md:basis-1/3 lg:basis-1/4">
-                  <div className="group space-y-4 md:space-y-6 transition-all duration-700 reveal-on-scroll active" style={{ transitionDelay: `${idx * 0.1}s` }}>
+                  <div className="group space-y-4 md:space-y-8 transition-all duration-700 reveal-on-scroll active" style={{ transitionDelay: `${idx * 0.1}s` }}>
                     <Link href={`/products/${product.id}`} className="block">
                       <div className="relative aspect-[3/4] overflow-hidden bg-white rounded-none shadow-sm transition-all duration-[2s] group-hover:shadow-2xl border border-primary/5 stitching-border">
                         <Image
@@ -109,15 +108,15 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
                     
                     <div className="space-y-2 md:space-y-4 text-center px-1">
                       <div className="space-y-0.5 md:space-y-1">
-                        <h3 className="font-headline text-lg md:text-2xl text-primary group-hover:text-accent transition-colors truncate px-1">{product.name}</h3>
-                        <p className="font-bold text-primary/40 text-xs md:text-sm tracking-widest italic">₹ {Number(product.price).toLocaleString('en-IN')}</p>
+                        <h3 className="font-headline text-xl md:text-3xl text-primary group-hover:text-accent transition-colors truncate px-1 leading-tight">{product.name}</h3>
+                        <p className="font-black text-primary/40 text-xs md:text-sm tracking-widest italic">₹ {Number(product.price).toLocaleString('en-IN')}</p>
                       </div>
                       
                       <div className="pt-1 md:pt-2">
                         <Button 
                           onClick={(e) => handleAddToCart(e, product)}
                           variant="outline"
-                          className="w-full h-10 md:h-12 rounded-none border-primary/10 hover:border-primary text-[8px] md:text-[9px] tracking-[0.3em] md:tracking-[0.4em] font-black"
+                          className="w-full h-11 md:h-14 rounded-none border-primary/10 hover:border-primary text-[8px] md:text-[9px] tracking-[0.3em] md:tracking-[0.5em] font-black"
                         >
                           Adopt Selection
                         </Button>

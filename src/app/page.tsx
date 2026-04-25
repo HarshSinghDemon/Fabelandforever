@@ -1,24 +1,19 @@
 
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Navigation } from '@/components/Navigation';
 import { Hero } from '@/components/Hero';
 import { FeaturedProducts } from '@/components/FeaturedProducts';
+import { CategoryGrid } from '@/components/CategoryGrid';
 import { Footer } from '@/components/Footer';
-import { Send, ArrowRight, Sparkles, Feather, Palette, MessageCircle } from 'lucide-react';
+import { ArrowRight, Sparkles, Feather, Palette, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import Link from 'next/link';
 
 export default function Home() {
-  const [contactForm, setContactForm] = useState({
-    name: '',
-    email: '',
-    message: ''
-  });
-
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -28,7 +23,7 @@ export default function Home() {
           }
         });
       },
-      { threshold: 0.15 }
+      { threshold: 0.1 }
     );
 
     const elements = document.querySelectorAll('.reveal-on-scroll');
@@ -40,9 +35,7 @@ export default function Home() {
   const handleContactSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const recipient = "fableandforevercompany@gmail.com";
-    const subject = encodeURIComponent(`Studio Inquiry: ${contactForm.name}`);
-    const body = encodeURIComponent(contactForm.message);
-    window.open(`mailto:${recipient}?subject=${subject}&body=${body}`, '_blank');
+    window.open(`mailto:${recipient}`, '_blank');
   };
 
   return (
@@ -51,8 +44,14 @@ export default function Home() {
       
       <Hero />
       
-      {/* Dynamic Arrivals Section */}
-      <FeaturedProducts />
+      {/* Product Sections - Floriy Style */}
+      <FeaturedProducts title="New Arrivals" />
+      <FeaturedProducts title="Bestsellers" isBestseller />
+      <FeaturedProducts title="Floral Treasures" categoryFilter="Flowers" />
+      <FeaturedProducts title="Artisanal Candles" categoryFilter="Candles" />
+
+      {/* Shop by Category Grid */}
+      <CategoryGrid />
 
       {/* The Artisanal Process Block */}
       <section className="py-40 bg-white border-y border-primary/5 overflow-hidden">
@@ -108,10 +107,8 @@ export default function Home() {
                     <label className="text-[9px] font-bold uppercase tracking-[0.4em] text-primary/40">Your Name</label>
                     <Input 
                       required
-                      value={contactForm.name}
-                      onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
                       placeholder="Jane Doe" 
-                      className="border-none bg-transparent p-0 text-xl placeholder:text-primary/10 rounded-none focus-visible:ring-0 font-headline" 
+                      className="border-none bg-transparent p-0 text-xl placeholder:text-primary/10 rounded-none focus-visible:ring-0 font-headline h-auto" 
                     />
                   </div>
                   <div className="space-y-4 border-b border-primary/10 pb-4">
@@ -119,10 +116,8 @@ export default function Home() {
                     <Input 
                       required
                       type="email" 
-                      value={contactForm.email}
-                      onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
                       placeholder="you@domain.com" 
-                      className="border-none bg-transparent p-0 text-xl placeholder:text-primary/10 rounded-none focus-visible:ring-0 font-headline" 
+                      className="border-none bg-transparent p-0 text-xl placeholder:text-primary/10 rounded-none focus-visible:ring-0 font-headline h-auto" 
                     />
                   </div>
                </div>
@@ -130,26 +125,24 @@ export default function Home() {
                   <label className="text-[9px] font-bold uppercase tracking-[0.4em] text-primary/40">Message</label>
                   <Textarea 
                     required
-                    value={contactForm.message}
-                    onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
                     placeholder="Tell us about your dream project..." 
                     className="border-none bg-transparent p-0 min-h-[100px] text-xl placeholder:text-primary/10 rounded-none focus-visible:ring-0 resize-none font-headline" 
                   />
                </div>
                <Button type="submit" className="bg-primary hover:bg-primary/90 text-white h-16 px-16 rounded-full text-[10px] font-bold uppercase tracking-[0.5em] w-full sm:w-auto transition-all active:scale-95 shadow-xl">
-                 SendMessage
+                 Send Message
                </Button>
             </form>
           </div>
         </div>
       </section>
 
-      {/* Floating WhatsApp Button (Floriy style) */}
+      {/* Floating WhatsApp Button */}
       <a 
         href="https://wa.me/910000000000" 
         target="_blank" 
         rel="noopener noreferrer"
-        className="fixed bottom-10 right-10 z-[100] bg-[#25D366] text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-transform active:scale-90 animate-in slide-in-from-bottom-10"
+        className="fixed bottom-10 right-10 z-[100] bg-[#25D366] text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-transform active:scale-90"
       >
         <MessageCircle className="w-8 h-8 fill-white text-[#25D366]" />
       </a>

@@ -1,30 +1,35 @@
 
 "use client";
 
-import React, { useState } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Loader2, ShoppingBasket, ArrowRight, Sparkles, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ShoppingBag, ArrowRight } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useToast } from '@/hooks/use-toast';
 import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
 import { collection } from 'firebase/firestore';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { cn } from '@/lib/utils';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import { Button } from '@/components/ui/button';
 
-export function FeaturedProducts() {
+interface FeaturedProductsProps {
+  title: string;
+  categoryFilter?: string;
+  isBestseller?: boolean;
+}
+
+export function FeaturedProducts({ title, categoryFilter, isBestseller }: FeaturedProductsProps) {
   const { addToCart } = useCart();
   const { toast } = useToast();
   const db = useFirestore();
-  const [activeCategory, setActiveCategory] = useState('All Items');
 
   const productsQuery = useMemoFirebase(() => {
     if (!db) return null;
     return collection(db, 'products');
   }, [db]);
 
-  const { data: dbProducts, loading } = useCollection(productsQuery);
+  const { data: dbProducts } = useCollection(productsQuery);
 
   const allItems = [
     ...(dbProducts || []),
@@ -34,16 +39,15 @@ export function FeaturedProducts() {
       price: p.price,
       category: p.category,
       image: p.imageUrl,
-      imageHint: p.imageHint,
       description: p.story
     }))
-  ].slice(0, 15);
+  ];
 
-  const filteredProducts = activeCategory === 'All Items' 
-    ? allItems 
-    : allItems.filter(p => p.category === activeCategory);
-
-  const categories = ['All Items', ...new Set(allItems.map(p => p.category))];
+  const filteredProducts = categoryFilter 
+    ? allItems.filter(p => p.category === categoryFilter)
+    : isBestseller 
+      ? allItems.slice(0, 8) // Simplified bestseller logic
+      : allItems.slice(allItems.length - 8); // Simplified new arrivals logic
 
   const handleAddToCart = (e: React.MouseEvent, product: any) => {
     e.preventDefault();
@@ -58,66 +62,58 @@ export function FeaturedProducts() {
     });
     
     toast({
-      title: "Treasure Selected",
-      description: `${product.title} added to your basket.`,
+      title: "Added to Basket ✨",
+      description: `${product.title} is now yours.`,
     });
   };
 
-  if (loading && dbProducts.length === 0 && allItems.length === 0) {
-    return (
-      <div className="py-60 flex flex-col items-center justify-center gap-6">
-        <Loader2 className="w-6 h-6 text-primary animate-spin" />
-        <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-primary/30 text-center px-6">Preparing Our Collection...</p>
-      </div>
-    );
-  }
+  if (filteredProducts.length === 0) return null;
 
   return (
-    <section id="shop" className="py-24 sm:py-40 bg-background overflow-hidden">
+    <section className="py-24 bg-background overflow-hidden border-t border-primary/5">
       <div className="container mx-auto px-6">
         
-        <div className="text-center mb-24 reveal-on-scroll">
-          <h2 className="font-headline text-5xl sm:text-7xl text-primary leading-tight">New <span className="italic">Arrivals</span></h2>
-          <div className="flex justify-center mt-8">
-             <Link href="/#shop" className="text-[10px] font-bold uppercase tracking-[0.4em] text-primary/40 hover:text-primary border-b border-primary/10 pb-1 transition-all">
-               View All
+        <div className="text-center mb-16 reveal-on-scroll">
+          <h2 className="font-headline text-4xl sm:text-5xl text-primary leading-tight">{title}</h2>
+          <div className="flex justify-center mt-4">
+             <Link href="/#shop" className="text-[9px] font-bold uppercase tracking-[0.4em] text-primary/40 hover:text-primary transition-all flex items-center gap-2">
+               View all <ArrowRight className="w-3 h-3" />
              </Link>
           </div>
         </div>
 
         <div className="relative reveal-on-scroll">
-          <Carousel opts={{ align: "start", loop: true }} className="w-full">
-            <CarouselContent className="-ml-8">
+          <Carousel opts={{ align: "start", loop: false }} className="w-full">
+            <CarouselContent className="-ml-6 sm:-ml-10">
               {filteredProducts.map((product: any) => (
-                <CarouselItem key={product.id} className="pl-8 basis-full sm:basis-1/2 lg:basis-1/4">
-                  <Link 
-                    href={`/products/${product.id}`}
-                    className="group block space-y-6"
-                  >
-                    <div className="relative aspect-[3/4] overflow-hidden bg-muted rounded-2xl shadow-lg img-hover-zoom">
-                      <Image
-                        src={product.image}
-                        alt={product.title}
-                        fill
-                        className="object-cover transition-transform duration-700"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                      />
-                      
-                      <div className="absolute bottom-6 right-6 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                         <button 
-                          onClick={(e) => handleAddToCart(e, product)}
-                          className="bg-white/95 backdrop-blur-md text-primary p-4 shadow-2xl hover:bg-primary hover:text-white transition-all transform active:scale-90 rounded-full"
-                         >
-                           <ShoppingBasket className="w-5 h-5" />
-                         </button>
+                <CarouselItem key={product.id} className="pl-6 sm:pl-10 basis-full sm:basis-1/2 lg:basis-1/4">
+                  <div className="group space-y-6">
+                    <Link href={`/products/${product.id}`} className="block">
+                      <div className="relative aspect-[3/4] overflow-hidden bg-muted rounded-2xl shadow-sm transition-all group-hover:shadow-xl">
+                        <Image
+                          src={product.image}
+                          alt={product.title}
+                          fill
+                          className="object-cover transition-transform duration-1000 group-hover:scale-105"
+                          sizes="(max-width: 768px) 100vw, 25vw"
+                        />
                       </div>
-                    </div>
+                    </Link>
                     
-                    <div className="space-y-2 text-center">
-                      <h3 className="font-headline text-2xl text-primary group-hover:text-accent transition-colors truncate px-2">{product.title}</h3>
-                      <p className="font-bold text-primary/40 text-sm">Rs. {Number(product.price).toLocaleString('en-IN')}</p>
+                    <div className="space-y-4 text-center">
+                      <div className="space-y-1">
+                        <h3 className="font-headline text-2xl text-primary group-hover:text-accent transition-colors truncate px-2">{product.title}</h3>
+                        <p className="font-bold text-primary/60 text-sm">Rs. {Number(product.price).toLocaleString('en-IN')}</p>
+                      </div>
+                      
+                      <Button 
+                        onClick={(e) => handleAddToCart(e, product)}
+                        className="w-full h-12 rounded-xl bg-black hover:bg-black/90 text-white font-bold uppercase tracking-widest text-[10px] transition-all active:scale-95"
+                      >
+                        Add to cart
+                      </Button>
                     </div>
-                  </Link>
+                  </div>
                 </CarouselItem>
               ))}
             </CarouselContent>

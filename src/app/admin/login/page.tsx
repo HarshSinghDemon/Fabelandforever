@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { Logo } from '@/components/Logo';
-import { KeyRound, Mail, Info, UserPlus, LogIn, AlertCircle, Sparkles, Loader2 } from 'lucide-react';
+import { KeyRound, Mail, Info, UserPlus, LogIn, AlertCircle, Loader2 } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 export default function AdminLoginPage() {
@@ -19,11 +19,10 @@ export default function AdminLoginPage() {
   const [isBusy, setIsBusy] = useState(false);
   
   const auth = useAuth();
-  const { user, loading: authLoading } = useUser();
+  const { user, isUserLoading: authLoading } = useUser();
   const router = useRouter();
   const { toast } = useToast();
 
-  // Redirect if already logged in
   useEffect(() => {
     if (!authLoading && user) {
       router.push('/admin');
@@ -36,7 +35,7 @@ export default function AdminLoginPage() {
       toast({
         variant: "destructive",
         title: "Magic Disconnected",
-        description: "Firebase is not initialized. Please check your project environment.",
+        description: "The magic threads are not bound. Check your connection.",
       });
       return;
     }
@@ -68,8 +67,6 @@ export default function AdminLoginPage() {
         message = "That password is too frail. Make it stronger.";
       } else if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
         message = "Incorrect email or password. Please try again.";
-      } else if (error.code === 'auth/operation-not-allowed') {
-        message = "Email/Password auth is not enabled in your Firebase Console.";
       }
 
       toast({
@@ -98,7 +95,7 @@ export default function AdminLoginPage() {
           <AlertTitle className="font-headline text-2xl text-primary">Loom Not Connected</AlertTitle>
           <AlertDescription className="mt-4 space-y-6">
             <p className="text-sm font-medium italic text-primary/60">
-              The magic threads are disconnected. You need to ensure your Firebase configuration is correctly added to your project's environment variables.
+              The magic threads are disconnected. You need to ensure your Firebase configuration is correctly added to your project's environment variables or configuration file.
             </p>
             <Button 
               variant="outline" 
@@ -115,10 +112,7 @@ export default function AdminLoginPage() {
 
   return (
     <div className="min-h-screen bg-paper flex items-center justify-center p-6 relative overflow-hidden">
-      {/* Background Decor */}
       <div className="absolute inset-0 bg-dots opacity-20 pointer-events-none"></div>
-      <div className="absolute top-0 right-0 w-96 h-96 bg-accent/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2"></div>
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-primary/5 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2"></div>
       
       <Card className="w-full max-w-md border-none shadow-[0_50px_100px_-20px_rgba(45,115,107,0.15)] rounded-[4rem] overflow-hidden relative z-10 bg-white">
         <CardHeader className="bg-primary text-white text-center py-16 relative overflow-hidden">
@@ -201,7 +195,7 @@ export default function AdminLoginPage() {
               <Info className="w-4 h-4 text-accent" />
             </div>
             <p className="text-[10px] leading-relaxed font-medium italic">
-              Access is restricted to authorized artisans. If this is your first time, use the "Request Access" option. Ensure Email Auth is enabled in your <a href="https://console.firebase.google.com" target="_blank" className="text-accent underline decoration-accent/20 hover:text-accent transition-colors">Firebase Console</a>.
+              Access is restricted to authorized artisans. If this is your first time, use the "Request Access" option. Ensure Email Auth is enabled in your Firebase Console.
             </p>
           </div>
         </CardContent>

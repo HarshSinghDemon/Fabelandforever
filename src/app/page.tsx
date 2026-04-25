@@ -67,7 +67,7 @@ export default function Home() {
         />
         
         <FeaturedProducts 
-          title="Floral Treasures" 
+          title="Most Loved Flowers" 
           categoryFilter="Flowers" 
         />
 
@@ -79,7 +79,7 @@ export default function Home() {
         />
         
         <FeaturedProducts 
-          title="Artisanal Candles" 
+          title="Most Loved Candles" 
           categoryFilter="Candles" 
         />
 

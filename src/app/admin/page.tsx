@@ -3,14 +3,16 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useUser, useFirestore, useCollection, useMemoFirebase } from '@/firebase';
-import { collection, query, where, getDoc, doc } from 'firebase/firestore';
+import { useUser, useFirestore } from '@/firebase';
+import { getDoc, doc } from 'firebase/firestore';
 import { AdminSidebar } from '@/components/AdminSidebar';
 import { AdminDashboard } from '@/components/AdminDashboard';
 import { AdminProductManager } from '@/components/AdminProductManager';
 import { AdminOrderManager } from '@/components/AdminOrderManager';
 import { AdminSettingsManager } from '@/components/AdminSettingsManager';
-import { Loader2, Lock } from 'lucide-react';
+import { Loader2, Lock, Menu, X } from 'lucide-react';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Logo } from '@/components/Logo';
 
 type AdminView = 'dashboard' | 'products' | 'orders' | 'settings';
 
@@ -20,6 +22,7 @@ export default function AdminPage() {
   const router = useRouter();
   const [activeView, setActiveView] = useState<AdminView>('dashboard');
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     if (isUserLoading) return;
@@ -29,7 +32,6 @@ export default function AdminPage() {
       return;
     }
 
-    // Check if user is in the admin_users collection
     const checkAdmin = async () => {
       if (!db || !user) return;
       try {
@@ -79,13 +81,51 @@ export default function AdminPage() {
     }
   };
 
+  const handleViewChange = (view: AdminView) => {
+    setActiveView(view);
+    setIsMobileMenuOpen(false);
+  };
+
   return (
-    <main className="min-h-screen bg-[#fcfcfc] flex">
-      <AdminSidebar activeView={activeView} onViewChange={setActiveView} />
-      
-      <div className="flex-1 flex flex-col h-screen overflow-hidden">
-        {/* Header */}
-        <header className="h-20 bg-white border-b border-primary/5 flex items-center justify-between px-12 shrink-0">
+    <main className="min-h-screen bg-[#fcfcfc] flex flex-col lg:flex-row">
+      {/* Desktop Sidebar */}
+      <div className="hidden lg:block h-screen sticky top-0">
+        <AdminSidebar activeView={activeView} onViewChange={handleViewChange} />
+      </div>
+
+      {/* Mobile Header */}
+      <header className="lg:hidden h-20 bg-white border-b border-primary/5 flex items-center justify-between px-6 shrink-0 sticky top-0 z-[50]">
+        <div className="flex items-center gap-4">
+          <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+            <SheetTrigger asChild>
+              <button className="p-2 text-primary hover:bg-primary/5 rounded-full transition-colors">
+                <Menu className="w-6 h-6" />
+              </button>
+            </SheetTrigger>
+            <SheetContent side="left" className="p-0 border-none bg-primary w-80">
+              <AdminSidebar activeView={activeView} onViewChange={handleViewChange} />
+            </SheetContent>
+          </Sheet>
+          <div className="flex flex-col">
+            <h2 className="text-[8px] font-bold uppercase tracking-[0.4em] text-primary/30">Workspace</h2>
+            <p className="font-headline text-lg text-primary capitalize leading-tight">{activeView}</p>
+          </div>
+        </div>
+        
+        <div className="flex items-center gap-3">
+          <div className="text-right hidden xs:block">
+            <p className="text-[8px] font-bold text-primary/40 truncate max-w-[100px]">{user?.email}</p>
+          </div>
+          <div className="w-8 h-8 rounded-full bg-primary/5 border border-primary/5 flex items-center justify-center text-primary font-bold text-xs">
+            {user?.email?.charAt(0).toUpperCase()}
+          </div>
+        </div>
+      </header>
+
+      {/* Content Area */}
+      <div className="flex-1 flex flex-col min-h-screen">
+        {/* Desktop Header Overlay (Hidden on Mobile) */}
+        <header className="hidden lg:flex h-20 bg-white border-b border-primary/5 items-center justify-between px-12 shrink-0 sticky top-0 z-[40]">
           <div className="flex flex-col">
             <h2 className="text-[10px] font-bold uppercase tracking-[0.4em] text-primary/30">Master Weaver Workspace</h2>
             <p className="font-headline text-2xl text-primary capitalize">{activeView}</p>
@@ -102,8 +142,7 @@ export default function AdminPage() {
           </div>
         </header>
 
-        {/* Content Area */}
-        <div className="flex-1 overflow-y-auto p-12 no-scrollbar bg-paper">
+        <div className="flex-1 p-6 md:p-12 bg-paper">
           <div className="max-w-7xl mx-auto animate-fade-in-up">
             {renderView()}
           </div>

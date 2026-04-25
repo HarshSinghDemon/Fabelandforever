@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useMemo } from 'react';
@@ -15,22 +16,17 @@ import {
   Plus, 
   Trash2, 
   Package, 
-  LayoutGrid, 
   Loader2, 
   Sparkles, 
   Search, 
-  Filter, 
-  Eye, 
   EyeOff,
   Star,
   Edit3,
   X,
-  Image as ImageIcon,
   Download,
   ArrowUpDown
 } from 'lucide-react';
 import Image from 'next/image';
-import { cn } from '@/lib/utils';
 
 const CATEGORIES = [
   'Flowers',
@@ -95,7 +91,6 @@ export function AdminProductManager() {
       return matchesSearch && matchesCategory;
     });
 
-    // Sorting
     result.sort((a, b) => {
       switch (sortBy) {
         case 'newest': return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
@@ -178,24 +173,11 @@ export function AdminProductManager() {
 
   const exportToCSV = () => {
     if (!filteredProducts.length) return;
-    
     const headers = ['ID', 'Name', 'Price', 'Category', 'Stock', 'Featured', 'Published', 'Created At'];
     const rows = filteredProducts.map(p => [
-      p.id,
-      p.name,
-      p.price,
-      p.category,
-      p.stock,
-      p.featured ? 'Yes' : 'No',
-      p.isPublished ? 'Yes' : 'No',
-      new Date(p.createdAt).toLocaleDateString()
+      p.id, p.name, p.price, p.category, p.stock, p.featured ? 'Yes' : 'No', p.isPublished ? 'Yes' : 'No', new Date(p.createdAt).toLocaleDateString()
     ]);
-
-    const csvContent = [
-      headers.join(','),
-      ...rows.map(row => row.join(','))
-    ].join('\n');
-
+    const csvContent = [headers.join(','), ...rows.map(row => row.join(','))].join('\n');
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -207,13 +189,13 @@ export function AdminProductManager() {
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
       {/* Product Form */}
-      <div className="lg:col-span-5">
-        <div className="bg-white rounded-[4rem] p-10 shadow-xl border border-primary/5 stitching-border sticky top-32">
+      <div className="lg:col-span-5 order-2 lg:order-1">
+        <div className="bg-white rounded-[2rem] md:rounded-[4rem] p-6 md:p-10 shadow-xl border border-primary/5 stitching-border lg:sticky lg:top-32">
           <div className="flex items-center justify-between mb-8">
-            <h3 className="font-headline text-3xl text-primary flex items-center gap-3">
-              {editingId ? <Edit3 className="w-6 h-6 text-accent" /> : <Plus className="w-6 h-6 text-accent" />}
+            <h3 className="font-headline text-2xl md:text-3xl text-primary flex items-center gap-3">
+              {editingId ? <Edit3 className="w-5 h-5 md:w-6 md:h-6 text-accent" /> : <Plus className="w-5 h-5 md:w-6 md:h-6 text-accent" />}
               {editingId ? "Refine Creation" : "New Creation"}
             </h3>
             {editingId && (
@@ -221,17 +203,17 @@ export function AdminProductManager() {
                 onClick={() => { setEditingId(null); setFormData(initialForm); }}
                 className="text-[9px] font-bold uppercase tracking-widest text-primary/30 hover:text-destructive transition-colors"
               >
-                Cancel Edit
+                Cancel
               </button>
             )}
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-8">
+          <form onSubmit={handleSubmit} className="space-y-6 md:space-y-8">
             <div className="space-y-4">
               <Label className="text-[10px] font-bold uppercase tracking-widest text-primary/30 ml-4">Gallery Loop</Label>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-3 md:gap-4">
                 {formData.imageUrls.map((url, idx) => (
-                  <div key={idx} className="relative aspect-square rounded-3xl overflow-hidden group border border-primary/5">
+                  <div key={idx} className="relative aspect-square rounded-2xl md:rounded-3xl overflow-hidden group border border-primary/5">
                     <Image src={url} alt="Gallery" fill className="object-cover" />
                     <button 
                       type="button"
@@ -251,18 +233,18 @@ export function AdminProductManager() {
               </div>
             </div>
 
-            <div className="space-y-5">
+            <div className="space-y-4 md:space-y-5">
               <div className="space-y-2">
                 <Label className="text-[9px] font-bold uppercase tracking-widest text-primary/20 ml-4">Product Name</Label>
                 <Input 
                   placeholder="e.g., Whispering Willow Scarf"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="bg-paper border-none h-14 px-6 rounded-2xl font-bold text-sm focus-visible:ring-1 focus-visible:ring-accent"
+                  className="bg-paper border-none h-12 md:h-14 px-6 rounded-xl md:rounded-2xl font-bold text-sm"
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-5">
                 <div className="space-y-2">
                   <Label className="text-[9px] font-bold uppercase tracking-widest text-primary/20 ml-4">Price (₹)</Label>
                   <Input 
@@ -270,7 +252,7 @@ export function AdminProductManager() {
                     placeholder="2500"
                     value={formData.price}
                     onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                    className="bg-paper border-none h-14 px-6 rounded-2xl font-bold text-sm"
+                    className="bg-paper border-none h-12 md:h-14 px-6 rounded-xl md:rounded-2xl font-bold text-sm"
                   />
                 </div>
                 <div className="space-y-2">
@@ -279,8 +261,8 @@ export function AdminProductManager() {
                     value={formData.category} 
                     onValueChange={(val) => setFormData({ ...formData, category: val })}
                   >
-                    <SelectTrigger className="bg-paper border-none h-14 px-6 rounded-2xl font-bold text-[10px] uppercase tracking-widest">
-                      <SelectValue placeholder="Select Era" />
+                    <SelectTrigger className="bg-paper border-none h-12 md:h-14 px-6 rounded-xl md:rounded-2xl font-bold text-[10px] uppercase tracking-widest">
+                      <SelectValue placeholder="Select Category" />
                     </SelectTrigger>
                     <SelectContent className="rounded-2xl border-none shadow-2xl">
                       {CATEGORIES.map(cat => (
@@ -293,7 +275,7 @@ export function AdminProductManager() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-5">
                 <div className="space-y-2">
                   <Label className="text-[9px] font-bold uppercase tracking-widest text-primary/20 ml-4">Stock Loop</Label>
                   <Input 
@@ -301,7 +283,7 @@ export function AdminProductManager() {
                     placeholder="1"
                     value={formData.stock}
                     onChange={(e) => setFormData({ ...formData, stock: e.target.value })}
-                    className="bg-paper border-none h-14 px-6 rounded-2xl font-bold text-sm"
+                    className="bg-paper border-none h-12 md:h-14 px-6 rounded-xl md:rounded-2xl font-bold text-sm"
                   />
                 </div>
                 <div className="space-y-2">
@@ -310,7 +292,7 @@ export function AdminProductManager() {
                     placeholder="vintage, soft, heirloom"
                     value={formData.tags}
                     onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
-                    className="bg-paper border-none h-14 px-6 rounded-2xl font-bold text-sm"
+                    className="bg-paper border-none h-12 md:h-14 px-6 rounded-xl md:rounded-2xl font-bold text-sm"
                   />
                 </div>
               </div>
@@ -321,14 +303,14 @@ export function AdminProductManager() {
                   placeholder="Describe the soul of this piece..."
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  className="bg-paper border-none min-h-[140px] p-6 rounded-[2rem] font-medium text-sm italic focus-visible:ring-1 focus-visible:ring-accent"
+                  className="bg-paper border-none min-h-[120px] md:min-h-[140px] p-6 rounded-[1.5rem] md:rounded-[2rem] font-medium text-sm italic"
                 />
               </div>
 
-              <div className="flex items-center justify-between p-6 bg-paper rounded-3xl border border-primary/5">
+              <div className="flex items-center justify-between p-4 md:p-6 bg-paper rounded-2xl md:rounded-3xl border border-primary/5">
                 <div className="space-y-1">
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-primary">Featured Selection</p>
-                  <p className="text-[8px] text-primary/30 font-bold uppercase tracking-widest">Display on homepage highlights</p>
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-primary">Featured</p>
+                  <p className="text-[7px] md:text-[8px] text-primary/30 font-bold uppercase tracking-widest">Display highlights</p>
                 </div>
                 <Switch 
                   checked={formData.featured}
@@ -336,10 +318,10 @@ export function AdminProductManager() {
                 />
               </div>
 
-              <div className="flex items-center justify-between p-6 bg-paper rounded-3xl border border-primary/5">
+              <div className="flex items-center justify-between p-4 md:p-6 bg-paper rounded-2xl md:rounded-3xl border border-primary/5">
                 <div className="space-y-1">
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-primary">Boutique Visibility</p>
-                  <p className="text-[8px] text-primary/30 font-bold uppercase tracking-widest">Make visible in public catalog</p>
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-primary">Published</p>
+                  <p className="text-[7px] md:text-[8px] text-primary/30 font-bold uppercase tracking-widest">Public visibility</p>
                 </div>
                 <Switch 
                   checked={formData.isPublished}
@@ -351,13 +333,13 @@ export function AdminProductManager() {
             <Button 
               type="submit" 
               disabled={isSubmitting}
-              className="w-full h-20 rounded-full bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-[0.3em] text-[10px] shadow-2xl shadow-primary/20 transition-all active:scale-95 group"
+              className="w-full h-16 md:h-20 rounded-full bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-[0.3em] text-[9px] md:text-[10px] shadow-2xl shadow-primary/20 transition-all active:scale-95 group"
             >
               {isSubmitting ? (
                 <Loader2 className="animate-spin" />
               ) : (
                 <div className="flex items-center gap-3">
-                  {editingId ? "Finalize Refinement" : "Add to Heritage Boutique"} 
+                  {editingId ? "Finalize" : "Add to Boutique"} 
                   <Sparkles className="w-4 h-4 group-hover:rotate-45 transition-transform" />
                 </div>
               )}
@@ -367,43 +349,43 @@ export function AdminProductManager() {
       </div>
 
       {/* Product List */}
-      <div className="lg:col-span-7 space-y-10">
-        <div className="flex flex-col gap-6 bg-white p-8 rounded-[3rem] shadow-sm border border-primary/5">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-6">
-              <h3 className="font-headline text-3xl text-primary">Boutique Gallery</h3>
-              <span className="text-[10px] font-bold uppercase tracking-widest text-primary/30 px-4 py-1.5 bg-paper rounded-full border border-primary/5">
-                {filteredProducts.length} Pieces
+      <div className="lg:col-span-7 order-1 lg:order-2 space-y-8 md:space-y-10">
+        <div className="flex flex-col gap-6 bg-white p-6 md:p-8 rounded-[2rem] md:rounded-[3rem] shadow-sm border border-primary/5">
+          <div className="flex items-center justify-between flex-wrap gap-4">
+            <div className="flex items-center gap-4 md:gap-6">
+              <h3 className="font-headline text-2xl md:text-3xl text-primary">Boutique Gallery</h3>
+              <span className="text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-primary/30 px-3 md:px-4 py-1.5 bg-paper rounded-full border border-primary/5">
+                {filteredProducts.length}
               </span>
             </div>
-            <Button variant="ghost" size="sm" onClick={exportToCSV} className="text-primary/40 hover:text-primary gap-2">
-              <Download className="w-4 h-4" /> Export CSV
+            <Button variant="ghost" size="sm" onClick={exportToCSV} className="text-primary/40 hover:text-primary gap-2 h-8">
+              <Download className="w-3.5 h-3.5" /> <span className="hidden sm:inline">Export CSV</span>
             </Button>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
             <div className="relative">
-              <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/20" />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/20" />
               <Input 
                 placeholder="Search history..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-12 h-12 rounded-full bg-paper border-none w-full text-xs font-bold"
+                className="pl-11 h-11 rounded-full bg-paper border-none w-full text-xs font-bold"
               />
             </div>
             <Select value={filterCategory} onValueChange={setFilterCategory}>
-              <SelectTrigger className="h-12 w-full rounded-full bg-paper border-none text-[9px] font-bold uppercase tracking-widest px-6">
+              <SelectTrigger className="h-11 w-full rounded-full bg-paper border-none text-[8px] md:text-[9px] font-bold uppercase tracking-widest px-5">
                 <SelectValue placeholder="Category" />
               </SelectTrigger>
               <SelectContent className="rounded-2xl border-none shadow-2xl">
-                <SelectItem value="all" className="text-[10px] font-bold uppercase tracking-widest">All Eras</SelectItem>
+                <SelectItem value="all" className="text-[10px] font-bold uppercase tracking-widest">All Categories</SelectItem>
                 {CATEGORIES.map(cat => (
                   <SelectItem key={cat} value={cat} className="text-[10px] font-bold uppercase tracking-widest">{cat}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
             <Select value={sortBy} onValueChange={(val) => setSortBy(val as SortOption)}>
-              <SelectTrigger className="h-12 w-full rounded-full bg-paper border-none text-[9px] font-bold uppercase tracking-widest px-6">
+              <SelectTrigger className="h-11 w-full rounded-full bg-paper border-none text-[8px] md:text-[9px] font-bold uppercase tracking-widest px-5">
                 <div className="flex items-center gap-2">
                   <ArrowUpDown className="w-3 h-3" />
                   <SelectValue placeholder="Sort By" />
@@ -412,31 +394,31 @@ export function AdminProductManager() {
               <SelectContent className="rounded-2xl border-none shadow-2xl">
                 <SelectItem value="newest" className="text-[10px] font-bold uppercase tracking-widest">Newest</SelectItem>
                 <SelectItem value="oldest" className="text-[10px] font-bold uppercase tracking-widest">Oldest</SelectItem>
-                <SelectItem value="price-high" className="text-[10px] font-bold uppercase tracking-widest">Price: High to Low</SelectItem>
-                <SelectItem value="price-low" className="text-[10px] font-bold uppercase tracking-widest">Price: Low to High</SelectItem>
+                <SelectItem value="price-high" className="text-[10px] font-bold uppercase tracking-widest">Price High</SelectItem>
+                <SelectItem value="price-low" className="text-[10px] font-bold uppercase tracking-widest">Price Low</SelectItem>
               </SelectContent>
             </Select>
           </div>
         </div>
 
         {isLoading ? (
-          <div className="py-40 flex justify-center"><Loader2 className="w-10 h-10 animate-spin text-accent" /></div>
+          <div className="py-20 flex justify-center"><Loader2 className="w-8 h-8 animate-spin text-accent" /></div>
         ) : filteredProducts.length === 0 ? (
-          <div className="py-40 text-center border-2 border-dashed border-primary/5 rounded-[4rem] bg-white/50 space-y-4">
-            <Package className="w-12 h-12 text-primary/10 mx-auto" />
-            <p className="text-primary/20 italic font-medium">"The boutique is silent. No matching creations found."</p>
+          <div className="py-20 text-center border-2 border-dashed border-primary/5 rounded-[2rem] md:rounded-[4rem] bg-white/50 space-y-4">
+            <Package className="w-10 h-10 text-primary/10 mx-auto" />
+            <p className="text-primary/20 italic font-medium">"Boutique is silent."</p>
           </div>
         ) : (
-          <div className="grid gap-6">
+          <div className="grid gap-4 md:gap-6">
             {filteredProducts.map((prod) => (
-              <div key={prod.id} className="bg-white p-8 rounded-[3rem] shadow-sm hover:shadow-2xl transition-all duration-700 border border-primary/5 flex gap-8 items-center group relative overflow-hidden">
+              <div key={prod.id} className="bg-white p-4 md:p-8 rounded-[2rem] md:rounded-[3rem] shadow-sm hover:shadow-2xl transition-all duration-700 border border-primary/5 flex flex-col sm:flex-row gap-6 md:gap-8 items-center group relative overflow-hidden">
                 {prod.featured && (
-                  <div className="absolute top-0 right-12 bg-accent text-white px-4 py-2 rounded-b-2xl shadow-lg">
-                    <Star className="w-4 h-4 fill-white" />
+                  <div className="absolute top-0 right-8 md:right-12 bg-accent text-white px-3 md:px-4 py-1.5 md:py-2 rounded-b-xl md:rounded-b-2xl shadow-lg">
+                    <Star className="w-3.5 h-3.5 fill-white" />
                   </div>
                 )}
                 
-                <div className="relative w-32 h-32 rounded-[2rem] overflow-hidden bg-paper shrink-0 shadow-inner group-hover:scale-105 transition-transform duration-700 border border-primary/5">
+                <div className="relative w-full sm:w-28 sm:h-28 md:w-32 md:h-32 aspect-square rounded-[1.5rem] md:rounded-[2rem] overflow-hidden bg-paper shrink-0 shadow-inner group-hover:scale-105 transition-transform duration-700 border border-primary/5">
                   <Image 
                     src={prod.imageUrls?.[0] || prod.image} 
                     alt={prod.name} 
@@ -445,45 +427,45 @@ export function AdminProductManager() {
                   />
                   {!prod.isPublished && (
                     <div className="absolute inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center">
-                      <EyeOff className="w-6 h-6 text-white" />
+                      <EyeOff className="w-5 h-5 text-white" />
                     </div>
                   )}
                 </div>
 
-                <div className="flex-1 min-w-0 space-y-3">
-                  <div className="flex items-center gap-3">
-                    <span className="text-[8px] font-bold uppercase tracking-widest text-accent bg-accent/10 px-3 py-1.5 rounded-full border border-accent/10">
+                <div className="flex-1 min-w-0 space-y-2 md:space-y-3 text-center sm:text-left">
+                  <div className="flex items-center justify-center sm:justify-start gap-3">
+                    <span className="text-[7px] md:text-[8px] font-bold uppercase tracking-widest text-accent bg-accent/10 px-3 py-1.5 rounded-full border border-accent/10">
                       {prod.category}
                     </span>
-                    <span className="text-[8px] font-bold uppercase tracking-widest text-primary/30">
+                    <span className="text-[7px] md:text-[8px] font-bold uppercase tracking-widest text-primary/30">
                       Stock: {prod.stock || 0}
                     </span>
                   </div>
                   
                   <div className="space-y-1">
-                    <h4 className="font-headline text-2xl text-primary group-hover:text-accent transition-colors truncate">{prod.name}</h4>
-                    <p className="font-bold text-primary/40 text-sm tracking-tight italic">₹ {prod.price.toLocaleString('en-IN')}</p>
+                    <h4 className="font-headline text-xl md:text-2xl text-primary group-hover:text-accent transition-colors truncate">{prod.name}</h4>
+                    <p className="font-bold text-primary/40 text-xs md:text-sm tracking-tight italic">₹ {prod.price.toLocaleString('en-IN')}</p>
                   </div>
 
-                  <div className="flex gap-2">
+                  <div className="flex justify-center sm:justify-start gap-2">
                     {prod.tags?.slice(0, 3).map((tag: string, i: number) => (
-                      <span key={i} className="text-[7px] font-bold uppercase tracking-widest text-primary/20">#{tag}</span>
+                      <span key={i} className="text-[6px] md:text-[7px] font-bold uppercase tracking-widest text-primary/20">#{tag}</span>
                     ))}
                   </div>
                 </div>
 
-                <div className="flex flex-col gap-3">
+                <div className="flex sm:flex-col gap-3 w-full sm:w-auto justify-center">
                   <button 
                     onClick={() => handleEdit(prod)}
-                    className="w-12 h-12 rounded-full bg-paper flex items-center justify-center text-primary/40 hover:text-accent hover:bg-accent/10 transition-all active:scale-90"
+                    className="flex-1 sm:flex-none w-10 h-10 md:w-12 md:h-12 rounded-full bg-paper flex items-center justify-center text-primary/40 hover:text-accent hover:bg-accent/10 transition-all active:scale-90"
                   >
-                    <Edit3 className="w-5 h-5" />
+                    <Edit3 className="w-4 h-4 md:w-5 md:h-5" />
                   </button>
                   <button 
                     onClick={() => handleDelete(prod.id)}
-                    className="w-12 h-12 rounded-full bg-paper flex items-center justify-center text-primary/20 hover:text-destructive hover:bg-destructive/10 transition-all active:scale-90"
+                    className="flex-1 sm:flex-none w-10 h-10 md:w-12 md:h-12 rounded-full bg-paper flex items-center justify-center text-primary/20 hover:text-destructive hover:bg-destructive/10 transition-all active:scale-90"
                   >
-                    <Trash2 className="w-5 h-5" />
+                    <Trash2 className="w-4 h-4 md:w-5 md:h-5" />
                   </button>
                 </div>
               </div>

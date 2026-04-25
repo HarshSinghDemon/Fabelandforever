@@ -56,6 +56,7 @@ export default function AdminDashboard() {
     }
   }, [user, loading, router]);
 
+  // Updated firestore rules display to match the actual rules including admin email bypass
   const firestoreRules = `rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
@@ -64,15 +65,19 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
     match /settings/{settingId} {
-      allow get: if true;
+      allow get, list: if true;
       allow write: if isAdmin();
     }
     match /orders/{orderId} {
       allow create: if true;
-      allow read, write: if isAdmin();
+      allow get: if isAdmin() || (request.auth != null && resource.data.userId == request.auth.uid);
+      allow list, update, delete: if isAdmin();
     }
     function isAdmin() {
-      return request.auth != null && exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid));
+      return request.auth != null && (
+        exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid)) ||
+        request.auth.token.email == "harshroop100@gmail.com"
+      );
     }
   }
 }`;
@@ -100,7 +105,6 @@ service cloud.firestore {
 
   return (
     <div className="min-h-screen bg-background flex flex-col md:flex-row selection:bg-accent/20">
-      {/* Sidebar Navigation */}
       <aside className="w-full md:w-80 bg-white md:border-r border-primary/5 p-6 md:p-10 flex flex-col justify-between sticky top-0 h-auto md:h-screen z-50">
         <div className="space-y-12">
           <Link href="/" className="flex items-center gap-4 group">
@@ -171,7 +175,6 @@ service cloud.firestore {
         </div>
       </aside>
 
-      {/* Main Content Area */}
       <main className="flex-1 p-6 md:p-16 pb-32">
         <div className="max-w-6xl mx-auto space-y-12">
           <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
@@ -189,7 +192,6 @@ service cloud.firestore {
             </Button>
           </header>
 
-          {/* Rules Security Alert */}
           <Alert variant="destructive" className="rounded-3xl border-2 border-primary/5 bg-white p-8 shadow-2xl relative overflow-hidden group">
             <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-110 transition-transform duration-1000"></div>
             <AlertTitle className="font-headline text-2xl text-primary mb-4 flex items-center gap-3">
@@ -198,7 +200,7 @@ service cloud.firestore {
             <AlertDescription className="space-y-6">
               <p className="text-sm font-medium text-primary/60 italic leading-relaxed">
                 If the boutique looks empty to visitors, your "Magic Boundaries" (Firestore Rules) are closed. 
-                Copy these rules and publish them in your Firebase Console.
+                Copy these rules and publish them in your Firebase Console to ensure your treasures are visible and your admin access is secure.
               </p>
               
               <div className="bg-slate-950 text-slate-50 p-6 rounded-2xl relative font-mono text-[10px] leading-relaxed shadow-inner border border-white/10">
@@ -216,7 +218,6 @@ service cloud.firestore {
             </AlertDescription>
           </Alert>
 
-          {/* Active Component Section */}
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
             {activeTab === 'inventory' && <AdminProductManager />}
             {activeTab === 'orders' && <AdminOrderManager />}

@@ -3,7 +3,7 @@
 
 import React, { useState, useMemo } from 'react';
 import { useFirestore, useCollection, useMemoFirebase } from '@/firebase';
-import { collection, doc, setDoc, deleteDoc, query, orderBy } from 'firebase/firestore';
+import { collection, doc, setDoc, deleteDoc, query, orderBy, serverTimestamp } from 'firebase/firestore';
 import { SupabaseImageUpload } from './SupabaseImageUpload';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -42,9 +42,10 @@ interface ProductForm {
   price: string;
   category: string;
   description: string;
-  stock: string;
+  stockQuantity: string;
   tags: string;
-  featured: boolean;
+  isFeatured: boolean;
+  isBestseller: boolean;
   isPublished: boolean;
   imageUrls: string[];
 }
@@ -65,9 +66,10 @@ export function AdminProductManager() {
     price: '',
     category: '',
     description: '',
-    stock: '1',
+    stockQuantity: '1',
     tags: '',
-    featured: false,
+    isFeatured: false,
+    isBestseller: false,
     isPublished: true,
     imageUrls: []
   };
@@ -119,7 +121,7 @@ export function AdminProductManager() {
       ...formData,
       id: productId,
       price: Number(formData.price),
-      stock: Number(formData.stock),
+      stockQuantity: Number(formData.stockQuantity),
       tags: formData.tags.split(',').map(t => t.trim()).filter(t => t !== ''),
       updatedAt: new Date().toISOString(),
       createdAt: editingId ? (products?.find(p => p.id === editingId)?.createdAt || new Date().toISOString()) : new Date().toISOString()
@@ -145,11 +147,12 @@ export function AdminProductManager() {
       price: product.price.toString(),
       category: product.category,
       description: product.description,
-      stock: product.stock?.toString() || '1',
+      stockQuantity: product.stockQuantity?.toString() || '1',
       tags: product.tags?.join(', ') || '',
-      featured: product.featured || false,
+      isFeatured: product.isFeatured || false,
+      isBestseller: product.isBestseller || false,
       isPublished: product.isPublished !== undefined ? product.isPublished : true,
-      imageUrls: product.imageUrls || [product.image] || []
+      imageUrls: product.imageUrls || []
     });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -171,26 +174,8 @@ export function AdminProductManager() {
     }));
   };
 
-  const exportToCSV = () => {
-    if (!filteredProducts.length) return;
-    const headers = ['ID', 'Name', 'Price', 'Category', 'Stock', 'Featured', 'Published', 'Created At'];
-    const rows = filteredProducts.map(p => [
-      p.id, p.name, p.price, p.category, p.stock, p.featured ? 'Yes' : 'No', p.isPublished ? 'Yes' : 'No', new Date(p.createdAt).toLocaleDateString()
-    ]);
-    const csvContent = [headers.join(','), ...rows.map(row => row.join(','))].join('\n');
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.setAttribute('href', url);
-    link.setAttribute('download', `fable-forever-products-${new Date().toISOString().slice(0, 10)}.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-      {/* Product Form */}
       <div className="lg:col-span-5 order-2 lg:order-1">
         <div className="bg-white rounded-[2rem] md:rounded-[4rem] p-6 md:p-10 shadow-xl border border-primary/5 stitching-border lg:sticky lg:top-32">
           <div className="flex items-center justify-between mb-8">
@@ -281,8 +266,8 @@ export function AdminProductManager() {
                   <Input 
                     type="number"
                     placeholder="1"
-                    value={formData.stock}
-                    onChange={(e) => setFormData({ ...formData, stock: e.target.value })}
+                    value={formData.stockQuantity}
+                    onChange={(e) => setFormData({ ...formData, stockQuantity: e.target.value })}
                     className="bg-paper border-none h-12 md:h-14 px-6 rounded-xl md:rounded-2xl font-bold text-sm"
                   />
                 </div>
@@ -307,26 +292,28 @@ export function AdminProductManager() {
                 />
               </div>
 
-              <div className="flex items-center justify-between p-4 md:p-6 bg-paper rounded-2xl md:rounded-3xl border border-primary/5">
-                <div className="space-y-1">
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-primary">Featured</p>
-                  <p className="text-[7px] md:text-[8px] text-primary/30 font-bold uppercase tracking-widest">Display highlights</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="flex items-center justify-between p-4 bg-paper rounded-2xl border border-primary/5">
+                  <div className="space-y-1">
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-primary">Bestseller</p>
+                    <p className="text-[7px] text-primary/30 font-bold uppercase tracking-widest">Homepage hit</p>
+                  </div>
+                  <Switch 
+                    checked={formData.isBestseller}
+                    onCheckedChange={(val) => setFormData({ ...formData, isBestseller: val })}
+                  />
                 </div>
-                <Switch 
-                  checked={formData.featured}
-                  onCheckedChange={(val) => setFormData({ ...formData, featured: val })}
-                />
-              </div>
 
-              <div className="flex items-center justify-between p-4 md:p-6 bg-paper rounded-2xl md:rounded-3xl border border-primary/5">
-                <div className="space-y-1">
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-primary">Published</p>
-                  <p className="text-[7px] md:text-[8px] text-primary/30 font-bold uppercase tracking-widest">Public visibility</p>
+                <div className="flex items-center justify-between p-4 bg-paper rounded-2xl border border-primary/5">
+                  <div className="space-y-1">
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-primary">Published</p>
+                    <p className="text-[7px] text-primary/30 font-bold uppercase tracking-widest">Public view</p>
+                  </div>
+                  <Switch 
+                    checked={formData.isPublished}
+                    onCheckedChange={(val) => setFormData({ ...formData, isPublished: val })}
+                  />
                 </div>
-                <Switch 
-                  checked={formData.isPublished}
-                  onCheckedChange={(val) => setFormData({ ...formData, isPublished: val })}
-                />
               </div>
             </div>
 
@@ -348,19 +335,13 @@ export function AdminProductManager() {
         </div>
       </div>
 
-      {/* Product List */}
       <div className="lg:col-span-7 order-1 lg:order-2 space-y-8 md:space-y-10">
         <div className="flex flex-col gap-6 bg-white p-6 md:p-8 rounded-[2rem] md:rounded-[3rem] shadow-sm border border-primary/5">
           <div className="flex items-center justify-between flex-wrap gap-4">
-            <div className="flex items-center gap-4 md:gap-6">
-              <h3 className="font-headline text-2xl md:text-3xl text-primary">Boutique Gallery</h3>
-              <span className="text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-primary/30 px-3 md:px-4 py-1.5 bg-paper rounded-full border border-primary/5">
-                {filteredProducts.length}
-              </span>
-            </div>
-            <Button variant="ghost" size="sm" onClick={exportToCSV} className="text-primary/40 hover:text-primary gap-2 h-8">
-              <Download className="w-3.5 h-3.5" /> <span className="hidden sm:inline">Export CSV</span>
-            </Button>
+            <h3 className="font-headline text-2xl md:text-3xl text-primary">Boutique Gallery</h3>
+            <span className="text-[8px] md:text-[10px] font-bold uppercase tracking-widest text-primary/30 px-3 md:px-4 py-1.5 bg-paper rounded-full">
+              {filteredProducts.length} Selections
+            </span>
           </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
@@ -406,21 +387,21 @@ export function AdminProductManager() {
         ) : filteredProducts.length === 0 ? (
           <div className="py-20 text-center border-2 border-dashed border-primary/5 rounded-[2rem] md:rounded-[4rem] bg-white/50 space-y-4">
             <Package className="w-10 h-10 text-primary/10 mx-auto" />
-            <p className="text-primary/20 italic font-medium">"Boutique is silent."</p>
+            <p className="text-primary/20 italic font-medium">"No creations found in the archives."</p>
           </div>
         ) : (
           <div className="grid gap-4 md:gap-6">
             {filteredProducts.map((prod) => (
               <div key={prod.id} className="bg-white p-4 md:p-8 rounded-[2rem] md:rounded-[3rem] shadow-sm hover:shadow-2xl transition-all duration-700 border border-primary/5 flex flex-col sm:flex-row gap-6 md:gap-8 items-center group relative overflow-hidden">
-                {prod.featured && (
+                {prod.isBestseller && (
                   <div className="absolute top-0 right-8 md:right-12 bg-accent text-white px-3 md:px-4 py-1.5 md:py-2 rounded-b-xl md:rounded-b-2xl shadow-lg">
                     <Star className="w-3.5 h-3.5 fill-white" />
                   </div>
                 )}
                 
-                <div className="relative w-full sm:w-28 sm:h-28 md:w-32 md:h-32 aspect-square rounded-[1.5rem] md:rounded-[2rem] overflow-hidden bg-paper shrink-0 shadow-inner group-hover:scale-105 transition-transform duration-700 border border-primary/5">
+                <div className="relative w-full sm:w-28 sm:h-28 md:w-32 md:h-32 aspect-square rounded-[1.5rem] md:rounded-[2rem] overflow-hidden bg-paper shrink-0 border border-primary/5">
                   <Image 
-                    src={prod.imageUrls?.[0] || prod.image} 
+                    src={prod.imageUrls?.[0] || 'https://placehold.co/400x400?text=No+Image'} 
                     alt={prod.name} 
                     fill 
                     className="object-cover" 
@@ -438,32 +419,26 @@ export function AdminProductManager() {
                       {prod.category}
                     </span>
                     <span className="text-[7px] md:text-[8px] font-bold uppercase tracking-widest text-primary/30">
-                      Stock: {prod.stock || 0}
+                      Stock: {prod.stockQuantity || 0}
                     </span>
                   </div>
                   
                   <div className="space-y-1">
                     <h4 className="font-headline text-xl md:text-2xl text-primary group-hover:text-accent transition-colors truncate">{prod.name}</h4>
-                    <p className="font-bold text-primary/40 text-xs md:text-sm tracking-tight italic">₹ {prod.price.toLocaleString('en-IN')}</p>
-                  </div>
-
-                  <div className="flex justify-center sm:justify-start gap-2">
-                    {prod.tags?.slice(0, 3).map((tag: string, i: number) => (
-                      <span key={i} className="text-[6px] md:text-[7px] font-bold uppercase tracking-widest text-primary/20">#{tag}</span>
-                    ))}
+                    <p className="font-bold text-primary/40 text-xs md:text-sm italic">₹ {prod.price.toLocaleString('en-IN')}</p>
                   </div>
                 </div>
 
-                <div className="flex sm:flex-col gap-3 w-full sm:w-auto justify-center">
+                <div className="flex sm:flex-col gap-3 w-full sm:w-auto">
                   <button 
                     onClick={() => handleEdit(prod)}
-                    className="flex-1 sm:flex-none w-10 h-10 md:w-12 md:h-12 rounded-full bg-paper flex items-center justify-center text-primary/40 hover:text-accent hover:bg-accent/10 transition-all active:scale-90"
+                    className="flex-1 sm:flex-none w-10 h-10 md:w-12 md:h-12 rounded-full bg-paper flex items-center justify-center text-primary/40 hover:text-accent hover:bg-accent/10 transition-all"
                   >
                     <Edit3 className="w-4 h-4 md:w-5 md:h-5" />
                   </button>
                   <button 
                     onClick={() => handleDelete(prod.id)}
-                    className="flex-1 sm:flex-none w-10 h-10 md:w-12 md:h-12 rounded-full bg-paper flex items-center justify-center text-primary/20 hover:text-destructive hover:bg-destructive/10 transition-all active:scale-90"
+                    className="flex-1 sm:flex-none w-10 h-10 md:w-12 md:h-12 rounded-full bg-paper flex items-center justify-center text-primary/20 hover:text-destructive hover:bg-destructive/10 transition-all"
                   >
                     <Trash2 className="w-4 h-4 md:w-5 md:h-5" />
                   </button>

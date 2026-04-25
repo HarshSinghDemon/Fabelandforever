@@ -1,3 +1,4 @@
+
 {
   "entities": {
     "Product": {
@@ -24,7 +25,7 @@
         },
         "category": {
           "type": "string",
-          "description": "The category the product belongs to (e.g., 'bags', 'toys', 'clothes')."
+          "description": "The category the product belongs to (e.g., 'Flowers', 'Amigurumi')."
         },
         "stockQuantity": {
           "type": "number",
@@ -32,34 +33,38 @@
         },
         "imageUrls": {
           "type": "array",
-          "description": "An array of URLs pointing to images of the product, stored in Firebase Storage.",
+          "description": "An array of URLs pointing to images of the product.",
           "items": {
             "type": "string"
           }
         },
         "tags": {
           "type": "array",
-          "description": "An optional array of descriptive tags associated with the product (e.g., 'winter', 'gift', 'handmade').",
+          "description": "An optional array of descriptive tags.",
           "items": {
             "type": "string"
           }
         },
         "isFeatured": {
           "type": "boolean",
-          "description": "A boolean indicating if the product should be prominently displayed in featured sections on the website."
+          "description": "A boolean indicating if the product should be displayed in featured sections."
+        },
+        "isBestseller": {
+          "type": "boolean",
+          "description": "A boolean indicating if the product is a bestseller."
         },
         "isPublished": {
           "type": "boolean",
-          "description": "A boolean indicating if the product is visible and available for purchase on the public website."
+          "description": "A boolean indicating if the product is visible to the public."
         },
         "createdAt": {
           "type": "string",
-          "description": "The timestamp when the product was first created in the system.",
+          "description": "The timestamp when the product was first created.",
           "format": "date-time"
         },
         "updatedAt": {
           "type": "string",
-          "description": "The timestamp when the product's information was last updated.",
+          "description": "The timestamp when the product was last updated.",
           "format": "date-time"
         }
       },
@@ -71,7 +76,6 @@
         "category",
         "stockQuantity",
         "imageUrls",
-        "isFeatured",
         "isPublished",
         "createdAt",
         "updatedAt"
@@ -93,7 +97,7 @@
           "schema": {
             "$ref": "#/backend/entities/Product"
           },
-          "description": "Stores individual product details for The Crochet Studio. Documents include `id`, `name`, `description`, `price`, `category`, `stockQuantity`, `imageUrls` (array of Firebase Storage URLs), `tags` (optional array), `isFeatured`, `isPublished`, `createdAt`, and `updatedAt` timestamps. Public users can read documents where `isPublished` is true. Authenticated admin users (as defined in `/admin_users`) have full read, write, update, and delete access to all product documents.",
+          "description": "Stores individual product details.",
           "params": [
             {
               "name": "productId",
@@ -107,18 +111,20 @@
         "definition": {
           "entityName": "AdminUserMarker",
           "schema": {
-            "$ref": "#/backend/entities/AdminUserMarker"
+            "type": "object",
+            "properties": {
+              "role": { "type": "string" }
+            }
           },
-          "description": "This collection serves as a marker for administrative privileges. Each document's ID (`adminId`) is the Firebase Authentication UID of a user who possesses admin rights. The existence of a document at `/admin_users/{request.auth.uid}` is used by Firestore Security Rules to grant administrative access (read, write, update, delete) to protected collections like `/products`. This implements the DBAC (Database Access Control) strategy and ensures Authorization Independence by denormalizing role information into a top-level collection.",
+          "description": "Marker for administrative privileges.",
           "params": [
             {
               "name": "adminId",
-              "description": "The Firebase Authentication User ID (UID) of an admin user."
+              "description": "The Firebase Authentication UID."
             }
           ]
         }
       }
-    ],
-    "reasoning": "The Firestore structure is designed to be secure, scalable, and debuggable, adhering to all specified core design principles and mandates. \n\n**Authorization Independence:** To achieve authorization independence, the critical principle, we introduce a top-level collection `/admin_users/{adminId}`. This collection stores marker documents where each document's ID is the Firebase Authentication UID of an admin user. Firebase Security Rules will use an `exists(/databases/$(database)/documents/admin_users/$(request.auth.uid))` check to determine if the requesting user has admin privileges. This approach completely eliminates the need for `get()` calls to parent documents or within the product document itself for authorization, ensuring atomic operations and simplifying rule debugging.\n\n**QAPs (Queries as Permissions) and Structural Segregation:** The main collection for product data is `/products/{productId}`. This collection will store all product documents, regardless of their publication status. The `Product` entity includes an `isPublished` boolean field. This field is central to enabling secure `list` operations (QAPs) and managing heterogeneous read access within a single collection without violating structural segregation principles.\n*   **Public Read Access:** Public users (unauthenticated) will only be able to read documents where `isPublished` is explicitly `true`. A query like `db.collection('products').where('isPublished', '==', true)` will work securely and efficiently. The security rules will enforce this, preventing public users from accessing unpublished products.\n*   **Admin Read Access:** Authenticated admin users, identified by their UID existing in the `/admin_users` collection, will have full read access to all documents in `/products`, regardless of their `isPublished` status. This allows the admin panel to display all products, including drafts or unpublished items.\n*   **Write/Update/Delete Access:** All write, update, and delete operations on the `/products` collection are strictly restricted to authenticated admin users, as enforced by security rules checking against the `/admin_users` collection.\n\nThis design ensures that authorization logic is clear, external to the primary data documents where possible (for roles), and supports efficient, secure querying for both public-facing applications and the admin panel."
+    ]
   }
 }

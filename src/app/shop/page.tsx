@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useEffect, useState, useRef } from 'react';
@@ -11,7 +12,7 @@ import Link from 'next/link';
 import { useCart } from '@/context/CartContext';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
-import { ShoppingBasket, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ShoppingBasket, ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export default function ShopPage() {
@@ -23,6 +24,7 @@ export default function ShopPage() {
   const [canScrollRight, setCanScrollRight] = useState(false);
   
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const heritageBanner = PlaceHolderImages.find(img => img.id === 'heritage-banner');
 
   const productsQuery = useMemoFirebase(() => {
     if (!db) return null;
@@ -126,31 +128,44 @@ export default function ShopPage() {
     <main className="min-h-screen bg-white selection:bg-accent/20 flex flex-col">
       <Navigation />
       
-      {/* Shop Hero - Minimalist & Clean */}
-      <section className="pt-40 pb-20 border-b border-primary/5">
-        <div className="container mx-auto px-6 max-w-6xl text-center">
+      {/* Shop Hero - Cinematic Editorial Header */}
+      <section className="relative pt-48 pb-32 overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <Image 
+            src={heritageBanner?.imageUrl || "https://picsum.photos/seed/shop-hero/1920/1080"} 
+            alt="Boutique Catalog" 
+            fill 
+            className="object-cover opacity-80" 
+            priority
+            data-ai-hint="crochet hands"
+          />
+          <div className="absolute inset-0 bg-black/50"></div>
+        </div>
+        
+        <div className="container mx-auto px-6 max-w-6xl text-center relative z-10 text-white">
           <div className="reveal-on-scroll active">
-            <span className="text-accent font-bold tracking-[1em] uppercase text-[9px] mb-6 block">The Collective</span>
-            <h1 className="font-headline text-6xl sm:text-8xl text-primary leading-none mb-8 tracking-tighter">
+            <span className="text-white/60 font-bold tracking-[1em] uppercase text-[9px] mb-6 block">The Collective</span>
+            <h1 className="font-headline text-6xl sm:text-8xl leading-none mb-8 tracking-tighter drop-shadow-2xl">
               Boutique <span className="italic">Catalog.</span>
             </h1>
-            <p className="text-primary/60 font-bold uppercase tracking-[0.4em] text-[10px] max-w-md mx-auto leading-relaxed italic">
+            <p className="text-white/80 font-bold uppercase tracking-[0.4em] text-[10px] max-w-md mx-auto leading-relaxed italic drop-shadow-lg">
               "Curated treasures for the heritage home, hand-stitched with love and slow-woven loops."
             </p>
           </div>
         </div>
       </section>
 
-      {/* Modern Sticky Category Bar - Solid Minimalist */}
-      <div className="sticky top-16 md:top-20 z-[40] bg-white border-b border-primary/5 py-3 transition-all">
-        <div className="container mx-auto px-6 relative">
-          <div className="relative flex items-center">
+      {/* Modern Sticky Category Bar - Solid Minimalist with Arrows */}
+      <div className="sticky top-16 md:top-20 z-[40] bg-white border-b border-primary/5 py-4 transition-all shadow-sm">
+        <div className="container mx-auto px-4 md:px-6 relative">
+          <div className="relative flex items-center max-w-5xl mx-auto">
             
+            {/* Scroll Left Button */}
             <button 
               onClick={() => scrollByAmount('left')}
               aria-label="Scroll Left"
               className={cn(
-                "absolute -left-2 top-1/2 -translate-y-1/2 z-50 w-10 h-10 rounded-full bg-white shadow-lg border border-primary/5 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all duration-300",
+                "absolute -left-2 top-1/2 -translate-y-1/2 z-50 w-10 h-10 rounded-full bg-white shadow-xl border border-primary/5 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all duration-300",
                 canScrollLeft ? "opacity-100 scale-100" : "opacity-0 scale-50 pointer-events-none"
               )}
             >
@@ -160,7 +175,7 @@ export default function ShopPage() {
             <div 
               ref={scrollContainerRef}
               onScroll={checkScroll}
-              className="flex items-center gap-2 overflow-x-auto no-scrollbar scroll-smooth py-2 px-4 w-full"
+              className="flex items-center gap-3 overflow-x-auto no-scrollbar scroll-smooth py-1 px-8 w-full"
             >
               {categories.map((cat) => {
                 const id = cat.toLowerCase();
@@ -179,9 +194,9 @@ export default function ShopPage() {
                       }
                     }}
                     className={cn(
-                      "whitespace-nowrap px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] transition-all duration-300 border-2 shrink-0 cursor-pointer",
+                      "whitespace-nowrap px-6 py-3 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] transition-all duration-300 border-2 shrink-0 cursor-pointer",
                       activeTab === id 
-                        ? "bg-primary text-white border-primary" 
+                        ? "bg-primary text-white border-primary shadow-lg" 
                         : "bg-white text-primary/40 border-primary/5 hover:border-accent hover:text-primary"
                     )}
                   >
@@ -191,23 +206,25 @@ export default function ShopPage() {
               })}
             </div>
 
+            {/* Scroll Right Button */}
             <button 
               onClick={() => scrollByAmount('right')}
               aria-label="Scroll Right"
               className={cn(
-                "absolute -right-2 top-1/2 -translate-y-1/2 z-50 w-10 h-10 rounded-full bg-white shadow-lg border border-primary/5 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all duration-300",
+                "absolute -right-2 top-1/2 -translate-y-1/2 z-50 w-10 h-10 rounded-full bg-white shadow-xl border border-primary/5 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all duration-300",
                 canScrollRight ? "opacity-100 scale-100" : "opacity-0 scale-50 pointer-events-none"
               )}
             >
               <ChevronRight className="w-5 h-5" />
             </button>
             
+            {/* Edge Gradients */}
             <div className={cn(
-              "absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-white to-transparent pointer-events-none z-10",
+              "absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-white via-white/80 to-transparent pointer-events-none z-10 transition-opacity",
               canScrollLeft ? "opacity-100" : "opacity-0"
             )} />
             <div className={cn(
-              "absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-white to-transparent pointer-events-none z-10",
+              "absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-white via-white/80 to-transparent pointer-events-none z-10 transition-opacity",
               canScrollRight ? "opacity-100" : "opacity-0"
             )} />
           </div>
@@ -218,30 +235,36 @@ export default function ShopPage() {
         {categories.map((category) => {
           const catProducts = allItems.filter(p => p.category === category);
           const catId = category.toLowerCase();
+          const catImage = PlaceHolderImages.find(p => p.category === category)?.imageUrl || "https://picsum.photos/seed/cat-bg/1200/400";
           
           return (
             <section 
               key={category} 
               id={catId} 
-              className="py-24 border-b border-primary/5 scroll-mt-40"
+              className="py-12 border-b border-primary/5 scroll-mt-40"
             >
               <div className="container mx-auto px-6 max-w-7xl">
-                <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-[1px] bg-accent"></div>
-                      <span className="text-accent font-bold tracking-[0.6em] uppercase text-[9px]">The Collection</span>
-                    </div>
-                    <h2 className="font-headline text-5xl sm:text-7xl text-primary tracking-tighter leading-none">{category}</h2>
+                
+                {/* Category Header with Image Background */}
+                <div className="relative h-[200px] mb-12 rounded-[2.5rem] overflow-hidden flex items-center justify-center text-center">
+                  <div className="absolute inset-0 z-0">
+                    <Image src={catImage} alt={category} fill className="object-cover" />
+                    <div className="absolute inset-0 bg-black/40"></div>
                   </div>
-                  <div className="max-w-xs md:text-right">
-                    <p className="text-primary/60 text-[12px] italic font-medium leading-relaxed">
-                      Hand-stitched precision meets the warmth of the {category.toLowerCase()} aesthetic.
+                  <div className="relative z-10 space-y-3 px-6">
+                    <div className="flex items-center justify-center gap-4">
+                      <div className="w-8 h-[1px] bg-white/40"></div>
+                      <span className="text-white/60 font-bold tracking-[0.6em] uppercase text-[9px]">The Collection</span>
+                      <div className="w-8 h-[1px] bg-white/40"></div>
+                    </div>
+                    <h2 className="font-headline text-4xl sm:text-6xl text-white tracking-tighter leading-none">{category}</h2>
+                    <p className="text-white/70 text-[11px] italic font-medium leading-relaxed max-w-md mx-auto">
+                      "Hand-stitched precision meets the warmth of our {category.toLowerCase()} treasures."
                     </p>
                   </div>
                 </div>
 
-                {/* 2x1 Minimalist Matrix Grid */}
+                {/* 2x1 Minimalist Matrix Grid - Strictly 2 columns on small screens */}
                 <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-12">
                   {catProducts.map((product) => (
                     <div 
@@ -249,7 +272,7 @@ export default function ShopPage() {
                       className="group space-y-6"
                     >
                       <Link href={`/products/${product.id}`} className="block">
-                        <div className="relative aspect-[3/4] overflow-hidden bg-muted rounded-2xl border border-primary/5 transition-all duration-500">
+                        <div className="relative aspect-[3/4] overflow-hidden bg-muted rounded-3xl border border-primary/5 transition-all duration-500 shadow-sm">
                           <Image
                             src={product.image}
                             alt={product.title}
@@ -268,7 +291,7 @@ export default function ShopPage() {
                         
                         <Button 
                           onClick={(e) => handleAddToCart(e, product)}
-                          className="w-full h-10 rounded-full bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-[0.4em] text-[8px] transition-all active:scale-95 shadow-sm"
+                          className="w-full h-12 rounded-full bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-[0.4em] text-[8px] transition-all active:scale-95 shadow-md"
                         >
                           Adopt Piece
                         </Button>

@@ -55,7 +55,7 @@ export function Navigation() {
     return allAvailableProducts.filter(product => {
       const titleMatch = product.title?.toLowerCase().includes(query);
       const categoryMatch = product.category?.toLowerCase().includes(query);
-      return titleMatch || categoryMatch;
+      return (titleMatch || categoryMatch) && product.category !== 'Hero' && product.category !== 'Banner';
     });
   }, [allAvailableProducts, searchQuery]);
 
@@ -135,10 +135,10 @@ export function Navigation() {
           setIsSearchOpen(open);
           if (!open) setSearchQuery('');
         }}>
-          <DialogContent className="sm:max-w-[500px] w-[95vw] border-none shadow-2xl p-0 overflow-hidden rounded-[2rem] bg-paper">
+          <DialogContent className="sm:max-w-[500px] w-[95vw] border-none shadow-2xl p-0 overflow-hidden rounded-[2.5rem] bg-paper">
             <div className="absolute top-0 left-0 w-full h-1 bg-accent/20"></div>
             
-            <DialogHeader className="p-8 pb-4">
+            <DialogHeader className="p-10 pb-4">
               <div className="flex flex-col gap-1 mb-6">
                 <DialogTitle className="font-headline text-4xl text-primary tracking-tighter">
                   Search
@@ -158,7 +158,7 @@ export function Navigation() {
               </div>
             </DialogHeader>
 
-            <ScrollArea className="max-h-[60vh] px-8 pb-8">
+            <ScrollArea className="max-h-[60vh] px-10 pb-10">
               <div className="space-y-4">
                 {loadingProducts && searchQuery && (
                   <div className="flex flex-col items-center justify-center py-12 gap-3">
@@ -178,9 +178,9 @@ export function Navigation() {
                         key={product.id} 
                         href={`/products/${product.id}`}
                         onClick={() => setIsSearchOpen(false)}
-                        className="flex items-center gap-4 p-3 hover:bg-white rounded-2xl border border-transparent hover:border-primary/5 transition-all group"
+                        className="flex items-center gap-4 p-4 hover:bg-white rounded-[2rem] border border-transparent hover:border-primary/5 transition-all group shadow-sm hover:shadow-md"
                       >
-                        <div className="relative w-12 h-16 overflow-hidden bg-muted/20 rounded-lg shadow-sm">
+                        <div className="relative w-12 h-16 overflow-hidden bg-muted/20 rounded-xl">
                           {product.image && (
                             <Image 
                               src={product.image} 
@@ -191,7 +191,7 @@ export function Navigation() {
                           )}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h4 className="font-bold text-primary group-hover:text-accent transition-colors text-sm uppercase tracking-tight truncate">
+                          <h4 className="font-bold text-primary group-hover:text-accent transition-colors text-xs uppercase tracking-tight truncate">
                             {product.title}
                           </h4>
                           <div className="flex items-center gap-2 mt-1">
@@ -214,14 +214,14 @@ export function Navigation() {
                   <div className="py-6 space-y-6">
                     <div className="flex items-center gap-3 text-primary/40 italic text-[11px] font-medium">
                       <Sparkles className="w-4 h-4 text-accent/40" />
-                      <span>Popular suggestions</span>
+                      <span>Popular collections</span>
                     </div>
                     <div className="flex flex-wrap gap-2">
                       {['Flowers', 'Amigurumi', 'Bag charm', 'Bandana'].map(tag => (
                         <button 
                           key={tag}
                           onClick={() => setSearchQuery(tag)}
-                          className="px-4 py-2 rounded-full border border-primary/5 text-[10px] font-bold uppercase tracking-widest text-primary/60 hover:border-accent hover:text-accent transition-all"
+                          className="px-5 py-2.5 rounded-full border border-primary/5 text-[9px] font-bold uppercase tracking-[0.2em] text-primary/60 hover:border-accent hover:text-accent hover:bg-white transition-all shadow-sm"
                         >
                           {tag}
                         </button>
@@ -236,7 +236,7 @@ export function Navigation() {
       </nav>
 
       {/* Bottom Nav for Mobile */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-[100] bg-white/90 backdrop-blur-xl border-t border-primary/5 h-20 flex items-center justify-around px-4 pb-4 pt-2 shadow-[0_-4px_30px_-4px_rgba(0,0,0,0.05)]">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-[100] bg-white/95 backdrop-blur-2xl border-t border-primary/5 h-20 flex items-center justify-around px-4 pb-4 pt-2 shadow-[0_-4px_30px_-4px_rgba(0,0,0,0.05)]">
         <Link href="/" className="flex flex-col items-center gap-1.5 group">
           <Home className="w-5 h-5 text-primary" />
           <span className="text-[9px] font-bold uppercase tracking-widest text-primary/40">Home</span>

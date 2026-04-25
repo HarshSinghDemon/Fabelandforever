@@ -1,3 +1,4 @@
+
 "use client";
 
 import React from 'react';
@@ -34,7 +35,7 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
   const allItems = React.useMemo(() => {
     const items = [
       ...(dbProducts || []),
-      ...PlaceHolderImages.map(p => ({
+      ...PlaceHolderImages.filter(p => p.category !== 'Hero' && p.category !== 'Banner').map(p => ({
         id: p.id,
         title: p.description,
         price: p.price,
@@ -47,13 +48,16 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
   }, [dbProducts]);
 
   const filteredProducts = React.useMemo(() => {
+    let list = allItems;
     if (categoryFilter) {
-      return allItems.filter(p => p.category === categoryFilter);
+      list = list.filter(p => p.category === categoryFilter);
     }
     if (isBestseller) {
-      return allItems.slice(0, 8);
+      list = list.slice(0, 8);
+    } else {
+      list = list.slice(-8);
     }
-    return allItems.slice(-8);
+    return list;
   }, [allItems, categoryFilter, isBestseller]);
 
   const handleAddToCart = (e: React.MouseEvent, product: any) => {
@@ -133,7 +137,7 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
             <div className="md:hidden flex justify-center mt-12">
               <div className="flex gap-2">
                 <div className="w-12 h-1 bg-primary/10 rounded-full overflow-hidden">
-                  <div className="w-1/3 h-full bg-accent rounded-full animate-float"></div>
+                  <div className="w-1/3 h-full bg-accent rounded-full"></div>
                 </div>
               </div>
             </div>

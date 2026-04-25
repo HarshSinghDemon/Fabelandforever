@@ -11,7 +11,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useCart } from '@/context/CartContext';
 import { useToast } from '@/hooks/use-toast';
-import { Button } from '@/components/ui/button';
 import { ShoppingBasket, ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -110,18 +109,9 @@ export default function ShopPage() {
     return () => observer.disconnect();
   }, [allItems]);
 
-  useEffect(() => {
-    if (activeTab && scrollContainerRef.current) {
-      const activePill = scrollContainerRef.current.querySelector(`[data-category="${activeTab}"]`);
-      if (activePill) {
-        activePill.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-        setTimeout(checkScroll, 600);
-      }
-    }
-  }, [activeTab]);
-
   const handleAddToCart = (e: React.MouseEvent, product: any) => {
     e.preventDefault();
+    e.stopPropagation();
     addToCart({
       id: product.id,
       title: product.title,
@@ -142,27 +132,27 @@ export default function ShopPage() {
       <Navigation />
       
       {/* Shop Hero - Elegant Editorial Entry */}
-      <section className="relative pt-32 pb-20 sm:pt-48 sm:pb-32 overflow-hidden bg-background">
+      <section className="relative pt-32 pb-20 sm:pt-48 sm:pb-32 overflow-hidden bg-black">
         <div className="absolute inset-0 z-0">
           <Image 
             src={heroImageUrl} 
             alt="Shop Catalog" 
             fill 
-            className="object-cover opacity-80" 
+            className="object-cover opacity-60" 
             priority
             data-ai-hint="crochet craft"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-white"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-white"></div>
         </div>
         
         <div className="container mx-auto px-6 max-w-6xl text-center relative z-10">
           <div className="reveal-on-scroll active space-y-6">
-            <span className="text-primary font-bold tracking-[0.8em] uppercase text-[9px] mb-4 block">The Collections</span>
-            <h1 className="font-headline text-5xl sm:text-9xl text-primary leading-none tracking-tighter drop-shadow-sm">
+            <span className="text-white/40 font-bold tracking-[1em] uppercase text-[9px] mb-4 block">The Collections</span>
+            <h1 className="font-headline text-5xl sm:text-9xl text-white leading-none tracking-tighter drop-shadow-2xl">
               Shop <span className="italic">Catalog.</span>
             </h1>
-            <div className="w-12 h-[1px] bg-primary/20 mx-auto"></div>
-            <p className="text-primary/60 font-medium max-w-md mx-auto leading-relaxed italic text-sm sm:text-base">
+            <div className="w-12 h-[1px] bg-white/20 mx-auto"></div>
+            <p className="text-white/60 font-medium max-w-md mx-auto leading-relaxed italic text-sm sm:text-base">
               "Curated treasures for the heritage home, hand-stitched with love and slow-woven loops."
             </p>
           </div>
@@ -170,10 +160,9 @@ export default function ShopPage() {
       </section>
 
       {/* Sticky Category Bar - Minimalist Rail */}
-      <div className="sticky top-16 md:top-20 z-[40] bg-white/80 backdrop-blur-md border-b border-primary/5 py-4 transition-all">
+      <div className="sticky top-16 md:top-20 z-[40] bg-white/95 backdrop-blur-2xl border-b border-primary/5 py-4 transition-all">
         <div className="container mx-auto px-4 md:px-6 relative">
           <div className="relative flex items-center max-w-5xl mx-auto">
-            
             <button 
               onClick={() => scrollByAmount('left')}
               className={cn(
@@ -257,20 +246,20 @@ export default function ShopPage() {
                   </p>
                 </div>
 
-                {/* 2x1 Minimalist Editorial Matrix */}
-                <div className="grid grid-cols-2 gap-8 md:gap-16 lg:gap-24">
+                {/* 2x2 Minimalist Editorial Matrix */}
+                <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-8 md:gap-16 lg:gap-24">
                   {catProducts.map((product) => (
                     <div 
                       key={product.id} 
                       className="group space-y-6"
                     >
                       <Link href={`/products/${product.id}`} className="block">
-                        <div className="relative aspect-[3/4] overflow-hidden bg-background rounded-none border border-primary/5 transition-all duration-700 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.1)] group-hover:shadow-2xl">
+                        <div className="relative aspect-[3/4] overflow-hidden bg-background rounded-none border border-primary/5 transition-all duration-700 shadow-sm group-hover:shadow-2xl">
                           <Image
                             src={product.image}
                             alt={product.title}
                             fill
-                            className="object-cover transition-transform duration-[2s] ease-out-expo group-hover:scale-105"
+                            className="object-cover transition-transform duration-[2s] group-hover:scale-105"
                             sizes="(max-width: 768px) 50vw, 50vw"
                           />
                         </div>
@@ -278,7 +267,7 @@ export default function ShopPage() {
                       
                       <div className="space-y-4 text-center">
                         <div className="space-y-2">
-                          <h3 className="font-headline text-lg sm:text-2xl text-primary tracking-tight truncate">{product.title}</h3>
+                          <h3 className="font-headline text-lg sm:text-2xl text-primary tracking-tight truncate px-2">{product.title}</h3>
                           <p className="font-bold text-primary/40 text-[10px] tracking-[0.3em] uppercase italic">₹ {Number(product.price).toLocaleString('en-IN')}</p>
                         </div>
                         
@@ -287,7 +276,7 @@ export default function ShopPage() {
                             onClick={(e) => handleAddToCart(e, product)}
                             className="inline-flex items-center gap-3 px-8 py-3 rounded-none border border-primary/10 text-primary hover:bg-primary hover:text-white transition-all duration-500 font-bold uppercase tracking-[0.4em] text-[8px] active:scale-95 group/btn"
                           >
-                            Adopt Treasure <ShoppingBasket className="w-3 h-3 group-hover/btn:translate-x-1 transition-transform" />
+                            Adopt Treasure <ShoppingBasket className="w-3 h-3 group-hover/btn:rotate-12 transition-transform" />
                           </button>
                         </div>
                       </div>

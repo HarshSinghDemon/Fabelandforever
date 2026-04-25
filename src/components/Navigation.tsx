@@ -106,16 +106,16 @@ export function Navigation() {
         </div>
 
         <Dialog open={isSearchOpen} onOpenChange={setIsSearchOpen}>
-          <DialogContent className="sm:max-w-[700px] w-[95vw] border-none shadow-2xl p-0 overflow-hidden rounded-[2rem] sm:rounded-[3rem] bg-white/40 backdrop-blur-2xl">
-            <div className="absolute top-0 left-0 w-full h-1.5 bg-accent/20"></div>
+          <DialogContent className="sm:max-w-[700px] w-[95vw] border-none shadow-2xl p-0 overflow-hidden rounded-[2.5rem] sm:rounded-[4rem] bg-white/40 backdrop-blur-3xl border border-white/20">
+            <div className="absolute top-0 left-0 w-full h-1.5 bg-accent/30"></div>
             
             <DialogHeader className="p-8 md:p-12 pb-6">
               <div className="flex items-center justify-between mb-8">
                 <div className="flex flex-col gap-1">
-                  <DialogTitle className="font-headline text-3xl sm:text-4xl text-primary tracking-tighter">
+                  <DialogTitle className="font-headline text-4xl sm:text-5xl text-primary tracking-tighter">
                     Search
                   </DialogTitle>
-                  <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-accent">Artisanal Catalog</p>
+                  <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-accent/60">Artisanal Catalog</p>
                 </div>
               </div>
               
@@ -125,7 +125,7 @@ export function Navigation() {
                   placeholder="What can the weavers find for you?" 
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 h-14 border-none border-b-2 border-primary/5 bg-transparent text-xl placeholder:text-primary/20 focus-visible:ring-0 rounded-none text-primary font-headline"
+                  className="pl-10 h-16 border-none border-b-2 border-primary/5 bg-transparent text-xl sm:text-2xl placeholder:text-primary/10 focus-visible:ring-0 rounded-none text-primary font-headline"
                   autoFocus
                 />
               </div>
@@ -152,9 +152,9 @@ export function Navigation() {
                         key={product.id} 
                         href={`/products/${product.id}`}
                         onClick={() => setIsSearchOpen(false)}
-                        className="flex items-center gap-4 p-4 bg-white/60 backdrop-blur-md rounded-2xl border border-primary/5 hover:border-accent/30 transition-all hover:shadow-xl hover:-translate-y-1 group"
+                        className="flex items-center gap-4 p-4 bg-white/50 backdrop-blur-md rounded-[1.5rem] border border-white/30 hover:border-accent/30 transition-all hover:shadow-2xl hover:-translate-y-1 group"
                       >
-                        <div className="relative w-16 h-20 sm:w-20 sm:h-24 overflow-hidden bg-muted/20 rounded-xl shadow-sm">
+                        <div className="relative w-16 h-20 sm:w-20 sm:h-24 overflow-hidden bg-muted/10 rounded-xl shadow-sm">
                           {product.image && (
                             <Image 
                               src={product.image} 
@@ -171,7 +171,7 @@ export function Navigation() {
                           <p className="text-[8px] font-bold uppercase tracking-[0.2em] text-accent/60">
                             {product.category}
                           </p>
-                          <p className="font-bold text-primary/40 text-[10px] sm:text-xs">
+                          <p className="font-bold text-primary/60 text-[10px] sm:text-xs">
                             ₹ {product.price?.toLocaleString('en-IN')}
                           </p>
                         </div>
@@ -193,7 +193,7 @@ export function Navigation() {
       </nav>
 
       {/* Bottom Nav for Mobile */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-[100] bg-white/80 backdrop-blur-xl border-t border-primary/5 h-20 flex items-center justify-around px-4 pb-4 pt-2 shadow-[0_-4px_20px_-4px_rgba(0,0,0,0.05)]">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-[100] bg-white/70 backdrop-blur-2xl border-t border-primary/5 h-20 flex items-center justify-around px-4 pb-4 pt-2 shadow-[0_-4px_30px_-4px_rgba(0,0,0,0.1)]">
         <Link href="/" className="flex flex-col items-center gap-1.5 group">
           <Home className="w-5 h-5 text-primary" />
           <span className="text-[9px] font-bold uppercase tracking-widest text-primary/40">Home</span>

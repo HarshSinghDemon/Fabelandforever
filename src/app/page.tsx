@@ -42,7 +42,8 @@ export default function Home() {
     window.open(`mailto:${recipient}`, '_blank');
   };
 
-  const hairAccessoriesImageUrl = "https://images.unsplash.com/photo-1700171518313-5dd219beaaa6?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+  // Official Hair Accessories Editorial Image
+  const hairAccessoriesImageUrl = "https://qigxixiekbdkeperulpk.supabase.co/storage/v1/object/public/uploads/anya-chernykh-kwrYG3RdVt4-unsplash.jpg";
 
   return (
     <main className="min-h-screen bg-background selection:bg-accent/20 relative pb-20 md:pb-0">

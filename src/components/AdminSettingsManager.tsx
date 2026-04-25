@@ -72,15 +72,15 @@ export function AdminSettingsManager() {
       } else {
         toast({ 
           variant: "destructive", 
-          title: "Cloud Glitch", 
-          description: result.error || "Failed to link to Supabase storage." 
+          title: "Cloud Connection Error", 
+          description: result.error || "Could not link to Supabase storage. Check your credentials." 
         });
       }
     } catch (error: any) {
       toast({ 
         variant: "destructive", 
-        title: "Connection Error", 
-        description: "The magic threads to Supabase are disconnected." 
+        title: "Magic Interrupted", 
+        description: "The connection to your cloud storage was lost." 
       });
     } finally {
       if (type === 'hero') setUploadingHero(false);

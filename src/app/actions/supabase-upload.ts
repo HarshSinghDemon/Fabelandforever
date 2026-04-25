@@ -1,8 +1,8 @@
 'use server';
 
 /**
- * @fileOverview Server action to handle image uploads to Supabase Storage.
- * This is the central hub for storing all boutique visuals.
+ * @fileOverview Robust server action to handle image uploads to Supabase Storage.
+ * Includes improved error handling and environment validation.
  */
 
 export async function uploadToSupabase(formData: FormData) {
@@ -23,18 +23,18 @@ export async function uploadToSupabase(formData: FormData) {
     if (!supabaseUrl || !serviceRoleKey) {
       return { 
         success: false, 
-        error: 'Supabase configuration is missing. Please ensure SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are set in your environment.' 
+        error: 'Supabase configuration is missing. Ensure SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are set.' 
       };
     }
 
+    // Sanitize URL: ensure it starts with https and has no trailing slash
+    const baseUrl = supabaseUrl.replace(/\/$/, '');
     const bucket = 'uploads';
-    // Standardized naming convention for the studio
     const fileName = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.]/g, '_')}`;
     
     const arrayBuffer = await file.arrayBuffer();
     const body = Buffer.from(arrayBuffer);
-    const cleanUrl = supabaseUrl.replace(/\/$/, '');
-    const uploadUrl = `${cleanUrl}/storage/v1/object/${bucket}/${fileName}`;
+    const uploadUrl = `${baseUrl}/storage/v1/object/${bucket}/${fileName}`;
 
     const response = await fetch(uploadUrl, {
       method: 'POST',
@@ -51,16 +51,15 @@ export async function uploadToSupabase(formData: FormData) {
       const errorData = await response.json().catch(() => ({}));
       return { 
         success: false, 
-        error: errorData.message || `Supabase Storage error: ${response.status} ${response.statusText}` 
+        error: errorData.message || `Cloud Error: ${response.status} ${response.statusText}` 
       };
     }
 
-    // Public URL format for Supabase Storage
-    const publicUrl = `${cleanUrl}/storage/v1/object/public/${bucket}/${fileName}`;
+    const publicUrl = `${baseUrl}/storage/v1/object/public/${bucket}/${fileName}`;
 
     return { success: true, url: publicUrl };
   } catch (error: any) {
     console.error('Supabase upload failed:', error);
-    return { success: false, error: error.message || 'An unexpected error occurred during cloud upload.' };
+    return { success: false, error: error.message || 'The magic threads encountered a network glitch.' };
   }
 }

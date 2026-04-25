@@ -57,7 +57,6 @@ export function Navigation() {
       )}>
         <div className="container mx-auto px-6">
           <div className="flex items-center justify-between gap-8">
-            {/* Logo on Left */}
             <div className="flex-shrink-0">
               <Link href="/" className="flex items-center gap-3 group">
                 <Logo className={cn(
@@ -71,7 +70,6 @@ export function Navigation() {
               </Link>
             </div>
 
-            {/* Central Search Bar (Mirroring Floriy) */}
             <div className="flex-1 max-w-2xl hidden md:block">
               <div className={cn(
                 "relative flex items-center h-12 rounded-lg border px-4 transition-all",
@@ -83,8 +81,9 @@ export function Navigation() {
                 <input 
                   type="text"
                   placeholder="Search our treasures..."
+                  readOnly
                   className={cn(
-                    "bg-transparent border-none focus:ring-0 text-sm w-full placeholder:italic",
+                    "bg-transparent border-none focus:ring-0 text-sm w-full placeholder:italic cursor-pointer",
                     isScrolled ? "text-primary placeholder:text-primary/30" : "text-white placeholder:text-white/30"
                   )}
                   onClick={() => setIsSearchOpen(true)}
@@ -92,7 +91,6 @@ export function Navigation() {
               </div>
             </div>
 
-            {/* Utility Icons on Right */}
             <div className="flex items-center gap-4 sm:gap-6">
               <Link href="/admin/login" className={cn(
                 "p-2 transition-all hover:opacity-50",
@@ -115,7 +113,6 @@ export function Navigation() {
             </div>
           </div>
 
-          {/* Sub-Nav Below Main Header */}
           <div className="mt-6 flex justify-center items-center gap-12 hidden lg:flex">
             {navLinks.map((link) => (
               <Link 
@@ -132,7 +129,6 @@ export function Navigation() {
           </div>
         </div>
 
-        {/* Search Modal Overlay */}
         <Dialog open={isSearchOpen} onOpenChange={setIsSearchOpen}>
           <DialogContent className="sm:max-w-[800px] border-none shadow-2xl p-0 overflow-hidden rounded-[2.5rem] bg-background">
             <DialogHeader className="p-8 pb-4">
@@ -160,7 +156,7 @@ export function Navigation() {
                   </div>
                 ) : (
                   <div className="grid gap-10">
-                    {filteredProducts.map((product) => (
+                    {(searchQuery ? filteredProducts : allProducts?.slice(0, 5))?.map((product) => (
                       <Link 
                         key={product.id} 
                         href={`/products/${product.id}`}
@@ -184,7 +180,6 @@ export function Navigation() {
           </DialogContent>
         </Dialog>
 
-        {/* Mobile Menu Overlay */}
         <div className={cn(
           "fixed inset-x-4 top-4 bottom-4 bg-background/98 backdrop-blur-3xl z-[80] transition-all duration-700 p-10 pt-32 rounded-[3rem] shadow-2xl",
           isMobileMenuOpen ? "translate-x-0 opacity-100" : "-translate-x-[110%] opacity-0"

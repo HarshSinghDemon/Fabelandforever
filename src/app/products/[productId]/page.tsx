@@ -36,7 +36,6 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
 
   const { data: dbProduct, loading } = useDoc(productRef);
 
-  // Fallback to placeholder data if not in DB
   const placeholder = PlaceHolderImages.find(p => p.id === productId);
   
   const product = dbProduct || (placeholder ? {
@@ -105,7 +104,6 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
         </Link>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 sm:gap-24 items-start">
-          {/* Visual Showcase */}
           <div className="space-y-12">
             <div className="relative aspect-[3/4] w-full rounded-[1rem] overflow-hidden bg-muted shadow-xl reveal-on-scroll">
               <Image 
@@ -131,7 +129,6 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
             </div>
           </div>
 
-          {/* Details & Purchase */}
           <div className="space-y-12 reveal-on-scroll">
             <div className="space-y-6">
               <div className="flex items-center gap-4">

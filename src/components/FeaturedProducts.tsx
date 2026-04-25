@@ -26,7 +26,6 @@ export function FeaturedProducts() {
 
   const { data: dbProducts, loading } = useCollection(productsQuery);
 
-  // Combine DB products and Placeholders
   const allItems = [
     ...(dbProducts || []),
     ...PlaceHolderImages.map(p => ({
@@ -38,7 +37,7 @@ export function FeaturedProducts() {
       imageHint: p.imageHint,
       description: p.story
     }))
-  ].slice(0, 15); // Show top 15 in the carousel
+  ].slice(0, 15);
 
   const filteredProducts = activeCategory === 'All Items' 
     ? allItems 

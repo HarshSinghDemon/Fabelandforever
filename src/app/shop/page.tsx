@@ -52,7 +52,6 @@ export default function ShopPage() {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add('active');
             if (entry.intersectionRatio > 0.4) {
                setActiveTab(entry.target.id);
             }
@@ -61,9 +60,6 @@ export default function ShopPage() {
       },
       { threshold: [0.1, 0.4, 0.8] }
     );
-
-    const elements = document.querySelectorAll('.reveal-on-scroll');
-    elements.forEach((el) => observer.observe(el));
 
     const sectionElements = document.querySelectorAll('section[id]');
     sectionElements.forEach((el) => observer.observe(el));
@@ -93,7 +89,7 @@ export default function ShopPage() {
       {/* Shop Hero */}
       <section className="pt-48 pb-24 sm:pb-32 border-b border-primary/5 bg-white/50">
         <div className="container mx-auto px-6 max-w-6xl text-center">
-          <div className="reveal-on-scroll">
+          <div className="reveal-on-scroll active">
             <span className="text-accent font-bold tracking-[1em] uppercase text-[9px] mb-8 block">Artisanal Catalog</span>
             <h1 className="font-headline text-6xl sm:text-9xl text-primary leading-none mb-10 tracking-tighter">
               The <span className="italic">Shop.</span>
@@ -106,19 +102,19 @@ export default function ShopPage() {
       </section>
 
       {/* Modern Responsive Category Bar */}
-      <div className="sticky top-[72px] z-50 bg-white/90 backdrop-blur-xl border-b border-primary/5">
-        <div className="container mx-auto relative px-0 overflow-hidden">
+      <div className="sticky top-[72px] z-50 bg-white/95 backdrop-blur-xl border-b border-primary/5">
+        <div className="w-full relative overflow-hidden">
           {/* Subtle edge fades to indicate scrolling on mobile */}
-          <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-white/90 to-transparent z-10 sm:hidden pointer-events-none"></div>
-          <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white/90 to-transparent z-10 sm:hidden pointer-events-none"></div>
+          <div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-white/95 to-transparent z-10 sm:hidden pointer-events-none"></div>
+          <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-white/95 to-transparent z-10 sm:hidden pointer-events-none"></div>
           
-          <div className="flex items-center gap-3 sm:gap-12 overflow-x-auto no-scrollbar scroll-smooth py-4 sm:py-6 px-6 sm:px-12 flex-nowrap touch-pan-x">
+          <div className="flex items-center gap-2 sm:gap-12 overflow-x-auto no-scrollbar scroll-smooth py-5 sm:py-6 px-8 sm:px-12 flex-nowrap touch-pan-x">
              {categories.map((cat) => (
                 <a 
                   key={cat} 
                   href={`#${cat.toLowerCase()}`}
                   className={cn(
-                    "flex-shrink-0 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.2em] sm:tracking-[0.4em] px-5 py-2.5 sm:px-0 sm:py-0 rounded-full transition-all duration-500 whitespace-nowrap",
+                    "flex-shrink-0 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.2em] sm:tracking-[0.4em] px-6 py-3 sm:px-0 sm:py-0 rounded-full transition-all duration-500 whitespace-nowrap",
                     activeTab === cat.toLowerCase()
                       ? "bg-primary text-white sm:bg-transparent sm:text-accent sm:scale-110" 
                       : "bg-primary/5 text-primary/40 hover:text-accent sm:bg-transparent"
@@ -127,8 +123,8 @@ export default function ShopPage() {
                   {cat}
                 </a>
              ))}
-             {/* Spacer for scroll-padding effect */}
-             <div className="w-6 flex-shrink-0 sm:hidden"></div>
+             {/* Extra spacer to ensure the last item is scrollable past the fade */}
+             <div className="w-12 flex-shrink-0 sm:hidden"></div>
           </div>
         </div>
       </div>
@@ -146,7 +142,7 @@ export default function ShopPage() {
               )}
             >
               <div className="container mx-auto px-6 max-w-7xl">
-                <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 sm:mb-28 gap-8 reveal-on-scroll">
+                <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 sm:mb-28 gap-8 reveal-on-scroll active">
                   <div className="space-y-6">
                     <div className="flex items-center gap-4">
                       <div className="w-12 h-[1px] bg-accent/30"></div>
@@ -165,7 +161,7 @@ export default function ShopPage() {
                   {catProducts.map((product, idx) => (
                     <div 
                       key={product.id} 
-                      className="group space-y-8 reveal-on-scroll"
+                      className="group space-y-8 reveal-on-scroll active"
                       style={{ transitionDelay: `${idx * 0.1}s` }}
                     >
                       <Link href={`/products/${product.id}`} className="block">

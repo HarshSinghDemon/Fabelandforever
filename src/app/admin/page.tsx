@@ -74,8 +74,8 @@ service cloud.firestore {
     }
     function isAdmin() {
       return request.auth != null && (
-        exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid)) ||
-        request.auth.token.email == "harshroop100@gmail.com"
+        request.auth.token.email == "harshroop100@gmail.com" ||
+        exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid))
       );
     }
   }

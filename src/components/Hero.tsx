@@ -70,8 +70,8 @@ export function Hero() {
               </span>
               
               <div className="h-0 relative z-20 flex justify-center items-center">
-                <span className="font-fancy text-4xl md:text-6xl text-accent/80 block animate-loop-in stagger-2 opacity-0 -rotate-6">
-                  and
+                <span className="font-fancy text-6xl md:text-9xl text-accent/80 block animate-loop-in stagger-2 opacity-0 -rotate-6">
+                  &
                 </span>
               </div>
 

@@ -1,8 +1,8 @@
 'use server';
 
 /**
- * @fileOverview Robust server action to handle image uploads to Supabase Storage.
- * Now hard-linked with provided credentials for failsafe connection.
+ * @fileOverview Server action to handle image uploads to Supabase Storage.
+ * Uses environment variables for security.
  */
 
 export async function uploadToSupabase(formData: FormData) {
@@ -12,14 +12,12 @@ export async function uploadToSupabase(formData: FormData) {
       return { success: false, error: 'No file provided' };
     }
 
-    const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'];
-    if (!allowedTypes.includes(file.type)) {
-      return { success: false, error: `Format ${file.type} is not supported.` };
-    }
+    const supabaseUrl = process.env.SUPABASE_URL;
+    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-    // Hard-linked credentials for absolute stability
-    const supabaseUrl = "https://qigxixiekbdkeperulpk.supabase.co";
-    const serviceRoleKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFpZ3hpeGlla2Jka2VwZXJ1bHBrIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NzAxOTE2MiwiZXhwIjoyMDkyNTk1MTYyfQ.7Ggumc9g9ukhII8pKcoHmQV7DAeK2t4DU8AvmBEwXRA";
+    if (!supabaseUrl || !serviceRoleKey) {
+      return { success: false, error: 'Cloud storage configuration is missing.' };
+    }
 
     const baseUrl = supabaseUrl.replace(/\/$/, '');
     const bucket = 'uploads';
@@ -42,12 +40,6 @@ export async function uploadToSupabase(formData: FormData) {
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      if (response.status === 404) {
-        return { 
-          success: false, 
-          error: `Bucket "${bucket}" not found. Please ensure it exists and is public in Supabase.` 
-        };
-      }
       return { 
         success: false, 
         error: errorData.message || `Cloud Error: ${response.status}` 
@@ -58,6 +50,6 @@ export async function uploadToSupabase(formData: FormData) {
     return { success: true, url: publicUrl };
   } catch (error: any) {
     console.error('Supabase upload failed:', error);
-    return { success: false, error: error.message || 'The magic threads encountered a cloud glitch.' };
+    return { success: false, error: 'Cloud storage encounter a glitch.' };
   }
 }

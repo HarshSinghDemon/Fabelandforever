@@ -1,8 +1,8 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // PUBLIC ACCESS: All scrolls (collections) are readable and writable by everyone.
-    // This resolves all "Missing or insufficient permissions" errors.
+    // PUBLIC ACCESS: All collections are readable and writable by everyone.
+    // This removes all "Missing or insufficient permissions" errors.
     match /{document=**} {
       allow read, write: if true;
     }

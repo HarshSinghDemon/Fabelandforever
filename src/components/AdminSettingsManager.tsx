@@ -70,10 +70,18 @@ export function AdminSettingsManager() {
           toast({ title: "Custom Vision Updated ✨", description: "Banner visual stored in Supabase." });
         }
       } else {
-        throw new Error(result.error || "Failed to upload image");
+        toast({ 
+          variant: "destructive", 
+          title: "Cloud Glitch", 
+          description: result.error || "Failed to link to Supabase storage." 
+        });
       }
     } catch (error: any) {
-      toast({ variant: "destructive", title: "Cloud Upload Failed", description: error.message });
+      toast({ 
+        variant: "destructive", 
+        title: "Connection Error", 
+        description: "The magic threads to Supabase are disconnected." 
+      });
     } finally {
       if (type === 'hero') setUploadingHero(false);
       if (type === 'custom') setUploadingCustom(false);

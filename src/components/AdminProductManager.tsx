@@ -49,10 +49,18 @@ export function AdminProductManager() {
         setFormData(prev => ({ ...prev, image: result.url! }));
         toast({ title: "Visual Captured ✨", description: "Treasure visual stored in Supabase." });
       } else {
-        throw new Error(result.error || "Failed to upload image");
+        toast({ 
+          variant: "destructive", 
+          title: "Cloud Glitch", 
+          description: result.error || "Failed to link to Supabase storage." 
+        });
       }
     } catch (error: any) {
-      toast({ variant: "destructive", title: "Upload Failed", description: error.message });
+      toast({ 
+        variant: "destructive", 
+        title: "Connection Error", 
+        description: "The magic threads to Supabase are disconnected." 
+      });
     } finally {
       setUploading(false);
     }
@@ -61,7 +69,11 @@ export function AdminProductManager() {
   const handleAddProduct = (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.title || !formData.price || !formData.image || !productsCollection) {
-      toast({ variant: "destructive", title: "Incomplete Spell", description: "Please ensure a visual is uploaded and all details are filled." });
+      toast({ 
+        variant: "destructive", 
+        title: "Incomplete Manifestation", 
+        description: "Please ensure a visual is uploaded and all details are woven." 
+      });
       return;
     }
 
@@ -118,7 +130,7 @@ export function AdminProductManager() {
           </div>
           <div>
             <h3 className="font-headline text-3xl text-primary">Manifest New Treasure</h3>
-            <p className="text-[10px] font-bold uppercase tracking-widest text-primary/30 mt-1">Stored securely in Supabase Cloud</p>
+            <p className="text-[10px] font-bold uppercase tracking-widest text-primary/30 mt-1">Cloud Vision via Supabase</p>
           </div>
         </div>
 

@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useMemo } from 'react';
@@ -16,12 +15,8 @@ export function AdminSettingsManager() {
   const [isSaving, setIsSaving] = useState(false);
 
   const heroRef = useMemoFirebase(() => db ? doc(db, 'settings', 'hero') : null, [db]);
-  const hairBannerRef = useMemoFirebase(() => db ? doc(db, 'settings', 'banner_hair') : null, [db]);
-  const bandanaBannerRef = useMemoFirebase(() => db ? doc(db, 'settings', 'banner_bandana') : null, [db]);
 
   const { data: heroSetting } = useDoc(heroRef);
-  const { data: hairSetting } = useDoc(hairBannerRef);
-  const { data: bandanaSetting } = useDoc(bandanaBannerRef);
 
   const defaultHeroImages = [
     "https://qigxixiekbdkeperulpk.supabase.co/storage/v1/object/public/uploads/products/Gemini_Generated_Image_bx4li2bx4li2bx4l.png",
@@ -36,23 +31,6 @@ export function AdminSettingsManager() {
     // Otherwise, show the hardcoded defaults
     return { images: defaultHeroImages, isDefault: true };
   }, [heroSetting]);
-
-  const updateBanner = async (id: string, url: string) => {
-    if (!db) return;
-    setIsSaving(true);
-    try {
-      await setDoc(doc(db, 'settings', id), {
-        id,
-        value: url,
-        updatedAt: new Date().toISOString()
-      }, { merge: true });
-      toast({ title: "Banner Weaved ✨", description: "Boutique visuals updated." });
-    } catch (error) {
-      toast({ variant: "destructive", title: "Glitch", description: "Could not update banner." });
-    } finally {
-      setIsSaving(false);
-    }
-  };
 
   const addHeroImage = async (url: string) => {
     if (!db) return;
@@ -160,42 +138,6 @@ export function AdminSettingsManager() {
             onUploadSuccess={addHeroImage}
             label=""
             className="aspect-[4/5]"
-          />
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-        {/* Hair Accessories Banner */}
-        <div className="bg-white p-10 rounded-[3rem] shadow-xl border border-primary/5 stitching-border space-y-8">
-          <div className="space-y-2">
-            <h4 className="font-headline text-2xl text-primary flex items-center gap-3">
-              <Scissors className="w-5 h-5 text-accent" /> Hair Accessories
-            </h4>
-            <p className="text-xs text-primary/40 italic font-medium leading-relaxed">
-              "The legacy banner for your handcrafted crowns."
-            </p>
-          </div>
-
-          <SupabaseImageUpload 
-            currentImageUrl={hairSetting?.value}
-            onUploadSuccess={(url) => updateBanner('banner_hair', url)}
-          />
-        </div>
-
-        {/* Bandanas Banner */}
-        <div className="bg-white p-10 rounded-[3rem] shadow-xl border border-primary/5 stitching-border space-y-8">
-          <div className="space-y-2">
-            <h4 className="font-headline text-2xl text-primary flex items-center gap-3">
-              <Wind className="w-5 h-5 text-accent" /> Artisan Bandanas
-            </h4>
-            <p className="text-xs text-primary/40 italic font-medium leading-relaxed">
-              "The premium collection banner for textured headwear."
-            </p>
-          </div>
-
-          <SupabaseImageUpload 
-            currentImageUrl={bandanaSetting?.value}
-            onUploadSuccess={(url) => updateBanner('banner_bandana', url)}
           />
         </div>
       </div>

@@ -56,24 +56,30 @@ export default function ShopPage() {
   const checkScroll = () => {
     if (scrollContainerRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
-      setCanScrollLeft(scrollLeft > 5);
-      setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 5);
+      setCanScrollLeft(scrollLeft > 10);
+      setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 10);
     }
   };
 
   useEffect(() => {
-    checkScroll();
+    // Initial check after layout
+    const timer = setTimeout(checkScroll, 300);
     window.addEventListener('resize', checkScroll);
-    return () => window.removeEventListener('resize', checkScroll);
+    return () => {
+      window.removeEventListener('resize', checkScroll);
+      clearTimeout(timer);
+    };
   }, [categories]);
 
   const scrollByAmount = (direction: 'left' | 'right') => {
     if (scrollContainerRef.current) {
-      const scrollAmount = 250;
+      const scrollAmount = 300;
       scrollContainerRef.current.scrollBy({
         left: direction === 'left' ? -scrollAmount : scrollAmount,
         behavior: 'smooth'
       });
+      // Re-check after scroll animation
+      setTimeout(checkScroll, 500);
     }
   };
 
@@ -82,12 +88,12 @@ export default function ShopPage() {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting && entry.intersectionRatio > 0.4) {
+          if (entry.isIntersecting && entry.intersectionRatio > 0.3) {
             setActiveTab(entry.target.id);
           }
         });
       },
-      { threshold: [0.1, 0.4, 0.8], rootMargin: "-25% 0% -25% 0%" }
+      { threshold: [0.1, 0.3, 0.6], rootMargin: "-15% 0% -15% 0%" }
     );
 
     const sectionElements = document.querySelectorAll('section[id]');
@@ -96,12 +102,13 @@ export default function ShopPage() {
     return () => observer.disconnect();
   }, [allItems]);
 
-  // Auto-scroll the active pill into view/center
+  // Auto-scroll the active pill into view
   useEffect(() => {
     if (activeTab && scrollContainerRef.current) {
       const activePill = scrollContainerRef.current.querySelector(`[data-category="${activeTab}"]`);
       if (activePill) {
         activePill.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        setTimeout(checkScroll, 600);
       }
     }
   }, [activeTab]);
@@ -140,64 +147,80 @@ export default function ShopPage() {
         </div>
       </section>
 
-      {/* Modern Sticky Category Bar with Buttons and Touch Scroll */}
-      <div className="sticky top-16 md:top-20 z-[40] bg-paper/90 backdrop-blur-xl border-b border-primary/5 py-4 transition-all shadow-sm">
-        <div className="container mx-auto px-6 relative flex items-center">
-          
-          {/* Left Scroll Button */}
-          {canScrollLeft && (
+      {/* Modern Sticky Category Bar with Fixed Navigation */}
+      <div className="sticky top-16 md:top-20 z-[40] bg-paper/95 backdrop-blur-xl border-b border-primary/5 py-3 transition-all shadow-sm">
+        <div className="container mx-auto px-6 relative">
+          <div className="relative flex items-center group/nav">
+            
+            {/* Left Scroll Button - Always Visible if can scroll */}
             <button 
               onClick={() => scrollByAmount('left')}
-              className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/80 shadow-lg border border-primary/5 flex items-center justify-center text-primary hover:bg-white transition-all hidden md:flex"
+              aria-label="Scroll Left"
+              className={cn(
+                "absolute -left-2 top-1/2 -translate-y-1/2 z-50 w-10 h-10 rounded-full bg-white shadow-2xl border border-primary/5 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all duration-300",
+                canScrollLeft ? "opacity-100 scale-100" : "opacity-0 scale-50 pointer-events-none"
+              )}
             >
-              <ChevronLeft className="w-4 h-4" />
+              <ChevronLeft className="w-5 h-5" />
             </button>
-          )}
 
-          <div 
-            ref={scrollContainerRef}
-            onScroll={checkScroll}
-            className="flex items-center gap-2 overflow-x-auto no-scrollbar scroll-smooth py-1 px-4 md:px-8 w-full"
-          >
-            {categories.map((cat) => {
-              const id = cat.toLowerCase();
-              return (
-                <a 
-                  key={cat} 
-                  href={`#${id}`}
-                  data-category={id}
-                  className={cn(
-                    "whitespace-nowrap px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] transition-all duration-500 border-2 shrink-0",
-                    activeTab === id 
-                      ? "bg-primary text-white border-primary shadow-lg scale-105" 
-                      : "bg-white/50 text-primary/40 border-primary/5 hover:border-accent/30 hover:text-primary"
-                  )}
-                >
-                  {cat}
-                </a>
-              );
-            })}
-          </div>
+            {/* Scrollable Container */}
+            <div 
+              ref={scrollContainerRef}
+              onScroll={checkScroll}
+              className="flex items-center gap-3 overflow-x-auto no-scrollbar scroll-smooth py-2 px-4 w-full"
+            >
+              {categories.map((cat) => {
+                const id = cat.toLowerCase();
+                return (
+                  <a 
+                    key={cat} 
+                    href={`#${id}`}
+                    data-category={id}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      const element = document.getElementById(id);
+                      if (element) {
+                        const yOffset = -120; 
+                        const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                        window.scrollTo({ top: y, behavior: 'smooth' });
+                      }
+                    }}
+                    className={cn(
+                      "whitespace-nowrap px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] transition-all duration-300 border-2 shrink-0 cursor-pointer",
+                      activeTab === id 
+                        ? "bg-primary text-white border-primary shadow-lg scale-105" 
+                        : "bg-white/50 text-primary/40 border-primary/10 hover:border-accent/30 hover:text-primary"
+                    )}
+                  >
+                    {cat}
+                  </a>
+                );
+              })}
+            </div>
 
-          {/* Right Scroll Button */}
-          {canScrollRight && (
+            {/* Right Scroll Button - Always Visible if can scroll */}
             <button 
               onClick={() => scrollByAmount('right')}
-              className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/80 shadow-lg border border-primary/5 flex items-center justify-center text-primary hover:bg-white transition-all hidden md:flex"
+              aria-label="Scroll Right"
+              className={cn(
+                "absolute -right-2 top-1/2 -translate-y-1/2 z-50 w-10 h-10 rounded-full bg-white shadow-2xl border border-primary/5 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all duration-300",
+                canScrollRight ? "opacity-100 scale-100" : "opacity-0 scale-50 pointer-events-none"
+              )}
             >
-              <ChevronRight className="w-4 h-4" />
+              <ChevronRight className="w-5 h-5" />
             </button>
-          )}
-          
-          {/* Subtle Fades for scroll indication */}
-          <div className={cn(
-            "absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-paper to-transparent pointer-events-none z-10 transition-opacity duration-300",
-            canScrollLeft ? "opacity-100" : "opacity-0"
-          )} />
-          <div className={cn(
-            "absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-paper to-transparent pointer-events-none z-10 transition-opacity duration-300",
-            canScrollRight ? "opacity-100" : "opacity-0"
-          )} />
+            
+            {/* Subtle Fades for scroll indication */}
+            <div className={cn(
+              "absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-paper to-transparent pointer-events-none z-10 transition-opacity duration-300",
+              canScrollLeft ? "opacity-100" : "opacity-0"
+            )} />
+            <div className={cn(
+              "absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-paper to-transparent pointer-events-none z-10 transition-opacity duration-300",
+              canScrollRight ? "opacity-100" : "opacity-0"
+            )} />
+          </div>
         </div>
       </div>
 

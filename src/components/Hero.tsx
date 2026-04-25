@@ -59,7 +59,7 @@ export function Hero() {
               <div className="absolute inset-0">
                 <Image
                   src={url}
-                  alt={`Artisanal Story ${index + 1}`}
+                  alt={`Artisanal Selection ${index + 1}`}
                   fill
                   className="object-cover opacity-60 scale-110 transition-transform duration-[15s] ease-out-expo group-hover:scale-100"
                   priority={index === 0}
@@ -89,9 +89,12 @@ export function Hero() {
             </h1>
           </div>
           
-          <div className="overflow-hidden">
+          <div className="overflow-hidden space-y-4">
             <p className="text-[11px] md:text-sm max-w-sm md:max-w-2xl mx-auto leading-relaxed font-bold uppercase tracking-[0.4em] text-white/60 animate-loop-in stagger-3 opacity-0">
               Bespoke crochet collections designed for the heritage heart.
+            </p>
+            <p className="text-[8px] md:text-[9px] font-bold uppercase tracking-[0.6em] text-white/30 animate-loop-in stagger-3 opacity-0">
+              Only in Kolkata
             </p>
           </div>
           

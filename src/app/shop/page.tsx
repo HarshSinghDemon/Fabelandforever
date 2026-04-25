@@ -52,6 +52,18 @@ export default function ShopPage() {
     return cats.sort();
   }, [allItems]);
 
+  const getCategoryDescription = (category: string) => {
+    const descriptions: Record<string, string> = {
+      'Flowers': "Everlasting blooms, hand-woven to capture nature's delicate beauty in every petal.",
+      'Amigurumi': "Whimsical companions and tiny guardians, each loop filled with personality and warmth.",
+      'Bag charm': "Miniature wonders designed to bring a touch of artisanal magic to your everyday essentials.",
+      'Hair accessories': "Delicate, heritage-inspired loops crafted to crown your style with timeless elegance.",
+      'Bandana': "Classic artisanal headwear, where comfort meets the intricate charm of handcrafted patterns.",
+      'Ribbon bouquet': "A modern twist on timeless gifts, blending textured loops with graceful ribbon accents.",
+    };
+    return descriptions[category] || "Hand-stitched precision meets the warmth of our heritage treasures.";
+  };
+
   const checkScroll = () => {
     if (scrollContainerRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
@@ -129,7 +141,7 @@ export default function ShopPage() {
     <main className="min-h-screen bg-white selection:bg-accent/20 flex flex-col">
       <Navigation />
       
-      {/* Shop Hero - Slimmer Editorial Header for Mobile */}
+      {/* Shop Hero - Slimmed for Mobile */}
       <section className="relative pt-32 pb-20 sm:pt-48 sm:pb-32 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image 
@@ -155,15 +167,13 @@ export default function ShopPage() {
         </div>
       </section>
 
-      {/* Modern Sticky Category Bar - Solid Minimalist with Arrows */}
+      {/* Sticky Category Bar */}
       <div className="sticky top-16 md:top-20 z-[40] bg-white border-b border-primary/5 py-4 transition-all shadow-sm">
         <div className="container mx-auto px-4 md:px-6 relative">
           <div className="relative flex items-center max-w-5xl mx-auto">
             
-            {/* Scroll Left Button */}
             <button 
               onClick={() => scrollByAmount('left')}
-              aria-label="Scroll Left"
               className={cn(
                 "absolute -left-2 top-1/2 -translate-y-1/2 z-50 w-10 h-10 rounded-full bg-white shadow-xl border border-primary/5 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all duration-300",
                 canScrollLeft ? "opacity-100 scale-100" : "opacity-0 scale-50 pointer-events-none"
@@ -206,10 +216,8 @@ export default function ShopPage() {
               })}
             </div>
 
-            {/* Scroll Right Button */}
             <button 
               onClick={() => scrollByAmount('right')}
-              aria-label="Scroll Right"
               className={cn(
                 "absolute -right-2 top-1/2 -translate-y-1/2 z-50 w-10 h-10 rounded-full bg-white shadow-xl border border-primary/5 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all duration-300",
                 canScrollRight ? "opacity-100 scale-100" : "opacity-0 scale-50 pointer-events-none"
@@ -218,7 +226,6 @@ export default function ShopPage() {
               <ChevronRight className="w-5 h-5" />
             </button>
             
-            {/* Edge Gradients */}
             <div className={cn(
               "absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-white via-white/80 to-transparent pointer-events-none z-10 transition-opacity",
               canScrollLeft ? "opacity-100" : "opacity-0"
@@ -244,7 +251,7 @@ export default function ShopPage() {
             >
               <div className="container mx-auto px-6 max-w-7xl">
                 
-                {/* Minimalist Category Header - Solid and clean */}
+                {/* Minimalist Category Header */}
                 <div className="mb-12 py-10 px-8 rounded-[2rem] bg-primary/5 text-center">
                   <div className="flex items-center justify-center gap-3 mb-2">
                     <div className="w-6 h-[1px] bg-primary/20"></div>
@@ -253,7 +260,7 @@ export default function ShopPage() {
                   </div>
                   <h2 className="font-headline text-3xl sm:text-5xl text-primary tracking-tighter leading-none mb-3">{category}</h2>
                   <p className="text-primary/60 text-[10px] italic font-medium leading-relaxed max-w-xs mx-auto">
-                    "Hand-stitched precision meets the warmth of our {category.toLowerCase()} treasures."
+                    "{getCategoryDescription(category)}"
                   </p>
                 </div>
 

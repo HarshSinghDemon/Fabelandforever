@@ -30,21 +30,21 @@
     },
     {
       "id": "best-1",
-      "description": "Hello Sunshine Candle",
-      "imageUrl": "https://picsum.photos/seed/sunshine-candle/800/1000",
-      "imageHint": "crochet candle",
+      "description": "Hello Sunshine Bag Charm",
+      "imageUrl": "https://picsum.photos/seed/sunshine-charm/800/1000",
+      "imageHint": "crochet charm",
       "price": 1199,
-      "category": "Candles",
-      "story": "A burst of golden rays in a jar, scented with summer citrus and hand-stitched warmth."
+      "category": "Bag charm",
+      "story": "A burst of golden rays for your favorite tote, hand-stitched with summer citrus vibes."
     },
     {
       "id": "best-2",
-      "description": "Bow Bouquet Candle",
-      "imageUrl": "https://picsum.photos/seed/bow-candle/800/1000",
-      "imageHint": "crochet candle",
+      "description": "Bow Ribbon Charm",
+      "imageUrl": "https://picsum.photos/seed/bow-charm/800/1000",
+      "imageHint": "crochet bow",
       "price": 499,
-      "category": "Candles",
-      "story": "A delicate wax-and-yarn hybrid, perfect for adding a touch of whimsy to your mantle."
+      "category": "Bag charm",
+      "story": "A delicate yarn-stitched bow, perfect for adding a touch of whimsy to your daily carry."
     },
     {
       "id": "best-3",
@@ -57,12 +57,12 @@
     },
     {
       "id": "best-4",
-      "description": "Heart Candle",
-      "imageUrl": "https://picsum.photos/seed/heart-candle/800/1000",
+      "description": "Heart Bag Accessory",
+      "imageUrl": "https://picsum.photos/seed/heart-charm/800/1000",
       "imageHint": "crochet heart",
       "price": 1449,
-      "category": "Candles",
-      "story": "A symbol of eternal love, hand-poured and finished with a delicate crochet trim."
+      "category": "Bag charm",
+      "story": "A symbol of eternal love, finished with a delicate crochet trim for your accessories."
     },
     {
       "id": "flower-1",
@@ -75,57 +75,57 @@
     },
     {
       "id": "flower-2",
-      "description": "Lavender Sprig Set",
-      "imageUrl": "https://picsum.photos/seed/lavender/800/1000",
+      "description": "Ribbon Wrapped Lavender",
+      "imageUrl": "https://picsum.photos/seed/lavender-ribbon/800/1000",
       "imageHint": "crochet lavender",
       "price": 850,
-      "category": "Flowers",
-      "story": "Calm and serene. Infused with real lavender scent for a sensory experience."
+      "category": "Ribbon bouquet",
+      "story": "Calm and serene. A delicate lavender sprig wrapped in a silk-feel ribbon."
     },
     {
       "id": "product-1",
-      "description": "Teal Forest Dragon",
+      "description": "Teal Forest Dragon Amigurumi",
       "imageUrl": "https://picsum.photos/seed/teal-dragon/800/1000",
       "imageHint": "crochet toy",
       "price": 2500,
-      "category": "Creatures",
+      "category": "Amigurumi",
       "story": "A guardian of the ancient glades, stitched with iridescent teal yarn."
     },
     {
       "id": "product-2",
-      "description": "Cream Heirloom Shawl",
-      "imageUrl": "https://picsum.photos/seed/cream-shawl/800/1000",
-      "imageHint": "crochet shawl",
+      "description": "Artisan Hair Clip Set",
+      "imageUrl": "https://picsum.photos/seed/hair-clips/800/1000",
+      "imageHint": "crochet clips",
       "price": 3800,
-      "category": "Apparel",
-      "story": "Intricate lace patterns inspired by Victorian eras."
+      "category": "Hair accessories",
+      "story": "Intricate lace patterns inspired by Victorian eras for your hair."
     },
     {
       "id": "product-3",
-      "description": "Pastel Flower Coaster Set",
-      "imageUrl": "https://picsum.photos/seed/flower-coasters/800/1000",
-      "imageHint": "crochet coasters",
+      "description": "Boho Floral Bandana",
+      "imageUrl": "https://picsum.photos/seed/bandana/800/1000",
+      "imageHint": "crochet bandana",
       "price": 850,
-      "category": "Home",
-      "story": "A bouquet of spring for your table."
+      "category": "Bandana",
+      "story": "A bouquet of spring for your headwear collection."
     },
     {
       "id": "product-4",
-      "description": "Golden Honey Bear",
+      "description": "Golden Honey Bear Amigurumi",
       "imageUrl": "https://picsum.photos/seed/gold-bear/800/1000",
       "imageHint": "crochet bear",
       "price": 1200,
-      "category": "Miniatures",
+      "category": "Amigurumi",
       "story": "A tiny companion with a big heart."
     },
     {
       "id": "product-5",
-      "description": "Moss Green Wall Hanging",
-      "imageUrl": "https://picsum.photos/seed/wall-hanging/800/1000",
-      "imageHint": "crochet decor",
+      "description": "Ribbon-Tied Moss Bouquet",
+      "imageUrl": "https://picsum.photos/seed/ribbon-bouquet/800/1000",
+      "imageHint": "ribbon flowers",
       "price": 4500,
-      "category": "Decor",
-      "story": "Textured loops and wooden accents for your living room."
+      "category": "Ribbon bouquet",
+      "story": "Textured loops and ribbon accents for a stunning forever gift."
     }
   ]
 }

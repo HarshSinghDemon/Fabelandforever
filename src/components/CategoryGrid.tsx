@@ -15,12 +15,12 @@ import {
 
 export function CategoryGrid() {
   const collections = [
-    { name: 'Artisanal Candles', image: 'https://picsum.photos/seed/cat-candles/800/1000', hint: 'luxury candle' },
-    { name: 'Forever Flowers', image: 'https://picsum.photos/seed/cat-flowers/800/1000', hint: 'crochet bouquet' },
-    { name: 'Mythical Creatures', image: 'https://picsum.photos/seed/cat-creatures/800/1000', hint: 'crochet dragon' },
-    { name: 'Heritage Apparel', image: 'https://picsum.photos/seed/cat-apparel/800/1000', hint: 'crochet shawl' },
-    { name: 'Bespoke Home', image: 'https://picsum.photos/seed/cat-home/800/1000', hint: 'crochet decor' },
-    { name: 'Gift Sets', image: 'https://picsum.photos/seed/cat-gifts/800/1000', hint: 'gift hamper' },
+    { name: 'Forever Flowers', image: 'https://picsum.photos/seed/cat-flowers/800/1000', hint: 'crochet flowers' },
+    { name: 'Amigurumi Pals', image: 'https://picsum.photos/seed/cat-amigurumi/800/1000', hint: 'crochet toy' },
+    { name: 'Bag Charms', image: 'https://picsum.photos/seed/cat-charms/800/1000', hint: 'bag charm' },
+    { name: 'Hair Accessories', image: 'https://picsum.photos/seed/cat-hair/800/1000', hint: 'hair clips' },
+    { name: 'Artisan Bandanas', image: 'https://picsum.photos/seed/cat-bandana/800/1000', hint: 'crochet bandana' },
+    { name: 'Ribbon Bouquets', image: 'https://picsum.photos/seed/cat-ribbon/800/1000', hint: 'ribbon bouquet' },
   ];
 
   return (
@@ -76,13 +76,11 @@ export function CategoryGrid() {
               ))}
             </CarouselContent>
             
-            {/* Desktop Navigation */}
             <div className="hidden md:flex justify-end gap-4 mt-12 pr-4">
               <CarouselPrevious className="static translate-y-0 h-14 w-14 border-primary/5 bg-white shadow-xl hover:bg-primary hover:text-white transition-all" />
               <CarouselNext className="static translate-y-0 h-14 w-14 border-primary/5 bg-white shadow-xl hover:bg-primary hover:text-white transition-all" />
             </div>
 
-            {/* Mobile Progress Bar Indicator */}
             <div className="md:hidden flex justify-center mt-12">
               <div className="w-24 h-[2px] bg-primary/5 rounded-full relative overflow-hidden">
                 <div className="absolute inset-0 bg-accent w-1/3 animate-pulse"></div>

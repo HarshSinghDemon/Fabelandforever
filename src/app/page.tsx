@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useEffect } from 'react';
@@ -73,15 +74,15 @@ export default function Home() {
 
         <EditorialBanner 
           title="The Enchanted Garden"
-          subtitle="PREMIUM FLOWERS"
+          subtitle="PREMIUM COLLECTIONS"
           imageUrl={gardenBanner?.imageUrl || "https://picsum.photos/seed/garden/1920/800"}
           imageHint="crochet flowers"
           className="reveal-on-scroll"
         />
         
         <FeaturedProducts 
-          title="Most Loved Candles" 
-          categoryFilter="Candles" 
+          title="Most Loved Amigurumi" 
+          categoryFilter="Amigurumi" 
         />
 
         <CategoryGrid />

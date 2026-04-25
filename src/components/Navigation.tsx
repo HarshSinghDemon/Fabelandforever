@@ -69,11 +69,13 @@ export function Navigation() {
 
   const navLinks = [
     { name: 'Shop All', href: '/shop' },
-    { name: 'Candles', href: '/shop#candles' },
     { name: 'Flowers', href: '/shop#flowers' },
-    { name: 'Decor', href: '/shop#decor' },
+    { name: 'Amigurumi', href: '/shop#amigurumi' },
+    { name: 'Bag Charms', href: '/shop#bag charm' },
+    { name: 'Hair Accessories', href: '/shop#hair accessories' },
+    { name: 'Bandanas', href: '/shop#bandana' },
+    { name: 'Ribbons', href: '/shop#ribbon bouquet' },
     { name: 'Our Story', href: '/about' },
-    { name: 'Connect', href: '/#contact' },
   ];
 
   return (
@@ -99,13 +101,13 @@ export function Navigation() {
               </Link>
             </div>
 
-            <div className="hidden lg:flex items-center gap-8">
+            <div className="hidden lg:flex items-center gap-6">
               {navLinks.map((link) => (
                 <Link 
                   key={link.name} 
                   href={link.href}
                   className={cn(
-                    "text-[10px] font-bold uppercase tracking-[0.2em] transition-all hover:text-accent",
+                    "text-[9px] font-bold uppercase tracking-[0.2em] transition-all hover:text-accent whitespace-nowrap",
                     isScrolled ? "text-primary/60" : "text-white/60"
                   )}
                 >
@@ -215,7 +217,7 @@ export function Navigation() {
                       <span>Popular suggestions</span>
                     </div>
                     <div className="flex flex-wrap gap-2">
-                      {['Candles', 'Flowers', 'Decor', 'Dragon'].map(tag => (
+                      {['Flowers', 'Amigurumi', 'Bag charm', 'Bandana'].map(tag => (
                         <button 
                           key={tag}
                           onClick={() => setSearchQuery(tag)}

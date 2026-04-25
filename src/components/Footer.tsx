@@ -2,12 +2,12 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Instagram, Mail, MapPin } from 'lucide-react';
+import { Instagram, Mail, MapPin, Lock } from 'lucide-react';
 import { Logo } from './Logo';
 
 export function Footer() {
   return (
-    <footer id="footer" className="bg-[#0a0a0a] text-white py-40 sm:py-60">
+    <footer id="footer" className="bg-[#0a0a0a] text-white py-40 sm:py-60 relative overflow-hidden">
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-24 mb-40">
           
@@ -52,7 +52,12 @@ export function Footer() {
         </div>
 
         <div className="pt-16 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-12 text-[9px] font-bold text-white/10 uppercase tracking-[0.6em]">
-          <span>© 2024 Fable & Forever • সুতোয় বোনা প্রতিটি গল্প</span>
+          <div className="flex items-center gap-6">
+            <span>© 2024 Fable & Forever • সুতোয় বোনা প্রতিটি গল্প</span>
+            <Link href="/admin" className="inline-flex items-center gap-2 hover:text-white/40 transition-colors">
+              <Lock className="w-3 h-3" /> Studio Entry
+            </Link>
+          </div>
           <div className="flex gap-12">
             <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
             <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>

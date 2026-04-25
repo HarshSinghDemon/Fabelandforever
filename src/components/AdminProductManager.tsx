@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useMemo } from 'react';
@@ -26,7 +25,9 @@ import {
   Star,
   Edit3,
   X,
-  Image as ImageIcon
+  Image as ImageIcon,
+  Download,
+  ArrowUpDown
 } from 'lucide-react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
@@ -52,6 +53,8 @@ interface ProductForm {
   imageUrls: string[];
 }
 
+type SortOption = 'newest' | 'oldest' | 'price-high' | 'price-low';
+
 export function AdminProductManager() {
   const db = useFirestore();
   const { toast } = useToast();
@@ -59,6 +62,7 @@ export function AdminProductManager() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterCategory, setFilterCategory] = useState('all');
+  const [sortBy, setSortBy] = useState<SortOption>('newest');
 
   const initialForm: ProductForm = {
     name: '',
@@ -83,13 +87,27 @@ export function AdminProductManager() {
 
   const filteredProducts = useMemo(() => {
     if (!products) return [];
-    return products.filter(p => {
+    
+    let result = products.filter(p => {
       const matchesSearch = p.name?.toLowerCase().includes(searchQuery.toLowerCase()) || 
                            p.description?.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesCategory = filterCategory === 'all' || p.category === filterCategory;
       return matchesSearch && matchesCategory;
     });
-  }, [products, searchQuery, filterCategory]);
+
+    // Sorting
+    result.sort((a, b) => {
+      switch (sortBy) {
+        case 'newest': return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+        case 'oldest': return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+        case 'price-high': return b.price - a.price;
+        case 'price-low': return a.price - b.price;
+        default: return 0;
+      }
+    });
+
+    return result;
+  }, [products, searchQuery, filterCategory, sortBy]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -158,6 +176,36 @@ export function AdminProductManager() {
     }));
   };
 
+  const exportToCSV = () => {
+    if (!filteredProducts.length) return;
+    
+    const headers = ['ID', 'Name', 'Price', 'Category', 'Stock', 'Featured', 'Published', 'Created At'];
+    const rows = filteredProducts.map(p => [
+      p.id,
+      p.name,
+      p.price,
+      p.category,
+      p.stock,
+      p.featured ? 'Yes' : 'No',
+      p.isPublished ? 'Yes' : 'No',
+      new Date(p.createdAt).toLocaleDateString()
+    ]);
+
+    const csvContent = [
+      headers.join(','),
+      ...rows.map(row => row.join(','))
+    ].join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', `fable-forever-products-${new Date().toISOString().slice(0, 10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
       {/* Product Form */}
@@ -179,7 +227,6 @@ export function AdminProductManager() {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-8">
-            {/* Multi-Image Upload Logic */}
             <div className="space-y-4">
               <Label className="text-[10px] font-bold uppercase tracking-widest text-primary/30 ml-4">Gallery Loop</Label>
               <div className="grid grid-cols-2 gap-4">
@@ -258,7 +305,7 @@ export function AdminProductManager() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label className="text-[9px] font-bold uppercase tracking-widest text-primary/20 ml-4">Tags (comma separated)</Label>
+                  <Label className="text-[9px] font-bold uppercase tracking-widest text-primary/20 ml-4">Tags</Label>
                   <Input 
                     placeholder="vintage, soft, heirloom"
                     value={formData.tags}
@@ -321,26 +368,31 @@ export function AdminProductManager() {
 
       {/* Product List */}
       <div className="lg:col-span-7 space-y-10">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-white p-8 rounded-[3rem] shadow-sm border border-primary/5">
-          <div className="flex items-center gap-6">
-            <h3 className="font-headline text-3xl text-primary">Boutique Gallery</h3>
-            <span className="text-[10px] font-bold uppercase tracking-widest text-primary/30 px-4 py-1.5 bg-paper rounded-full border border-primary/5">
-              {filteredProducts.length} Pieces
-            </span>
+        <div className="flex flex-col gap-6 bg-white p-8 rounded-[3rem] shadow-sm border border-primary/5">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-6">
+              <h3 className="font-headline text-3xl text-primary">Boutique Gallery</h3>
+              <span className="text-[10px] font-bold uppercase tracking-widest text-primary/30 px-4 py-1.5 bg-paper rounded-full border border-primary/5">
+                {filteredProducts.length} Pieces
+              </span>
+            </div>
+            <Button variant="ghost" size="sm" onClick={exportToCSV} className="text-primary/40 hover:text-primary gap-2">
+              <Download className="w-4 h-4" /> Export CSV
+            </Button>
           </div>
           
-          <div className="flex items-center gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="relative">
               <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/20" />
               <Input 
                 placeholder="Search history..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-12 h-12 rounded-full bg-paper border-none w-60 text-xs font-bold"
+                className="pl-12 h-12 rounded-full bg-paper border-none w-full text-xs font-bold"
               />
             </div>
             <Select value={filterCategory} onValueChange={setFilterCategory}>
-              <SelectTrigger className="h-12 w-40 rounded-full bg-paper border-none text-[9px] font-bold uppercase tracking-widest px-6">
+              <SelectTrigger className="h-12 w-full rounded-full bg-paper border-none text-[9px] font-bold uppercase tracking-widest px-6">
                 <SelectValue placeholder="Category" />
               </SelectTrigger>
               <SelectContent className="rounded-2xl border-none shadow-2xl">
@@ -348,6 +400,20 @@ export function AdminProductManager() {
                 {CATEGORIES.map(cat => (
                   <SelectItem key={cat} value={cat} className="text-[10px] font-bold uppercase tracking-widest">{cat}</SelectItem>
                 ))}
+              </SelectContent>
+            </Select>
+            <Select value={sortBy} onValueChange={(val) => setSortBy(val as SortOption)}>
+              <SelectTrigger className="h-12 w-full rounded-full bg-paper border-none text-[9px] font-bold uppercase tracking-widest px-6">
+                <div className="flex items-center gap-2">
+                  <ArrowUpDown className="w-3 h-3" />
+                  <SelectValue placeholder="Sort By" />
+                </div>
+              </SelectTrigger>
+              <SelectContent className="rounded-2xl border-none shadow-2xl">
+                <SelectItem value="newest" className="text-[10px] font-bold uppercase tracking-widest">Newest</SelectItem>
+                <SelectItem value="oldest" className="text-[10px] font-bold uppercase tracking-widest">Oldest</SelectItem>
+                <SelectItem value="price-high" className="text-[10px] font-bold uppercase tracking-widest">Price: High to Low</SelectItem>
+                <SelectItem value="price-low" className="text-[10px] font-bold uppercase tracking-widest">Price: Low to High</SelectItem>
               </SelectContent>
             </Select>
           </div>

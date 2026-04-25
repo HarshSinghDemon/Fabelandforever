@@ -4,12 +4,11 @@ service cloud.firestore {
   match /databases/{database}/documents {
 
     /**
-     * CORE PHILOSOPHY - v1.1 (Redeploy Trigger)
-     * This ruleset implements a robust, multi-tier authorization model for 'The Crochet Studio'.
-     * 1. Public Catalog & Visuals: Products and Site Settings are globally viewable but only modifiable by administrators.
-     * 2. Order Management: Orders can be created by anyone (guest/auth) but only managed by administrators.
-     * 3. Role-Based Access Control (RBAC): A dedicated collection (/roles_admin) identifies 
-     *    administrators who can oversee products and manage customer requests.
+     * CORE PHILOSOPHY - v1.2 (Admin Email Bypass)
+     * This ruleset implements a multi-tier authorization model.
+     * 1. Public Catalog & Visuals: Viewable by all, modifiable by admins.
+     * 2. Order Management: Created by anyone, managed by admins.
+     * 3. RBAC: Admins are identified by the 'roles_admin' collection OR a specific master email.
      */
 
     // --- Helper Functions ---
@@ -19,9 +18,15 @@ service cloud.firestore {
       return request.auth != null;
     }
 
-    /** Checks if the authenticated user has an entry in the admin roles collection. */
+    /** 
+     * Checks if the user is an administrator.
+     * For bootstrapping, we allow a specific master email.
+     */
     function isAdmin() {
-      return isSignedIn() && exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid));
+      return isSignedIn() && (
+        exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid)) ||
+        request.auth.token.email == "harshroop100@gmail.com"
+      );
     }
 
     /** Checks if the authenticated user's UID matches the provided userId. */
@@ -32,7 +37,7 @@ service cloud.firestore {
     // --- Collection Rules ---
 
     /**
-     * @description Rules for the product catalog. Publicly readable; Admin-only writes.
+     * @description Rules for the product catalog.
      */
     match /products/{productId} {
       allow get, list: if true;
@@ -40,17 +45,15 @@ service cloud.firestore {
     }
 
     /**
-     * @description Rules for site-wide visual settings (Hero, Custom Banners).
-     * Publicly readable for guest experience; Admin-only management.
+     * @description Rules for site-wide visual settings.
      */
     match /settings/{settingId} {
-      allow get: if true;
-      allow list: if true;
+      allow get, list: if true;
       allow write: if isAdmin();
     }
 
     /**
-     * @description Rules for orders. Anyone can place an order; only admins can list/manage.
+     * @description Rules for orders.
      */
     match /orders/{orderId} {
       allow create: if true;
@@ -68,7 +71,7 @@ service cloud.firestore {
     }
 
     /**
-     * @description Database Access Control (DBAC) markers for admin users.
+     * @description Admin role markers.
      */
     match /roles_admin/{adminUid} {
       allow get: if isSignedIn();

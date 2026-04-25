@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useEffect } from 'react';
@@ -59,24 +60,23 @@ export default function AdminDashboard() {
   const firestoreRules = `rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /products/{productId} {
-      allow get, list: if true;
-      allow write: if isAdmin();
-    }
-    match /settings/{settingId} {
-      allow get, list: if true;
-      allow write: if isAdmin();
-    }
-    match /orders/{orderId} {
-      allow create: if true;
-      allow get: if isAdmin() || (request.auth != null && resource.data.userId == request.auth.uid);
-      allow list, update, delete: if isAdmin();
-    }
     function isAdmin() {
       return request.auth != null && (
         request.auth.token.email == "harshroop100@gmail.com" ||
         exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid))
       );
+    }
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /settings/{settingId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /orders/{orderId} {
+      allow create: if true;
+      allow read, write: if isAdmin();
     }
   }
 }`;
@@ -198,8 +198,7 @@ service cloud.firestore {
             </AlertTitle>
             <AlertDescription className="space-y-6">
               <p className="text-sm font-medium text-primary/60 italic leading-relaxed">
-                If the boutique looks empty to visitors, your "Magic Boundaries" (Firestore Rules) are closed. 
-                Copy these rules and publish them in your Firebase Console to ensure your treasures are visible and your admin access is secure.
+                To fix the "Missing or insufficient permissions" error, copy these failsafe rules and publish them in your Firebase Console. This will grant you Master Weaver access.
               </p>
               
               <div className="bg-slate-950 text-slate-50 p-6 rounded-2xl relative font-mono text-[10px] leading-relaxed shadow-inner border border-white/10">

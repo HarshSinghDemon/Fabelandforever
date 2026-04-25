@@ -6,9 +6,8 @@ import { Hero } from '@/components/Hero';
 import { FeaturedProducts } from '@/components/FeaturedProducts';
 import { CategoryGrid } from '@/components/CategoryGrid';
 import { EditorialBanner } from '@/components/EditorialBanner';
-import { AICrochetTool } from '@/components/AICrochetTool';
 import { Footer } from '@/components/Footer';
-import { ArrowRight, Sparkles, Feather, Palette, MessageCircle, Scroll } from 'lucide-react';
+import { ArrowRight, MessageCircle, Feather, Palette, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -71,24 +70,6 @@ export default function Home() {
           title="Most Loved Flowers" 
           categoryFilter="Flowers" 
         />
-
-        <section className="py-24 md:py-40 bg-paper relative overflow-hidden">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1px] h-32 bg-gradient-to-b from-primary/20 to-transparent"></div>
-          <div className="container mx-auto px-6 max-w-5xl">
-            <div className="text-center mb-16 reveal-on-scroll">
-              <span className="text-accent font-bold tracking-[0.6em] uppercase text-[9px] mb-6 block">The Loom of Dreams</span>
-              <h2 className="font-headline text-4xl sm:text-7xl text-primary leading-tight mb-8">
-                Magic <span className="italic">Inspiration.</span>
-              </h2>
-              <p className="text-primary/50 text-sm md:text-base italic max-w-2xl mx-auto leading-relaxed">
-                "Not sure what to choose? Consult the Inspiration Grimoire. Whisper your preferences and let our AI weaver manifest unique design visions for your custom orders."
-              </p>
-            </div>
-            <div className="reveal-on-scroll stagger-2">
-              <AICrochetTool />
-            </div>
-          </div>
-        </section>
 
         <EditorialBanner 
           title="The Enchanted Garden"

@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
-import { Menu, X, Search, User, Loader2 } from 'lucide-react';
+import { Menu, X, Search, User, Loader2, ShoppingBasket, Home, LayoutGrid, ShoppingBag } from 'lucide-react';
 import { CartDrawer } from './CartDrawer';
 import { Logo } from './Logo';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -39,7 +39,7 @@ export function Navigation() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 80);
+      setIsScrolled(window.scrollY > 40);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
@@ -56,71 +56,64 @@ export function Navigation() {
 
   return (
     <>
+      {/* Desktop & Mobile Header Container */}
       <nav className={cn(
-        "fixed top-0 left-0 right-0 z-[60] transition-all duration-700",
+        "fixed top-0 left-0 right-0 z-[60] transition-all duration-500",
         isScrolled 
-          ? "bg-background/95 backdrop-blur-3xl shadow-md py-4 border-b border-primary/5" 
-          : "bg-transparent py-8"
+          ? "bg-white border-b border-primary/5 py-3" 
+          : "bg-transparent py-6"
       )}>
-        <div className="container mx-auto px-6">
-          <div className="flex items-center justify-between gap-8">
-            <div className="flex-shrink-0">
-              <Link href="/" className="flex items-center gap-3 group">
+        <div className="container mx-auto px-4 md:px-6">
+          {/* Top Row: Mobile Logo Centered / Desktop Standard */}
+          <div className="flex items-center justify-between gap-4 md:gap-8 relative h-12">
+            <div className="md:flex-shrink-0">
+              <Link href="/" className="flex items-center gap-2 group">
                 <Logo className={cn(
-                  "w-10 h-10 transition-colors duration-700",
+                  "w-8 h-8 md:w-10 md:h-10 transition-colors duration-500",
                   isScrolled ? "text-primary" : "text-white"
                 )} />
                 <span className={cn(
-                  "font-headline text-2xl tracking-tight hidden sm:block",
+                  "font-headline text-xl md:text-2xl tracking-tight hidden sm:block",
                   isScrolled ? "text-primary" : "text-white"
                 )}>Fable & Forever</span>
               </Link>
             </div>
 
-            <div className="flex-1 max-w-2xl hidden md:block">
-              <div className={cn(
-                "relative flex items-center h-12 rounded-lg border px-4 transition-all",
-                isScrolled 
-                  ? "bg-paper/50 border-primary/10 focus-within:border-primary/30" 
-                  : "bg-white/10 border-white/20 focus-within:bg-white/20"
-              )}>
-                <Search className={cn("w-4 h-4 mr-3", isScrolled ? "text-primary/40" : "text-white/40")} />
-                <input 
-                  type="text"
-                  placeholder="Search our treasures..."
-                  readOnly
-                  className={cn(
-                    "bg-transparent border-none focus:ring-0 text-sm w-full placeholder:italic cursor-pointer",
-                    isScrolled ? "text-primary placeholder:text-primary/30" : "text-white placeholder:text-white/30"
-                  )}
-                  onClick={() => setIsSearchOpen(true)}
-                />
-              </div>
+            {/* Logo for mobile absolute center */}
+            <div className="absolute left-1/2 -translate-x-1/2 md:hidden">
+               <Link href="/" className={cn(
+                "font-headline text-xl tracking-tight uppercase",
+                isScrolled ? "text-primary" : "text-white"
+              )}>Fable & Forever</Link>
             </div>
 
-            <div className="flex items-center gap-4 sm:gap-6">
+            <div className="flex items-center gap-3 sm:gap-6">
               <Link href="/admin/login" className={cn(
                 "p-2 transition-all hover:opacity-50",
                 isScrolled ? "text-primary" : "text-white"
               )}>
                 <User className="w-5 h-5" />
               </Link>
-              
               <CartDrawer isLight={!isScrolled} />
-
-              <button 
-                className={cn(
-                  "p-2 lg:hidden transition-all",
-                  isScrolled ? "text-primary" : "text-white"
-                )}
-                onClick={() => setIsMobileMenuOpen(true)}
-              >
-                <Menu className="w-5 h-5" />
-              </button>
             </div>
           </div>
 
-          <div className="mt-6 flex justify-center items-center gap-8 hidden lg:flex">
+          {/* Search Row: Visible on Mobile, Inline on Desktop */}
+          <div className="mt-4 md:hidden">
+            <div 
+              onClick={() => setIsSearchOpen(true)}
+              className={cn(
+                "relative flex items-center h-11 rounded-lg border px-4 cursor-pointer",
+                isScrolled ? "bg-paper border-primary/10" : "bg-white/10 border-white/20"
+              )}
+            >
+              <Search className={cn("w-4 h-4 mr-3", isScrolled ? "text-primary/40" : "text-white/40")} />
+              <span className={cn("text-xs", isScrolled ? "text-primary/30" : "text-white/30")}>Search our treasures...</span>
+            </div>
+          </div>
+
+          {/* Desktop Links Row */}
+          <div className="mt-4 flex justify-center items-center gap-8 hidden lg:flex">
             {navLinks.map((link) => (
               <Link 
                 key={link.name} 
@@ -136,25 +129,26 @@ export function Navigation() {
           </div>
         </div>
 
+        {/* Search Modal */}
         <Dialog open={isSearchOpen} onOpenChange={setIsSearchOpen}>
-          <DialogContent className="sm:max-w-[800px] border-none shadow-2xl p-0 overflow-hidden rounded-[2.5rem] bg-background">
-            <DialogHeader className="p-8 pb-4">
-              <DialogTitle className="font-headline text-3xl text-primary mb-8 text-left uppercase tracking-tighter">Find Treasure</DialogTitle>
+          <DialogContent className="sm:max-w-[800px] w-[95vw] border-none shadow-2xl p-0 overflow-hidden rounded-[1.5rem] md:rounded-[2.5rem] bg-background">
+            <DialogHeader className="p-6 md:p-8 pb-4">
+              <DialogTitle className="font-headline text-2xl md:text-3xl text-primary mb-6 text-left uppercase tracking-tighter">Find Treasure</DialogTitle>
               <div className="relative border-b border-primary/10 pb-4">
                 <Search className="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/30" />
                 <Input 
                   placeholder="Search our catalog..." 
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-8 h-12 border-none bg-transparent text-xl placeholder:text-primary/20 focus-visible:ring-0 rounded-none text-primary"
+                  className="pl-8 h-10 md:h-12 border-none bg-transparent text-lg md:text-xl placeholder:text-primary/20 focus-visible:ring-0 rounded-none text-primary"
                   autoFocus
                 />
               </div>
             </DialogHeader>
-            <ScrollArea className="h-[60vh] p-8 pt-0">
-              <div className="space-y-12">
+            <ScrollArea className="h-[60vh] p-6 md:p-8 pt-0">
+              <div className="space-y-8 md:space-y-12">
                 {loadingProducts ? (
-                  <div className="flex justify-center py-20">
+                  <div className="flex justify-center py-10 md:py-20">
                     <Loader2 className="w-6 h-6 text-primary animate-spin" />
                   </div>
                 ) : searchQuery && filteredProducts.length === 0 ? (
@@ -162,21 +156,21 @@ export function Navigation() {
                     <p className="text-muted-foreground italic font-medium">No results found.</p>
                   </div>
                 ) : (
-                  <div className="grid gap-10">
+                  <div className="grid gap-6 md:gap-10">
                     {(searchQuery ? filteredProducts : allProducts?.slice(0, 5))?.map((product) => (
                       <Link 
                         key={product.id} 
                         href={`/products/${product.id}`}
                         onClick={() => setIsSearchOpen(false)}
-                        className="flex items-center gap-8 group"
+                        className="flex items-center gap-4 md:gap-8 group"
                       >
-                        <div className="relative w-24 h-32 overflow-hidden bg-muted rounded-2xl">
-                          {product.image && <Image src={product.image} alt={product.title} fill className="object-cover transition-transform duration-1000 group-hover:scale-105" />}
+                        <div className="relative w-16 h-20 md:w-24 md:h-32 overflow-hidden bg-muted rounded-xl md:rounded-2xl">
+                          {product.image && <Image src={product.image} alt={product.title} fill className="object-cover" />}
                         </div>
                         <div className="flex-1">
-                          <h4 className="font-bold text-primary group-hover:opacity-60 transition-opacity text-lg">{product.title}</h4>
-                          <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-accent mt-2">{product.category}</p>
-                          <p className="font-bold text-primary/80 text-sm mt-2">₹ {product.price?.toLocaleString('en-IN')}</p>
+                          <h4 className="font-bold text-primary group-hover:opacity-60 transition-opacity text-sm md:text-lg">{product.title}</h4>
+                          <p className="text-[8px] md:text-[9px] font-bold uppercase tracking-[0.3em] text-accent mt-1 md:mt-2">{product.category}</p>
+                          <p className="font-bold text-primary/80 text-xs md:text-sm mt-1 md:mt-2">₹ {product.price?.toLocaleString('en-IN')}</p>
                         </div>
                       </Link>
                     ))}
@@ -186,47 +180,24 @@ export function Navigation() {
             </ScrollArea>
           </DialogContent>
         </Dialog>
-
-        <div className={cn(
-          "fixed inset-x-4 top-4 bottom-4 bg-background/98 backdrop-blur-3xl z-[80] transition-all duration-700 p-10 pt-32 rounded-[3rem] shadow-2xl",
-          isMobileMenuOpen ? "translate-x-0 opacity-100" : "-translate-x-[110%] opacity-0"
-        )}>
-          <button 
-            className="absolute top-10 right-10 text-primary p-2 transition-all active:scale-90"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            <X className="w-5 h-5" />
-          </button>
-          
-          <div className="space-y-16">
-            <div className="space-y-10">
-              {navLinks.map((link) => (
-                <Link 
-                  key={link.name} 
-                  href={link.href}
-                  className="block text-4xl font-headline text-primary hover:opacity-40 transition-opacity"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  {link.name}
-                </Link>
-              ))}
-            </div>
-
-            <div className="pt-24 space-y-10 border-t border-primary/5">
-              <div className="grid grid-cols-2 gap-10">
-                <div>
-                  <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-primary/40 mb-4">Contact</p>
-                  <Link href="mailto:fableandforevercompany@gmail.com" className="text-sm font-bold text-primary">Email Us</Link>
-                </div>
-                <div>
-                  <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-primary/40 mb-4">Portal</p>
-                  <Link href="/admin/login" className="text-sm font-bold text-primary">Artisan Login</Link>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </nav>
+
+      {/* Persistent Mobile Bottom Navigation */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-[100] bg-white border-t border-primary/5 h-20 flex items-center justify-around px-4 pb-4 pt-2 shadow-[0_-4px_20px_-4px_rgba(0,0,0,0.05)]">
+        <Link href="/" className="flex flex-col items-center gap-1.5 group">
+          <Home className="w-5 h-5 text-primary" />
+          <span className="text-[9px] font-bold uppercase tracking-widest text-primary/40 group-hover:text-primary transition-colors">Home</span>
+        </Link>
+        <Link href="/#shop" className="flex flex-col items-center gap-1.5 group">
+          <LayoutGrid className="w-5 h-5 text-primary/40 group-hover:text-primary" />
+          <span className="text-[9px] font-bold uppercase tracking-widest text-primary/40 group-hover:text-primary transition-colors">Shop All</span>
+        </Link>
+        <CartDrawer isLight={false} />
+        <Link href="/admin/login" className="flex flex-col items-center gap-1.5 group">
+          <User className="w-5 h-5 text-primary/40 group-hover:text-primary" />
+          <span className="text-[9px] font-bold uppercase tracking-widest text-primary/40 group-hover:text-primary transition-colors">Account</span>
+        </Link>
+      </div>
     </>
   );
 }

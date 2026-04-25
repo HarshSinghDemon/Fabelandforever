@@ -38,14 +38,14 @@ export function Hero() {
 
   if (loading) {
     return (
-      <div className="h-screen w-full bg-black flex items-center justify-center">
-        <Sparkles className="w-12 h-12 text-white animate-pulse" />
+      <div className="h-[70vh] md:h-screen w-full bg-black flex items-center justify-center">
+        <Sparkles className="w-8 h-8 md:w-12 md:h-12 text-white animate-pulse" />
       </div>
     );
   }
 
   return (
-    <section className="relative h-screen w-full overflow-hidden bg-black group">
+    <section className="relative h-[70vh] md:h-screen w-full overflow-hidden bg-black group">
       <div className="absolute inset-0 z-0 overflow-hidden" ref={emblaRef}>
         <div className="flex h-full">
           {heroImages.map((url: string, index: number) => (
@@ -54,43 +54,44 @@ export function Hero() {
                 src={url}
                 alt={`Artisanal Story ${index + 1}`}
                 fill
-                className="object-cover opacity-60 transition-transform duration-[20s] hover:scale-110"
+                className="object-cover opacity-60"
                 priority={index === 0}
+                sizes="100vw"
               />
             </div>
           ))}
         </div>
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-black/70 pointer-events-none"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/80 pointer-events-none"></div>
       </div>
       
       <div className="container mx-auto px-6 relative z-10 h-full flex items-center justify-center text-center text-white">
-        <div className="max-w-5xl mx-auto space-y-12 animate-fade-in-up">
-          <div className="space-y-6">
-            <span className="text-[10px] font-bold uppercase tracking-[0.8em] text-white/60 block mb-6 animate-pulse">Hand-Stitched Legacy</span>
-            <h1 className="font-headline text-7xl sm:text-9xl md:text-[11rem] leading-[0.85] mb-8 tracking-tighter drop-shadow-2xl">
+        <div className="max-w-4xl mx-auto space-y-8 md:space-y-12 animate-fade-in-up">
+          <div className="space-y-4 md:space-y-6">
+            <span className="text-[8px] md:text-[10px] font-bold uppercase tracking-[0.5em] md:tracking-[0.8em] text-white/60 block mb-4 md:mb-6">Hand-Stitched Legacy</span>
+            <h1 className="font-headline text-5xl sm:text-7xl md:text-[9rem] leading-none mb-4 md:mb-8 tracking-tighter drop-shadow-2xl">
               Artisan <br /> <span className="italic">Threads</span>
             </h1>
           </div>
           
-          <p className="text-xs sm:text-sm max-w-xl mx-auto leading-relaxed font-bold uppercase tracking-widest text-white/70">
-            Bespoke crochet treasures designed to last a lifetime.
+          <p className="text-[10px] md:text-sm max-w-sm md:max-w-xl mx-auto leading-relaxed font-bold uppercase tracking-widest text-white/70">
+            Bespoke crochet treasures designed for the heritage heart.
           </p>
           
-          <div className="pt-12 flex flex-col sm:flex-row items-center justify-center gap-10">
-            <Button asChild className="bg-white text-primary hover:bg-white/90 px-16 h-16 rounded-none text-[10px] font-bold uppercase tracking-[0.4em] transition-all hover:scale-105 shadow-2xl active:scale-95">
+          <div className="pt-6 md:pt-12 flex flex-col sm:flex-row items-center justify-center gap-6 md:gap-10">
+            <Button asChild className="bg-white text-primary hover:bg-white/90 px-10 md:px-16 h-12 md:h-16 rounded-none text-[8px] md:text-[10px] font-bold uppercase tracking-[0.4em] transition-all hover:scale-105 active:scale-95">
               <Link href="#shop" className="flex items-center">
-                Explore Collection <ArrowRight className="ml-4 w-3 h-3" />
+                Shop Collection <ArrowRight className="ml-3 w-3 h-3" />
               </Link>
             </Button>
-            <Link href="/about" className="text-[10px] font-bold uppercase tracking-[0.4em] text-white hover:text-white/70 transition-all border-b border-white/30 pb-1">
+            <Link href="/about" className="text-[8px] md:text-[10px] font-bold uppercase tracking-[0.4em] text-white/80 hover:text-white transition-all border-b border-white/20 pb-1">
               Read Our Story
             </Link>
           </div>
         </div>
       </div>
 
-      <div className="absolute bottom-16 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-8 opacity-40">
-        <div className="w-[1px] h-20 bg-gradient-to-b from-white via-white/40 to-transparent overflow-hidden relative">
+      <div className="absolute bottom-10 md:bottom-16 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-8 opacity-40">
+        <div className="w-[1px] h-12 md:h-20 bg-gradient-to-b from-white via-white/40 to-transparent overflow-hidden relative">
           <div className="absolute top-0 left-0 w-full h-1/2 bg-white animate-bounce-slow"></div>
         </div>
       </div>

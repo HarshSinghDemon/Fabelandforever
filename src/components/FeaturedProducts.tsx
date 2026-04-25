@@ -72,18 +72,50 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller, sideImag
   if (filteredProducts.length === 0) return null;
 
   return (
-    <section className="py-8 bg-background overflow-hidden border-t border-primary/5">
-      <div className="container mx-auto px-6">
-        <div className="text-center mb-8 reveal-on-scroll">
-          <h2 className="font-headline text-3xl sm:text-4xl text-primary tracking-tight mb-2">{title}</h2>
-          <Link href="/#shop" className="text-[10px] font-bold uppercase tracking-[0.4em] text-primary/40 hover:text-accent transition-all underline decoration-accent/20 underline-offset-4">
+    <section className="py-6 md:py-12 bg-background overflow-hidden border-t border-primary/5">
+      <div className="container mx-auto px-4 md:px-6">
+        <div className="flex items-center justify-between mb-6 md:mb-10 reveal-on-scroll">
+          <h2 className="font-headline text-2xl md:text-4xl text-primary tracking-tight">{title}</h2>
+          <Link href="/#shop" className="text-[9px] md:text-[10px] font-bold uppercase tracking-[0.4em] text-primary/40 hover:text-accent transition-all underline decoration-accent/20 underline-offset-4">
             View all
           </Link>
         </div>
 
+        {/* Mobile View: High-Intensity 2-Column Grid */}
+        <div className="md:hidden grid grid-cols-2 gap-4 reveal-on-scroll">
+          {filteredProducts.slice(0, 4).map((product: any) => (
+            <div key={product.id} className="group space-y-3">
+              <Link href={`/products/${product.id}`} className="block">
+                <div className="relative aspect-[3/4] overflow-hidden bg-muted rounded-lg shadow-sm border border-primary/5">
+                  <Image
+                    src={product.image}
+                    alt={product.title}
+                    fill
+                    className="object-cover"
+                    sizes="50vw"
+                  />
+                </div>
+              </Link>
+              <div className="space-y-3 px-1">
+                <div className="space-y-0.5">
+                  <h3 className="font-bold text-primary text-[11px] leading-tight truncate">{product.title}</h3>
+                  <p className="font-bold text-primary/60 text-[10px]">₹ {Number(product.price).toLocaleString('en-IN')}</p>
+                </div>
+                <Button 
+                  onClick={(e) => handleAddToCart(e, product)}
+                  className="w-full h-10 rounded-md bg-black hover:bg-black/90 text-white font-bold uppercase tracking-widest text-[8px] transition-all active:scale-95"
+                >
+                  Add to cart
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Desktop View: Split Layout & Carousel */}
         <div className={cn(
-          "relative reveal-on-scroll max-w-7xl mx-auto",
-          sideImage ? "grid grid-cols-1 lg:grid-cols-4 gap-8" : ""
+          "hidden md:grid reveal-on-scroll max-w-7xl mx-auto",
+          sideImage ? "grid-cols-1 lg:grid-cols-4 gap-8" : ""
         )}>
           {sideImage && (
             <div className="lg:col-span-1 relative aspect-[3/4] rounded-2xl overflow-hidden group shadow-xl">
@@ -109,7 +141,7 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller, sideImag
               <CarouselContent className="-ml-4">
                 {filteredProducts.map((product: any) => (
                   <CarouselItem key={product.id} className={cn(
-                    "pl-4 basis-[85%]",
+                    "pl-4",
                     sideImage ? "sm:basis-1/2 lg:basis-1/3" : "sm:basis-1/2 lg:basis-1/4"
                   )}>
                     <div className="group space-y-4">

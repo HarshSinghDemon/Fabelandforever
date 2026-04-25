@@ -106,14 +106,14 @@ export function Navigation() {
         </div>
 
         <Dialog open={isSearchOpen} onOpenChange={setIsSearchOpen}>
-          <DialogContent className="sm:max-w-[700px] w-[95vw] border-none shadow-2xl p-0 overflow-hidden rounded-[2rem] sm:rounded-[3rem] bg-paper">
+          <DialogContent className="sm:max-w-[700px] w-[95vw] border-none shadow-2xl p-0 overflow-hidden rounded-[2rem] sm:rounded-[3rem] bg-white/40 backdrop-blur-2xl">
             <div className="absolute top-0 left-0 w-full h-1.5 bg-accent/20"></div>
             
             <DialogHeader className="p-8 md:p-12 pb-6">
               <div className="flex items-center justify-between mb-8">
                 <div className="flex flex-col gap-1">
                   <DialogTitle className="font-headline text-3xl sm:text-4xl text-primary tracking-tighter">
-                    Search <span className="italic">Treasures</span>
+                    Search
                   </DialogTitle>
                   <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-accent">Artisanal Catalog</p>
                 </div>
@@ -152,9 +152,9 @@ export function Navigation() {
                         key={product.id} 
                         href={`/products/${product.id}`}
                         onClick={() => setIsSearchOpen(false)}
-                        className="flex items-center gap-4 p-4 bg-white rounded-2xl border border-primary/5 hover:border-accent/30 transition-all hover:shadow-xl hover:-translate-y-1 group"
+                        className="flex items-center gap-4 p-4 bg-white/60 backdrop-blur-md rounded-2xl border border-primary/5 hover:border-accent/30 transition-all hover:shadow-xl hover:-translate-y-1 group"
                       >
-                        <div className="relative w-16 h-20 sm:w-20 sm:h-24 overflow-hidden bg-muted rounded-xl shadow-sm">
+                        <div className="relative w-16 h-20 sm:w-20 sm:h-24 overflow-hidden bg-muted/20 rounded-xl shadow-sm">
                           {product.image && (
                             <Image 
                               src={product.image} 
@@ -183,9 +183,9 @@ export function Navigation() {
             </ScrollArea>
             
             {!searchQuery && (
-              <div className="px-12 pb-8 flex items-center gap-4 text-primary/20 italic text-[11px] font-medium">
+              <div className="px-12 pb-8 flex items-center gap-4 text-primary/40 italic text-[11px] font-medium">
                 <Sparkles className="w-4 h-4" />
-                <span>Try searching for "Candles", "Flowers", or "Mythical"</span>
+                <span>Try searching for "Candles", "Flowers", or "Decor"</span>
               </div>
             )}
           </DialogContent>
@@ -193,7 +193,7 @@ export function Navigation() {
       </nav>
 
       {/* Bottom Nav for Mobile */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-[100] bg-white border-t border-primary/5 h-20 flex items-center justify-around px-4 pb-4 pt-2 shadow-[0_-4px_20px_-4px_rgba(0,0,0,0.05)]">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-[100] bg-white/80 backdrop-blur-xl border-t border-primary/5 h-20 flex items-center justify-around px-4 pb-4 pt-2 shadow-[0_-4px_20px_-4px_rgba(0,0,0,0.05)]">
         <Link href="/" className="flex flex-col items-center gap-1.5 group">
           <Home className="w-5 h-5 text-primary" />
           <span className="text-[9px] font-bold uppercase tracking-widest text-primary/40">Home</span>

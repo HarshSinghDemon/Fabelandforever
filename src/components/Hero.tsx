@@ -81,10 +81,10 @@ export function Hero() {
             </div>
             <h1 className="font-headline text-6xl sm:text-8xl md:text-[11rem] leading-none tracking-tighter drop-shadow-2xl">
               <span className="block overflow-hidden">
-                <span className="block animate-loop-in stagger-1 opacity-0">Artisan</span>
+                <span className="block animate-loop-in stagger-1 opacity-0">Fable &</span>
               </span>
               <span className="block overflow-hidden -mt-4 md:-mt-10">
-                <span className="italic block animate-loop-in stagger-2 opacity-0">Threads</span>
+                <span className="italic block animate-loop-in stagger-2 opacity-0">Forever</span>
               </span>
             </h1>
           </div>

@@ -31,7 +31,7 @@ export default function TermsPage() {
               <Package className="w-6 h-6 text-accent" /> 2. Handmade Nature
             </h2>
             <p>
-              Every item in our boutique is hand-stitched. As such, slight variations in color, size, and pattern are to be expected and are part of the charm of bespoke crochet. No two treasures are exactly alike.
+              Every item in our boutique is hand-stitched. As such, slight variations in color, size, and pattern are to be expected and are part of the charm of bespoke crochet. No two creations are exactly alike.
             </p>
           </section>
 
@@ -49,7 +49,7 @@ export default function TermsPage() {
               <MapPin className="w-6 h-6 text-accent" /> 4. Shipping and Delivery
             </h2>
             <p>
-              <strong>Fable & Forever is based in Kolkata and currently only delivers within Kolkata city limits.</strong> Since each piece is made-to-order, delivery times vary. We do not accept returns on custom-commissioned items unless they arrive damaged. Please inspect your treasure upon arrival and contact us immediately if there is a problem.
+              <strong>Fable & Forever is based in Kolkata and currently only delivers within Kolkata city limits.</strong> Since each piece is made-to-order, delivery times vary. We do not accept returns on custom-commissioned items unless they arrive damaged. Please inspect your selection upon arrival and contact us immediately if there is a problem.
             </p>
           </section>
 

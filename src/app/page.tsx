@@ -1,10 +1,10 @@
+
 "use client";
 
 import React, { useEffect } from 'react';
 import { Navigation } from '@/components/Navigation';
 import { Hero } from '@/components/Hero';
 import { FeaturedProducts } from '@/components/FeaturedProducts';
-import { CategoryGrid } from '@/components/CategoryGrid';
 import { EditorialBanner } from '@/components/EditorialBanner';
 import { Footer } from '@/components/Footer';
 import { ArrowRight, Feather, Palette, Sparkles, Instagram } from 'lucide-react';
@@ -72,8 +72,6 @@ export default function Home() {
         />
         
         <FeaturedProducts title="Most Loved Amigurumi" categoryFilter="Amigurumi" />
-
-        <CategoryGrid />
       </div>
 
       <section className="py-24 md:py-40 bg-white border-y border-primary/5 overflow-hidden">
@@ -132,37 +130,37 @@ export default function Home() {
             <form onSubmit={handleContactSubmit} className="space-y-12 reveal-on-scroll stagger-2 bg-white p-10 md:p-20 rounded-[5rem] border border-primary/10 shadow-[0_60px_120px_-30px_rgba(0,0,0,0.15)] relative overflow-hidden">
                <div className="absolute top-0 left-0 w-full h-2 bg-accent/20"></div>
                <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-                  <div className="space-y-4 border-b-2 border-primary/20 pb-6 focus-within:border-accent transition-colors">
-                    <label className="text-[11px] font-black uppercase tracking-[0.5em] text-primary/80">Your Name</label>
+                  <div className="space-y-4 border-b-2 border-primary/60 pb-6 focus-within:border-accent transition-colors">
+                    <label className="text-[11px] font-black uppercase tracking-[0.5em] text-primary">Your Name</label>
                     <Input 
                       required
                       placeholder="Enter your name" 
-                      className="border-none bg-transparent p-0 text-2xl md:text-3xl placeholder:text-primary/10 rounded-none focus-visible:ring-0 font-headline h-auto text-primary" 
+                      className="border-none bg-transparent p-0 text-2xl md:text-3xl placeholder:text-primary/20 rounded-none focus-visible:ring-0 font-headline h-auto text-primary font-bold" 
                     />
                   </div>
-                  <div className="space-y-4 border-b-2 border-primary/20 pb-6 focus-within:border-accent transition-colors">
-                    <label className="text-[11px] font-black uppercase tracking-[0.5em] text-primary/80">Email Address</label>
+                  <div className="space-y-4 border-b-2 border-primary/60 pb-6 focus-within:border-accent transition-colors">
+                    <label className="text-[11px] font-black uppercase tracking-[0.5em] text-primary">Email Address</label>
                     <Input 
                       required
                       type="email" 
                       placeholder="hello@example.com" 
-                      className="border-none bg-transparent p-0 text-2xl md:text-3xl placeholder:text-primary/10 rounded-none focus-visible:ring-0 font-headline h-auto text-primary" 
+                      className="border-none bg-transparent p-0 text-2xl md:text-3xl placeholder:text-primary/20 rounded-none focus-visible:ring-0 font-headline h-auto text-primary font-bold" 
                     />
                   </div>
                </div>
-               <div className="space-y-4 border-b-2 border-primary/20 pb-6 focus-within:border-accent transition-colors">
-                  <label className="text-[11px] font-black uppercase tracking-[0.5em] text-primary/80">Your Vision / Message</label>
+               <div className="space-y-4 border-b-2 border-primary/60 pb-6 focus-within:border-accent transition-colors">
+                  <label className="text-[11px] font-black uppercase tracking-[0.5em] text-primary">Your Vision / Message</label>
                   <Textarea 
                     required
                     placeholder="Tell us about your dream crochet project..." 
-                    className="border-none bg-transparent p-0 min-h-[160px] text-2xl md:text-3xl placeholder:text-primary/10 rounded-none focus-visible:ring-0 resize-none font-headline text-primary leading-relaxed" 
+                    className="border-none bg-transparent p-0 min-h-[160px] text-2xl md:text-3xl placeholder:text-primary/20 rounded-none focus-visible:ring-0 resize-none font-headline text-primary leading-relaxed font-bold" 
                   />
                </div>
                <Button type="submit" className="bg-primary hover:bg-primary/90 text-white h-24 px-16 rounded-full text-[12px] font-black uppercase tracking-[0.8em] w-full transition-all active:scale-95 shadow-2xl shadow-primary/40 hover:scale-[1.02] group">
                  Manifest Message <Sparkles className="ml-6 w-6 h-6 group-hover:rotate-45 transition-transform" />
                </Button>
                
-               <p className="text-center text-[10px] font-bold uppercase tracking-[0.4em] text-primary/20 pt-4">
+               <p className="text-center text-[10px] font-bold uppercase tracking-[0.4em] text-primary/40 pt-4">
                  Our studio typically responds within one moon cycle
                </p>
             </form>

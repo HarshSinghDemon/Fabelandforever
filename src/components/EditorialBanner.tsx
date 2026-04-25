@@ -1,3 +1,4 @@
+
 "use client";
 
 import React from 'react';
@@ -28,7 +29,7 @@ export function EditorialBanner({
   imageClassName
 }: EditorialBannerProps) {
   return (
-    <section className={cn("relative w-full h-[140px] sm:h-[180px] flex items-center justify-center overflow-hidden my-0", className)}>
+    <section className={cn("relative w-full h-[120px] sm:h-[180px] flex items-center justify-center overflow-hidden my-0", className)}>
       <div className="absolute inset-0 z-0">
         <Image
           src={imageUrl}

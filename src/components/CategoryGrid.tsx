@@ -1,3 +1,4 @@
+
 "use client";
 
 import React from 'react';
@@ -23,7 +24,7 @@ export function CategoryGrid() {
   ];
 
   return (
-    <section className="py-6 md:py-10 bg-white border-t border-primary/5 overflow-hidden">
+    <section className="py-4 md:py-8 bg-white border-t border-primary/5 overflow-hidden">
       <div className="container mx-auto px-6">
         <div className="text-center mb-6 reveal-on-scroll">
           <span className="text-accent font-bold tracking-[0.6em] uppercase text-[9px] mb-2 block">Curation</span>

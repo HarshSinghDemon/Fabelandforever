@@ -68,7 +68,7 @@ export default function Home() {
           imageHint="crochet clips"
           link="/shop#hair accessories"
           className="reveal-on-scroll"
-          imageClassName="rotate-90 scale-[3]"
+          imageClassName="rotate-90 scale-[5]"
         />
         
         <FeaturedProducts 

@@ -61,6 +61,7 @@ export function Hero() {
                   src={url}
                   alt={`Artisanal Selection ${index + 1}`}
                   fill
+                  quality={100}
                   className="object-cover opacity-60 scale-110 transition-transform duration-[15s] ease-out-expo group-hover:scale-100"
                   priority={index === 0}
                   sizes="100vw"

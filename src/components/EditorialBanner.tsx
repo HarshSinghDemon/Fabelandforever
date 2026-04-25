@@ -1,4 +1,3 @@
-
 "use client";
 
 import React from 'react';
@@ -35,8 +34,10 @@ export function EditorialBanner({
           src={imageUrl}
           alt={title}
           fill
+          quality={100}
           className={cn("object-cover transition-transform duration-[10s] hover:scale-105", imageClassName)}
           data-ai-hint={imageHint}
+          sizes="100vw"
         />
         <div className="absolute inset-0 bg-black/30"></div>
       </div>

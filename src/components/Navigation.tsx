@@ -99,7 +99,7 @@ export function Navigation() {
                   )} />
                 </div>
                 <span className={cn(
-                  "font-headline text-xl md:text-2xl tracking-tighter hidden sm:block transition-all duration-1000 delay-100",
+                  "font-headline text-xl md:text-2xl font-bold tracking-tighter hidden sm:block transition-all duration-1000 delay-100",
                   showBrandText ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4 pointer-events-none",
                   isScrolled ? "text-primary" : "text-white"
                 )}>
@@ -114,8 +114,8 @@ export function Navigation() {
                   key={link.name} 
                   href={link.href}
                   className={cn(
-                    "text-[8px] font-bold uppercase tracking-[0.4em] transition-all hover:text-accent whitespace-nowrap",
-                    isScrolled ? "text-primary/50" : "text-white/60"
+                    "text-[10px] md:text-[11px] font-bold uppercase tracking-[0.3em] transition-all hover:text-accent whitespace-nowrap",
+                    isScrolled ? "text-primary" : "text-white shadow-sm"
                   )}
                 >
                   {link.name}
@@ -226,15 +226,15 @@ export function Navigation() {
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-[100] bg-white/95 backdrop-blur-2xl border-t border-primary/5 h-20 flex items-center justify-around px-4 pb-4 pt-2 shadow-[0_-4px_30px_-4px_rgba(0,0,0,0.05)]">
         <Link href="/" className="flex flex-col items-center gap-1.5 group">
           <Home className="w-5 h-5 text-primary" />
-          <span className="text-[9px] font-bold uppercase tracking-widest text-primary/40">Home</span>
+          <span className="text-[9px] font-bold uppercase tracking-widest text-primary">Home</span>
         </Link>
         <Link href="/shop" className="flex flex-col items-center gap-1.5 group">
-          <LayoutGrid className="w-5 h-5 text-primary/40 group-hover:text-primary" />
-          <span className="text-[9px] font-bold uppercase tracking-widest text-primary/40">Shop</span>
+          <LayoutGrid className="w-5 h-5 text-primary/60 group-hover:text-primary" />
+          <span className="text-[9px] font-bold uppercase tracking-widest text-primary/60">Shop</span>
         </Link>
         <button onClick={() => setIsSearchOpen(true)} className="flex flex-col items-center gap-1.5 group">
-          <Search className="w-5 h-5 text-primary/40 group-hover:text-primary" />
-          <span className="text-[9px] font-bold uppercase tracking-widest text-primary/40">Search</span>
+          <Search className="w-5 h-5 text-primary/60 group-hover:text-primary" />
+          <span className="text-[9px] font-bold uppercase tracking-widest text-primary/60">Search</span>
         </button>
         <CartDrawer isLight={false} />
       </div>

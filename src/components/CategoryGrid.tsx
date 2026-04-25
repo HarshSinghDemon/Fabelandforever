@@ -59,7 +59,7 @@ export function CategoryGrid() {
                       
                       <div className="absolute bottom-6 left-0 right-0 text-center opacity-0 group-hover:opacity-100 transition-all duration-700 translate-y-4 group-hover:translate-y-0">
                          <span className="bg-white/90 backdrop-blur-sm px-4 py-1.5 rounded-full text-[8px] font-bold uppercase tracking-widest text-primary shadow-lg border border-primary/5">
-                            View Treasures
+                            View Selections
                          </span>
                       </div>
                     </div>

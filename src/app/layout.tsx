@@ -6,7 +6,7 @@ import { FirebaseClientProvider } from '@/firebase/client-provider';
 
 export const metadata: Metadata = {
   title: 'Fable & Forever | Artisanal Crochet Tales',
-  description: 'Bespoke, luxury crochet treasures woven with care and elegance. সুতোয় বোনা প্রতিটি গল্প।',
+  description: 'Bespoke, luxury crochet creations woven with care and elegance. সুতোয় বোনা প্রতিটি গল্প।',
 };
 
 export default function RootLayout({

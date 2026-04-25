@@ -63,7 +63,6 @@ export function Navigation() {
 
   useEffect(() => {
     const handleScroll = () => {
-      // On home page, wait a bit longer for the reveal
       const threshold = isHomePage ? 200 : 40;
       setIsScrolled(window.scrollY > threshold);
     };
@@ -75,14 +74,10 @@ export function Navigation() {
     { name: 'Shop All', href: '/shop' },
     { name: 'Flowers', href: '/shop#flowers' },
     { name: 'Amigurumi', href: '/shop#amigurumi' },
-    { name: 'Bag Charms', href: '/shop#bag charm' },
-    { name: 'Hair Accessories', href: '/shop#hair accessories' },
-    { name: 'Bandanas', href: '/shop#bandana' },
-    { name: 'Ribbons', href: '/shop#ribbon bouquet' },
     { name: 'Our Story', href: '/about' },
+    { name: 'Connect', href: '/#contact' },
   ];
 
-  // Logic to determine written brand visibility in header
   const showBrandText = !isHomePage || isScrolled;
 
   return (
@@ -96,7 +91,7 @@ export function Navigation() {
         <div className="container mx-auto px-4 md:px-6 max-w-7xl">
           <div className="flex items-center justify-between relative h-12">
             <div className="flex-shrink-0">
-              <Link href="/" className="flex items-center gap-3 group">
+              <Link href="/" className="flex items-center gap-4 group">
                 <div className="transition-all duration-700 ease-in-out transform">
                   <Logo className={cn(
                     "w-8 h-8 md:w-9 md:h-9 transition-colors duration-500",
@@ -113,13 +108,13 @@ export function Navigation() {
               </Link>
             </div>
 
-            <div className="hidden lg:flex items-center gap-6 xl:gap-8">
+            <div className="hidden lg:flex items-center gap-10 xl:gap-14">
               {navLinks.map((link) => (
                 <Link 
                   key={link.name} 
                   href={link.href}
                   className={cn(
-                    "text-[8px] font-bold uppercase tracking-[0.3em] transition-all hover:text-accent whitespace-nowrap",
+                    "text-[8px] font-bold uppercase tracking-[0.4em] transition-all hover:text-accent whitespace-nowrap",
                     isScrolled ? "text-primary/50" : "text-white/60"
                   )}
                 >
@@ -128,11 +123,11 @@ export function Navigation() {
               ))}
             </div>
 
-            <div className="flex items-center gap-2 sm:gap-4">
+            <div className="flex items-center gap-3 sm:gap-6">
               <button 
                 onClick={() => setIsSearchOpen(true)}
                 className={cn(
-                  "p-2 rounded-full transition-all active:scale-95 hover:bg-white/5",
+                  "p-2 rounded-full transition-all active:scale-95",
                   isScrolled ? "text-primary hover:bg-primary/5" : "text-white hover:bg-white/10"
                 )}
               >

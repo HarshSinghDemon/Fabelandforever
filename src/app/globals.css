@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -53,11 +54,11 @@
   font-family: 'Pacifico', cursive;
 }
 
-/* Cinematic Transitions */
+/* Cinematic Transitions - Slideshow style reveal */
 .reveal-on-scroll {
   opacity: 0;
-  transform: translateY(30px);
-  transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(40px);
+  transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform, opacity;
 }
 
@@ -106,16 +107,6 @@
 }
 .animate-bounce-slow {
   animation: bounce-slow 3s ease-in-out infinite;
-}
-
-/* Luxury Fade */
-.fade-in {
-  animation: fadeIn 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }
 
 /* Stitched border effect for cards */

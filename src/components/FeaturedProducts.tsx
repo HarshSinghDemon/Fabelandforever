@@ -1,3 +1,4 @@
+
 "use client";
 
 import React from 'react';
@@ -80,12 +81,12 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
   if (filteredProducts.length === 0) return null;
 
   return (
-    <section className="py-2 md:py-4 bg-background overflow-hidden border-t border-primary/5">
+    <section className="py-1 md:py-2 bg-background overflow-hidden border-t border-primary/5">
       <div className="container mx-auto px-6 max-w-7xl">
-        <div className="flex flex-col items-center text-center mb-4 md:mb-6 reveal-on-scroll">
+        <div className="flex flex-col items-center text-center mb-2 md:mb-4 reveal-on-scroll">
           <span className="text-accent font-bold tracking-[0.8em] uppercase text-[7px] mb-1 block">Curator's Note</span>
           <h2 className="font-headline text-2xl md:text-4xl text-primary tracking-tight">{title}</h2>
-          <div className="w-8 h-[1px] bg-accent/20 mt-3"></div>
+          <div className="w-8 h-[1px] bg-accent/20 mt-2"></div>
         </div>
 
         <div className="relative px-4 md:px-14">

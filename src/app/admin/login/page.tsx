@@ -1,32 +1,75 @@
+
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { 
+  getAuth, 
+  signInWithEmailAndPassword, 
+  onAuthStateChanged 
+} from 'firebase/auth';
+import { useFirestore } from '@/firebase';
+import { doc, getDoc } from 'firebase/firestore';
 import { Navigation } from '@/components/Navigation';
 import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { Lock, Sparkles, Loader2 } from 'lucide-react';
+import { Lock, Sparkles, Loader2, Mail } from 'lucide-react';
 import { Logo } from '@/components/Logo';
 
 export default function AdminLoginPage() {
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
+  const auth = getAuth();
+  const db = useFirestore();
 
-  const handleLogin = (e: React.FormEvent) => {
+  useEffect(() => {
+    // Redirect if already logged in and verified
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user && db) {
+        const adminDoc = await getDoc(doc(db, 'admin_users', user.uid));
+        if (adminDoc.exists()) {
+          router.push('/admin');
+        }
+      }
+    });
+    return () => unsubscribe();
+  }, [auth, db, router]);
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
+    if (!email || !password) return;
 
-    // Simple gatekeeper for demo purposes
-    // In production, this would use Firebase Auth
-    if (password === 'fableforever2024') {
-      toast({ title: "Welcome, Master Weaver", description: "Accessing the studio controls." });
-      router.push('/admin');
-    } else {
-      toast({ variant: "destructive", title: "Access Denied", description: "The grimoire remains sealed." });
+    setIsLoading(true);
+    try {
+      const { user } = await signInWithEmailAndPassword(auth, email, password);
+      
+      // Verify admin role in Firestore
+      if (db) {
+        const adminDoc = await getDoc(doc(db, 'admin_users', user.uid));
+        if (adminDoc.exists()) {
+          toast({ title: "Welcome, Master Weaver", description: "Accessing the studio controls." });
+          router.push('/admin');
+        } else {
+          // Not an admin
+          await auth.signOut();
+          toast({ variant: "destructive", title: "Forbidden", description: "Your soul is not recorded as a Master Weaver." });
+        }
+      }
+    } catch (error: any) {
+      console.error(error);
+      toast({ 
+        variant: "destructive", 
+        title: "Access Denied", 
+        description: error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' 
+          ? "Invalid credentials for the Master Weaver."
+          : "The grimoire remains sealed. Please check your credentials."
+      });
+    } finally {
       setIsLoading(false);
     }
   };
@@ -35,7 +78,7 @@ export default function AdminLoginPage() {
     <main className="min-h-screen bg-paper flex flex-col">
       <Navigation />
       
-      <div className="flex-1 flex items-center justify-center p-6">
+      <div className="flex-1 flex items-center justify-center p-6 pt-32 pb-24">
         <div className="w-full max-w-md bg-white rounded-[4rem] p-12 shadow-2xl border border-primary/5 stitching-border relative overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-2 bg-primary"></div>
           
@@ -47,7 +90,21 @@ export default function AdminLoginPage() {
             <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-primary/30">Master Weaver Consultation</p>
           </div>
 
-          <form onSubmit={handleLogin} className="space-y-8">
+          <form onSubmit={handleLogin} className="space-y-6">
+            <div className="space-y-2">
+              <label className="text-[9px] font-bold uppercase tracking-widest text-primary/40 ml-4">Weaver Email</label>
+              <div className="relative">
+                <Mail className="absolute left-6 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/20" />
+                <Input 
+                  type="email"
+                  placeholder="master@fableforever.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="bg-paper border-none h-16 pl-14 pr-8 rounded-3xl font-bold text-sm focus-visible:ring-1 focus-visible:ring-accent"
+                />
+              </div>
+            </div>
+
             <div className="space-y-2">
               <label className="text-[9px] font-bold uppercase tracking-widest text-primary/40 ml-4">Access Key</label>
               <div className="relative">
@@ -65,7 +122,7 @@ export default function AdminLoginPage() {
             <Button 
               type="submit" 
               disabled={isLoading}
-              className="w-full h-20 rounded-3xl bg-primary hover:bg-primary/90 text-white font-bold text-lg uppercase tracking-[0.3em] shadow-xl group"
+              className="w-full h-20 rounded-3xl bg-primary hover:bg-primary/90 text-white font-bold text-lg uppercase tracking-[0.3em] shadow-xl group mt-4"
             >
               {isLoading ? (
                 <Loader2 className="w-6 h-6 animate-spin" />

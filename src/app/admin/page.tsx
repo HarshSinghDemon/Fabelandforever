@@ -1,91 +1,114 @@
+
 "use client";
 
-import React, { useState } from 'react';
-import { Navigation } from '@/components/Navigation';
-import { Footer } from '@/components/Footer';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useUser, useFirestore, useCollection, useMemoFirebase } from '@/firebase';
+import { collection, query, where, getDoc, doc } from 'firebase/firestore';
+import { AdminSidebar } from '@/components/AdminSidebar';
+import { AdminDashboard } from '@/components/AdminDashboard';
 import { AdminProductManager } from '@/components/AdminProductManager';
+import { AdminOrderManager } from '@/components/AdminOrderManager';
 import { AdminSettingsManager } from '@/components/AdminSettingsManager';
-import { ShoppingBag, Settings, Package, Sparkles, Scroll, ArrowRight } from 'lucide-react';
-import Link from 'next/link';
+import { Loader2, Lock } from 'lucide-react';
+
+type AdminView = 'dashboard' | 'products' | 'orders' | 'settings';
 
 export default function AdminPage() {
-  const [activeTab, setActiveTab] = useState('products');
+  const { user, isUserLoading } = useUser();
+  const db = useFirestore();
+  const router = useRouter();
+  const [activeView, setActiveView] = useState<AdminView>('dashboard');
+  const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    if (isUserLoading) return;
+    
+    if (!user) {
+      router.push('/admin/login');
+      return;
+    }
+
+    // Check if user is in the admin_users collection
+    const checkAdmin = async () => {
+      if (!db || !user) return;
+      try {
+        const adminDoc = await getDoc(doc(db, 'admin_users', user.uid));
+        if (adminDoc.exists()) {
+          setIsAdmin(true);
+        } else {
+          setIsAdmin(false);
+          router.push('/');
+        }
+      } catch (error) {
+        console.error("Error checking admin status:", error);
+        setIsAdmin(false);
+      }
+    };
+
+    checkAdmin();
+  }, [user, isUserLoading, db, router]);
+
+  if (isUserLoading || isAdmin === null) {
+    return (
+      <div className="min-h-screen bg-paper flex flex-col items-center justify-center gap-6">
+        <Loader2 className="w-10 h-10 text-primary animate-spin" />
+        <p className="text-[10px] font-bold uppercase tracking-[0.5em] text-primary/40">Verifying Master Weaver Status</p>
+      </div>
+    );
+  }
+
+  if (isAdmin === false) {
+    return (
+      <div className="min-h-screen bg-paper flex flex-col items-center justify-center p-12 text-center">
+        <Lock className="w-16 h-16 text-destructive mb-6" />
+        <h1 className="font-headline text-4xl text-primary mb-4">Sealed Grimoire</h1>
+        <p className="text-muted-foreground italic mb-8 max-w-md">Your soul is not recognized as a Master Weaver. Access to the studio controls is forbidden.</p>
+        <button onClick={() => router.push('/')} className="text-[10px] font-bold uppercase tracking-widest text-primary hover:text-accent border-b border-primary/20 pb-1">Return to Boutique</button>
+      </div>
+    );
+  }
+
+  const renderView = () => {
+    switch (activeView) {
+      case 'dashboard': return <AdminDashboard />;
+      case 'products': return <AdminProductManager />;
+      case 'orders': return <AdminOrderManager />;
+      case 'settings': return <AdminSettingsManager />;
+      default: return <AdminDashboard />;
+    }
+  };
 
   return (
-    <main className="min-h-screen bg-paper selection:bg-accent/20">
-      <Navigation />
+    <main className="min-h-screen bg-[#fcfcfc] flex">
+      <AdminSidebar activeView={activeView} onViewChange={setActiveView} />
       
-      {/* Admin Header */}
-      <section className="relative pt-48 pb-12 overflow-hidden bg-primary text-white">
-        <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(255,255,255,0.05),_transparent)]"></div>
-          <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-paper to-transparent"></div>
-        </div>
-        
-        <div className="container mx-auto px-6 max-w-7xl relative z-10">
-          <div className="reveal-on-scroll active">
-            <span className="text-white/40 font-bold tracking-[1em] uppercase text-[9px] mb-4 block">Master Weaver Access</span>
-            <h1 className="font-headline text-5xl sm:text-7xl leading-none tracking-tighter mb-4">
-              Studio <span className="italic">Control.</span>
-            </h1>
-            <div className="w-16 h-[1px] bg-white/20 mb-12"></div>
+      <div className="flex-1 flex flex-col h-screen overflow-hidden">
+        {/* Header */}
+        <header className="h-20 bg-white border-b border-primary/5 flex items-center justify-between px-12 shrink-0">
+          <div className="flex flex-col">
+            <h2 className="text-[10px] font-bold uppercase tracking-[0.4em] text-primary/30">Master Weaver Workspace</h2>
+            <p className="font-headline text-2xl text-primary capitalize">{activeView}</p>
+          </div>
+          
+          <div className="flex items-center gap-6">
+            <div className="text-right">
+              <p className="text-[9px] font-bold uppercase tracking-widest text-primary/40">Active Weaver</p>
+              <p className="text-xs font-bold text-primary">{user?.email}</p>
+            </div>
+            <div className="w-10 h-10 rounded-full bg-primary/5 border border-primary/5 flex items-center justify-center text-primary font-bold">
+              {user?.email?.charAt(0).toUpperCase()}
+            </div>
+          </div>
+        </header>
+
+        {/* Content Area */}
+        <div className="flex-1 overflow-y-auto p-12 no-scrollbar bg-paper">
+          <div className="max-w-7xl mx-auto animate-fade-in-up">
+            {renderView()}
           </div>
         </div>
-      </section>
-
-      <section className="container mx-auto px-6 max-w-7xl pb-40 -mt-10 relative z-20">
-        <Tabs defaultValue="products" onValueChange={setActiveTab} className="space-y-12">
-          <div className="flex justify-center">
-            <TabsList className="bg-white/80 backdrop-blur-xl p-2 h-auto rounded-[2rem] shadow-2xl border border-primary/5">
-              <TabsTrigger 
-                value="products" 
-                className="rounded-full px-8 py-4 data-[state=active]:bg-primary data-[state=active]:text-white transition-all text-[10px] font-bold uppercase tracking-widest gap-3"
-              >
-                <ShoppingBag className="w-4 h-4" /> Boutique
-              </TabsTrigger>
-              <TabsTrigger 
-                value="settings" 
-                className="rounded-full px-8 py-4 data-[state=active]:bg-primary data-[state=active]:text-white transition-all text-[10px] font-bold uppercase tracking-widest gap-3"
-              >
-                <Settings className="w-4 h-4" /> Curation
-              </TabsTrigger>
-            </TabsList>
-          </div>
-
-          <div className="reveal-on-scroll active">
-            <TabsContent value="products" className="mt-0 focus-visible:ring-0">
-              <AdminProductManager />
-            </TabsContent>
-            <TabsContent value="settings" className="mt-0 focus-visible:ring-0">
-              <AdminSettingsManager />
-            </TabsContent>
-          </div>
-        </Tabs>
-      </section>
-
-      {/* Quick Links */}
-      <section className="py-20 bg-white border-y border-primary/5">
-        <div className="container mx-auto px-6 max-w-7xl">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-            {[
-              { icon: Scroll, title: 'Order Scrolls', desc: 'View customer requests and delivery details.', link: '/checkout' },
-              { icon: Sparkles, title: 'AI Grimoire', desc: 'Generate new inspiration for custom orders.', link: '/#shop' },
-              { icon: ArrowRight, title: 'Public Boutique', desc: 'See how your collections appear to the world.', link: '/shop' }
-            ].map((item, idx) => (
-              <Link key={idx} href={item.link} className="group p-10 rounded-[3rem] bg-paper hover:bg-white border border-primary/5 transition-all hover:shadow-2xl hover:-translate-y-2">
-                <div className="w-12 h-12 bg-primary/5 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                  <item.icon className="w-5 h-5 text-accent" />
-                </div>
-                <h4 className="font-headline text-2xl text-primary mb-3">{item.title}</h4>
-                <p className="text-xs text-primary/40 font-medium italic leading-relaxed">{item.desc}</p>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <Footer />
+      </div>
     </main>
   );
 }

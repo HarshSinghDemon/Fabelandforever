@@ -235,7 +235,6 @@ export default function ShopPage() {
         {categories.map((category) => {
           const catProducts = allItems.filter(p => p.category === category);
           const catId = category.toLowerCase();
-          const catImage = PlaceHolderImages.find(p => p.category === category)?.imageUrl || "https://picsum.photos/seed/cat-bg/1200/400";
           
           return (
             <section 
@@ -245,23 +244,17 @@ export default function ShopPage() {
             >
               <div className="container mx-auto px-6 max-w-7xl">
                 
-                {/* Category Header with Image Background */}
-                <div className="relative h-[200px] mb-12 rounded-[2.5rem] overflow-hidden flex items-center justify-center text-center">
-                  <div className="absolute inset-0 z-0">
-                    <Image src={catImage} alt={category} fill className="object-cover" />
-                    <div className="absolute inset-0 bg-black/40"></div>
+                {/* Minimalist Category Header */}
+                <div className="mb-12 py-12 px-8 rounded-[2.5rem] bg-primary/5 text-center">
+                  <div className="flex items-center justify-center gap-4 mb-3">
+                    <div className="w-8 h-[1px] bg-primary/20"></div>
+                    <span className="text-primary/40 font-bold tracking-[0.6em] uppercase text-[9px]">The Collection</span>
+                    <div className="w-8 h-[1px] bg-primary/20"></div>
                   </div>
-                  <div className="relative z-10 space-y-3 px-6">
-                    <div className="flex items-center justify-center gap-4">
-                      <div className="w-8 h-[1px] bg-white/40"></div>
-                      <span className="text-white/60 font-bold tracking-[0.6em] uppercase text-[9px]">The Collection</span>
-                      <div className="w-8 h-[1px] bg-white/40"></div>
-                    </div>
-                    <h2 className="font-headline text-4xl sm:text-6xl text-white tracking-tighter leading-none">{category}</h2>
-                    <p className="text-white/70 text-[11px] italic font-medium leading-relaxed max-w-md mx-auto">
-                      "Hand-stitched precision meets the warmth of our {category.toLowerCase()} treasures."
-                    </p>
-                  </div>
+                  <h2 className="font-headline text-4xl sm:text-6xl text-primary tracking-tighter leading-none mb-4">{category}</h2>
+                  <p className="text-primary/60 text-[11px] italic font-medium leading-relaxed max-w-md mx-auto">
+                    "Hand-stitched precision meets the warmth of our {category.toLowerCase()} treasures."
+                  </p>
                 </div>
 
                 {/* 2x1 Minimalist Matrix Grid - Strictly 2 columns on small screens */}
@@ -289,12 +282,12 @@ export default function ShopPage() {
                           <p className="font-bold text-primary/60 text-[10px] tracking-[0.2em]">₹ {Number(product.price).toLocaleString('en-IN')}</p>
                         </div>
                         
-                        <Button 
+                        <button 
                           onClick={(e) => handleAddToCart(e, product)}
                           className="w-full h-12 rounded-full bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-[0.4em] text-[8px] transition-all active:scale-95 shadow-md"
                         >
                           Adopt Piece
-                        </Button>
+                        </button>
                       </div>
                     </div>
                   ))}

@@ -2,6 +2,33 @@
 {
   "placeholderImages": [
     {
+      "id": "hero-main",
+      "description": "Master Artisan at work",
+      "imageUrl": "https://picsum.photos/seed/hero/1920/1080",
+      "imageHint": "crochet hands",
+      "price": 0,
+      "category": "Hero",
+      "story": "The beginning of every forever loop."
+    },
+    {
+      "id": "heritage-banner",
+      "description": "The Heritage Edit Banner",
+      "imageUrl": "https://picsum.photos/seed/heritage/1920/800",
+      "imageHint": "vintage crochet",
+      "price": 0,
+      "category": "Banner",
+      "story": "A glimpse into our history."
+    },
+    {
+      "id": "garden-banner",
+      "description": "The Enchanted Garden Banner",
+      "imageUrl": "https://picsum.photos/seed/garden/1920/800",
+      "imageHint": "crochet flowers",
+      "price": 0,
+      "category": "Banner",
+      "story": "Where loops bloom into life."
+    },
+    {
       "id": "best-1",
       "description": "Hello Sunshine Candle",
       "imageUrl": "https://picsum.photos/seed/sunshine-candle/800/1000",
@@ -54,24 +81,6 @@
       "price": 850,
       "category": "Flowers",
       "story": "Calm and serene. Infused with real lavender scent for a sensory experience."
-    },
-    {
-      "id": "candle-1",
-      "description": "Christmas Garland Candle",
-      "imageUrl": "https://picsum.photos/seed/xmas-candle/800/1000",
-      "imageHint": "crochet candle",
-      "price": 1299,
-      "category": "Candles",
-      "story": "A festive embrace of pine and spice, wrapped in a hand-woven winter wreath."
-    },
-    {
-      "id": "candle-2",
-      "description": "Tree Taper Candles - Set of 2",
-      "imageUrl": "https://picsum.photos/seed/taper-candles/800/1000",
-      "imageHint": "crochet candles",
-      "price": 599,
-      "category": "Candles",
-      "story": "Slim, elegant, and topped with a tiny crochet leaf. A minimalist holiday touch."
     },
     {
       "id": "product-1",

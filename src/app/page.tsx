@@ -6,14 +6,19 @@ import { Navigation } from '@/components/Navigation';
 import { Hero } from '@/components/Hero';
 import { FeaturedProducts } from '@/components/FeaturedProducts';
 import { CategoryGrid } from '@/components/CategoryGrid';
+import { EditorialBanner } from '@/components/EditorialBanner';
 import { Footer } from '@/components/Footer';
 import { ArrowRight, Sparkles, Feather, Palette, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import Link from 'next/link';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export default function Home() {
+  const heritageBanner = PlaceHolderImages.find(img => img.id === 'heritage-banner');
+  const gardenBanner = PlaceHolderImages.find(img => img.id === 'garden-banner');
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -44,7 +49,6 @@ export default function Home() {
       
       <Hero />
       
-      {/* Product Sections - Luxury Split Dynamic */}
       <FeaturedProducts 
         title="New Arrivals" 
         bannerImage="https://picsum.photos/seed/new-arrivals-banner/800/1200"
@@ -56,11 +60,25 @@ export default function Home() {
         reverse 
         bannerImage="https://picsum.photos/seed/bestseller-banner/800/1200"
       />
+
+      <EditorialBanner 
+        title="The Heritage Edit"
+        subtitle="LEGACY IN EVERY STITCH"
+        imageUrl={heritageBanner?.imageUrl || "https://picsum.photos/seed/heritage/1920/800"}
+        imageHint="vintage crochet"
+      />
       
       <FeaturedProducts 
         title="Floral Treasures" 
         categoryFilter="Flowers" 
         bannerImage="https://picsum.photos/seed/floral-banner/800/1200"
+      />
+
+      <EditorialBanner 
+        title="The Enchanted Garden"
+        subtitle="PREMIUM FLOWERS"
+        imageUrl={gardenBanner?.imageUrl || "https://picsum.photos/seed/garden/1920/800"}
+        imageHint="crochet flowers"
       />
       
       <FeaturedProducts 
@@ -70,10 +88,8 @@ export default function Home() {
         bannerImage="https://picsum.photos/seed/candle-banner/800/1200"
       />
 
-      {/* Shop by Category Carousel */}
       <CategoryGrid />
 
-      {/* The Artisanal Process Block */}
       <section className="py-40 bg-white border-y border-primary/5 overflow-hidden">
         <div className="container mx-auto px-6 text-center">
           <span className="text-accent font-bold tracking-[0.6em] uppercase text-[9px] mb-8 block reveal-on-scroll">Our Ethos</span>
@@ -101,7 +117,6 @@ export default function Home() {
         </div>
       </section>
       
-      {/* Contact Section */}
       <section id="contact" className="py-40 bg-background">
         <div className="container mx-auto px-6 max-w-6xl">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-32 items-start">
@@ -157,7 +172,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Floating WhatsApp Button */}
       <a 
         href="https://wa.me/910000000000" 
         target="_blank" 

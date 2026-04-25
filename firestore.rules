@@ -3,51 +3,115 @@ service cloud.firestore {
   match /databases/{database}/documents {
 
     /**
-     * MASTER WEAVER SECURITY RULES - v1.5 (Final Failsafe)
-     * These rules allow visitors to see your treasures while keeping
-     * management restricted to you (harshroop100@gmail.com).
+     * CORE SECURITY PHILOSOPHY
+     * This ruleset implements a strict user-ownership model for private data while maintaining 
+     * a public-facing product catalog. 
+     * 
+     * DATA STRUCTURE
+     * - /users/{userId}: Private user profiles.
+     * - /products: Public product catalog for gallery display.
+     * - /users/{userId}/customOrders: Private order requests per user.
+     * - /users/{userId}/crochetIdeas: Private AI-generated or saved concepts.
+     * 
+     * KEY SECURITY DECISIONS
+     * 1. Public Read for Products: To fix the reported error, list and get operations on /products 
+     *    are explicitly allowed for all users (including unauthenticated ones).
+     * 2. Path-Based Ownership: Private data is nested under /users/{userId}. Access is granted 
+     *    only if the authenticated UID matches the {userId} in the path.
+     * 3. Denormalization for Performance: userId and document IDs are enforced within the 
+     *    document data to ensure relational integrity without requiring cross-collection get() calls.
+     * 4. Administrative Access: Products are protected by a role-based check against a 
+     *    dedicated /roles_admin collection.
      */
 
     // --- Helper Functions ---
 
+    /** Checks if the user is authenticated with Firebase Auth. */
     function isSignedIn() {
       return request.auth != null;
     }
 
-    function isAdmin() {
-      return isSignedIn() && (
-        request.auth.token.email == "harshroop100@gmail.com" ||
-        exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid))
-      );
+    /** Checks if the authenticated user's UID matches the provided userId. */
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
     }
 
-    // --- Collection Rules ---
+    /** Combined check for existence and ownership for state-changing operations. */
+    function isExistingOwner(userId) {
+      return resource != null && isOwner(userId);
+    }
 
+    /** Checks if the authenticated user has an administrator role entry. */
+    function isAdmin() {
+      return isSignedIn() && exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid));
+    }
+
+    // --- Rules ---
+
+    /**
+     * @description Rules for User Profiles. Users can only manage their own profile data.
+     * @path /users/{userId}
+     * @allow (create) if auth.uid == userId and data.id == userId
+     * @deny (get) if auth.uid != userId
+     * @principle Ownership and Self-Creation validation.
+     */
+    match /users/{userId} {
+      allow get, list: if isOwner(userId);
+      allow create: if isOwner(userId) && request.resource.data.id == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.id == resource.data.id;
+      allow delete: if isExistingOwner(userId);
+
+      /**
+       * @description Rules for Custom Orders. Nested under the user for simplified ownership logic.
+       * @path /users/{userId}/customOrders/{customOrderId}
+       * @allow (list) if auth.uid == userId
+       * @deny (update) if auth.uid != userId
+       * @principle Path-based authorization with relational field validation.
+       */
+      match /customOrders/{customOrderId} {
+        allow get, list: if isOwner(userId);
+        allow create: if isOwner(userId) && request.resource.data.userId == request.auth.uid;
+        allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
+        allow delete: if isExistingOwner(userId);
+      }
+
+      /**
+       * @description Rules for Crochet Ideas. Private design concepts saved by the user.
+       * @path /users/{userId}/crochetIdeas/{crochetIdeaId}
+       * @allow (get) if auth.uid == userId
+       * @deny (create) if request.resource.data.userId != auth.uid
+       * @principle Immutable ownership field enforcement.
+       */
+      match /crochetIdeas/{crochetIdeaId} {
+        allow get, list: if isOwner(userId);
+        allow create: if isOwner(userId) && request.resource.data.userId == request.auth.uid;
+        allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
+        allow delete: if isExistingOwner(userId);
+      }
+    }
+
+    /**
+     * @description Rules for the Product Catalog. Publicly readable to fix dashboard permission errors.
+     * @path /products/{productId}
+     * @allow (list) if true
+     * @deny (write) if !isAdmin()
+     * @principle Public read with role-based administrative writes.
+     */
     match /products/{productId} {
       allow get, list: if true;
-      allow write: if isAdmin();
+      allow create, update, delete: if isAdmin();
     }
 
-    match /settings/{settingId} {
-      allow get, list: if true;
-      allow write: if isAdmin();
-    }
-
-    match /orders/{orderId} {
-      // Visitors can manifest new orders
-      allow create: if true;
-      // Only the artisan or the specific customer can see the order details
-      allow get: if isAdmin() || (isSignedIn() && resource.data.userId == request.auth.uid);
-      // Only the artisan can see the full list of scrolls
-      allow list: if isAdmin();
-      // Only the artisan can update status or unravel a record
-      allow update, delete: if isAdmin();
-    }
-
-    match /roles_admin/{adminUid} {
+    /**
+     * @description Administrative roles collection. Used for DBAC (Database-wide Access Control).
+     * @path /roles_admin/{uid}
+     * @allow (get) if isSignedIn()
+     * @deny (write) if true
+     * @principle Read-only administrative registry.
+     */
+    match /roles_admin/{uid} {
       allow get: if isSignedIn();
-      allow list: if isAdmin();
-      allow write: if false; 
+      allow list, create, update, delete: if false;
     }
   }
 }

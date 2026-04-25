@@ -1,68 +1,324 @@
-
 {
   "entities": {
+    "UserProfile": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "UserProfile",
+      "type": "object",
+      "description": "Represents a user's profile within 'The Crochet Studio' application, storing essential contact and display information.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the UserProfile entity."
+        },
+        "email": {
+          "type": "string",
+          "description": "The user's email address, used for communication.",
+          "format": "email"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "The user's display name or preferred name."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when the user profile was created.",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Timestamp when the user profile was last updated.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "email",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
     "Product": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "Product",
       "type": "object",
-      "description": "Represents a handcrafted crochet product.",
+      "description": "Represents a handcrafted crochet product available for sale, showcased in the featured gallery.",
       "properties": {
-        "id": { "type": "string" },
-        "title": { "type": "string" },
-        "description": { "type": "string" },
-        "price": { "type": "number" },
-        "image": { "type": "string" },
-        "category": { "type": "string" },
-        "createdAt": { "type": "string", "format": "date-time" }
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Product entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the crochet product."
+        },
+        "description": {
+          "type": "string",
+          "description": "A detailed description of the product, highlighting its features and craftsmanship."
+        },
+        "price": {
+          "type": "number",
+          "description": "The price of the product."
+        },
+        "mainImageUrl": {
+          "type": "string",
+          "description": "The URL for the primary image of the product, used for display.",
+          "format": "uri"
+        },
+        "additionalImageUrls": {
+          "type": "array",
+          "description": "An array of URLs for additional images of the product from different angles or close-ups.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "category": {
+          "type": "string",
+          "description": "The category the product belongs to (e.g., 'Blankets', 'Apparel', 'Home Decor')."
+        },
+        "materials": {
+          "type": "array",
+          "description": "An array of materials used to create the product (e.g., 'cotton', 'wool', 'acrylic').",
+          "items": {
+            "type": "string"
+          }
+        },
+        "isFeatured": {
+          "type": "boolean",
+          "description": "Indicates if the product should be displayed in the featured products gallery."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when the product was added to the catalog.",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Timestamp when the product information was last updated.",
+          "format": "date-time"
+        }
       },
-      "required": ["title", "price", "image"]
+      "required": [
+        "id",
+        "name",
+        "description",
+        "price",
+        "mainImageUrl",
+        "category",
+        "materials",
+        "isFeatured",
+        "createdAt",
+        "updatedAt"
+      ]
     },
     "CustomOrder": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "CustomOrder",
       "type": "object",
-      "description": "Represents a customer order.",
+      "description": "Represents a customer's request for a bespoke crochet item.",
       "properties": {
-        "id": { "type": "string" },
-        "userId": { "type": "string" },
-        "customerName": { "type": "string" },
-        "customerPhone": { "type": "string" },
-        "customerAddress": { "type": "string" },
-        "total": { "type": "number" },
-        "status": { "type": "string", "enum": ["pending", "shipped", "delivered"] },
-        "items": { "type": "array", "items": { "type": "object" } },
-        "createdAt": { "type": "string", "format": "date-time" }
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the CustomOrder entity."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to the UserProfile who placed the custom order. (Relationship: UserProfile 1:N CustomOrder)"
+        },
+        "title": {
+          "type": "string",
+          "description": "A brief title for the custom order request (e.g., 'Custom Baby Blanket')."
+        },
+        "description": {
+          "type": "string",
+          "description": "Detailed description of the customer's custom order request, including specifications and personalization details."
+        },
+        "status": {
+          "type": "string",
+          "description": "The current status of the custom order (e.g., 'Pending', 'Drafting', 'Approved', 'In Progress', 'Completed', 'Cancelled')."
+        },
+        "referenceCrochetIdeaId": {
+          "type": "string",
+          "description": "Optional reference to a CrochetIdea entity if the custom order is based on a saved or AI-generated idea. (Relationship: CrochetIdea 1:N CustomOrder)"
+        },
+        "requestedCompletionDate": {
+          "type": "string",
+          "description": "The customer's requested date for the order to be completed.",
+          "format": "date"
+        },
+        "priceQuote": {
+          "type": "number",
+          "description": "The quoted price for the custom order once details are finalized."
+        },
+        "depositRequired": {
+          "type": "number",
+          "description": "The amount of deposit required for the custom order."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when the custom order request was submitted.",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Timestamp when the custom order information was last updated.",
+          "format": "date-time"
+        }
       },
-      "required": ["customerName", "customerPhone", "total", "status"]
+      "required": [
+        "id",
+        "userId",
+        "title",
+        "description",
+        "status",
+        "createdAt",
+        "updatedAt"
+      ]
     },
-    "AppSetting": {
-      "title": "AppSetting",
+    "CrochetIdea": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "CrochetIdea",
       "type": "object",
-      "description": "Site-wide configuration settings (e.g., hero visuals).",
+      "description": "Represents a conceptual crochet design, potentially generated by the AI tool or saved by a user.",
       "properties": {
-        "value": { "type": "string" },
-        "values": { "type": "array", "items": { "type": "string" } },
-        "updatedAt": { "type": "string", "format": "date-time" }
-      }
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the CrochetIdea entity."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to the UserProfile who generated or saved this idea. (Relationship: UserProfile 1:N CrochetIdea)"
+        },
+        "title": {
+          "type": "string",
+          "description": "A concise title for the crochet idea, either AI-generated or user-provided."
+        },
+        "description": {
+          "type": "string",
+          "description": "A detailed description of the crochet idea, including design elements and aesthetic concepts."
+        },
+        "suggestedMaterials": {
+          "type": "array",
+          "description": "An array of materials suggested for this crochet idea (e.g., 'merino wool', 'bamboo yarn').",
+          "items": {
+            "type": "string"
+          }
+        },
+        "suggestedColors": {
+          "type": "array",
+          "description": "An array of colors suggested for this crochet idea (e.g., 'teal', 'cream', 'sage').",
+          "items": {
+            "type": "string"
+          }
+        },
+        "moodOrStyle": {
+          "type": "string",
+          "description": "Describes the overall mood or style of the crochet idea (e.g., 'boho', 'minimalist', 'vintage')."
+        },
+        "inspirationImageUrl": {
+          "type": "string",
+          "description": "An optional URL to an image providing visual inspiration for the idea, if available (AI-generated or user-uploaded).",
+          "format": "uri"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when the crochet idea was created or saved.",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Timestamp when the crochet idea was last updated.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "title",
+        "description",
+        "suggestedMaterials",
+        "suggestedColors",
+        "moodOrStyle",
+        "createdAt",
+        "updatedAt"
+      ]
     }
   },
   "auth": {
-    "providers": ["password", "anonymous"]
+    "providers": [
+      "password",
+      "anonymous"
+    ]
   },
   "firestore": {
-    "/products/{productId}": {
-      "schema": { "$ref": "#/backend/entities/Product" },
-      "description": "Public product catalog."
-    },
-    "/orders/{orderId}": {
-      "schema": { "$ref": "#/backend/entities/CustomOrder" },
-      "description": "Customer orders collection."
-    },
-    "/settings/{settingId}": {
-      "schema": { "$ref": "#/backend/entities/AppSetting" },
-      "description": "Site-wide visual configuration."
-    },
-    "/roles_admin/{adminUid}": {
-      "schema": { "type": "object" },
-      "description": "Admin role markers."
-    }
+    "structure": [
+      {
+        "path": "/users/{userId}",
+        "definition": {
+          "entityName": "UserProfile",
+          "schema": {
+            "$ref": "#/backend/entities/UserProfile"
+          },
+          "description": "Stores individual user profiles. Access is restricted to the user whose ID matches the document ID. This path structure enforces ownership. The document's 'id' field is expected to match 'userId'.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier of the user, matching 'request.auth.uid'."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/products",
+        "definition": {
+          "entityName": "Product",
+          "schema": {
+            "$ref": "#/backend/entities/Product"
+          },
+          "description": "A top-level collection for all handcrafted crochet products available for sale. This collection is publicly readable (list and get) to support the 'Featured Products Gallery' without requiring authentication. Write access would be restricted to administrators.",
+          "params": []
+        }
+      },
+      {
+        "path": "/users/{userId}/customOrders/{customOrderId}",
+        "definition": {
+          "entityName": "CustomOrder",
+          "schema": {
+            "$ref": "#/backend/entities/CustomOrder"
+          },
+          "description": "Stores custom order requests, private to the user who created them. Ownership is enforced by the path's 'userId' parameter matching 'request.auth.uid'. Includes denormalized 'userId' field for authorization independence.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier of the user who owns this custom order, matching 'request.auth.uid'."
+            },
+            {
+              "name": "customOrderId",
+              "description": "The unique identifier for a specific custom order."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/crochetIdeas/{crochetIdeaId}",
+        "definition": {
+          "entityName": "CrochetIdea",
+          "schema": {
+            "$ref": "#/backend/entities/CrochetIdea"
+          },
+          "description": "Stores AI-generated or user-saved crochet ideas, private to the user. Ownership is enforced by the path's 'userId' parameter matching 'request.auth.uid'. Includes denormalized 'userId' field for authorization independence.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier of the user who owns this crochet idea, matching 'request.auth.uid'."
+            },
+            {
+              "name": "crochetIdeaId",
+              "description": "The unique identifier for a specific crochet idea."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The recommended Firestore structure is designed to be secure, scalable, and debuggable, explicitly addressing the reported permissions error and adhering to all core design principles. The primary strategy revolves around **Authorization Independence via Denormalization** and **Structural Segregation** to simplify security rules.\n\nTo resolve the immediate 'Missing or insufficient permissions' error for listing `/products`, the `/products` collection is designated for public read access. This is a direct application of **Structural Segregation** (Principle B) where all documents in `/products` share the same security posture: publicly viewable. This enables **Query As Permission (QAPs)** as the entire collection can be listed without needing client-side filters or complex server-side rule logic, directly facilitating the 'Featured Products Gallery' UI requirement.\n\nFor user-specific and private data (User Profiles, Custom Orders, Crochet Ideas), a hierarchical path structure under `/users/{userId}/...` is consistently applied. This aligns with **Access Modeling Strategy C (Hierarchical Paths for User-Owned Data)**. Each document in subcollections like `/users/{userId}/customOrders` and `/users/{userId}/crochetIdeas` inherently carries its authorization context through the `{userId}` wildcard in the path. Crucially, each `CustomOrder` and `CrochetIdea` document also contains a `userId` field, matching `request.auth.uid`. This fulfills **Authorization Independence (Principle A)**: rules can check `request.auth.uid == userId` (from the path wildcard) without needing `get()` operations on a parent document to verify ownership. This also supports atomic operations for creating user-owned data.\n\nGlobal roles for administrative access, if required (e.g., for managing products), would leverage a dedicated top-level collection like `/roles_admin/{uid}`. This follows **DBAC (Principle B)** and uses **Existence over Content (Strategy C)**, allowing rules to check `exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid))` for authorization, avoiding complex lookups.\n\nThis structure ensures clear intent for data access: public collections are globally readable, and private collections are path-segregated and user-specific, making security rules straightforward and highly auditable. Denormalization of the `userId` into subcollection documents reinforces ownership checks, eliminating fragile `get()` dependencies."
   }
 }

@@ -32,7 +32,9 @@ import {
   Copy,
   Heart,
   Undo2,
-  Leaf
+  Leaf,
+  MapPin,
+  Loader2
 } from 'lucide-react';
 import {
   Dialog,
@@ -155,7 +157,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
                     className="object-cover"
                     priority={idx === 0}
                   />
-                  {/* Magnifying Glass Indicator */}
+                  {/* Info Indicator */}
                   <div className="absolute top-6 left-6 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg border border-primary/5">
                     <Info className="w-5 h-5 text-primary/40 rotate-180" />
                   </div>
@@ -183,41 +185,21 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
             <span className="text-2xl font-medium text-primary">Rs. {Number(product.price).toLocaleString('en-IN')}.00</span>
           </div>
           <p className="text-[10px] text-primary/40 font-medium">
-            Taxes included. <Link href="/terms" className="underline underline-offset-2">Shipping</Link> calculated at checkout.
+            Taxes included. Hand-stitched with legacy.
           </p>
         </div>
 
-        {/* Promo Section */}
-        <div className="flex gap-4 overflow-x-auto no-scrollbar py-2 -mx-2 px-2">
-          <div className="min-w-[280px] p-6 rounded-xl border border-primary/10 bg-white shadow-sm space-y-4">
-            <div className="flex items-center gap-3">
-              <Tag className="w-5 h-5 text-primary/60" />
-              <p className="text-xs font-bold text-primary/80">Get 10% OFF on your first purchase!</p>
-            </div>
-            <p className="text-[10px] text-primary/40 font-medium">Valid on your first treasure adoption</p>
-            <div className="flex items-center gap-2">
-              <div className="flex-1 bg-paper border border-dashed border-primary/20 px-4 py-3 rounded-lg text-xs font-mono tracking-widest text-primary">
-                FABLEFIRST
-              </div>
-              <button className="bg-black text-white px-5 py-3 rounded-lg text-[10px] font-bold uppercase tracking-widest hover:bg-black/80 transition-all active:scale-95">
-                Copy
-              </button>
-            </div>
+        {/* Kolkata Exclusive Notice */}
+        <div className="p-6 rounded-2xl border-2 border-primary/5 bg-paper/30 flex items-start gap-5 relative overflow-hidden group">
+          <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-full translate-x-1/2 -translate-y-1/2 blur-2xl"></div>
+          <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center shrink-0">
+            <MapPin className="w-5 h-5 text-primary" />
           </div>
-          <div className="min-w-[280px] p-6 rounded-xl border border-primary/10 bg-white shadow-sm space-y-4">
-            <div className="flex items-center gap-3">
-              <Tag className="w-5 h-5 text-primary/60" />
-              <p className="text-xs font-bold text-primary/80">Kolkata Exclusive Shipping</p>
-            </div>
-            <p className="text-[10px] text-primary/40 font-medium">While treasures last</p>
-            <div className="flex items-center gap-2">
-              <div className="flex-1 bg-paper border border-dashed border-primary/20 px-4 py-3 rounded-lg text-xs font-mono tracking-widest text-primary">
-                KOLKATA
-              </div>
-              <button className="bg-black text-white px-5 py-3 rounded-lg text-[10px] font-bold uppercase tracking-widest hover:bg-black/80 transition-all active:scale-95">
-                Copy
-              </button>
-            </div>
+          <div className="space-y-1 relative z-10">
+            <h4 className="text-[10px] font-bold uppercase tracking-widest text-primary">Kolkata Exclusive</h4>
+            <p className="text-xs leading-relaxed text-primary/60 font-medium italic">
+              "Fable & Forever treasures are currently handcrafted and delivered exclusively within Kolkata city limits."
+            </p>
           </div>
         </div>
 
@@ -347,7 +329,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
 
       <Footer />
 
-      {/* WhatsApp Widget Placeholder */}
+      {/* WhatsApp Widget */}
       <a 
         href="https://wa.me/910000000000" 
         target="_blank" 

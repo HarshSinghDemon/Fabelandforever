@@ -1,4 +1,3 @@
-
 "use client";
 
 import React from 'react';
@@ -6,14 +5,10 @@ import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
 import { collection, query, orderBy, limit } from 'firebase/firestore';
 import { 
   Package, 
-  ShoppingBag, 
   Scroll, 
-  Sparkles, 
-  TrendingUp, 
   Clock,
   ChevronRight
 } from 'lucide-react';
-import Image from 'next/image';
 import { cn } from '@/lib/utils';
 
 export function AdminDashboard() {
@@ -26,16 +21,24 @@ export function AdminDashboard() {
   const { data: recentOrders } = useCollection(ordersQuery);
 
   const stats = [
-    { label: 'Total Creations', value: products?.length || 0, icon: Package, color: 'bg-blue-500/10 text-blue-500' },
-    { label: 'Pending Scrolls', value: recentOrders?.length || 0, icon: Scroll, color: 'bg-amber-500/10 text-amber-500' },
-    { label: 'Studio Visits', value: '4.2k', icon: TrendingUp, color: 'bg-emerald-500/10 text-emerald-500' },
-    { label: 'Artisan Rating', value: '4.9', icon: Sparkles, color: 'bg-purple-500/10 text-purple-500' },
+    { 
+      label: 'Total Creations', 
+      value: products?.length || 0, 
+      icon: Package, 
+      color: 'bg-primary/10 text-primary' 
+    },
+    { 
+      label: 'Pending Scrolls', 
+      value: recentOrders?.filter(o => o.status === 'pending').length || 0, 
+      icon: Scroll, 
+      color: 'bg-accent/10 text-accent' 
+    },
   ];
 
   return (
     <div className="space-y-12">
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {stats.map((stat, idx) => (
           <div key={idx} className="bg-white p-8 rounded-[3rem] shadow-sm border border-primary/5 flex items-center gap-6 hover:shadow-xl transition-all group">
             <div className={cn("w-14 h-14 rounded-full flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform", stat.color)}>
@@ -75,7 +78,10 @@ export function AdminDashboard() {
                     </div>
                   </div>
                   <div className="text-right">
-                    <span className="text-[8px] font-bold uppercase tracking-widest px-3 py-1 bg-accent/10 text-accent rounded-full">
+                    <span className={cn(
+                      "text-[8px] font-bold uppercase tracking-widest px-3 py-1 rounded-full",
+                      order.status === 'pending' ? "bg-amber-100 text-amber-600" : "bg-emerald-100 text-emerald-600"
+                    )}>
                       {order.status}
                     </span>
                     <p className="text-[8px] text-primary/20 font-bold uppercase tracking-widest mt-2">
@@ -88,40 +94,33 @@ export function AdminDashboard() {
           </div>
         </div>
 
-        {/* Quick Insights */}
+        {/* Studio Pulse - Reset to Normal Overview */}
         <div className="lg:col-span-5 bg-primary text-white rounded-[4rem] p-12 shadow-2xl relative overflow-hidden">
           <div className="absolute top-0 right-0 w-60 h-60 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl"></div>
           
-          <div className="relative z-10 space-y-10">
+          <div className="relative z-10 h-full flex flex-col justify-between">
             <div>
-              <h3 className="font-headline text-3xl mb-4">Studio Pulse</h3>
-              <p className="text-white/40 text-xs italic font-medium leading-relaxed">
-                "Your boutique continues to weave stories for the heritage heart. Keep the loops high."
+              <h3 className="font-headline text-3xl mb-6">Studio Pulse</h3>
+              <p className="text-white/60 text-sm italic font-medium leading-relaxed mb-8">
+                "Welcome back, Master Weaver. The boutique is flowing with the rhythm of your hands. Your inventory and scrolls are being tracked in real-time."
               </p>
-            </div>
-
-            <div className="space-y-8">
-              {[
-                { label: 'Popular Category', value: 'Forever Flowers', progress: 75 },
-                { label: 'Inventory Health', value: 'High', progress: 90 },
-                { label: 'Customer Retention', value: '12% Growth', progress: 65 },
-              ].map((insight, idx) => (
-                <div key={idx} className="space-y-3">
-                  <div className="flex justify-between text-[9px] font-bold uppercase tracking-widest text-white/50">
-                    <span>{insight.label}</span>
-                    <span className="text-white">{insight.value}</span>
-                  </div>
-                  <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
-                    <div className="h-full bg-accent rounded-full" style={{ width: `${insight.progress}%` }}></div>
-                  </div>
+              
+              <div className="space-y-6 pt-6 border-t border-white/10">
+                <div className="flex justify-between items-center">
+                  <span className="text-[9px] font-bold uppercase tracking-widest text-white/40">Inventory Status</span>
+                  <span className="text-[9px] font-bold uppercase tracking-widest text-accent">Active</span>
                 </div>
-              ))}
+                <div className="flex justify-between items-center">
+                  <span className="text-[9px] font-bold uppercase tracking-widest text-white/40">Boutique Visibility</span>
+                  <span className="text-[9px] font-bold uppercase tracking-widest text-accent">Live</span>
+                </div>
+              </div>
             </div>
 
-            <div className="pt-6 border-t border-white/10 flex items-center gap-4">
+            <div className="pt-12 flex items-center gap-4">
               <Clock className="w-4 h-4 text-accent" />
               <span className="text-[9px] font-bold uppercase tracking-widest text-white/30">
-                Last updated: {new Date().toLocaleTimeString()}
+                Loom synchronized: {new Date().toLocaleTimeString()}
               </span>
             </div>
           </div>

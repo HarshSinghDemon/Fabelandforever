@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useMemo } from 'react';
@@ -21,7 +20,7 @@ export function Hero() {
     if (!db) return null;
     return doc(db, 'settings', 'hero');
   }, [db]);
-  const { data: heroSetting, loading } = useDoc(heroSettingRef);
+  const { data: heroSetting } = useDoc(heroSettingRef);
 
   const plugin = React.useRef(
     Autoplay({ delay: 8000, stopOnInteraction: false })
@@ -70,21 +69,21 @@ export function Hero() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/80 pointer-events-none z-[5]"></div>
       </div>
       
-      <div className="container mx-auto px-6 relative z-10 h-full flex items-center justify-center text-center text-white pt-20">
-        <div className="max-w-7xl mx-auto space-y-12 md:space-y-16">
+      <div className="container mx-auto px-6 relative z-10 h-full flex items-center justify-center text-center text-white pt-10 md:pt-20">
+        <div className="max-w-7xl mx-auto space-y-8 md:space-y-16">
           <div className="overflow-hidden">
-             <span className="text-[10px] md:text-sm font-black uppercase tracking-[1em] md:tracking-[1.5em] text-white/50 block animate-loop-in opacity-0">
+             <span className="text-[9px] md:text-sm font-black uppercase tracking-[0.8em] md:tracking-[1.5em] text-white/50 block animate-loop-in opacity-0">
                Hand-Stitched Legacy
              </span>
           </div>
 
           <div className="relative">
-            <h1 className="font-headline text-7xl sm:text-9xl md:text-[12rem] leading-[0.85] tracking-tighter drop-shadow-2xl flex flex-col items-center select-none">
+            <h1 className="font-headline text-6xl sm:text-8xl md:text-[12rem] leading-[0.85] tracking-tighter drop-shadow-2xl flex flex-col items-center select-none">
               <span className="block overflow-hidden">
                 <span className="block animate-loop-in stagger-1 opacity-0">Fable</span>
               </span>
               <div className="h-0 relative z-20 flex justify-center items-center">
-                <span className="font-fancy text-8xl md:text-[14rem] text-accent/90 block animate-loop-in stagger-2 opacity-0 -rotate-3">
+                <span className="font-fancy text-7xl md:text-[14rem] text-accent/90 block animate-loop-in stagger-2 opacity-0 -rotate-3">
                   &
                 </span>
               </div>
@@ -94,36 +93,36 @@ export function Hero() {
             </h1>
           </div>
           
-          <div className="space-y-8 max-w-2xl mx-auto">
-            <p className="text-[11px] md:text-base leading-relaxed font-black uppercase tracking-[0.4em] text-white/70 animate-loop-in stagger-4 opacity-0">
+          <div className="space-y-6 md:space-y-8 max-w-2xl mx-auto pt-4 md:pt-0">
+            <p className="text-[10px] md:text-base leading-relaxed font-black uppercase tracking-[0.3em] md:tracking-[0.4em] text-white/70 animate-loop-in stagger-4 opacity-0">
               Bespoke crochet collections designed for the heritage heart.
             </p>
             
-            <div className="pt-6 flex flex-col sm:flex-row items-center justify-center gap-8 md:gap-12 animate-loop-in stagger-4 opacity-0">
-              <Button asChild className="bg-white text-primary hover:bg-white/90 px-12 md:px-20 h-16 md:h-20 rounded-none text-[10px] md:text-[12px] font-black uppercase tracking-[0.5em] transition-all hover:scale-105 active:scale-95 shadow-2xl group">
-                <Link href="#shop" className="flex items-center">
-                  Explore Collection <ArrowRight className="ml-4 w-5 h-5 group-hover:translate-x-2 transition-transform" />
+            <div className="pt-4 md:pt-6 flex flex-col sm:flex-row items-center justify-center gap-6 md:gap-12 animate-loop-in stagger-4 opacity-0">
+              <Button asChild className="bg-white text-primary hover:bg-white/90 px-10 md:px-20 h-14 md:h-20 rounded-none text-[9px] md:text-[12px] font-black uppercase tracking-[0.4em] md:tracking-[0.5em] transition-all hover:scale-105 active:scale-95 shadow-2xl group w-full sm:w-auto">
+                <Link href="#shop" className="flex items-center justify-center">
+                  Explore Collection <ArrowRight className="ml-3 md:ml-4 w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-2 transition-transform" />
                 </Link>
               </Button>
               
               <Link 
                 href="/about" 
-                className="text-[10px] md:text-[12px] font-black uppercase tracking-[0.5em] text-white/90 hover:text-white transition-all border-b-2 border-white/20 pb-2 hover:border-white group flex items-center gap-4"
+                className="text-[10px] md:text-[12px] font-black uppercase tracking-[0.4em] md:tracking-[0.5em] text-white/90 hover:text-white transition-all border-b-2 border-white/20 pb-2 hover:border-white group flex items-center gap-4"
               >
-                Read Our Story <Sparkles className="w-5 h-5 text-accent group-hover:rotate-45 transition-transform" />
+                Read Our Story <Sparkles className="w-4 h-4 md:w-5 md:h-5 text-accent group-hover:rotate-45 transition-transform" />
               </Link>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="absolute bottom-12 md:bottom-20 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-6 opacity-40">
-        <div className="w-[1px] h-20 bg-gradient-to-b from-white via-white/20 to-transparent overflow-hidden relative">
+      <div className="absolute bottom-10 md:bottom-20 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-4 md:gap-6 opacity-40">
+        <div className="w-[1px] h-12 md:h-20 bg-gradient-to-b from-white via-white/20 to-transparent overflow-hidden relative">
           <div className="absolute top-0 left-0 w-full h-1/2 bg-white/60 animate-soft-pulse"></div>
         </div>
         <div className="flex flex-col items-center gap-2">
-          <MousePointer2 className="w-5 h-5 text-white/60 animate-float" />
-          <span className="text-[9px] font-black uppercase tracking-[1em] text-white/60">Scroll</span>
+          <MousePointer2 className="w-4 h-4 md:w-5 md:h-5 text-white/60 animate-float" />
+          <span className="text-[8px] md:text-[9px] font-black uppercase tracking-[0.8em] md:tracking-[1em] text-white/60">Scroll</span>
         </div>
       </div>
     </section>

@@ -1,4 +1,3 @@
-
 "use client";
 
 import React from 'react';
@@ -57,7 +56,7 @@ export function Hero() {
         <div className="flex h-full">
           {heroImages.map((url: string, index: number) => (
             <div key={`${url}-${index}`} className="relative flex-[0_0_100%] min-w-0 h-full overflow-hidden">
-              <div className="absolute inset-0 animate-in fade-in duration-1000">
+              <div className="absolute inset-0">
                 <Image
                   src={url}
                   alt={`Artisanal Story ${index + 1}`}
@@ -78,25 +77,25 @@ export function Hero() {
         <div className="max-w-6xl mx-auto space-y-12 md:space-y-16">
           <div className="space-y-6 md:space-y-10">
             <div className="overflow-hidden mb-6">
-               <span className="text-[10px] md:text-[12px] font-bold uppercase tracking-[1em] md:tracking-[1.5em] text-white/40 block animate-loop-in opacity-0 fill-mode-forwards">Hand-Stitched Legacy</span>
+               <span className="text-[10px] md:text-[12px] font-bold uppercase tracking-[1em] md:tracking-[1.5em] text-white/40 block animate-loop-in opacity-0">Hand-Stitched Legacy</span>
             </div>
             <h1 className="font-headline text-6xl sm:text-8xl md:text-[11rem] leading-none tracking-tighter drop-shadow-2xl">
               <span className="block overflow-hidden">
-                <span className="block animate-loop-in stagger-1 opacity-0 fill-mode-forwards">Artisan</span>
+                <span className="block animate-loop-in stagger-1 opacity-0">Artisan</span>
               </span>
               <span className="block overflow-hidden -mt-4 md:-mt-10">
-                <span className="italic block animate-loop-in stagger-2 opacity-0 fill-mode-forwards">Threads</span>
+                <span className="italic block animate-loop-in stagger-2 opacity-0">Threads</span>
               </span>
             </h1>
           </div>
           
           <div className="overflow-hidden">
-            <p className="text-[11px] md:text-sm max-w-sm md:max-w-2xl mx-auto leading-relaxed font-bold uppercase tracking-[0.4em] text-white/60 animate-loop-in stagger-3 opacity-0 fill-mode-forwards">
-              Bespoke crochet treasures designed for the heritage heart.
+            <p className="text-[11px] md:text-sm max-w-sm md:max-w-2xl mx-auto leading-relaxed font-bold uppercase tracking-[0.4em] text-white/60 animate-loop-in stagger-3 opacity-0">
+              Bespoke crochet collections designed for the heritage heart.
             </p>
           </div>
           
-          <div className="pt-8 md:pt-16 flex flex-col sm:flex-row items-center justify-center gap-8 md:gap-12 animate-loop-in stagger-3 opacity-0 fill-mode-forwards">
+          <div className="pt-8 md:pt-16 flex flex-col sm:flex-row items-center justify-center gap-8 md:gap-12 animate-loop-in stagger-3 opacity-0">
             <Button asChild className="bg-white text-primary hover:bg-white/90 px-12 md:px-20 h-14 md:h-20 rounded-none text-[9px] md:text-[11px] font-bold uppercase tracking-[0.5em] transition-all hover:scale-105 active:scale-95 shadow-2xl shadow-black/40 group overflow-hidden">
               <Link href="#shop" className="flex items-center relative z-10">
                 Shop Collection <ArrowRight className="ml-4 w-4 h-4 group-hover:translate-x-2 transition-transform" />

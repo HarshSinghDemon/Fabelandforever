@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useEffect } from 'react';
@@ -163,13 +162,13 @@ export function Navigation() {
                 {loadingProducts && searchQuery && (
                   <div className="flex flex-col items-center justify-center py-12 gap-3">
                     <Loader2 className="w-6 h-6 text-accent animate-spin" />
-                    <p className="text-[9px] font-bold uppercase tracking-widest text-primary/40 italic">Weaving results...</p>
+                    <p className="text-[9px] font-bold uppercase tracking-widest text-primary/40 italic">Searching collection...</p>
                   </div>
                 )}
                 
                 {searchQuery && filteredProducts.length === 0 && !loadingProducts ? (
                   <div className="text-center py-12 space-y-3">
-                    <p className="text-primary/60 italic font-medium">"No creations match this query."</p>
+                    <p className="text-primary/60 italic font-medium">"No pieces match this query."</p>
                   </div>
                 ) : (
                   <div className="flex flex-col gap-3">
@@ -207,26 +206,6 @@ export function Navigation() {
                         <ArrowRight className="w-4 h-4 text-primary/10 group-hover:text-accent group-hover:translate-x-1 transition-all" />
                       </Link>
                     ))}
-                  </div>
-                )}
-                
-                {!searchQuery && (
-                  <div className="py-6 space-y-6">
-                    <div className="flex items-center gap-3 text-primary/40 italic text-[11px] font-medium">
-                      <Sparkles className="w-4 h-4 text-accent/40" />
-                      <span>Popular collections</span>
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      {['Flowers', 'Amigurumi', 'Bag charm', 'Bandana'].map(tag => (
-                        <button 
-                          key={tag}
-                          onClick={() => setSearchQuery(tag)}
-                          className="px-5 py-2.5 rounded-full border border-primary/5 text-[9px] font-bold uppercase tracking-[0.2em] text-primary/60 hover:border-accent hover:text-accent hover:bg-white transition-all shadow-sm"
-                        >
-                          {tag}
-                        </button>
-                      ))}
-                    </div>
                   </div>
                 )}
               </div>

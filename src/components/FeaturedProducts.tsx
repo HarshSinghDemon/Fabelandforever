@@ -1,4 +1,3 @@
-
 "use client";
 
 import React from 'react';
@@ -132,14 +131,6 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
             <div className="hidden md:flex justify-center gap-6 mt-20">
               <CarouselPrevious className="static translate-y-0 h-16 w-16 border-primary/10 hover:bg-primary hover:text-white transition-all shadow-xl rounded-full" />
               <CarouselNext className="static translate-y-0 h-16 w-16 border-primary/10 hover:bg-primary hover:text-white transition-all shadow-xl rounded-full" />
-            </div>
-
-            <div className="md:hidden flex justify-center mt-12">
-              <div className="flex gap-2">
-                <div className="w-12 h-1 bg-primary/10 rounded-full overflow-hidden">
-                  <div className="w-1/3 h-full bg-accent rounded-full"></div>
-                </div>
-              </div>
             </div>
           </Carousel>
         </div>

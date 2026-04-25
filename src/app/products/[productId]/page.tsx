@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { use, useState, useEffect } from 'react';
@@ -138,7 +137,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
       
       <div className="container mx-auto px-4 md:px-6 max-w-7xl flex-1 flex flex-col lg:flex-row gap-12 pt-24 lg:pt-40 pb-24">
         
-        {/* Left Column: Image Gallery (PC constrained, Mobile Fluid) */}
+        {/* Left Column: Image Gallery */}
         <div className="w-full lg:w-1/2 flex flex-col gap-4">
           <Link href="/shop" className="hidden lg:flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-primary/40 hover:text-primary transition-colors mb-4">
             <ArrowLeft className="w-4 h-4" /> Back to Collection
@@ -148,7 +147,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
               <CarouselContent>
                 {galleryImages.map((img, idx) => (
                   <CarouselItem key={idx}>
-                    <div className="relative aspect-[4/5] w-full">
+                    <div className="relative aspect-[4/5] w-full max-h-[70vh]">
                       <Image 
                         src={img} 
                         alt={product.title} 
@@ -156,9 +155,6 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
                         className="object-cover"
                         priority={idx === 0}
                       />
-                      <div className="absolute top-6 left-6 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg border border-primary/5">
-                        <Info className="w-5 h-5 text-primary/40 rotate-180" />
-                      </div>
                     </div>
                   </CarouselItem>
                 ))}
@@ -170,7 +166,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
           </div>
         </div>
 
-        {/* Right Column: Product Narrative & Actions */}
+        {/* Right Column: Details & Actions */}
         <div className="w-full lg:w-1/2 space-y-10 lg:pl-8">
           <div className="space-y-4">
             <p className="text-[10px] font-bold uppercase tracking-[0.5em] text-accent">Fable & Forever</p>
@@ -198,24 +194,15 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
             </div>
           </div>
 
-          {/* Actions Matrix */}
           <div className="space-y-8">
             <div className="space-y-3">
               <label className="text-[10px] font-bold uppercase tracking-[0.3em] text-primary/40 ml-1">Quantity Selection</label>
               <div className="flex items-center border border-primary/10 rounded-2xl h-16 bg-white overflow-hidden max-w-[200px]">
-                <button 
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="flex-1 flex items-center justify-center hover:bg-primary/5 transition-colors h-full"
-                >
+                <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="flex-1 flex items-center justify-center hover:bg-primary/5 transition-colors h-full">
                   <Minus className="w-4 h-4" />
                 </button>
-                <div className="w-16 flex items-center justify-center font-bold text-primary text-lg">
-                  {quantity}
-                </div>
-                <button 
-                  onClick={() => setQuantity(quantity + 1)}
-                  className="flex-1 flex items-center justify-center hover:bg-primary/5 transition-colors h-full"
-                >
+                <div className="w-16 flex items-center justify-center font-bold text-primary text-lg">{quantity}</div>
+                <button onClick={() => setQuantity(quantity + 1)} className="flex-1 flex items-center justify-center hover:bg-primary/5 transition-colors h-full">
                   <Plus className="w-4 h-4" />
                 </button>
               </div>
@@ -240,7 +227,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
             <div className="pt-2">
               <Dialog open={isCustomOpen} onOpenChange={setIsCustomOpen}>
                 <DialogTrigger asChild>
-                  <button className="w-full flex items-center justify-center gap-4 py-8 rounded-[2rem] bg-accent/10 text-accent hover:bg-accent/20 transition-all group border border-accent/10 shadow-sm">
+                  <button className="w-full flex items-center justify-center gap-4 py-8 rounded-[2rem] bg-accent/15 text-accent hover:bg-accent/25 transition-all group border border-accent/20 shadow-sm ring-1 ring-accent/10">
                     <Sparkles className="w-5 h-5 group-hover:rotate-45 transition-transform" /> 
                     <span className="text-[11px] font-bold uppercase tracking-[0.5em]">Customize Request</span>
                   </button>
@@ -256,22 +243,14 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
                     </DialogDescription>
                   </DialogHeader>
                   <div className="grid gap-4 pt-8">
-                    <a 
-                      href="https://www.instagram.com/fable.and.forever/" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-between p-6 bg-paper rounded-3xl hover:bg-accent/5 transition-all group"
-                    >
+                    <a href="https://www.instagram.com/fable.and.forever/" target="_blank" rel="noopener noreferrer" className="flex items-center justify-between p-6 bg-paper rounded-3xl hover:bg-accent/5 transition-all group">
                       <div className="flex items-center gap-4">
                         <Instagram className="w-6 h-6 text-accent" />
                         <span className="text-[10px] font-bold uppercase tracking-widest">Instagram DM</span>
                       </div>
                       <ChevronRight className="w-4 h-4 text-accent/30 group-hover:translate-x-1 transition-transform" />
                     </a>
-                    <a 
-                      href="mailto:fableandforevercompany@gmail.com"
-                      className="flex items-center justify-between p-6 bg-paper rounded-3xl hover:bg-primary/5 transition-all group"
-                    >
+                    <a href="mailto:fableandforevercompany@gmail.com" className="flex items-center justify-between p-6 bg-paper rounded-3xl hover:bg-primary/5 transition-all group">
                       <div className="flex items-center gap-4">
                         <Mail className="w-6 h-6 text-primary" />
                         <span className="text-[10px] font-bold uppercase tracking-widest">Direct Email</span>
@@ -284,14 +263,8 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
             </div>
           </div>
 
-          {/* Heritage Trust Grid */}
           <div className="grid grid-cols-4 gap-4 py-12 border-y border-primary/5">
-            {[
-              { icon: Leaf, label: 'Eco' },
-              { icon: Feather, label: 'Hand' },
-              { icon: Heart, label: 'Pure' },
-              { icon: Undo2, label: 'Soft' }
-            ].map((item, i) => (
+            {[ { icon: Leaf, label: 'Eco' }, { icon: Feather, label: 'Hand' }, { icon: Heart, label: 'Pure' }, { icon: Undo2, label: 'Soft' } ].map((item, i) => (
               <div key={i} className="flex flex-col items-center gap-3">
                 <div className="w-14 h-14 bg-paper rounded-full flex items-center justify-center text-primary/20">
                   <item.icon className="w-6 h-6" />
@@ -301,24 +274,11 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
             ))}
           </div>
 
-          {/* Product Narrative */}
           <div className="space-y-6">
             <h4 className="text-[10px] font-bold uppercase tracking-[0.4em] text-primary/60">The Story</h4>
             <p className="text-base leading-relaxed text-primary/70 italic font-medium">
               "{product.description}"
             </p>
-            <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
-              {[
-                "100% Cotton & Wool Blend",
-                "Heritage Craft from Kolkata",
-                "Hypoallergenic artisanal filling",
-                "Unique slow-made forever loop"
-              ].map((spec, i) => (
-                <li key={i} className="flex items-center gap-4 text-[10px] font-bold uppercase tracking-widest text-primary/40">
-                  <div className="w-1.5 h-1.5 bg-accent rounded-full" /> {spec}
-                </li>
-              ))}
-            </ul>
           </div>
         </div>
       </div>

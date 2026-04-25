@@ -66,9 +66,24 @@
   transform: translateY(0) scale(1);
 }
 
-.stagger-1 { transition-delay: 0.2s; }
-.stagger-2 { transition-delay: 0.4s; }
-.stagger-3 { transition-delay: 0.6s; }
+@keyframes loop-in {
+  from {
+    opacity: 0;
+    transform: translateY(60px) skewY(2deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) skewY(0deg);
+  }
+}
+
+.animate-loop-in {
+  animation: loop-in 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.stagger-1 { transition-delay: 0.2s; animation-delay: 0.2s; }
+.stagger-2 { transition-delay: 0.4s; animation-delay: 0.4s; }
+.stagger-3 { transition-delay: 0.6s; animation-delay: 0.6s; }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
@@ -101,16 +116,22 @@
   background-color: hsl(var(--background));
 }
 
-@keyframes border-dash {
-  to { stroke-dashoffset: -20; }
+@keyframes soft-pulse {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.6; }
+}
+.animate-soft-pulse {
+  animation: soft-pulse 4s ease-in-out infinite;
 }
 
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+.stitching-border {
+  position: relative;
 }
-.shimmer-text {
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-  background-size: 200% 100%;
-  animation: shimmer 3s infinite;
+.stitching-border::after {
+  content: '';
+  position: absolute;
+  inset: 10px;
+  border: 1px dashed rgba(0,0,0,0.05);
+  pointer-events: none;
+  border-radius: inherit;
 }

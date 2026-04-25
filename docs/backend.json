@@ -1,292 +1,67 @@
 {
   "entities": {
     "Product": {
-      "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "Product",
       "type": "object",
-      "description": "Represents a handcrafted crochet product available for sale on The Crochet Studio.",
+      "description": "Represents a handcrafted crochet product.",
       "properties": {
-        "id": {
-          "type": "string",
-          "description": "Unique identifier for the Product entity."
-        },
-        "name": {
-          "type": "string",
-          "description": "The name of the crochet product."
-        },
-        "description": {
-          "type": "string",
-          "description": "A detailed description of the product, highlighting its features and craftsmanship."
-        },
-        "price": {
-          "type": "number",
-          "description": "The selling price of the product."
-        },
-        "imageUrl": {
-          "type": "string",
-          "description": "URL to the main image of the product for display in galleries.",
-          "format": "uri"
-        },
-        "isFeatured": {
-          "type": "boolean",
-          "description": "A flag indicating if the product should be prominently displayed in the featured products gallery."
-        },
-        "category": {
-          "type": "string",
-          "description": "The category to which the product belongs (e.g., 'Blankets', 'Apparel', 'Home Decor')."
-        },
-        "material": {
-          "type": "string",
-          "description": "The primary material used to create the product (e.g., 'Wool', 'Cotton', 'Acrylic')."
-        },
-        "dimensions": {
-          "type": "string",
-          "description": "The physical dimensions or size of the product (e.g., '50x60 inches', 'Adult Small')."
-        },
-        "createdAt": {
-          "type": "string",
-          "description": "Timestamp indicating when the product record was created.",
-          "format": "date-time"
-        },
-        "updatedAt": {
-          "type": "string",
-          "description": "Timestamp indicating when the product record was last updated.",
-          "format": "date-time"
-        }
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "price": { "type": "number" },
+        "image": { "type": "string" },
+        "category": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
       },
-      "required": [
-        "id",
-        "name",
-        "description",
-        "price",
-        "imageUrl",
-        "isFeatured",
-        "category",
-        "material",
-        "createdAt",
-        "updatedAt"
-      ]
+      "required": ["title", "price", "image"]
     },
     "CustomOrder": {
-      "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "CustomOrder",
       "type": "object",
-      "description": "Represents a bespoke crochet order placed by a customer, detailing their specifications and order status.",
+      "description": "Represents a customer order.",
       "properties": {
-        "id": {
-          "type": "string",
-          "description": "Unique identifier for the CustomOrder entity."
-        },
-        "customerName": {
-          "type": "string",
-          "description": "The full name of the customer who placed the custom order."
-        },
-        "customerEmail": {
-          "type": "string",
-          "description": "The email address for contacting the customer regarding their order.",
-          "format": "email"
-        },
-        "customerPhone": {
-          "type": "string",
-          "description": "An optional phone number for contacting the customer."
-        },
-        "orderDescription": {
-          "type": "string",
-          "description": "A detailed description provided by the customer for their desired custom crochet item."
-        },
-        "designIdeaId": {
-          "type": "string",
-          "description": "Reference to a DesignIdea entity if the custom order originated from an AI-generated idea. (Relationship: DesignIdea 1:0..1 CustomOrder)"
-        },
-        "status": {
-          "type": "string",
-          "description": "The current processing status of the custom order (e.g., 'Pending', 'Confirmed', 'In Progress', 'Completed', 'Shipped', 'Cancelled')."
-        },
-        "datePlaced": {
-          "type": "string",
-          "description": "The date and time when the custom order was placed.",
-          "format": "date-time"
-        },
-        "estimatedCompletionDate": {
-          "type": "string",
-          "description": "The estimated date by which the custom order is expected to be completed.",
-          "format": "date"
-        },
-        "finalPrice": {
-          "type": "number",
-          "description": "The final agreed-upon price for the custom order, once details are finalized."
-        },
-        "notes": {
-          "type": "string",
-          "description": "Internal notes or remarks about the custom order for the studio's reference."
-        },
-        "colorPalette": {
-          "type": "array",
-          "description": "An array of preferred colors specified by the customer for their custom order.",
-          "items": {
-            "type": "string"
-          }
-        },
-        "materialPreferences": {
-          "type": "array",
-          "description": "An array of preferred materials specified by the customer for their custom order.",
-          "items": {
-            "type": "string"
-          }
-        },
-        "sizePreferences": {
-          "type": "string",
-          "description": "Specific size preferences or measurements provided by the customer for the custom order."
-        }
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "customerName": { "type": "string" },
+        "customerPhone": { "type": "string" },
+        "customerAddress": { "type": "string" },
+        "total": { "type": "number" },
+        "status": { "type": "string", "enum": ["pending", "shipped", "delivered"] },
+        "items": { "type": "array", "items": { "type": "object" } },
+        "createdAt": { "type": "string", "format": "date-time" }
       },
-      "required": [
-        "id",
-        "customerName",
-        "customerEmail",
-        "orderDescription",
-        "status",
-        "datePlaced"
-      ]
+      "required": ["customerName", "customerPhone", "total", "status"]
     },
-    "DesignIdea": {
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "title": "DesignIdea",
+    "AppSetting": {
+      "title": "AppSetting",
       "type": "object",
-      "description": "Represents a crochet design idea generated by the AI tool based on customer input, which can inspire custom orders.",
+      "description": "Site-wide configuration settings (e.g., hero visuals).",
       "properties": {
-        "id": {
-          "type": "string",
-          "description": "Unique identifier for the DesignIdea entity."
-        },
-        "ideaText": {
-          "type": "string",
-          "description": "The textual description of the crochet design idea generated by the AI."
-        },
-        "keywords": {
-          "type": "array",
-          "description": "A list of keywords or tags associated with the design idea for searchability and categorization.",
-          "items": {
-            "type": "string"
-          }
-        },
-        "generatedAt": {
-          "type": "string",
-          "description": "The date and time when the design idea was generated by the AI.",
-          "format": "date-time"
-        },
-        "customerInput": {
-          "type": "string",
-          "description": "The raw text input provided by the customer to the AI tool for generating this idea."
-        },
-        "suggestedColors": {
-          "type": "array",
-          "description": "An array of colors suggested by the AI for this design idea.",
-          "items": {
-            "type": "string"
-          }
-        },
-        "suggestedMaterials": {
-          "type": "array",
-          "description": "An array of materials suggested by the AI for this design idea.",
-          "items": {
-            "type": "string"
-          }
-        },
-        "suggestedItemType": {
-          "type": "string",
-          "description": "The type of crochet item suggested by the AI (e.g., 'blanket', 'sweater', 'amigurumi')."
-        }
-      },
-      "required": [
-        "id",
-        "ideaText",
-        "keywords",
-        "generatedAt",
-        "customerInput"
-      ]
+        "value": { "type": "string" },
+        "values": { "type": "array", "items": { "type": "string" } },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      }
     }
   },
   "auth": {
-    "providers": [
-      "password",
-      "anonymous"
-    ]
+    "providers": ["password", "anonymous"]
   },
   "firestore": {
-    "structure": [
-      {
-        "path": "/products/{productId}",
-        "definition": {
-          "entityName": "Product",
-          "schema": {
-            "$ref": "#/backend/entities/Product"
-          },
-          "description": "Collection for all handcrafted crochet products available for sale. These documents are publicly readable by all users, but write access is restricted to authenticated administrators. All documents within this collection share the same security posture for read access.",
-          "params": [
-            {
-              "name": "productId",
-              "description": "The unique identifier for a specific product."
-            }
-          ]
-        }
-      },
-      {
-        "path": "/users/{userId}/custom_orders/{customOrderId}",
-        "definition": {
-          "entityName": "CustomOrder",
-          "schema": {
-            "$ref": "#/backend/entities/CustomOrder"
-          },
-          "description": "Subcollection for custom crochet orders placed by a specific user. Each document includes a denormalized 'ownerId' field, which matches the '{userId}' in the path, for authorization independence and to enable secure collection group queries by administrators. Users can read and update their own custom orders.",
-          "params": [
-            {
-              "name": "userId",
-              "description": "The unique identifier of the customer who placed the custom order."
-            },
-            {
-              "name": "customOrderId",
-              "description": "The unique identifier for a specific custom order."
-            }
-          ]
-        }
-      },
-      {
-        "path": "/users/{userId}/design_ideas/{designIdeaId}",
-        "definition": {
-          "entityName": "DesignIdea",
-          "schema": {
-            "$ref": "#/backend/entities/DesignIdea"
-          },
-          "description": "Subcollection for AI-generated design ideas created for a specific user. Each document includes a denormalized 'ownerId' field, which matches the '{userId}' in the path, for authorization independence and to enable secure collection group queries by administrators. Users can read and manage their own design ideas.",
-          "params": [
-            {
-              "name": "userId",
-              "description": "The unique identifier of the customer for whom the design idea was generated."
-            },
-            {
-              "name": "designIdeaId",
-              "description": "The unique identifier for a specific design idea."
-            }
-          ]
-        }
-      },
-      {
-        "path": "/roles_admin/{adminUid}",
-        "definition": {
-          "entityName": "AdminRole",
-          "schema": {
-            "$ref": "#/backend/entities/AdminRole"
-          },
-          "description": "Top-level collection used for Database Access Control (DBAC) to identify administrative users. The existence of a document at this path for a given UID grants administrative privileges (e.g., managing products, viewing all custom orders/design ideas). Documents contain minimal data, primarily serving as a marker for authorization checks.",
-          "params": [
-            {
-              "name": "adminUid",
-              "description": "The unique identifier of a user with administrative privileges."
-            }
-          ]
-        }
-      }
-    ],
-    "reasoning": "The Firestore structure for 'The Crochet Studio' is designed with a strong emphasis on Authorization Independence, Structural Segregation, and clear Access Modeling to ensure robust, scalable, and easily debuggable security rules. \n\n1.  **Products Collection (`/products/{productId}`):** Products are public-facing and available to all users. This collection serves as a public catalog, allowing any user (authenticated or unauthenticated) to read product details. Write operations (create, update, delete) on products will be restricted to administrative users, leveraging a separate `roles_admin` collection for role-based access control. This separation ensures that public read access does not conflict with restricted write access, maintaining a homogeneous security posture for all documents within this collection. This structure inherently supports QAPs as 'list' operations are universally readable.\n\n2.  **User-Specific Collections (`/users/{userId}/custom_orders/{customOrderId}` and `/users/{userId}/design_ideas/{designIdeaId}`):**\n    *   **Structural Segregation:** Custom orders and AI-generated design ideas are intrinsically tied to specific users. By nesting these collections under `/users/{userId}`, we achieve strict path-based ownership. This means a user can only access documents where their `uid` matches the `{userId}` wildcard in the path, making user-specific authorization rules extremely simple and explicit (`request.auth.uid == userId`).\n    *   **Authorization Independence via Denormalization:** To fulfill the critical mandate of Authorization Independence (Strategy A) and support secure Collection Group Queries (QAPs for admins), each `CustomOrder` and `DesignIdea` document will include an explicit `ownerId` field. This `ownerId` field will duplicate the `userId` from the path (e.g., `customOrder.ownerId == request.auth.uid`). While redundant for direct user access via the path, this denormalization is crucial for enabling administrative users to securely query and list *all* custom orders or design ideas across *all* users using a collection group query without relying on expensive and insecure `get()` operations in rules to check parent documents. It also ensures atomic write operations for creating these documents.\n    *   **QAPs:** For individual users, listing their own custom orders or design ideas (e.g., `/users/myUid/custom_orders`) is inherently secure due to path-based ownership. For administrators, collection group queries on `custom_orders` or `design_ideas` will be secured by checking the denormalized `ownerId` in conjunction with their admin role, ensuring no filtering is required on the client-side.\n\n3.  **Admin Roles Collection (`/roles_admin/{adminUid}`):** This collection is used for Database Access Control (DBAC). It stores documents representing users who have administrative privileges. Security rules can check for the existence of `request.auth.uid` within this collection to grant elevated permissions (e.g., to manage products or view all custom orders/design ideas). This provides a clean, independent mechanism for role-based authorization without custom claims.\n\nThis design leverages structural segregation to simplify security contexts, denormalizes authorization data for atomic operations and efficient queries, and employs consistent access modeling patterns for clarity and debuggability."
+    "/products/{productId}": {
+      "schema": { "$ref": "#/backend/entities/Product" },
+      "description": "Public product catalog."
+    },
+    "/orders/{orderId}": {
+      "schema": { "$ref": "#/backend/entities/CustomOrder" },
+      "description": "Customer orders collection."
+    },
+    "/settings/{settingId}": {
+      "schema": { "$ref": "#/backend/entities/AppSetting" },
+      "description": "Site-wide visual configuration."
+    },
+    "/roles_admin/{adminUid}": {
+      "schema": { "type": "object" },
+      "description": "Admin role markers."
+    }
   }
 }

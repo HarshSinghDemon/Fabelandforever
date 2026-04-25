@@ -5,26 +5,10 @@ service cloud.firestore {
     /**
      * CORE PHILOSOPHY
      * This ruleset implements a robust, multi-tier authorization model for 'The Crochet Studio'.
-     * 1. Public Catalog: Products are globally viewable but only modifiable by administrators.
-     * 2. Strict User Ownership: Customer data (orders and design ideas) is nested under user-specific 
-     *    paths, ensuring path-based security and isolation.
+     * 1. Public Catalog & Visuals: Products and Site Settings are globally viewable but only modifiable by administrators.
+     * 2. Order Management: Orders can be created by anyone (guest/auth) but only managed by administrators.
      * 3. Role-Based Access Control (RBAC): A dedicated collection (/roles_admin) identifies 
      *    administrators who can oversee products and manage customer requests.
-     *
-     * DATA STRUCTURE
-     * - /products/{productId}: Global catalog.
-     * - /users/{userId}/custom_orders/{customOrderId}: Private user subcollection.
-     * - /users/{userId}/design_ideas/{designIdeaId}: Private user subcollection.
-     * - /roles_admin/{adminUid}: Admin identity markers.
-     *
-     * KEY SECURITY DECISIONS
-     * - Denormalization: Documents in user subcollections include an 'ownerId' field. This 
-     *   enables secure collection group queries for admins and provides authorization redundancy.
-     * - Prototyping Flexibility: Rules focus strictly on 'who' can access data. Explicit 
-     *   schema validation of content fields (strings, numbers, etc.) is omitted to allow 
-     *   rapid frontend iteration.
-     * - Relational Integrity: On creation of user-owned documents, the internal 'ownerId' 
-     *   is strictly validated against the path and the authenticated user's UID.
      */
 
     // --- Helper Functions ---
@@ -44,19 +28,10 @@ service cloud.firestore {
       return isSignedIn() && request.auth.uid == userId;
     }
 
-    /** Combines ownership and existence checks for updates and deletes. */
-    function isExistingOwner(userId) {
-      return resource != null && isOwner(userId);
-    }
-
     // --- Collection Rules ---
 
     /**
      * @description Rules for the product catalog. Publicly readable; Admin-only writes.
-     * @path /products/{productId}
-     * @allow (get, list) for any user (even unauthenticated). (create) for authenticated administrators.
-     * @deny (create, update, delete) for standard customers or unauthenticated users.
-     * @principle Implements Public Read with Admin-Only Writes.
      */
     match /products/{productId} {
       allow get, list: if true;
@@ -64,50 +39,39 @@ service cloud.firestore {
     }
 
     /**
-     * @description Rules for user-specific custom orders. Supports owner access and admin oversight.
-     * @path /users/{userId}/custom_orders/{customOrderId}
-     * @allow (create) if the user is the owner and the data contains their ID. (update) if the owner or an admin.
-     * @deny (list) for other users; (update) if the internal 'ownerId' is changed.
-     * @principle Enforces path-based ownership and validates relational integrity of 'ownerId'.
+     * @description Rules for site-wide visual settings (Hero, Custom Banners).
+     * Publicly readable for guest experience; Admin-only management.
      */
-    match /users/{userId}/custom_orders/{customOrderId} {
-      allow get, list: if isOwner(userId) || isAdmin();
-      
-      allow create: if isOwner(userId) && request.resource.data.ownerId == userId;
-      
-      allow update: if (isExistingOwner(userId) || isAdmin()) && request.resource.data.ownerId == resource.data.ownerId;
-      
-      allow delete: if (isExistingOwner(userId) || isAdmin());
+    match /settings/{settingId} {
+      allow get: if true;
+      allow list, write: if isAdmin();
     }
 
     /**
-     * @description Rules for AI-generated design ideas. Users manage their ideas; Admins can view them.
-     * @path /users/{userId}/design_ideas/{designIdeaId}
-     * @allow (get, list, create, update, delete) for the document owner.
-     * @deny (create) if the ownerId in data does not match the authenticated user.
-     * @principle Protects user-specific private data while allowing administrative visibility.
+     * @description Rules for orders. Anyone can place an order; only admins can list/manage.
+     */
+    match /orders/{orderId} {
+      allow create: if true;
+      allow get: if isAdmin() || (isSignedIn() && resource.data.userId == request.auth.uid);
+      allow list, update, delete: if isAdmin();
+    }
+
+    /**
+     * @description Rules for user-specific design ideas.
      */
     match /users/{userId}/design_ideas/{designIdeaId} {
       allow get, list: if isOwner(userId) || isAdmin();
-      
       allow create: if isOwner(userId) && request.resource.data.ownerId == userId;
-      
-      allow update: if (isExistingOwner(userId) || isAdmin()) && request.resource.data.ownerId == resource.data.ownerId;
-      
-      allow delete: if (isExistingOwner(userId) || isAdmin());
+      allow update, delete: if isOwner(userId) || isAdmin();
     }
 
     /**
      * @description Database Access Control (DBAC) markers for admin users.
-     * @path /roles_admin/{adminUid}
-     * @allow (get) for any signed-in user to verify status. (list) for existing admins.
-     * @deny (create, update, delete) via client SDKs to prevent privilege escalation.
-     * @principle Uses a restricted collection as a source of truth for role-based authorization.
      */
     match /roles_admin/{adminUid} {
       allow get: if isSignedIn();
       allow list: if isAdmin();
-      allow create, update, delete: if false; // Admin roles must be managed via Admin SDK/Console.
+      allow create, update, delete: if false; 
     }
   }
 }

@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useEffect } from 'react';
@@ -8,22 +7,20 @@ import { AdminProductManager } from '@/components/AdminProductManager';
 import { AdminOrderManager } from '@/components/AdminOrderManager';
 import { AdminSettingsManager } from '@/components/AdminSettingsManager';
 import { Button } from '@/components/ui/button';
-import { collection, limit, onSnapshot, query } from 'firebase/firestore';
+import { collection, orderBy, query } from 'firebase/firestore';
 import { 
   LogOut, 
   Package, 
   History, 
   Loader2, 
   Sparkles,
-  ExternalLink,
   ChevronRight,
   BarChart3,
   Settings,
   Copy,
   CheckCircle2,
   Globe,
-  Home,
-  LayoutDashboard
+  Home
 } from 'lucide-react';
 import { signOut } from 'firebase/auth';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
@@ -31,7 +28,7 @@ import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
 export default function AdminDashboard() {
-  const { user, loading } = useUser();
+  const { user, isUserLoading: loading } = useUser();
   const auth = useAuth();
   const db = useFirestore();
   const router = useRouter();
@@ -45,7 +42,7 @@ export default function AdminDashboard() {
 
   const ordersQuery = useMemoFirebase(() => {
     if (!db) return null;
-    return collection(db, 'orders');
+    return query(collection(db, 'orders'), orderBy('createdAt', 'desc'));
   }, [db]);
 
   const { data: products } = useCollection(productsQuery);
@@ -63,15 +60,19 @@ export default function AdminDashboard() {
 service cloud.firestore {
   match /databases/{database}/documents {
     match /products/{productId} {
-      allow read: if true;
-      allow write: if request.auth != null;
+      allow get, list: if true;
+      allow write: if isAdmin();
     }
     match /settings/{settingId} {
-      allow read: if true;
-      allow write: if request.auth != null;
+      allow get: if true;
+      allow write: if isAdmin();
     }
     match /orders/{orderId} {
-      allow read, write: if request.auth != null;
+      allow create: if true;
+      allow read, write: if isAdmin();
+    }
+    function isAdmin() {
+      return request.auth != null && exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid));
     }
   }
 }`;

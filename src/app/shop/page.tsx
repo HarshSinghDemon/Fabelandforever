@@ -60,7 +60,7 @@ export default function ShopPage() {
       'Bandana': "Classic artisanal headwear, where comfort meets the intricate charm of handcrafted patterns.",
       'Ribbon bouquet': "A modern twist on timeless gifts, blending textured loops with graceful ribbon accents.",
     };
-    return descriptions[category] || "Hand-stitched precision meets the warmth of our heritage treasures.";
+    return descriptions[category] || "Hand-stitched precision meets the warmth of our heritage pieces.";
   };
 
   const checkScroll = () => {
@@ -121,7 +121,7 @@ export default function ShopPage() {
     });
     toast({
       title: "Added to Basket ✨",
-      description: `${product.title} is now yours.`,
+      description: `${product.title} has been selected.`,
     });
   };
 
@@ -132,7 +132,7 @@ export default function ShopPage() {
       <Navigation />
       
       {/* Shop Hero - Elegant Editorial Entry */}
-      <section className="relative pt-32 pb-20 sm:pt-48 sm:pb-32 overflow-hidden bg-black">
+      <section className="relative pt-32 pb-20 sm:pt-48 sm:pb-32 overflow-hidden bg-black h-[40vh] sm:h-[60vh]">
         <div className="absolute inset-0 z-0">
           <Image 
             src={heroImageUrl} 
@@ -146,22 +146,22 @@ export default function ShopPage() {
         </div>
         
         <div className="container mx-auto px-6 max-w-6xl text-center relative z-10">
-          <div className="reveal-on-scroll active space-y-6">
-            <span className="text-white/40 font-bold tracking-[1em] uppercase text-[9px] mb-4 block">The Collections</span>
+          <div className="reveal-on-scroll active space-y-4 sm:space-y-6">
+            <span className="text-white/40 font-bold tracking-[1em] uppercase text-[9px] mb-4 block">Fable & Forever</span>
             <h1 className="font-headline text-5xl sm:text-9xl text-white leading-none tracking-tighter drop-shadow-2xl">
               Shop <span className="italic">Catalog.</span>
             </h1>
             <div className="w-12 h-[1px] bg-white/20 mx-auto"></div>
-            <p className="text-white/60 font-medium max-w-md mx-auto leading-relaxed italic text-sm sm:text-base">
-              "Curated treasures for the heritage home, hand-stitched with love and slow-woven loops."
+            <p className="text-white/60 font-medium max-w-md mx-auto leading-relaxed italic text-xs sm:text-sm">
+              "Curated pieces for the heritage home, hand-stitched with love and slow-woven loops."
             </p>
           </div>
         </div>
       </section>
 
       {/* Sticky Category Bar - Minimalist Rail */}
-      <div className="sticky top-16 md:top-20 z-[40] bg-white/95 backdrop-blur-2xl border-b border-primary/5 py-4 transition-all">
-        <div className="container mx-auto px-4 md:px-6 relative">
+      <div className="sticky top-16 md:top-20 z-[40] bg-white/95 backdrop-blur-2xl border-b border-primary/5 py-4">
+        <div className="container mx-auto px-4 md:px-6 relative max-w-7xl">
           <div className="relative flex items-center max-w-5xl mx-auto">
             <button 
               onClick={() => scrollByAmount('left')}
@@ -229,7 +229,7 @@ export default function ShopPage() {
             <section 
               key={category} 
               id={catId} 
-              className="py-16 sm:py-24 border-b border-primary/5 scroll-mt-40"
+              className="py-16 sm:py-32 border-b border-primary/5 scroll-mt-40"
             >
               <div className="container mx-auto px-6 max-w-7xl">
                 
@@ -247,7 +247,7 @@ export default function ShopPage() {
                 </div>
 
                 {/* 2x2 Minimalist Editorial Matrix */}
-                <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-8 md:gap-16 lg:gap-24">
+                <div className="grid grid-cols-2 lg:grid-cols-2 gap-8 md:gap-16 lg:gap-24 max-w-6xl mx-auto">
                   {catProducts.map((product) => (
                     <div 
                       key={product.id} 
@@ -260,23 +260,23 @@ export default function ShopPage() {
                             alt={product.title}
                             fill
                             className="object-cover transition-transform duration-[2s] group-hover:scale-105"
-                            sizes="(max-width: 768px) 50vw, 50vw"
+                            sizes="(max-width: 768px) 50vw, 40vw"
                           />
                         </div>
                       </Link>
                       
                       <div className="space-y-4 text-center">
                         <div className="space-y-2">
-                          <h3 className="font-headline text-lg sm:text-2xl text-primary tracking-tight truncate px-2">{product.title}</h3>
-                          <p className="font-bold text-primary/40 text-[10px] tracking-[0.3em] uppercase italic">₹ {Number(product.price).toLocaleString('en-IN')}</p>
+                          <h3 className="font-headline text-lg sm:text-3xl text-primary tracking-tight truncate px-2">{product.title}</h3>
+                          <p className="font-bold text-primary/40 text-[10px] sm:text-xs tracking-[0.3em] uppercase italic">₹ {Number(product.price).toLocaleString('en-IN')}</p>
                         </div>
                         
                         <div className="pt-2">
                           <button 
                             onClick={(e) => handleAddToCart(e, product)}
-                            className="inline-flex items-center gap-3 px-8 py-3 rounded-none border border-primary/10 text-primary hover:bg-primary hover:text-white transition-all duration-500 font-bold uppercase tracking-[0.4em] text-[8px] active:scale-95 group/btn"
+                            className="inline-flex items-center gap-3 px-8 py-4 rounded-none border border-primary/10 text-primary hover:bg-primary hover:text-white transition-all duration-500 font-bold uppercase tracking-[0.4em] text-[9px] active:scale-95 group/btn"
                           >
-                            Adopt Treasure <ShoppingBasket className="w-3 h-3 group-hover/btn:rotate-12 transition-transform" />
+                            Adopt Selection <ShoppingBasket className="w-4 h-4 group-hover/btn:rotate-12 transition-transform" />
                           </button>
                         </div>
                       </div>

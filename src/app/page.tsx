@@ -89,7 +89,7 @@ export default function Home() {
       </div>
 
       <section className="py-20 md:py-40 bg-white border-y border-primary/5 overflow-hidden">
-        <div className="container mx-auto px-6 text-center">
+        <div className="container mx-auto px-6 text-center max-w-7xl">
           <span className="text-accent font-bold tracking-[0.6em] uppercase text-[8px] md:text-[9px] mb-8 block reveal-on-scroll">Our Ethos</span>
           <h2 className="font-headline text-4xl sm:text-8xl text-primary leading-none mb-32 reveal-on-scroll">
             The <span className="italic">Process.</span>
@@ -99,7 +99,7 @@ export default function Home() {
             {[
               { icon: Feather, title: 'Pure Materials', desc: 'Sourced from local vendors, ensuring every loop starts with high quality fibers.' },
               { icon: Palette, title: 'Artisan Palette', desc: 'Colors chosen to evoke emotion and complement your heritage home.' },
-              { icon: Sparkles, title: 'Slow Stitching', desc: 'Every treasure is a labor of love, taking days to achieve perfection.' }
+              { icon: Sparkles, title: 'Slow Stitching', desc: 'Every creation is a labor of love, taking days to achieve perfection.' }
             ].map((item, idx) => (
               <div key={idx} className={`space-y-8 reveal-on-scroll stagger-${idx + 1}`}>
                 <div className="w-20 h-20 bg-paper rounded-full flex items-center justify-center mx-auto border border-primary/5 shadow-sm hover:scale-110 transition-transform duration-500 group">
@@ -117,7 +117,7 @@ export default function Home() {
       
       <section id="contact" className="py-24 md:py-48 bg-background relative overflow-hidden">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-accent/5 -skew-x-12 translate-x-1/2 pointer-events-none"></div>
-        <div className="container mx-auto px-6 max-w-6xl relative z-10">
+        <div className="container mx-auto px-6 max-w-7xl relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-start">
             <div className="reveal-on-scroll">
               <span className="text-accent font-bold tracking-[0.6em] uppercase text-[9px] mb-12 block">Connection</span>

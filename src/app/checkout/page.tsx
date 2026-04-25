@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState } from 'react';
@@ -58,7 +59,7 @@ export default function CheckoutPage() {
         clearCart();
         toast({
           title: "Order Received ✨",
-          description: "Your treasures are being prepared in our grimoire.",
+          description: "Your selections are being prepared in our scrolls.",
         });
       })
       .catch((error) => {
@@ -85,7 +86,7 @@ export default function CheckoutPage() {
           </div>
           <h1 className="font-headline text-5xl md:text-7xl text-primary mb-6">Order Received! ✨</h1>
           <p className="text-xl text-muted-foreground italic mb-10 max-w-2xl leading-relaxed">
-            "Thank you for adopting our treasures. We have safely recorded your details in our studio scrolls. We will contact you shortly via phone or email for confirmation and payment instructions."
+            "Thank you for adopting our loops. We have safely recorded your details in our studio scrolls. We will contact you shortly via phone for confirmation and payment instructions."
           </p>
           <Button asChild className="rounded-full px-10 h-16 bg-primary hover:bg-primary/90 text-lg font-bold">
             <Link href="/">Return to Boutique</Link>
@@ -106,7 +107,7 @@ export default function CheckoutPage() {
           </div>
           <h1 className="font-headline text-5xl text-primary mb-6">Your Basket is Airy...</h1>
           <p className="text-muted-foreground italic mb-10 max-w-md">
-            "It seems you haven't chosen any treasures to bring home yet. Let's find something magical."
+            "It seems you haven't chosen any loops to bring home yet. Let's find something magical."
           </p>
           <Button asChild className="rounded-full px-10 h-14 bg-primary hover:bg-primary/90">
             <Link href="/#shop">Explore Collections</Link>
@@ -121,7 +122,7 @@ export default function CheckoutPage() {
     <main className="min-h-screen bg-paper">
       <Navigation />
       
-      <div className="pt-40 pb-24 container mx-auto px-6 max-w-6xl">
+      <div className="pt-40 pb-24 container mx-auto px-6 max-w-7xl">
         <div className="mb-12">
           <Link 
             href="/#shop" 
@@ -136,10 +137,8 @@ export default function CheckoutPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
           <div className="lg:col-span-5 space-y-8">
             <div className="bg-white rounded-[3rem] p-10 shadow-xl border border-accent/5 stitching-border overflow-hidden relative">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl"></div>
-              
               <h3 className="font-headline text-2xl text-primary mb-8 flex items-center gap-3">
-                <Package className="w-6 h-6 text-accent" /> Selected Treasures
+                <Package className="w-6 h-6 text-accent" /> Selected Pieces
               </h3>
               
               <div className="space-y-6">
@@ -171,7 +170,7 @@ export default function CheckoutPage() {
               <div className="absolute top-0 left-0 w-full h-2 bg-primary"></div>
               <div className="mb-10 text-center md:text-left">
                 <h3 className="font-headline text-3xl text-primary mb-3">Customer Information</h3>
-                <p className="text-muted-foreground font-medium italic">"Tell us where these treasures should travel."</p>
+                <p className="text-muted-foreground font-medium italic">"Tell us where these loops should travel."</p>
               </div>
 
               <form onSubmit={handleSubmitOrder} className="space-y-8">

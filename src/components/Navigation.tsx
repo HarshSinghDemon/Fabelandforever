@@ -86,7 +86,7 @@ export function Navigation() {
           ? "bg-white border-b border-primary/5 py-3 shadow-sm" 
           : "bg-transparent py-6"
       )}>
-        <div className="container mx-auto px-4 md:px-6">
+        <div className="container mx-auto px-4 md:px-6 max-w-7xl">
           <div className="flex items-center justify-between relative h-12">
             <div className="flex-shrink-0">
               <Link href="/" className="flex items-center gap-2 group">
@@ -169,7 +169,7 @@ export function Navigation() {
                 
                 {searchQuery && filteredProducts.length === 0 && !loadingProducts ? (
                   <div className="text-center py-12 space-y-3">
-                    <p className="text-primary/60 italic font-medium">"No treasures match this query."</p>
+                    <p className="text-primary/60 italic font-medium">"No creations match this query."</p>
                   </div>
                 ) : (
                   <div className="flex flex-col gap-3">

@@ -42,7 +42,7 @@ export function CartDrawer({ isLight }: CartDrawerProps) {
       <SheetContent className="w-full sm:max-w-md flex flex-col bg-background/98 backdrop-blur-2xl">
         <SheetHeader className="pb-6 border-b border-primary/5">
           <SheetTitle className="font-fancy text-3xl text-primary flex items-center gap-3">
-            Your Treasures <ShoppingBag className="text-accent" />
+            Your Selections <ShoppingBag className="text-accent" />
           </SheetTitle>
         </SheetHeader>
 

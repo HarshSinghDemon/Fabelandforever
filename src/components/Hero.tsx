@@ -1,3 +1,4 @@
+
 "use client";
 
 import React from 'react';
@@ -55,45 +56,47 @@ export function Hero() {
       <div className="absolute inset-0 z-0 overflow-hidden" ref={emblaRef}>
         <div className="flex h-full">
           {heroImages.map((url: string, index: number) => (
-            <div key={`${url}-${index}`} className="relative flex-[0_0_100%] min-w-0 h-full">
-              <Image
-                src={url}
-                alt={`Artisanal Story ${index + 1}`}
-                fill
-                className="object-cover opacity-60 scale-105 transition-transform duration-[10s] group-hover:scale-100"
-                priority={index === 0}
-                sizes="100vw"
-              />
+            <div key={`${url}-${index}`} className="relative flex-[0_0_100%] min-w-0 h-full overflow-hidden">
+              <div className="absolute inset-0 animate-in fade-in duration-1000">
+                <Image
+                  src={url}
+                  alt={`Artisanal Story ${index + 1}`}
+                  fill
+                  className="object-cover opacity-60 scale-110 transition-transform duration-[15s] ease-out-expo group-hover:scale-100"
+                  priority={index === 0}
+                  sizes="100vw"
+                />
+              </div>
             </div>
           ))}
         </div>
-        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black/90 pointer-events-none"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_black_90%)] opacity-40"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-black/90 pointer-events-none"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_black_95%)] opacity-50"></div>
       </div>
       
       <div className="container mx-auto px-6 relative z-10 h-full flex items-center justify-center text-center text-white">
         <div className="max-w-6xl mx-auto space-y-12 md:space-y-16">
           <div className="space-y-6 md:space-y-10">
             <div className="overflow-hidden mb-6">
-               <span className="text-[10px] md:text-[12px] font-bold uppercase tracking-[0.8em] md:tracking-[1.2em] text-white/50 block animate-loop-in">Hand-Stitched Legacy</span>
+               <span className="text-[10px] md:text-[12px] font-bold uppercase tracking-[1em] md:tracking-[1.5em] text-white/40 block animate-loop-in opacity-0 fill-mode-forwards">Hand-Stitched Legacy</span>
             </div>
             <h1 className="font-headline text-6xl sm:text-8xl md:text-[11rem] leading-none tracking-tighter drop-shadow-2xl">
               <span className="block overflow-hidden">
-                <span className="block animate-loop-in stagger-1">Artisan</span>
+                <span className="block animate-loop-in stagger-1 opacity-0 fill-mode-forwards">Artisan</span>
               </span>
               <span className="block overflow-hidden -mt-4 md:-mt-10">
-                <span className="italic block animate-loop-in stagger-2">Threads</span>
+                <span className="italic block animate-loop-in stagger-2 opacity-0 fill-mode-forwards">Threads</span>
               </span>
             </h1>
           </div>
           
           <div className="overflow-hidden">
-            <p className="text-[11px] md:text-sm max-w-sm md:max-w-2xl mx-auto leading-relaxed font-bold uppercase tracking-[0.4em] text-white/60 animate-loop-in stagger-3">
+            <p className="text-[11px] md:text-sm max-w-sm md:max-w-2xl mx-auto leading-relaxed font-bold uppercase tracking-[0.4em] text-white/60 animate-loop-in stagger-3 opacity-0 fill-mode-forwards">
               Bespoke crochet treasures designed for the heritage heart.
             </p>
           </div>
           
-          <div className="pt-8 md:pt-16 flex flex-col sm:flex-row items-center justify-center gap-8 md:gap-12 animate-loop-in stagger-3">
+          <div className="pt-8 md:pt-16 flex flex-col sm:flex-row items-center justify-center gap-8 md:gap-12 animate-loop-in stagger-3 opacity-0 fill-mode-forwards">
             <Button asChild className="bg-white text-primary hover:bg-white/90 px-12 md:px-20 h-14 md:h-20 rounded-none text-[9px] md:text-[11px] font-bold uppercase tracking-[0.5em] transition-all hover:scale-105 active:scale-95 shadow-2xl shadow-black/40 group overflow-hidden">
               <Link href="#shop" className="flex items-center relative z-10">
                 Shop Collection <ArrowRight className="ml-4 w-4 h-4 group-hover:translate-x-2 transition-transform" />
@@ -106,10 +109,11 @@ export function Hero() {
         </div>
       </div>
 
-      <div className="absolute bottom-12 md:bottom-20 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-10 opacity-30">
-        <div className="w-[1px] h-20 md:h-32 bg-gradient-to-b from-white via-white/20 to-transparent overflow-hidden relative">
+      <div className="absolute bottom-12 md:bottom-20 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-6 opacity-30">
+        <div className="w-[1px] h-20 bg-gradient-to-b from-white via-white/20 to-transparent overflow-hidden relative">
           <div className="absolute top-0 left-0 w-full h-1/2 bg-white/40 animate-soft-pulse"></div>
         </div>
+        <span className="text-[8px] font-bold uppercase tracking-[0.8em] text-white/40">Scroll</span>
       </div>
     </section>
   );

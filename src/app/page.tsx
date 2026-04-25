@@ -87,25 +87,25 @@ export default function Home() {
         <CategoryGrid />
       </div>
 
-      <section className="py-16 md:py-40 bg-white border-y border-primary/5 overflow-hidden">
+      <section className="py-12 md:py-40 bg-white border-y border-primary/5 overflow-hidden">
         <div className="container mx-auto px-6 text-center max-w-7xl">
-          <span className="text-accent font-bold tracking-[0.6em] uppercase text-[8px] md:text-[9px] mb-8 block reveal-on-scroll">Our Ethos</span>
-          <h2 className="font-headline text-4xl sm:text-8xl text-primary leading-none mb-16 md:mb-32 reveal-on-scroll">
+          <span className="text-accent font-bold tracking-[0.6em] uppercase text-[8px] md:text-[9px] mb-6 md:mb-8 block reveal-on-scroll">Our Ethos</span>
+          <h2 className="font-headline text-4xl sm:text-8xl text-primary leading-none mb-10 md:mb-32 reveal-on-scroll">
             The <span className="italic">Process.</span>
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-16">
             {[
               { icon: Feather, title: 'Pure Materials', desc: 'Sourced from local vendors, ensuring every loop starts with high quality fibers.' },
               { icon: Palette, title: 'Artisan Palette', desc: 'Colors chosen to evoke emotion and complement your heritage home.' },
               { icon: Sparkles, title: 'Slow Stitching', desc: 'Every creation is a labor of love, taking days to achieve perfection.' }
             ].map((item, idx) => (
-              <div key={idx} className={`space-y-6 md:space-y-8 reveal-on-scroll stagger-${idx + 1}`}>
-                <div className="w-16 h-16 md:w-20 md:h-20 bg-paper rounded-full flex items-center justify-center mx-auto border border-primary/5 shadow-sm hover:scale-110 transition-transform duration-500 group">
-                  <item.icon className="w-5 h-5 md:w-6 md:h-6 text-accent group-hover:rotate-12 transition-transform" />
+              <div key={idx} className={`space-y-4 md:space-y-8 reveal-on-scroll stagger-${idx + 1}`}>
+                <div className="w-14 h-14 md:w-20 md:h-20 bg-paper rounded-full flex items-center justify-center mx-auto border border-primary/5 shadow-sm hover:scale-110 transition-transform duration-500 group">
+                  <item.icon className="w-4 h-4 md:w-6 md:h-6 text-accent group-hover:rotate-12 transition-transform" />
                 </div>
-                <h3 className="font-headline text-2xl md:text-3xl text-primary uppercase tracking-tighter">{item.title}</h3>
-                <p className="text-primary/50 text-[13px] md:text-[14px] leading-relaxed max-w-[280px] mx-auto italic">
+                <h3 className="font-headline text-xl md:text-3xl text-primary uppercase tracking-tighter">{item.title}</h3>
+                <p className="text-primary/50 text-[12px] md:text-[14px] leading-relaxed max-w-[240px] md:max-w-[280px] mx-auto italic">
                   {item.desc}
                 </p>
               </div>

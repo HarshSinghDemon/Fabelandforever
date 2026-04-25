@@ -141,51 +141,53 @@ export default function ShopPage() {
     <main className="min-h-screen bg-white selection:bg-accent/20 flex flex-col">
       <Navigation />
       
-      {/* Shop Hero - Slimmed for Mobile */}
-      <section className="relative pt-32 pb-20 sm:pt-48 sm:pb-32 overflow-hidden">
+      {/* Shop Hero - Elegant Editorial Entry */}
+      <section className="relative pt-32 pb-20 sm:pt-48 sm:pb-32 overflow-hidden bg-background">
         <div className="absolute inset-0 z-0">
           <Image 
             src={heroImageUrl} 
             alt="Shop Catalog" 
             fill 
-            className="object-cover opacity-70" 
+            className="object-cover opacity-80" 
             priority
             data-ai-hint="crochet craft"
           />
-          <div className="absolute inset-0 bg-black/60"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-white"></div>
         </div>
         
-        <div className="container mx-auto px-6 max-w-6xl text-center relative z-10 text-white">
-          <div className="reveal-on-scroll active">
-            <h1 className="font-headline text-5xl sm:text-8xl leading-none mb-6 tracking-tighter drop-shadow-2xl">
+        <div className="container mx-auto px-6 max-w-6xl text-center relative z-10">
+          <div className="reveal-on-scroll active space-y-6">
+            <span className="text-primary font-bold tracking-[0.8em] uppercase text-[9px] mb-4 block">The Collections</span>
+            <h1 className="font-headline text-5xl sm:text-9xl text-primary leading-none tracking-tighter drop-shadow-sm">
               Shop <span className="italic">Catalog.</span>
             </h1>
-            <p className="text-white/80 font-bold uppercase tracking-[0.4em] text-[9px] sm:text-[10px] max-w-md mx-auto leading-relaxed italic drop-shadow-lg">
+            <div className="w-12 h-[1px] bg-primary/20 mx-auto"></div>
+            <p className="text-primary/60 font-medium max-w-md mx-auto leading-relaxed italic text-sm sm:text-base">
               "Curated treasures for the heritage home, hand-stitched with love and slow-woven loops."
             </p>
           </div>
         </div>
       </section>
 
-      {/* Sticky Category Bar */}
-      <div className="sticky top-16 md:top-20 z-[40] bg-white border-b border-primary/5 py-4 transition-all shadow-sm">
+      {/* Sticky Category Bar - Minimalist Rail */}
+      <div className="sticky top-16 md:top-20 z-[40] bg-white/80 backdrop-blur-md border-b border-primary/5 py-4 transition-all">
         <div className="container mx-auto px-4 md:px-6 relative">
           <div className="relative flex items-center max-w-5xl mx-auto">
             
             <button 
               onClick={() => scrollByAmount('left')}
               className={cn(
-                "absolute -left-2 top-1/2 -translate-y-1/2 z-50 w-10 h-10 rounded-full bg-white shadow-xl border border-primary/5 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all duration-300",
+                "absolute -left-4 top-1/2 -translate-y-1/2 z-50 w-8 h-8 rounded-full bg-white shadow-md border border-primary/5 flex items-center justify-center text-primary transition-all duration-300",
                 canScrollLeft ? "opacity-100 scale-100" : "opacity-0 scale-50 pointer-events-none"
               )}
             >
-              <ChevronLeft className="w-5 h-5" />
+              <ChevronLeft className="w-4 h-4" />
             </button>
 
             <div 
               ref={scrollContainerRef}
               onScroll={checkScroll}
-              className="flex items-center gap-2 overflow-x-auto no-scrollbar scroll-smooth py-1 px-8 w-full"
+              className="flex items-center gap-4 overflow-x-auto no-scrollbar scroll-smooth py-1 px-8 w-full"
             >
               {categories.map((cat) => {
                 const id = cat.toLowerCase();
@@ -204,10 +206,10 @@ export default function ShopPage() {
                       }
                     }}
                     className={cn(
-                      "whitespace-nowrap px-5 py-2.5 rounded-full text-[9px] font-bold uppercase tracking-[0.2em] transition-all duration-300 border-2 shrink-0 cursor-pointer",
+                      "whitespace-nowrap px-6 py-2 rounded-none text-[9px] font-bold uppercase tracking-[0.3em] transition-all duration-500 border-b-2 shrink-0 cursor-pointer",
                       activeTab === id 
-                        ? "bg-primary text-white border-primary shadow-lg" 
-                        : "bg-white text-primary/40 border-primary/5 hover:border-accent hover:text-primary"
+                        ? "text-primary border-primary" 
+                        : "text-primary/30 border-transparent hover:text-primary hover:border-primary/20"
                     )}
                   >
                     {cat}
@@ -219,21 +221,12 @@ export default function ShopPage() {
             <button 
               onClick={() => scrollByAmount('right')}
               className={cn(
-                "absolute -right-2 top-1/2 -translate-y-1/2 z-50 w-10 h-10 rounded-full bg-white shadow-xl border border-primary/5 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all duration-300",
+                "absolute -right-4 top-1/2 -translate-y-1/2 z-50 w-8 h-8 rounded-full bg-white shadow-md border border-primary/5 flex items-center justify-center text-primary transition-all duration-300",
                 canScrollRight ? "opacity-100 scale-100" : "opacity-0 scale-50 pointer-events-none"
               )}
             >
-              <ChevronRight className="w-5 h-5" />
+              <ChevronRight className="w-4 h-4" />
             </button>
-            
-            <div className={cn(
-              "absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-white via-white/80 to-transparent pointer-events-none z-10 transition-opacity",
-              canScrollLeft ? "opacity-100" : "opacity-0"
-            )} />
-            <div className={cn(
-              "absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-white via-white/80 to-transparent pointer-events-none z-10 transition-opacity",
-              canScrollRight ? "opacity-100" : "opacity-0"
-            )} />
           </div>
         </div>
       </div>
@@ -247,54 +240,56 @@ export default function ShopPage() {
             <section 
               key={category} 
               id={catId} 
-              className="py-12 border-b border-primary/5 scroll-mt-40"
+              className="py-16 sm:py-24 border-b border-primary/5 scroll-mt-40"
             >
               <div className="container mx-auto px-6 max-w-7xl">
                 
-                {/* Minimalist Category Header */}
-                <div className="mb-12 py-10 px-8 rounded-[2rem] bg-primary/5 text-center">
-                  <div className="flex items-center justify-center gap-3 mb-2">
-                    <div className="w-6 h-[1px] bg-primary/20"></div>
-                    <span className="text-primary/40 font-bold tracking-[0.5em] uppercase text-[8px]">The Collection</span>
-                    <div className="w-6 h-[1px] bg-primary/20"></div>
+                {/* Elegant Collection Header */}
+                <div className="mb-20 text-center max-w-2xl mx-auto space-y-6">
+                  <div className="flex items-center justify-center gap-4">
+                    <div className="w-8 h-[1px] bg-primary/10"></div>
+                    <span className="text-primary/40 font-bold tracking-[0.6em] uppercase text-[8px]">Curator's Note</span>
+                    <div className="w-8 h-[1px] bg-primary/10"></div>
                   </div>
-                  <h2 className="font-headline text-3xl sm:text-5xl text-primary tracking-tighter leading-none mb-3">{category}</h2>
-                  <p className="text-primary/60 text-[10px] italic font-medium leading-relaxed max-w-xs mx-auto">
+                  <h2 className="font-headline text-4xl sm:text-7xl text-primary tracking-tighter leading-none">{category}</h2>
+                  <p className="text-primary/50 text-xs sm:text-sm italic font-medium leading-relaxed px-4">
                     "{getCategoryDescription(category)}"
                   </p>
                 </div>
 
-                {/* 2x1 Minimalist Matrix Grid */}
-                <div className="grid grid-cols-2 gap-4 md:gap-10">
+                {/* 2x1 Minimalist Editorial Matrix */}
+                <div className="grid grid-cols-2 gap-8 md:gap-16 lg:gap-24">
                   {catProducts.map((product) => (
                     <div 
                       key={product.id} 
-                      className="group space-y-4"
+                      className="group space-y-6"
                     >
                       <Link href={`/products/${product.id}`} className="block">
-                        <div className="relative aspect-[3/4] overflow-hidden bg-muted rounded-2xl border border-primary/5 transition-all duration-500 shadow-sm">
+                        <div className="relative aspect-[3/4] overflow-hidden bg-background rounded-none border border-primary/5 transition-all duration-700 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.1)] group-hover:shadow-2xl">
                           <Image
                             src={product.image}
                             alt={product.title}
                             fill
-                            className="object-cover transition-transform duration-700 group-hover:scale-105"
+                            className="object-cover transition-transform duration-[2s] ease-out-expo group-hover:scale-105"
                             sizes="(max-width: 768px) 50vw, 50vw"
                           />
                         </div>
                       </Link>
                       
-                      <div className="space-y-3 text-center">
-                        <div className="space-y-1 px-1">
-                          <h3 className="font-bold text-primary text-[10px] tracking-[0.1em] uppercase truncate">{product.title}</h3>
-                          <p className="font-bold text-primary/60 text-[9px] tracking-[0.2em]">₹ {Number(product.price).toLocaleString('en-IN')}</p>
+                      <div className="space-y-4 text-center">
+                        <div className="space-y-2">
+                          <h3 className="font-headline text-lg sm:text-2xl text-primary tracking-tight truncate">{product.title}</h3>
+                          <p className="font-bold text-primary/40 text-[10px] tracking-[0.3em] uppercase italic">₹ {Number(product.price).toLocaleString('en-IN')}</p>
                         </div>
                         
-                        <button 
-                          onClick={(e) => handleAddToCart(e, product)}
-                          className="w-full h-10 rounded-full bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-[0.3em] text-[7px] transition-all active:scale-95 shadow-md"
-                        >
-                          Adopt Piece
-                        </button>
+                        <div className="pt-2">
+                          <button 
+                            onClick={(e) => handleAddToCart(e, product)}
+                            className="inline-flex items-center gap-3 px-8 py-3 rounded-none border border-primary/10 text-primary hover:bg-primary hover:text-white transition-all duration-500 font-bold uppercase tracking-[0.4em] text-[8px] active:scale-95 group/btn"
+                          >
+                            Adopt Treasure <ShoppingBasket className="w-3 h-3 group-hover/btn:translate-x-1 transition-transform" />
+                          </button>
+                        </div>
                       </div>
                     </div>
                   ))}

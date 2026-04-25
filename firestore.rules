@@ -1,9 +1,10 @@
+
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
     /**
-     * CORE PHILOSOPHY
+     * CORE PHILOSOPHY - v1.1 (Redeploy Trigger)
      * This ruleset implements a robust, multi-tier authorization model for 'The Crochet Studio'.
      * 1. Public Catalog & Visuals: Products and Site Settings are globally viewable but only modifiable by administrators.
      * 2. Order Management: Orders can be created by anyone (guest/auth) but only managed by administrators.
@@ -44,7 +45,8 @@ service cloud.firestore {
      */
     match /settings/{settingId} {
       allow get: if true;
-      allow list, write: if isAdmin();
+      allow list: if true;
+      allow write: if isAdmin();
     }
 
     /**

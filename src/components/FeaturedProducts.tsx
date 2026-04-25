@@ -25,26 +25,25 @@ export function FeaturedProducts() {
 
   const { data: dbProducts, loading } = useCollection(productsQuery);
 
-  const productPlaceholders = PlaceHolderImages.filter(img => img.id.startsWith('product-'));
-
-  const displayProducts = [
+  // Combine DB products and Placeholders
+  const allItems = [
     ...(dbProducts || []),
-    ...productPlaceholders.map(p => ({
+    ...PlaceHolderImages.map(p => ({
       id: p.id,
       title: p.description,
       price: p.price,
       category: p.category,
       image: p.imageUrl,
       imageHint: p.imageHint,
-      story: p.story
+      description: p.story
     }))
   ];
 
   const filteredProducts = activeCategory === 'All Items' 
-    ? displayProducts 
-    : displayProducts.filter(p => p.category === activeCategory);
+    ? allItems 
+    : allItems.filter(p => p.category === activeCategory);
 
-  const categories = ['All Items', ...new Set(displayProducts.map(p => p.category))];
+  const categories = ['All Items', ...new Set(allItems.map(p => p.category))];
 
   const handleAddToCart = (e: React.MouseEvent, product: any) => {
     e.preventDefault();
@@ -64,7 +63,7 @@ export function FeaturedProducts() {
     });
   };
 
-  if (loading && dbProducts.length === 0) {
+  if (loading && dbProducts.length === 0 && allItems.length === 0) {
     return (
       <div className="py-60 flex flex-col items-center justify-center gap-6">
         <Loader2 className="w-6 h-6 text-primary animate-spin" />
@@ -148,10 +147,10 @@ export function FeaturedProducts() {
         </div>
 
         <div className="mt-32 sm:mt-48 text-center reveal-on-scroll">
-          <button className="group inline-flex flex-col items-center gap-8">
+          <div className="group inline-flex flex-col items-center gap-8">
             <span className="text-[10px] font-bold uppercase tracking-[0.5em] text-primary/60">Portfolio Continues</span>
             <div className="w-[1px] h-16 bg-gradient-to-b from-primary/40 to-transparent group-hover:h-24 transition-all duration-700"></div>
-          </button>
+          </div>
         </div>
       </div>
     </section>

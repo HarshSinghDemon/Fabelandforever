@@ -2,8 +2,8 @@
 "use client";
 
 import React, { useState, useMemo } from 'react';
-import { useFirestore, useCollection, useMemoFirebase } from '@/firebase';
-import { collection, doc, setDoc, deleteDoc, query, orderBy, serverTimestamp } from 'firebase/firestore';
+import { useFirestore, useCollection, useMemoFirebase, deleteDocumentNonBlocking } from '@/firebase';
+import { collection, doc, setDoc, query, orderBy } from 'firebase/firestore';
 import { SupabaseImageUpload } from './SupabaseImageUpload';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -23,7 +23,6 @@ import {
   Star,
   Edit3,
   X,
-  Download,
   ArrowUpDown
 } from 'lucide-react';
 import Image from 'next/image';
@@ -157,14 +156,10 @@ export function AdminProductManager() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = (id: string) => {
     if (!db || !window.confirm("Are you sure you want to unravel this loop forever?")) return;
-    try {
-      await deleteDoc(doc(db, 'products', id));
-      toast({ title: "Unraveled", description: "The piece has been withdrawn from history." });
-    } catch (error) {
-      toast({ variant: "destructive", title: "Error", description: "The knot remains tight. Could not delete." });
-    }
+    deleteDocumentNonBlocking(doc(db, 'products', id));
+    toast({ title: "Unraveled", description: "The piece has been withdrawn from history." });
   };
 
   const removeImage = (index: number) => {

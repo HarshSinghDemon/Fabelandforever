@@ -1,3 +1,4 @@
+
 "use client";
 
 import React from 'react';
@@ -58,7 +59,7 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
       title: product.name,
       price: product.price,
       category: product.category || 'General',
-      image: product.imageUrls?.[0] || ''
+      image: product.imageUrls?.[0] || 'https://placehold.co/600x800?text=Forever+Loop'
     });
     
     toast({

@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useMemo } from 'react';
@@ -32,7 +33,8 @@ export function Hero() {
     }
     return [
       "https://qigxixiekbdkeperulpk.supabase.co/storage/v1/object/public/uploads/products/Gemini_Generated_Image_bx4li2bx4li2bx4l.png",
-      "https://qigxixiekbdkeperulpk.supabase.co/storage/v1/object/public/uploads/products/Gemini_Generated_Image_t8i3g7t8i3g7t8i3.png"
+      "https://qigxixiekbdkeperulpk.supabase.co/storage/v1/object/public/uploads/products/Gemini_Generated_Image_t8i3g7t8i3g7t8i3.png",
+      "https://qigxixiekbdkeperulpk.supabase.co/storage/v1/object/public/uploads/Gemini_Generated_Image_7ffses7ffses7ffs.png"
     ];
   }, [heroSetting]);
 
@@ -70,7 +72,7 @@ export function Hero() {
       </div>
       
       <div className="container mx-auto px-6 relative z-10 h-full flex items-center justify-center text-center text-white pt-10 md:pt-20">
-        <div className="max-w-7xl mx-auto space-y-8 md:space-y-16">
+        <div className="max-w-7xl mx-auto space-y-6 md:space-y-16">
           <div className="overflow-hidden">
              <span className="text-[9px] md:text-sm font-black uppercase tracking-[0.8em] md:tracking-[1.5em] text-white/50 block animate-loop-in opacity-0">
                Hand-Stitched Legacy
@@ -78,12 +80,12 @@ export function Hero() {
           </div>
 
           <div className="relative">
-            <h1 className="font-headline text-6xl sm:text-8xl md:text-[12rem] leading-[0.85] tracking-tighter drop-shadow-2xl flex flex-col items-center select-none">
+            <h1 className="font-headline text-5xl sm:text-7xl md:text-[10rem] lg:text-[12rem] leading-[0.85] tracking-tighter drop-shadow-2xl flex flex-col items-center select-none px-4">
               <span className="block overflow-hidden">
                 <span className="block animate-loop-in stagger-1 opacity-0">Fable</span>
               </span>
               <div className="h-0 relative z-20 flex justify-center items-center">
-                <span className="font-fancy text-7xl md:text-[14rem] text-accent/90 block animate-loop-in stagger-2 opacity-0 -rotate-3">
+                <span className="font-fancy text-5xl md:text-9xl lg:text-[14rem] text-accent/90 block animate-loop-in stagger-2 opacity-0 -rotate-3">
                   &
                 </span>
               </div>
@@ -93,12 +95,12 @@ export function Hero() {
             </h1>
           </div>
           
-          <div className="space-y-6 md:space-y-8 max-w-2xl mx-auto pt-4 md:pt-0">
-            <p className="text-[10px] md:text-base leading-relaxed font-black uppercase tracking-[0.3em] md:tracking-[0.4em] text-white/70 animate-loop-in stagger-4 opacity-0">
+          <div className="space-y-6 md:space-y-10 max-w-2xl mx-auto pt-12 md:pt-0">
+            <p className="text-[10px] md:text-base leading-relaxed font-black uppercase tracking-[0.3em] md:tracking-[0.4em] text-white/70 animate-loop-in stagger-4 opacity-0 px-6">
               Bespoke crochet collections designed for the heritage heart.
             </p>
             
-            <div className="pt-4 md:pt-6 flex flex-col sm:flex-row items-center justify-center gap-6 md:gap-12 animate-loop-in stagger-4 opacity-0">
+            <div className="pt-4 md:pt-8 flex flex-col sm:flex-row items-center justify-center gap-6 md:gap-12 animate-loop-in stagger-4 opacity-0">
               <Button asChild className="bg-white text-primary hover:bg-white/90 px-10 md:px-20 h-14 md:h-20 rounded-none text-[9px] md:text-[12px] font-black uppercase tracking-[0.4em] md:tracking-[0.5em] transition-all hover:scale-105 active:scale-95 shadow-2xl group w-full sm:w-auto">
                 <Link href="#shop" className="flex items-center justify-center">
                   Explore Collection <ArrowRight className="ml-3 md:ml-4 w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-2 transition-transform" />

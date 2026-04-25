@@ -53,8 +53,8 @@ export function Hero() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_black_80%)] opacity-30"></div>
       </div>
       
-      <div className="container mx-auto px-6 relative z-10 h-full flex items-center justify-center text-center text-white">
-        <div className="max-w-7xl mx-auto space-y-16">
+      <div className="container mx-auto px-6 relative z-10 h-full flex items-center justify-center text-center text-white pt-20">
+        <div className="max-w-7xl mx-auto space-y-12 md:space-y-16">
           
           {/* Tagline */}
           <div className="overflow-hidden">

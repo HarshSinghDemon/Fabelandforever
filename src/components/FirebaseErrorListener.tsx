@@ -1,55 +1,39 @@
-
 'use client';
 
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { errorEmitter } from '@/firebase/error-emitter';
 import { FirestorePermissionError } from '@/firebase/errors';
-import { useToast } from '@/hooks/use-toast';
 
+/**
+ * An invisible component that listens for globally emitted 'permission-error' events.
+ * It throws any received error to be caught by Next.js's global-error.tsx.
+ */
 export function FirebaseErrorListener() {
-  const { toast } = useToast();
+  // Use the specific error type for the state for type safety.
+  const [error, setError] = useState<FirestorePermissionError | null>(null);
 
   useEffect(() => {
-    const handlePermissionError = (error: FirestorePermissionError) => {
-      const context = error.context;
-      const path = context?.path?.toLowerCase() || '';
-      const isPublicPath = 
-        path.includes('products') || 
-        path.includes('settings');
-      
-      const isReadOperation = 
-        context?.operation === 'list' || 
-        context?.operation === 'get';
-
-      if (isPublicPath && isReadOperation) {
-        console.error(
-          `%c PUBLIC ACCESS BLOCKED: %c The treasures at ${path} are private. ` +
-          `The artisan has attempted to open the grimoire. If you still see this, please click 'Publish' in your Firebase Console Rules tab.`,
-          "color: white; background: red; font-weight: bold; padding: 4px; border-radius: 4px;",
-          "color: red; font-weight: bold;"
-        );
-        
-        toast({
-          variant: "destructive",
-          title: "Treasures are Hidden 🔒",
-          description: "Your database rules are currently private. I've triggered a deployment, but you might need to manually Publish the rules in the Firebase Console.",
-        });
-        return;
-      }
-
-      toast({
-        variant: "destructive",
-        title: "Magic Boundary Encountered",
-        description: `The loom blocked a ${context?.operation || 'action'} at ${path || 'unknown path'}. Check your Security Rules.`,
-      });
+    // The callback now expects a strongly-typed error, matching the event payload.
+    const handleError = (error: FirestorePermissionError) => {
+      // Set error in state to trigger a re-render.
+      setError(error);
     };
 
-    errorEmitter.on('permission-error', handlePermissionError);
+    // The typed emitter will enforce that the callback for 'permission-error'
+    // matches the expected payload type (FirestorePermissionError).
+    errorEmitter.on('permission-error', handleError);
 
+    // Unsubscribe on unmount to prevent memory leaks.
     return () => {
-      errorEmitter.off('permission-error', handlePermissionError);
+      errorEmitter.off('permission-error', handleError);
     };
-  }, [toast]);
+  }, []);
 
+  // On re-render, if an error exists in state, throw it.
+  if (error) {
+    throw error;
+  }
+
+  // This component renders nothing.
   return null;
 }

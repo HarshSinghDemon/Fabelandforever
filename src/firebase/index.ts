@@ -1,52 +1,50 @@
-import { initializeApp, getApps, getApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
+'use client';
+
+import { firebaseConfig } from '@/firebase/config';
+import { initializeApp, getApps, getApp, FirebaseApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
-import { getStorage } from 'firebase/storage';
-import { firebaseConfig } from './config';
-import React from 'react';
+import { getFirestore } from 'firebase/firestore'
 
+// IMPORTANT: DO NOT MODIFY THIS FUNCTION
 export function initializeFirebase() {
-  // Check if we have a minimally valid config to prevent SDK crashes during build
-  const hasValidConfig = 
-    typeof firebaseConfig.apiKey === 'string' && 
-    firebaseConfig.apiKey.length > 10 &&
-    firebaseConfig.apiKey !== 'undefined';
+  if (!getApps().length) {
+    // Important! initializeApp() is called without any arguments because Firebase App Hosting
+    // integrates with the initializeApp() function to provide the environment variables needed to
+    // populate the FirebaseOptions in production. It is critical that we attempt to call initializeApp()
+    // without arguments.
+    let firebaseApp;
+    try {
+      // Attempt to initialize via Firebase App Hosting environment variables
+      firebaseApp = initializeApp();
+    } catch (e) {
+      // Only warn in production because it's normal to use the firebaseConfig to initialize
+      // during development
+      if (process.env.NODE_ENV === "production") {
+        console.warn('Automatic initialization failed. Falling back to firebase config object.', e);
+      }
+      firebaseApp = initializeApp(firebaseConfig);
+    }
 
-  if (!hasValidConfig) {
-    return { 
-      app: null, 
-      db: null, 
-      auth: null, 
-      storage: null 
-    };
+    return getSdks(firebaseApp);
   }
 
-  try {
-    const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const auth = getAuth(app);
-    const storage = getStorage(app);
-
-    return { app, db, auth, storage };
-  } catch (error) {
-    console.error("Firebase failed to initialize:", error);
-    return { app: null, db: null, auth: null, storage: null };
-  }
+  // If already initialized, return the SDKs with the already initialized App
+  return getSdks(getApp());
 }
 
-/**
- * Hook to memoize Firebase references/queries to prevent infinite re-render loops.
- * Use this when creating collection() or doc() references inside components.
- */
-export function useMemoFirebase<T>(factory: () => T, deps: any[]): T | null {
-  return React.useMemo(() => {
-    // If any dependency (like db or auth) is null, don't execute the factory
-    if (deps.some(d => d === null || d === undefined)) return null;
-    return factory();
-  }, deps);
+export function getSdks(firebaseApp: FirebaseApp) {
+  return {
+    firebaseApp,
+    auth: getAuth(firebaseApp),
+    firestore: getFirestore(firebaseApp)
+  };
 }
 
 export * from './provider';
-export * from './auth/use-user';
+export * from './client-provider';
 export * from './firestore/use-collection';
 export * from './firestore/use-doc';
+export * from './non-blocking-updates';
+export * from './non-blocking-login';
+export * from './errors';
+export * from './error-emitter';

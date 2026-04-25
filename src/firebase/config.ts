@@ -1,11 +1,8 @@
-
 export const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
+  "projectId": "studio-561863972-8b36c",
+  "appId": "1:294566278146:web:c2be4dabc884270247a31b",
+  "apiKey": "AIzaSyBuvrAv0OQ0fKpNZ0_dM40FcVN4oOloyTE",
+  "authDomain": "studio-561863972-8b36c.firebaseapp.com",
+  "measurementId": "",
+  "messagingSenderId": "294566278146"
 };
-
-// Security Rule Deployment Trigger: 2024-05-20T12:05:00Z - Updated for public access and Master Weaver Portal

@@ -23,12 +23,12 @@ export function CategoryGrid() {
   ];
 
   return (
-    <section className="py-16 bg-white border-t border-primary/5 overflow-hidden">
+    <section className="py-6 md:py-10 bg-white border-t border-primary/5 overflow-hidden">
       <div className="container mx-auto px-6">
-        <div className="text-center mb-10 reveal-on-scroll">
-          <span className="text-accent font-bold tracking-[0.6em] uppercase text-[9px] mb-3 block">Curation</span>
+        <div className="text-center mb-6 reveal-on-scroll">
+          <span className="text-accent font-bold tracking-[0.6em] uppercase text-[9px] mb-2 block">Curation</span>
           <h2 className="font-headline text-3xl sm:text-5xl text-primary tracking-tight">Shop By <span className="italic">Collections</span></h2>
-          <div className="w-10 h-[1px] bg-accent/30 mx-auto mt-4"></div>
+          <div className="w-10 h-[1px] bg-accent/30 mx-auto mt-2"></div>
         </div>
 
         <div className="relative reveal-on-scroll">
@@ -75,7 +75,7 @@ export function CategoryGrid() {
               ))}
             </CarouselContent>
             
-            <div className="hidden md:flex justify-end gap-3 mt-8 pr-4">
+            <div className="hidden md:flex justify-end gap-3 mt-6 pr-4">
               <CarouselPrevious className="static translate-y-0 h-12 w-12 border-primary/5 bg-white shadow-xl hover:bg-primary hover:text-white transition-all" />
               <CarouselNext className="static translate-y-0 h-12 w-12 border-primary/5 bg-white shadow-xl hover:bg-primary hover:text-white transition-all" />
             </div>

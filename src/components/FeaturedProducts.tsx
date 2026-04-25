@@ -80,12 +80,12 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
   if (filteredProducts.length === 0) return null;
 
   return (
-    <section className="py-12 md:py-20 bg-background overflow-hidden border-t border-primary/5">
+    <section className="py-4 md:py-8 bg-background overflow-hidden border-t border-primary/5">
       <div className="container mx-auto px-6">
-        <div className="flex flex-col items-center text-center mb-10 md:mb-14 reveal-on-scroll">
-          <span className="text-accent font-bold tracking-[0.8em] uppercase text-[9px] mb-4 block">Curated Collection</span>
+        <div className="flex flex-col items-center text-center mb-6 md:mb-8 reveal-on-scroll">
+          <span className="text-accent font-bold tracking-[0.8em] uppercase text-[9px] mb-2 block">Curated Collection</span>
           <h2 className="font-headline text-3xl md:text-5xl text-primary tracking-tight">{title}</h2>
-          <div className="w-12 h-[1px] bg-accent/30 mt-6 mb-2"></div>
+          <div className="w-12 h-[1px] bg-accent/30 mt-4"></div>
         </div>
 
         <div className="max-w-7xl mx-auto">
@@ -128,7 +128,7 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
               ))}
             </CarouselContent>
             
-            <div className="hidden md:flex justify-center gap-4 mt-12">
+            <div className="hidden md:flex justify-center gap-4 mt-8">
               <CarouselPrevious className="static translate-y-0 h-14 w-14 border-primary/10 hover:bg-primary hover:text-white transition-all shadow-xl rounded-full" />
               <CarouselNext className="static translate-y-0 h-14 w-14 border-primary/10 hover:bg-primary hover:text-white transition-all shadow-xl rounded-full" />
             </div>

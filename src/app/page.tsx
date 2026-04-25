@@ -87,25 +87,25 @@ export default function Home() {
         <CategoryGrid />
       </div>
 
-      <section className="py-12 md:py-24 bg-white border-y border-primary/5 overflow-hidden">
+      <section className="py-6 md:py-12 bg-white border-y border-primary/5 overflow-hidden">
         <div className="container mx-auto px-6 text-center max-w-7xl">
-          <span className="text-accent font-bold tracking-[0.6em] uppercase text-[8px] md:text-[9px] mb-4 md:mb-6 block reveal-on-scroll">Our Ethos</span>
-          <h2 className="font-headline text-3xl sm:text-6xl text-primary leading-none mb-8 md:mb-20 reveal-on-scroll">
+          <span className="text-accent font-bold tracking-[0.6em] uppercase text-[8px] md:text-[9px] mb-2 md:mb-4 block reveal-on-scroll">Our Ethos</span>
+          <h2 className="font-headline text-3xl sm:text-6xl text-primary leading-none mb-6 md:mb-10 reveal-on-scroll">
             The <span className="italic">Process.</span>
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
             {[
               { icon: Feather, title: 'Pure Materials', desc: 'Sourced from local vendors, ensuring every loop starts with high quality fibers.' },
               { icon: Palette, title: 'Artisan Palette', desc: 'Colors chosen to evoke emotion and complement your heritage home.' },
               { icon: Sparkles, title: 'Slow Stitching', desc: 'Every creation is a labor of love, taking days to achieve perfection.' }
             ].map((item, idx) => (
-              <div key={idx} className={`space-y-3 md:space-y-6 reveal-on-scroll stagger-${idx + 1}`}>
-                <div className="w-12 h-12 md:w-16 md:h-16 bg-paper rounded-full flex items-center justify-center mx-auto border border-primary/5 shadow-sm hover:scale-110 transition-transform duration-500 group">
+              <div key={idx} className={`space-y-2 md:space-y-4 reveal-on-scroll stagger-${idx + 1}`}>
+                <div className="w-10 h-10 md:w-14 md:h-14 bg-paper rounded-full flex items-center justify-center mx-auto border border-primary/5 shadow-sm hover:scale-110 transition-transform duration-500 group">
                   <item.icon className="w-4 h-4 md:w-5 md:h-5 text-accent group-hover:rotate-12 transition-transform" />
                 </div>
-                <h3 className="font-headline text-lg md:text-2xl text-primary uppercase tracking-tighter">{item.title}</h3>
-                <p className="text-primary/50 text-[11px] md:text-[13px] leading-relaxed max-w-[220px] md:max-w-[260px] mx-auto italic">
+                <h3 className="font-headline text-base md:text-xl text-primary uppercase tracking-tighter">{item.title}</h3>
+                <p className="text-primary/50 text-[10px] md:text-[12px] leading-relaxed max-w-[220px] md:max-w-[260px] mx-auto italic">
                   {item.desc}
                 </p>
               </div>
@@ -114,29 +114,29 @@ export default function Home() {
         </div>
       </section>
       
-      <section id="contact" className="py-20 md:py-40 bg-background relative overflow-hidden">
+      <section id="contact" className="py-12 md:py-24 bg-background relative overflow-hidden">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-accent/5 -skew-x-12 translate-x-1/2 pointer-events-none"></div>
         <div className="container mx-auto px-6 max-w-7xl relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
             <div className="reveal-on-scroll">
-              <span className="text-accent font-bold tracking-[0.6em] uppercase text-[9px] mb-8 block">Connection</span>
-              <h2 className="font-headline text-5xl md:text-8xl text-primary leading-none mb-10">
+              <span className="text-accent font-bold tracking-[0.6em] uppercase text-[9px] mb-4 block">Connection</span>
+              <h2 className="font-headline text-5xl md:text-8xl text-primary leading-none mb-6">
                 Contact <br />
                 <span className="italic">Us.</span>
               </h2>
-              <div className="space-y-8">
+              <div className="space-y-6">
                 <p className="text-primary/40 font-bold uppercase tracking-[0.4em] text-[10px]">Based in Kolkata • Delivery Exclusively in Kolkata</p>
-                <div className="pt-6 border-t border-primary/5">
-                  <Link href="mailto:fableandforevercompany@gmail.com" className="text-xl md:text-2xl font-headline text-primary hover:text-accent transition-all flex items-center gap-6 group">
+                <div className="pt-4 border-t border-primary/5">
+                  <Link href="mailto:fableandforevercompany@gmail.com" className="text-xl md:text-2xl font-headline text-primary hover:text-accent transition-all flex items-center gap-4 group">
                     Send an Email <ArrowRight className="w-6 h-6 group-hover:translate-x-4 transition-transform" />
                   </Link>
                 </div>
               </div>
             </div>
 
-            <form onSubmit={handleContactSubmit} className="space-y-12 reveal-on-scroll stagger-2 bg-white/50 backdrop-blur-sm p-8 md:p-12 rounded-[2.5rem] border border-primary/5 shadow-2xl">
-               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <div className="space-y-3 border-b border-primary/10 pb-3">
+            <form onSubmit={handleContactSubmit} className="space-y-8 reveal-on-scroll stagger-2 bg-white/50 backdrop-blur-sm p-6 md:p-10 rounded-[2rem] border border-primary/5 shadow-2xl">
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2 border-b border-primary/10 pb-2">
                     <label className="text-[8px] font-bold uppercase tracking-[0.4em] text-primary/40">Your Name</label>
                     <Input 
                       required
@@ -144,7 +144,7 @@ export default function Home() {
                       className="border-none bg-transparent p-0 text-lg placeholder:text-primary/10 rounded-none focus-visible:ring-0 font-headline h-auto" 
                     />
                   </div>
-                  <div className="space-y-3 border-b border-primary/10 pb-3">
+                  <div className="space-y-2 border-b border-primary/10 pb-2">
                     <label className="text-[8px] font-bold uppercase tracking-[0.4em] text-primary/40">Email</label>
                     <Input 
                       required
@@ -154,15 +154,15 @@ export default function Home() {
                     />
                   </div>
                </div>
-               <div className="space-y-3 border-b border-primary/10 pb-3">
+               <div className="space-y-2 border-b border-primary/10 pb-2">
                   <label className="text-[8px] font-bold uppercase tracking-[0.4em] text-primary/40">Message</label>
                   <Textarea 
                     required
                     placeholder="Tell us about your dream project..." 
-                    className="border-none bg-transparent p-0 min-h-[100px] text-lg placeholder:text-primary/10 rounded-none focus-visible:ring-0 resize-none font-headline" 
+                    className="border-none bg-transparent p-0 min-h-[80px] text-lg placeholder:text-primary/10 rounded-none focus-visible:ring-0 resize-none font-headline" 
                   />
                </div>
-               <Button type="submit" className="bg-primary hover:bg-primary/90 text-white h-16 px-12 rounded-full text-[9px] font-bold uppercase tracking-[0.6em] w-full transition-all active:scale-95 shadow-2xl shadow-primary/20 hover:scale-[1.02]">
+               <Button type="submit" className="bg-primary hover:bg-primary/90 text-white h-14 px-10 rounded-full text-[8px] font-bold uppercase tracking-[0.6em] w-full transition-all active:scale-95 shadow-2xl shadow-primary/20 hover:scale-[1.02]">
                  Send Message
                </Button>
             </form>

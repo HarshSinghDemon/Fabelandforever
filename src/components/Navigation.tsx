@@ -28,7 +28,6 @@ export function Navigation() {
 
   const { data: allDbProducts, loading: loadingProducts } = useCollection(productsQuery);
 
-  // Unified Search Algorithm: Combine DB and Placeholders
   const allAvailableProducts = React.useMemo(() => {
     const dbItems = allDbProducts || [];
     const placeholders = PlaceHolderImages.map(p => ({
@@ -40,7 +39,6 @@ export function Navigation() {
       description: p.story
     }));
     
-    // Deduplicate if IDs overlap (though they shouldn't)
     const combined = [...dbItems];
     placeholders.forEach(p => {
       if (!combined.some(item => item.id === p.id)) {
@@ -70,10 +68,10 @@ export function Navigation() {
   }, []);
 
   const navLinks = [
-    { name: 'Candles', href: '/#shop' },
-    { name: 'Flowers', href: '/#shop' },
-    { name: 'Gift Sets', href: '/#shop' },
-    { name: 'Decor', href: '/#shop' },
+    { name: 'Shop All', href: '/shop' },
+    { name: 'Candles', href: '/shop#candles' },
+    { name: 'Flowers', href: '/shop#flowers' },
+    { name: 'Decor', href: '/shop#decor' },
     { name: 'Our Story', href: '/about' },
     { name: 'Connect', href: '/#contact' },
   ];
@@ -241,7 +239,7 @@ export function Navigation() {
           <Home className="w-5 h-5 text-primary" />
           <span className="text-[9px] font-bold uppercase tracking-widest text-primary/40">Home</span>
         </Link>
-        <Link href="/#shop" className="flex flex-col items-center gap-1.5 group">
+        <Link href="/shop" className="flex flex-col items-center gap-1.5 group">
           <LayoutGrid className="w-5 h-5 text-primary/40 group-hover:text-primary" />
           <span className="text-[9px] font-bold uppercase tracking-widest text-primary/40">Shop</span>
         </Link>

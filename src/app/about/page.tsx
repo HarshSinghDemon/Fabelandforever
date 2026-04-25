@@ -30,6 +30,9 @@ export default function AboutPage() {
     return () => observer.disconnect();
   }, []);
 
+  // Updated story image URL from Supabase
+  const storyImageUrl = "https://qigxixiekbdkeperulpk.supabase.co/storage/v1/object/public/uploads/products/1777062016035-WhatsApp_Image_2026_04_24_at_10.09.32_PM.jpeg";
+
   return (
     <main className="min-h-screen bg-paper selection:bg-accent/20">
       <Navigation />
@@ -79,11 +82,11 @@ export default function AboutPage() {
           
           <div className="lg:col-span-5 relative aspect-[4/5] rounded-[2rem] overflow-hidden shadow-2xl reveal-on-scroll stagger-2 stitching-border">
             <Image 
-              src={heritageBanner?.imageUrl || "https://picsum.photos/seed/story-1/800/1000"} 
+              src={storyImageUrl} 
               alt="Artisan at work" 
               fill 
               className="object-cover transition-transform duration-[10s] hover:scale-105"
-              data-ai-hint="crochet hands"
+              data-ai-hint="crochet bandana"
             />
           </div>
         </div>

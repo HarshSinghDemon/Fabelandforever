@@ -44,6 +44,9 @@ export default function Home() {
 
   // Official Hair Accessories Editorial Image
   const hairAccessoriesImageUrl = "https://qigxixiekbdkeperulpk.supabase.co/storage/v1/object/public/uploads/anya-chernykh-kwrYG3RdVt4-unsplash.jpg";
+  
+  // Artisan Bandanas Editorial Image
+  const bandanasImageUrl = "https://images.unsplash.com/photo-1591051649443-453d2e0a716d?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
 
   return (
     <main className="min-h-screen bg-background selection:bg-accent/20 relative pb-20 md:pb-0">
@@ -77,10 +80,11 @@ export default function Home() {
         />
 
         <EditorialBanner 
-          title="The Enchanted Garden"
+          title="Artisan Bandanas"
           subtitle="PREMIUM COLLECTIONS"
-          imageUrl={gardenBanner?.imageUrl || "https://picsum.photos/seed/garden/1920/800"}
-          imageHint="crochet flowers"
+          imageUrl={bandanasImageUrl}
+          imageHint="crochet bandana"
+          link="/shop#bandana"
           className="reveal-on-scroll"
         />
         

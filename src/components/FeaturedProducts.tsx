@@ -1,4 +1,3 @@
-
 "use client";
 
 import React from 'react';
@@ -12,16 +11,15 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { ShoppingBasket, Sparkles } from 'lucide-react';
 
 interface FeaturedProductsProps {
   title: string;
   categoryFilter?: string;
   isBestseller?: boolean;
-  sideImage?: string;
-  sideTitle?: string;
 }
 
-export function FeaturedProducts({ title, categoryFilter, isBestseller, sideImage, sideTitle }: FeaturedProductsProps) {
+export function FeaturedProducts({ title, categoryFilter, isBestseller }: FeaturedProductsProps) {
   const { addToCart } = useCart();
   const { toast } = useToast();
   const db = useFirestore();
@@ -33,23 +31,30 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller, sideImag
 
   const { data: dbProducts } = useCollection(productsQuery);
 
-  const allItems = [
-    ...(dbProducts || []),
-    ...PlaceHolderImages.map(p => ({
-      id: p.id,
-      title: p.description,
-      price: p.price,
-      category: p.category,
-      image: p.imageUrl,
-      description: p.story
-    }))
-  ];
+  const allItems = React.useMemo(() => {
+    const items = [
+      ...(dbProducts || []),
+      ...PlaceHolderImages.map(p => ({
+        id: p.id,
+        title: p.description,
+        price: p.price,
+        category: p.category,
+        image: p.imageUrl,
+        description: p.story
+      }))
+    ];
+    return items;
+  }, [dbProducts]);
 
-  const filteredProducts = categoryFilter 
-    ? allItems.filter(p => p.category === categoryFilter)
-    : isBestseller 
-      ? allItems.slice(0, 8) 
-      : allItems.slice(allItems.length - 8);
+  const filteredProducts = React.useMemo(() => {
+    if (categoryFilter) {
+      return allItems.filter(p => p.category === categoryFilter);
+    }
+    if (isBestseller) {
+      return allItems.slice(0, 8);
+    }
+    return allItems.slice(-8);
+  }, [allItems, categoryFilter, isBestseller]);
 
   const handleAddToCart = (e: React.MouseEvent, product: any) => {
     e.preventDefault();
@@ -72,44 +77,47 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller, sideImag
   if (filteredProducts.length === 0) return null;
 
   return (
-    <section className="py-12 md:py-20 bg-background overflow-hidden border-t border-primary/5 reveal-on-scroll">
-      <div className="container mx-auto px-4 md:px-6">
-        <div className="flex flex-col items-center text-center mb-10 md:mb-16">
-          <span className="text-accent font-bold tracking-[0.6em] uppercase text-[8px] md:text-[9px] mb-4 block">Curated Collection</span>
-          <h2 className="font-headline text-3xl md:text-5xl text-primary tracking-tight">{title}</h2>
-          <div className="w-12 h-[1px] bg-accent/30 mt-6 mb-4"></div>
+    <section className="py-20 md:py-32 bg-background overflow-hidden border-t border-primary/5 reveal-on-scroll">
+      <div className="container mx-auto px-6">
+        <div className="flex flex-col items-center text-center mb-16 md:mb-24">
+          <span className="text-accent font-bold tracking-[0.8em] uppercase text-[9px] mb-6 block">Curated Collection</span>
+          <h2 className="font-headline text-4xl md:text-6xl text-primary tracking-tight">{title}</h2>
+          <div className="w-16 h-[1px] bg-accent/30 mt-8 mb-6"></div>
         </div>
 
-        {/* Universal Carousel: 2x1 on Mobile, 4x1 on Desktop */}
         <div className="max-w-7xl mx-auto">
           <Carousel opts={{ align: "start", loop: false }} className="w-full">
-            <CarouselContent className="-ml-4">
-              {filteredProducts.map((product: any) => (
-                <CarouselItem key={product.id} className="pl-4 basis-1/2 sm:basis-1/3 lg:basis-1/4">
-                  <div className="group space-y-4 md:space-y-6">
+            <CarouselContent className="-ml-6">
+              {filteredProducts.map((product: any, idx: number) => (
+                <CarouselItem key={product.id} className="pl-6 basis-1/2 sm:basis-1/3 lg:basis-1/4">
+                  <div className="group space-y-6 hover:-translate-y-2 transition-transform duration-700">
                     <Link href={`/products/${product.id}`} className="block">
-                      <div className="relative aspect-[3/4] overflow-hidden bg-muted rounded-xl shadow-sm transition-all duration-700 group-hover:shadow-2xl border border-primary/5">
+                      <div className="relative aspect-[3/4] overflow-hidden bg-muted rounded-[1.5rem] shadow-sm transition-all duration-700 group-hover:shadow-2xl border border-primary/5">
                         <Image
                           src={product.image}
                           alt={product.title}
                           fill
-                          className="object-cover transition-transform duration-1000 group-hover:scale-110"
+                          className="object-cover transition-transform duration-[2s] group-hover:scale-110"
                           sizes="(max-width: 768px) 50vw, 25vw"
                         />
+                        <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
                       </div>
                     </Link>
                     
-                    <div className="space-y-4 text-center px-1">
-                      <div className="space-y-1">
-                        <h3 className="font-bold text-primary group-hover:text-accent transition-colors truncate text-[11px] md:text-sm tracking-tight uppercase">{product.title}</h3>
-                        <p className="font-bold text-primary/60 text-[10px] md:text-xs">₹ {Number(product.price).toLocaleString('en-IN')}</p>
+                    <div className="space-y-4 text-center px-2">
+                      <div className="space-y-2">
+                        <h3 className="font-bold text-primary group-hover:text-accent transition-colors truncate text-[12px] md:text-sm tracking-[0.1em] uppercase">{product.title}</h3>
+                        <p className="font-bold text-primary/40 text-[11px] md:text-xs tracking-widest italic">₹ {Number(product.price).toLocaleString('en-IN')}</p>
                       </div>
                       
                       <Button 
                         onClick={(e) => handleAddToCart(e, product)}
-                        className="w-full h-10 md:h-12 rounded-lg bg-black hover:bg-black/90 text-white font-bold uppercase tracking-[0.2em] text-[8px] md:text-[10px] transition-all active:scale-95 shadow-md"
+                        className="w-full h-12 md:h-14 rounded-full bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-[0.3em] text-[9px] md:text-[10px] transition-all active:scale-95 shadow-lg group/btn overflow-hidden relative"
                       >
-                        Add to cart
+                        <span className="relative z-10 flex items-center justify-center gap-2">
+                          Add to Basket <ShoppingBasket className="w-4 h-4 group-hover/btn:rotate-12 transition-transform" />
+                        </span>
+                        <div className="absolute inset-0 bg-white/10 -translate-x-full group-hover/btn:translate-x-0 transition-transform duration-500"></div>
                       </Button>
                     </div>
                   </div>
@@ -118,16 +126,16 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller, sideImag
             </CarouselContent>
             
             {/* Desktop Navigation */}
-            <div className="hidden md:flex justify-center gap-4 mt-12">
-              <CarouselPrevious className="static translate-y-0 h-12 w-12 border-primary/10 hover:bg-black hover:text-white transition-all shadow-lg" />
-              <CarouselNext className="static translate-y-0 h-12 w-12 border-primary/10 hover:bg-black hover:text-white transition-all shadow-lg" />
+            <div className="hidden md:flex justify-center gap-6 mt-20">
+              <CarouselPrevious className="static translate-y-0 h-16 w-16 border-primary/10 hover:bg-primary hover:text-white transition-all shadow-xl rounded-full" />
+              <CarouselNext className="static translate-y-0 h-16 w-16 border-primary/10 hover:bg-primary hover:text-white transition-all shadow-xl rounded-full" />
             </div>
 
             {/* Mobile "Swipe" Indicator */}
-            <div className="md:hidden flex justify-center mt-8">
-              <div className="flex gap-1">
-                <div className="w-8 h-1 bg-primary/20 rounded-full">
-                  <div className="w-1/3 h-full bg-accent rounded-full animate-pulse"></div>
+            <div className="md:hidden flex justify-center mt-12">
+              <div className="flex gap-2">
+                <div className="w-12 h-1 bg-primary/10 rounded-full overflow-hidden">
+                  <div className="w-1/3 h-full bg-accent rounded-full animate-[shimmer_3s_infinite]"></div>
                 </div>
               </div>
             </div>

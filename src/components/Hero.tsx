@@ -1,4 +1,3 @@
-
 "use client";
 
 import React from 'react';
@@ -32,20 +31,27 @@ export function Hero() {
     return [heroPlaceholder?.imageUrl || "https://picsum.photos/seed/hero/1920/1080"];
   }, [heroSetting, heroPlaceholder]);
 
-  const [emblaRef] = useEmblaCarousel({ loop: true }, [
-    Autoplay({ delay: 5000, stopOnInteraction: false })
+  const [emblaRef] = useEmblaCarousel({ 
+    loop: true,
+    duration: 50,
+    skipSnaps: false
+  }, [
+    Autoplay({ delay: 6000, stopOnInteraction: false })
   ]);
 
   if (loading) {
     return (
-      <div className="h-[70vh] md:h-screen w-full bg-black flex items-center justify-center">
-        <Sparkles className="w-8 h-8 md:w-12 md:h-12 text-white animate-pulse" />
+      <div className="h-screen w-full bg-paper flex items-center justify-center">
+        <div className="flex flex-col items-center gap-6">
+           <Sparkles className="w-12 h-12 text-primary/20 animate-pulse" />
+           <span className="text-[10px] font-bold uppercase tracking-[0.8em] text-primary/20">The Loom is Waking</span>
+        </div>
       </div>
     );
   }
 
   return (
-    <section className="relative h-[70vh] md:h-screen w-full overflow-hidden bg-black group">
+    <section className="relative h-screen w-full overflow-hidden bg-black group">
       <div className="absolute inset-0 z-0 overflow-hidden" ref={emblaRef}>
         <div className="flex h-full">
           {heroImages.map((url: string, index: number) => (
@@ -54,45 +60,55 @@ export function Hero() {
                 src={url}
                 alt={`Artisanal Story ${index + 1}`}
                 fill
-                className="object-cover opacity-60"
+                className="object-cover opacity-60 scale-105 transition-transform duration-[10s] group-hover:scale-100"
                 priority={index === 0}
                 sizes="100vw"
               />
             </div>
           ))}
         </div>
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/80 pointer-events-none"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black/90 pointer-events-none"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_black_90%)] opacity-40"></div>
       </div>
       
       <div className="container mx-auto px-6 relative z-10 h-full flex items-center justify-center text-center text-white">
-        <div className="max-w-4xl mx-auto space-y-8 md:space-y-12 animate-fade-in-up">
-          <div className="space-y-4 md:space-y-6">
-            <span className="text-[8px] md:text-[10px] font-bold uppercase tracking-[0.5em] md:tracking-[0.8em] text-white/60 block mb-4 md:mb-6">Hand-Stitched Legacy</span>
-            <h1 className="font-headline text-5xl sm:text-7xl md:text-[9rem] leading-none mb-4 md:mb-8 tracking-tighter drop-shadow-2xl">
-              Artisan <br /> <span className="italic">Threads</span>
+        <div className="max-w-6xl mx-auto space-y-12 md:space-y-16">
+          <div className="space-y-6 md:space-y-10 reveal-on-scroll active">
+            <div className="overflow-hidden mb-6">
+               <span className="text-[10px] md:text-[12px] font-bold uppercase tracking-[0.8em] md:tracking-[1.2em] text-white/50 block animate-fade-in-up">Hand-Stitched Legacy</span>
+            </div>
+            <h1 className="font-headline text-6xl sm:text-8xl md:text-[11rem] leading-none tracking-tighter drop-shadow-2xl">
+              <span className="block overflow-hidden">
+                <span className="block animate-fade-in-up stagger-1">Artisan</span>
+              </span>
+              <span className="block overflow-hidden -mt-4 md:-mt-10">
+                <span className="italic block animate-fade-in-up stagger-2">Threads</span>
+              </span>
             </h1>
           </div>
           
-          <p className="text-[10px] md:text-sm max-w-sm md:max-w-xl mx-auto leading-relaxed font-bold uppercase tracking-widest text-white/70">
-            Bespoke crochet treasures designed for the heritage heart.
-          </p>
+          <div className="overflow-hidden">
+            <p className="text-[11px] md:text-sm max-w-sm md:max-w-2xl mx-auto leading-relaxed font-bold uppercase tracking-[0.4em] text-white/60 animate-fade-in-up stagger-3">
+              Bespoke crochet treasures designed for the heritage heart.
+            </p>
+          </div>
           
-          <div className="pt-6 md:pt-12 flex flex-col sm:flex-row items-center justify-center gap-6 md:gap-10">
-            <Button asChild className="bg-white text-primary hover:bg-white/90 px-10 md:px-16 h-12 md:h-16 rounded-none text-[8px] md:text-[10px] font-bold uppercase tracking-[0.4em] transition-all hover:scale-105 active:scale-95">
+          <div className="pt-8 md:pt-16 flex flex-col sm:flex-row items-center justify-center gap-8 md:gap-12 animate-fade-in-up stagger-3">
+            <Button asChild className="bg-white text-primary hover:bg-white/90 px-12 md:px-20 h-14 md:h-20 rounded-none text-[9px] md:text-[11px] font-bold uppercase tracking-[0.5em] transition-all hover:scale-105 active:scale-95 shadow-2xl shadow-black/40 group">
               <Link href="#shop" className="flex items-center">
-                Shop Collection <ArrowRight className="ml-3 w-3 h-3" />
+                Shop Collection <ArrowRight className="ml-4 w-4 h-4 group-hover:translate-x-2 transition-transform" />
               </Link>
             </Button>
-            <Link href="/about" className="text-[8px] md:text-[10px] font-bold uppercase tracking-[0.4em] text-white/80 hover:text-white transition-all border-b border-white/20 pb-1">
+            <Link href="/about" className="text-[9px] md:text-[11px] font-bold uppercase tracking-[0.5em] text-white/80 hover:text-white transition-all border-b border-white/20 pb-2 hover:border-white">
               Read Our Story
             </Link>
           </div>
         </div>
       </div>
 
-      <div className="absolute bottom-10 md:bottom-16 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-8 opacity-40">
-        <div className="w-[1px] h-12 md:h-20 bg-gradient-to-b from-white via-white/40 to-transparent overflow-hidden relative">
-          <div className="absolute top-0 left-0 w-full h-1/2 bg-white animate-bounce-slow"></div>
+      <div className="absolute bottom-12 md:bottom-20 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-10 opacity-30">
+        <div className="w-[1px] h-20 md:h-32 bg-gradient-to-b from-white via-white/20 to-transparent overflow-hidden relative">
+          <div className="absolute top-0 left-0 w-full h-1/2 bg-white/40 animate-[bounce_3s_infinite]"></div>
         </div>
       </div>
     </section>

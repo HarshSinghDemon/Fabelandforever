@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useEffect } from 'react';
@@ -7,8 +6,9 @@ import { Hero } from '@/components/Hero';
 import { FeaturedProducts } from '@/components/FeaturedProducts';
 import { CategoryGrid } from '@/components/CategoryGrid';
 import { EditorialBanner } from '@/components/EditorialBanner';
+import { AICrochetTool } from '@/components/AICrochetTool';
 import { Footer } from '@/components/Footer';
-import { ArrowRight, Sparkles, Feather, Palette, MessageCircle } from 'lucide-react';
+import { ArrowRight, Sparkles, Feather, Palette, MessageCircle, Scroll } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -28,7 +28,7 @@ export default function Home() {
           }
         });
       },
-      { threshold: 0.05 }
+      { threshold: 0.1 }
     );
 
     const elements = document.querySelectorAll('.reveal-on-scroll');
@@ -49,7 +49,7 @@ export default function Home() {
       
       <Hero />
       
-      <div id="shop" className="space-y-0">
+      <div id="shop" className="space-y-0 relative z-10">
         <FeaturedProducts 
           title="New Arrivals" 
         />
@@ -72,6 +72,24 @@ export default function Home() {
           categoryFilter="Flowers" 
         />
 
+        <section className="py-24 md:py-40 bg-paper relative overflow-hidden">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1px] h-32 bg-gradient-to-b from-primary/20 to-transparent"></div>
+          <div className="container mx-auto px-6 max-w-5xl">
+            <div className="text-center mb-16 reveal-on-scroll">
+              <span className="text-accent font-bold tracking-[0.6em] uppercase text-[9px] mb-6 block">The Loom of Dreams</span>
+              <h2 className="font-headline text-4xl sm:text-7xl text-primary leading-tight mb-8">
+                Magic <span className="italic">Inspiration.</span>
+              </h2>
+              <p className="text-primary/50 text-sm md:text-base italic max-w-2xl mx-auto leading-relaxed">
+                "Not sure what to choose? Consult the Inspiration Grimoire. Whisper your preferences and let our AI weaver manifest unique design visions for your custom orders."
+              </p>
+            </div>
+            <div className="reveal-on-scroll stagger-2">
+              <AICrochetTool />
+            </div>
+          </div>
+        </section>
+
         <EditorialBanner 
           title="The Enchanted Garden"
           subtitle="PREMIUM FLOWERS"
@@ -88,25 +106,25 @@ export default function Home() {
         <CategoryGrid />
       </div>
 
-      <section className="py-20 md:py-32 bg-white border-y border-primary/5 overflow-hidden">
+      <section className="py-20 md:py-40 bg-white border-y border-primary/5 overflow-hidden">
         <div className="container mx-auto px-6 text-center">
           <span className="text-accent font-bold tracking-[0.6em] uppercase text-[8px] md:text-[9px] mb-8 block reveal-on-scroll">Our Ethos</span>
-          <h2 className="font-headline text-4xl sm:text-7xl text-primary leading-none mb-24 reveal-on-scroll">
+          <h2 className="font-headline text-4xl sm:text-8xl text-primary leading-none mb-32 reveal-on-scroll">
             The <span className="italic">Process.</span>
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-24 md:gap-16">
             {[
               { icon: Feather, title: 'Pure Materials', desc: 'Sourced from local vendors, ensuring every loop starts with high quality fibers.' },
               { icon: Palette, title: 'Artisan Palette', desc: 'Colors chosen to evoke emotion and complement your heritage home.' },
               { icon: Sparkles, title: 'Slow Stitching', desc: 'Every treasure is a labor of love, taking days to achieve perfection.' }
             ].map((item, idx) => (
-              <div key={idx} className="space-y-6 reveal-on-scroll">
-                <div className="w-16 h-16 bg-paper rounded-full flex items-center justify-center mx-auto border border-primary/5 shadow-sm">
-                  <item.icon className="w-5 h-5 text-accent" />
+              <div key={idx} className={`space-y-8 reveal-on-scroll stagger-${idx + 1}`}>
+                <div className="w-20 h-20 bg-paper rounded-full flex items-center justify-center mx-auto border border-primary/5 shadow-sm hover:scale-110 transition-transform duration-500 group">
+                  <item.icon className="w-6 h-6 text-accent group-hover:rotate-12 transition-transform" />
                 </div>
-                <h3 className="font-headline text-2xl text-primary uppercase tracking-tighter">{item.title}</h3>
-                <p className="text-primary/50 text-[13px] leading-relaxed max-w-[240px] mx-auto italic">
+                <h3 className="font-headline text-3xl text-primary uppercase tracking-tighter">{item.title}</h3>
+                <p className="text-primary/50 text-[14px] leading-relaxed max-w-[280px] mx-auto italic">
                   {item.desc}
                 </p>
               </div>
@@ -115,54 +133,55 @@ export default function Home() {
         </div>
       </section>
       
-      <section id="contact" className="py-24 md:py-40 bg-background">
-        <div className="container mx-auto px-6 max-w-6xl">
+      <section id="contact" className="py-24 md:py-48 bg-background relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-1/2 h-full bg-accent/5 -skew-x-12 translate-x-1/2 pointer-events-none"></div>
+        <div className="container mx-auto px-6 max-w-6xl relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-start">
             <div className="reveal-on-scroll">
               <span className="text-accent font-bold tracking-[0.6em] uppercase text-[9px] mb-12 block">Connection</span>
-              <h2 className="font-headline text-6xl md:text-8xl text-primary leading-none mb-12">
+              <h2 className="font-headline text-6xl md:text-9xl text-primary leading-none mb-12">
                 Contact <br />
                 <span className="italic">Us.</span>
               </h2>
-              <div className="space-y-8">
+              <div className="space-y-10">
                 <p className="text-primary/40 font-bold uppercase tracking-[0.4em] text-[10px]">Based in Kolkata • Delivery Exclusively in Kolkata</p>
                 <div className="pt-8 border-t border-primary/5">
-                  <Link href="mailto:fableandforevercompany@gmail.com" className="text-xl md:text-2xl font-headline text-primary hover:text-accent transition-all flex items-center gap-6 group">
-                    Send an Email <ArrowRight className="w-6 h-6 group-hover:translate-x-4 transition-transform" />
+                  <Link href="mailto:fableandforevercompany@gmail.com" className="text-2xl md:text-3xl font-headline text-primary hover:text-accent transition-all flex items-center gap-8 group">
+                    Send an Email <ArrowRight className="w-8 h-8 group-hover:translate-x-6 transition-transform" />
                   </Link>
                 </div>
               </div>
             </div>
 
-            <form onSubmit={handleContactSubmit} className="space-y-12 reveal-on-scroll">
-               <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                  <div className="space-y-3 border-b border-primary/10 pb-3">
-                    <label className="text-[8px] font-bold uppercase tracking-[0.4em] text-primary/40">Your Name</label>
+            <form onSubmit={handleContactSubmit} className="space-y-16 reveal-on-scroll stagger-2 bg-white/50 backdrop-blur-sm p-10 md:p-16 rounded-[3rem] border border-primary/5 shadow-2xl">
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                  <div className="space-y-4 border-b border-primary/10 pb-4">
+                    <label className="text-[9px] font-bold uppercase tracking-[0.4em] text-primary/40">Your Name</label>
                     <Input 
                       required
                       placeholder="Jane Doe" 
-                      className="border-none bg-transparent p-0 text-lg placeholder:text-primary/10 rounded-none focus-visible:ring-0 font-headline h-auto" 
+                      className="border-none bg-transparent p-0 text-xl placeholder:text-primary/10 rounded-none focus-visible:ring-0 font-headline h-auto" 
                     />
                   </div>
-                  <div className="space-y-3 border-b border-primary/10 pb-3">
-                    <label className="text-[8px] font-bold uppercase tracking-[0.4em] text-primary/40">Email</label>
+                  <div className="space-y-4 border-b border-primary/10 pb-4">
+                    <label className="text-[9px] font-bold uppercase tracking-[0.4em] text-primary/40">Email</label>
                     <Input 
                       required
                       type="email" 
                       placeholder="you@domain.com" 
-                      className="border-none bg-transparent p-0 text-lg placeholder:text-primary/10 rounded-none focus-visible:ring-0 font-headline h-auto" 
+                      className="border-none bg-transparent p-0 text-xl placeholder:text-primary/10 rounded-none focus-visible:ring-0 font-headline h-auto" 
                     />
                   </div>
                </div>
-               <div className="space-y-3 border-b border-primary/10 pb-3">
-                  <label className="text-[8px] font-bold uppercase tracking-[0.4em] text-primary/40">Message</label>
+               <div className="space-y-4 border-b border-primary/10 pb-4">
+                  <label className="text-[9px] font-bold uppercase tracking-[0.4em] text-primary/40">Message</label>
                   <Textarea 
                     required
                     placeholder="Tell us about your dream project..." 
-                    className="border-none bg-transparent p-0 min-h-[80px] text-lg placeholder:text-primary/10 rounded-none focus-visible:ring-0 resize-none font-headline" 
+                    className="border-none bg-transparent p-0 min-h-[120px] text-xl placeholder:text-primary/10 rounded-none focus-visible:ring-0 resize-none font-headline" 
                   />
                </div>
-               <Button type="submit" className="bg-primary hover:bg-primary/90 text-white h-14 px-12 rounded-full text-[9px] font-bold uppercase tracking-[0.5em] w-full sm:w-auto transition-all active:scale-95 shadow-lg">
+               <Button type="submit" className="bg-primary hover:bg-primary/90 text-white h-20 px-16 rounded-full text-[10px] font-bold uppercase tracking-[0.6em] w-full transition-all active:scale-95 shadow-2xl shadow-primary/20 hover:scale-[1.02]">
                  Send Message
                </Button>
             </form>
@@ -174,9 +193,9 @@ export default function Home() {
         href="https://wa.me/910000000000" 
         target="_blank" 
         rel="noopener noreferrer"
-        className="fixed bottom-24 md:bottom-8 right-6 md:right-8 z-[100] bg-[#25D366] text-white p-3 rounded-full shadow-2xl hover:scale-110 transition-transform active:scale-90"
+        className="fixed bottom-24 md:bottom-12 right-6 md:right-12 z-[100] bg-[#25D366] text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-transform active:scale-90 animate-float"
       >
-        <MessageCircle className="w-6 h-6 fill-white text-[#25D366]" />
+        <MessageCircle className="w-7 h-7 fill-white text-[#25D366]" />
       </a>
 
       <Footer />

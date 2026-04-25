@@ -44,12 +44,13 @@ export function Hero() {
           alt="Artisanal Heritage"
           fill
           quality={100}
-          className="object-cover opacity-60 animate-ken-burns"
+          className="object-cover opacity-85 animate-ken-burns"
           priority
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-black/90 pointer-events-none"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_black_95%)] opacity-50"></div>
+        {/* Softened Overlays for better visibility */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/70 pointer-events-none"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_black_80%)] opacity-30"></div>
       </div>
       
       <div className="container mx-auto px-6 relative z-10 h-full flex items-center justify-center text-center text-white">
@@ -70,7 +71,7 @@ export function Hero() {
               </span>
               
               <div className="h-0 relative z-20 flex justify-center items-center">
-                <span className="font-fancy text-6xl md:text-9xl text-accent/80 block animate-loop-in stagger-2 opacity-0 -rotate-6">
+                <span className="font-fancy text-8xl md:text-[11rem] text-accent/90 block animate-loop-in stagger-2 opacity-0 -rotate-3">
                   &
                 </span>
               </div>

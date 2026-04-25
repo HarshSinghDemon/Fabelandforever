@@ -15,7 +15,6 @@ import Link from 'next/link';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export default function Home() {
-  const heritageBanner = PlaceHolderImages.find(img => img.id === 'heritage-banner');
   const gardenBanner = PlaceHolderImages.find(img => img.id === 'garden-banner');
 
   useEffect(() => {
@@ -42,6 +41,8 @@ export default function Home() {
     window.open(`mailto:${recipient}`, '_blank');
   };
 
+  const hairAccessoriesImageUrl = "https://images.unsplash.com/photo-1700171518313-5dd219beaaa6?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+
   return (
     <main className="min-h-screen bg-background selection:bg-accent/20 relative pb-20 md:pb-0">
       <Navigation />
@@ -61,10 +62,11 @@ export default function Home() {
         <EditorialBanner 
           title="Hair Accessories"
           subtitle="LEGACY IN EVERY STITCH"
-          imageUrl={heritageBanner?.imageUrl || "https://picsum.photos/seed/heritage/1920/800"}
+          imageUrl={hairAccessoriesImageUrl}
           imageHint="crochet clips"
           link="/shop#hair accessories"
           className="reveal-on-scroll"
+          imageClassName="rotate-90 scale-125"
         />
         
         <FeaturedProducts 

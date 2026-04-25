@@ -14,6 +14,7 @@ interface EditorialBannerProps {
   link?: string;
   imageHint?: string;
   className?: string;
+  imageClassName?: string;
 }
 
 export function EditorialBanner({
@@ -23,7 +24,8 @@ export function EditorialBanner({
   buttonText = "Shop Collection",
   link = "/#shop",
   imageHint = "luxury artisan",
-  className
+  className,
+  imageClassName
 }: EditorialBannerProps) {
   return (
     <section className={cn("relative w-full h-[140px] sm:h-[180px] flex items-center justify-center overflow-hidden my-0", className)}>
@@ -32,7 +34,7 @@ export function EditorialBanner({
           src={imageUrl}
           alt={title}
           fill
-          className="object-cover transition-transform duration-[10s] hover:scale-105"
+          className={cn("object-cover transition-transform duration-[10s] hover:scale-105", imageClassName)}
           data-ai-hint={imageHint}
         />
         <div className="absolute inset-0 bg-black/30"></div>

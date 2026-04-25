@@ -11,7 +11,7 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { ShoppingBasket, Sparkles } from 'lucide-react';
+import { ShoppingBasket } from 'lucide-react';
 
 interface FeaturedProductsProps {
   title: string;
@@ -72,7 +72,7 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
     });
     
     toast({
-      title: "Added to Basket ✨",
+      title: "Selection Adopted ✨",
       description: `${product.title} has been selected.`,
     });
   };
@@ -80,47 +80,44 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
   if (filteredProducts.length === 0) return null;
 
   return (
-    <section className="py-4 md:py-8 bg-background overflow-hidden border-t border-primary/5">
-      <div className="container mx-auto px-6">
-        <div className="flex flex-col items-center text-center mb-6 md:mb-8 reveal-on-scroll">
-          <span className="text-accent font-bold tracking-[0.8em] uppercase text-[9px] mb-2 block">Curated Collection</span>
-          <h2 className="font-headline text-3xl md:text-5xl text-primary tracking-tight">{title}</h2>
-          <div className="w-12 h-[1px] bg-accent/30 mt-4"></div>
+    <section className="py-2 md:py-4 bg-background overflow-hidden border-t border-primary/5">
+      <div className="container mx-auto px-6 max-w-7xl">
+        <div className="flex flex-col items-center text-center mb-4 md:mb-6 reveal-on-scroll">
+          <span className="text-accent font-bold tracking-[0.8em] uppercase text-[7px] mb-1 block">Curator's Note</span>
+          <h2 className="font-headline text-2xl md:text-4xl text-primary tracking-tight">{title}</h2>
+          <div className="w-8 h-[1px] bg-accent/20 mt-3"></div>
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 md:px-12">
-          <Carousel opts={{ align: "start", loop: false }} className="w-full relative">
-            <CarouselContent className="-ml-6">
+        <div className="relative px-4 md:px-14">
+          <Carousel opts={{ align: "start", loop: false }} className="w-full">
+            <CarouselContent className="-ml-4">
               {filteredProducts.map((product: any, idx: number) => (
-                <CarouselItem key={product.id} className="pl-6 basis-1/2 sm:basis-1/3 lg:basis-1/4">
-                  <div className="group space-y-4 transition-all duration-700 reveal-on-scroll" style={{ transitionDelay: `${idx * 0.1}s` }}>
+                <CarouselItem key={product.id} className="pl-4 basis-1/2 sm:basis-1/3 lg:basis-1/4">
+                  <div className="group space-y-3 transition-all duration-700 reveal-on-scroll" style={{ transitionDelay: `${idx * 0.05}s` }}>
                     <Link href={`/products/${product.id}`} className="block">
-                      <div className="relative aspect-[3/4] overflow-hidden bg-muted rounded-[2rem] shadow-sm transition-all duration-1000 group-hover:shadow-2xl border border-primary/5 stitching-border">
+                      <div className="relative aspect-[3/4] overflow-hidden bg-white rounded-none shadow-sm transition-all duration-[2s] group-hover:shadow-xl border border-primary/5 stitching-border">
                         <Image
                           src={product.image}
                           alt={product.title}
                           fill
-                          className="object-cover transition-transform duration-[2.5s] group-hover:scale-110"
+                          className="object-cover transition-transform duration-[2.5s] group-hover:scale-105"
                           sizes="(max-width: 768px) 50vw, 25vw"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
                       </div>
                     </Link>
                     
-                    <div className="space-y-3 text-center px-2">
-                      <div className="space-y-1">
-                        <h3 className="font-bold text-primary group-hover:text-accent transition-colors truncate text-[10px] md:text-[11px] tracking-[0.1em] uppercase">{product.title}</h3>
-                        <p className="font-bold text-primary/40 text-[9px] md:text-[10px] tracking-widest italic">₹ {Number(product.price).toLocaleString('en-IN')}</p>
+                    <div className="space-y-2 text-center px-1">
+                      <div className="space-y-0.5">
+                        <h3 className="font-bold text-primary group-hover:text-accent transition-colors truncate text-[9px] tracking-[0.05em] uppercase">{product.title}</h3>
+                        <p className="font-bold text-primary/30 text-[8px] tracking-[0.2em] italic">₹ {Number(product.price).toLocaleString('en-IN')}</p>
                       </div>
                       
                       <Button 
                         onClick={(e) => handleAddToCart(e, product)}
-                        className="w-full h-10 md:h-12 rounded-full bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-[0.3em] text-[8px] transition-all active:scale-95 shadow-lg group/btn overflow-hidden relative"
+                        variant="outline"
+                        className="w-full h-9 border-primary/10 hover:border-primary text-[8px] tracking-[0.3em]"
                       >
-                        <span className="relative z-10 flex items-center justify-center gap-2">
-                          Add to Basket <ShoppingBasket className="w-3 h-3 group-hover/btn:rotate-12 transition-transform" />
-                        </span>
-                        <div className="absolute inset-0 bg-white/10 -translate-x-full group-hover/btn:translate-x-0 transition-transform duration-700"></div>
+                        Adopt Selection
                       </Button>
                     </div>
                   </div>
@@ -128,8 +125,8 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
               ))}
             </CarouselContent>
             
-            <CarouselPrevious className="hidden md:flex -left-6 lg:-left-10 h-14 w-14 border-primary/10 bg-white/80 backdrop-blur-sm hover:bg-primary hover:text-white transition-all shadow-xl rounded-full" />
-            <CarouselNext className="hidden md:flex -right-6 lg:-right-10 h-14 w-14 border-primary/10 bg-white/80 backdrop-blur-sm hover:bg-primary hover:text-white transition-all shadow-xl rounded-full" />
+            <CarouselPrevious className="hidden md:flex -left-4 lg:-left-6 h-10 w-10 border-none bg-white/50 backdrop-blur-sm shadow-sm hover:bg-primary hover:text-white transition-all rounded-none" />
+            <CarouselNext className="hidden md:flex -right-4 lg:-right-6 h-10 w-10 border-none bg-white/50 backdrop-blur-sm shadow-sm hover:bg-primary hover:text-white transition-all rounded-none" />
           </Carousel>
         </div>
       </div>

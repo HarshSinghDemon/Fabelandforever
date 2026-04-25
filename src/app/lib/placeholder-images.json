@@ -15,39 +15,228 @@
     },
     {
       "id": "product-1",
-      "description": "A teal amigurumi forest dragon with golden wings.",
+      "description": "Teal Forest Dragon Amigurumi",
       "imageUrl": "https://picsum.photos/seed/teal-dragon/600/800",
-      "imageHint": "crochet toy"
+      "imageHint": "crochet toy",
+      "price": 2500,
+      "category": "Creatures",
+      "story": "A guardian of the ancient glades, stitched with iridescent teal yarn and golden accents."
     },
     {
       "id": "product-2",
-      "description": "An elegant cream-colored crochet shawl with lace detailing.",
+      "description": "Cream Lace Heirloom Shawl",
       "imageUrl": "https://picsum.photos/seed/cream-shawl/600/800",
-      "imageHint": "crochet shawl"
+      "imageHint": "crochet shawl",
+      "price": 3800,
+      "category": "Apparel",
+      "story": "Intricate lace patterns inspired by Victorian eras, perfect for evening elegance."
     },
     {
       "id": "product-3",
-      "description": "A collection of pastel crochet flower coasters on a wooden table.",
+      "description": "Pastel Flower Coaster Set",
       "imageUrl": "https://picsum.photos/seed/flower-coasters/600/800",
-      "imageHint": "crochet coasters"
+      "imageHint": "crochet coasters",
+      "price": 850,
+      "category": "Home",
+      "story": "A bouquet of spring for your table. Hand-dyed cotton petals that absorb moisture beautifully."
     },
     {
       "id": "product-4",
-      "description": "A small golden honey bear amigurumi wearing a tiny crown.",
+      "description": "Golden Honey Bear",
       "imageUrl": "https://picsum.photos/seed/gold-bear/600/800",
-      "imageHint": "crochet bear"
+      "imageHint": "crochet bear",
+      "price": 1200,
+      "category": "Miniatures",
+      "story": "A tiny companion with a big heart, wearing a hand-stitched crown of pure joy."
     },
     {
       "id": "product-5",
-      "description": "A modern geometric crochet wall hanging in earth tones.",
+      "description": "Moss Green Wall Hanging",
       "imageUrl": "https://picsum.photos/seed/wall-hanging/600/800",
-      "imageHint": "crochet decor"
+      "imageHint": "crochet decor",
+      "price": 4500,
+      "category": "Decor",
+      "story": "Textured loops and wooden accents that bring the serenity of the forest into your living room."
     },
     {
       "id": "product-6",
-      "description": "A pair of soft, chunky knit-style crochet slippers in slate gray.",
+      "description": "Slate Gray Luxe Slippers",
       "imageUrl": "https://picsum.photos/seed/crochet-slippers/600/800",
-      "imageHint": "crochet slippers"
+      "imageHint": "crochet slippers",
+      "price": 1500,
+      "category": "Apparel",
+      "story": "Thick, cushioned soles and breathable wool blend for the ultimate studio comfort."
+    },
+    {
+      "id": "product-7",
+      "description": "Blush Pink Baby Blanket",
+      "imageUrl": "https://picsum.photos/seed/baby-blanket/600/800",
+      "imageHint": "crochet blanket",
+      "price": 5200,
+      "category": "Heirloom",
+      "story": "A soft embrace for the littlest ones, made with hypoallergenic organic bamboo yarn."
+    },
+    {
+      "id": "product-8",
+      "description": "Midnight Blue Beret",
+      "imageUrl": "https://picsum.photos/seed/beret/600/800",
+      "imageHint": "crochet hat",
+      "price": 1100,
+      "category": "Apparel",
+      "story": "Classic Parisian silhouette met with artisanal hand-weaving in deep stellar navy."
+    },
+    {
+      "id": "product-9",
+      "description": "Terracotta Plant Hanger",
+      "imageUrl": "https://picsum.photos/seed/plant-hanger/600/800",
+      "imageHint": "crochet plant",
+      "price": 950,
+      "category": "Decor",
+      "story": "Durable macramé-style crochet that holds your greenery with bohemian grace."
+    },
+    {
+      "id": "product-10",
+      "description": "Ivory Wedding Clutch",
+      "imageUrl": "https://picsum.photos/seed/clutch/600/800",
+      "imageHint": "crochet bag",
+      "price": 2800,
+      "category": "Accessories",
+      "story": "Lined with silk and finished with a pearl clasp, a treasure for your most special day."
+    },
+    {
+      "id": "product-11",
+      "description": "Sunny Lemon Tote",
+      "imageUrl": "https://picsum.photos/seed/tote-bag/600/800",
+      "imageHint": "crochet bag",
+      "price": 1800,
+      "category": "Accessories",
+      "story": "A burst of citrus energy for your market runs, reinforced handles for lasting use."
+    },
+    {
+      "id": "product-12",
+      "description": "Lavender Wood Sprite",
+      "imageUrl": "https://picsum.photos/seed/sprite/600/800",
+      "imageHint": "crochet toy",
+      "price": 1350,
+      "category": "Creatures",
+      "story": "Infused with dried lavender, this sprite brings calm and whimsy to any bookshelf."
+    },
+    {
+      "id": "product-13",
+      "description": "Autumn Leaf Scarf",
+      "imageUrl": "https://picsum.photos/seed/scarf/600/800",
+      "imageHint": "crochet scarf",
+      "price": 2200,
+      "category": "Apparel",
+      "story": "A cascade of maple and oak leaves, meticulously stitched to capture the essence of fall."
+    },
+    {
+      "id": "product-14",
+      "description": "Celestial Moon Pillow",
+      "imageUrl": "https://picsum.photos/seed/moon-pillow/600/800",
+      "imageHint": "crochet pillow",
+      "price": 2600,
+      "category": "Decor",
+      "story": "A velvet-soft crescent moon, glowing with embroidered silver stars."
+    },
+    {
+      "id": "product-15",
+      "description": "Emerald Sea Turtle",
+      "imageUrl": "https://picsum.photos/seed/turtle/600/800",
+      "imageHint": "crochet toy",
+      "price": 1600,
+      "category": "Creatures",
+      "story": "A textured shell and soft flippers make this turtle a favorite for tactile play."
+    },
+    {
+      "id": "product-16",
+      "description": "Rose Quartz Heart",
+      "imageUrl": "https://picsum.photos/seed/heart/600/800",
+      "imageHint": "crochet heart",
+      "price": 1900,
+      "category": "Decor",
+      "story": "A symbol of eternal love, hand-stuffed for a comforting, squishy feel."
+    },
+    {
+      "id": "product-17",
+      "description": "Sandstone Yoga Bag",
+      "imageUrl": "https://picsum.photos/seed/yoga-bag/600/800",
+      "imageHint": "crochet bag",
+      "price": 2400,
+      "category": "Accessories",
+      "story": "Breathable mesh crochet that fits standard mats, styled in minimalist earth tones."
+    },
+    {
+      "id": "product-18",
+      "description": "Amethyst Owl Guardian",
+      "imageUrl": "https://picsum.photos/seed/owl/600/800",
+      "imageHint": "crochet owl",
+      "price": 2100,
+      "category": "Creatures",
+      "story": "Wise eyes and plumage of deep violet, watching over your home with silent grace."
+    },
+    {
+      "id": "product-19",
+      "description": "Peppermint Pet Cape",
+      "imageUrl": "https://picsum.photos/seed/pet-cape/600/800",
+      "imageHint": "crochet pet",
+      "price": 1200,
+      "category": "Apparel",
+      "story": "Make your furry friend part of the magic with this adjustable, festive cape."
+    },
+    {
+      "id": "product-20",
+      "description": "Gingerbread Tissue Cover",
+      "imageUrl": "https://picsum.photos/seed/gingerbread/600/800",
+      "imageHint": "crochet home",
+      "price": 1750,
+      "category": "Decor",
+      "story": "Turn a daily necessity into a sugary delight. Topped with white frosting stitches."
+    },
+    {
+      "id": "product-21",
+      "description": "Sakura Petal Doily",
+      "imageUrl": "https://picsum.photos/seed/doily/600/800",
+      "imageHint": "crochet lace",
+      "price": 600,
+      "category": "Decor",
+      "story": "Feminine and fine, this piece protects your surfaces with a whisper of pink lace."
+    },
+    {
+      "id": "product-22",
+      "description": "Nordic Snowflake Socks",
+      "imageUrl": "https://picsum.photos/seed/socks/600/800",
+      "imageHint": "crochet socks",
+      "price": 1300,
+      "category": "Apparel",
+      "story": "Stay warm during the rare Kolkata chills with these thick, patterned boot socks."
+    },
+    {
+      "id": "product-23",
+      "description": "Phoenix Wing Wrap",
+      "imageUrl": "https://picsum.photos/seed/wing-wrap/600/800",
+      "imageHint": "crochet wrap",
+      "price": 4800,
+      "category": "Heirloom",
+      "story": "A dramatic gradient from fiery orange to deep black, representing rebirth in every loop."
+    },
+    {
+      "id": "product-24",
+      "description": "Little Prince Crown",
+      "imageUrl": "https://picsum.photos/seed/crown/600/800",
+      "imageHint": "crochet crown",
+      "price": 750,
+      "category": "Miniatures",
+      "story": "For those who rule their own little kingdom. Soft, flexible, and majestic."
+    },
+    {
+      "id": "product-25",
+      "description": "Victorian Lace Parasol",
+      "imageUrl": "https://picsum.photos/seed/parasol/600/800",
+      "imageHint": "crochet art",
+      "price": 7500,
+      "category": "Art",
+      "story": "A non-functional art piece that captures the light and shadows of a bygone era."
     }
   ]
 }

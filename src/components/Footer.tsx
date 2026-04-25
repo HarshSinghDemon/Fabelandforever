@@ -1,3 +1,4 @@
+
 "use client";
 
 import React from 'react';
@@ -18,8 +19,8 @@ export function Footer() {
           
           <div className="md:col-span-2 space-y-12">
             <div className="flex items-center gap-6">
-              <Logo className="w-12 h-12 text-white" />
-              <h2 className="font-headline text-4xl">Fable & Forever</h2>
+              <Logo className="w-10 h-10 text-white" />
+              <h2 className="font-headline text-3xl">Fable & Forever</h2>
             </div>
             <p className="text-white/40 max-w-sm leading-relaxed font-medium text-lg italic">
               "Weaving the whispers of your imagination into hand-stitched treasures that carry heartbeat and history."
@@ -32,7 +33,7 @@ export function Footer() {
                   className="text-white/60 hover:text-white transition-colors"
                   aria-label={social.label}
                 >
-                  <social.Icon className="w-6 h-6" />
+                  <social.Icon className="w-5 h-5" />
                 </Link>
               ))}
             </div>
@@ -41,8 +42,7 @@ export function Footer() {
           <div className="space-y-10">
             <h4 className="text-[10px] font-bold uppercase tracking-[0.4em] text-accent">Menu</h4>
             <ul className="space-y-4 text-xs font-bold uppercase tracking-[0.2em]">
-              <li><Link href="/#shop" className="text-white/40 hover:text-white transition-colors">Shop All</Link></li>
-              <li><Link href="/#custom" className="text-white/40 hover:text-white transition-colors">Commissions</Link></li>
+              <li><Link href="/#shop" className="text-white/40 hover:text-white transition-colors">Collection</Link></li>
               <li><Link href="/about" className="text-white/40 hover:text-white transition-colors">Our Story</Link></li>
               <li><Link href="/#contact" className="text-white/40 hover:text-white transition-colors">Contact</Link></li>
             </ul>
@@ -51,7 +51,7 @@ export function Footer() {
           <div className="space-y-10">
             <h4 className="text-[10px] font-bold uppercase tracking-[0.4em] text-accent">Studio</h4>
             <div className="flex items-start gap-4 text-white/40">
-              <MapPin className="w-6 h-6 shrink-0 opacity-40" />
+              <MapPin className="w-5 h-5 shrink-0 opacity-40" />
               <p className="text-sm font-medium leading-relaxed">
                 Hand-Crocheted Boutique<br />
                 Bespoke Artisanal Studio

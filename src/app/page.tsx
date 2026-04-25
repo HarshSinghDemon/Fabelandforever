@@ -1,12 +1,12 @@
+
 "use client";
 
 import React, { useEffect, useRef, useState } from 'react';
 import { Navigation } from '@/components/Navigation';
 import { Hero } from '@/components/Hero';
 import { FeaturedProducts } from '@/components/FeaturedProducts';
-import { CustomOrder } from '@/components/CustomOrder';
 import { Footer } from '@/components/Footer';
-import { Send, ArrowRight, Mail, Sparkles, Feather, Palette } from 'lucide-react';
+import { Send, ArrowRight, Mail, Sparkles, Feather, Palette, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -53,6 +53,7 @@ export default function Home() {
       
       <Hero />
       
+      {/* Dynamic Marquee */}
       <div className="py-20 border-y border-primary/5 overflow-hidden whitespace-nowrap bg-white">
         <div className="flex animate-marquee gap-20">
           {[...Array(4)].map((_, i) => (
@@ -65,21 +66,49 @@ export default function Home() {
         </div>
       </div>
 
+      {/* Featured Collection */}
       <section ref={(el) => { if (el) scrollRefs.current[0] = el }} className="reveal-on-scroll">
         <FeaturedProducts />
       </section>
 
+      {/* The Process Section */}
       <section className="py-40 bg-white border-y border-primary/5 overflow-hidden">
         <div className="container mx-auto px-6">
+          <div className="text-center mb-24">
+            <span className="text-accent font-bold tracking-[0.4em] uppercase text-[10px] mb-6 block">Craftsmanship</span>
+            <h2 className="font-headline text-5xl sm:text-7xl text-primary leading-tight mb-8">
+              The <span className="italic">Process.</span>
+            </h2>
+            <div className="w-24 h-[1px] bg-accent/30 mx-auto"></div>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-24 md:gap-12">
             {[
-              { icon: Feather, title: 'Fine Materials', desc: 'We only use soft, durable, and ethically sourced yarns.' },
-              { icon: Palette, title: 'Artisan Colors', desc: 'Each color combination is picked to look beautiful in your home.' },
-              { icon: Sparkles, title: 'Perfect Finish', desc: 'Detailed craftsmanship ensures every piece is built to last.' }
+              { 
+                icon: Feather, 
+                title: 'Material Choice', 
+                desc: 'We select the softest, most durable ethically sourced yarns for every loop.',
+                step: '01'
+              },
+              { 
+                icon: Palette, 
+                title: 'Color Curation', 
+                desc: 'Artisanal color palettes designed to bring warmth and elegance to your space.',
+                step: '02'
+              },
+              { 
+                icon: Sparkles, 
+                title: 'Slow Stitching', 
+                desc: 'Detailed hand-craftsmanship ensures each piece is a lasting legacy.',
+                step: '03'
+              }
             ].map((item, idx) => (
               <div key={idx} className="text-center space-y-6 group">
-                <div className="w-16 h-16 bg-paper rounded-full flex items-center justify-center mx-auto mb-8 transition-transform group-hover:scale-110 duration-500">
-                  <item.icon className="w-6 h-6 text-accent" />
+                <div className="relative inline-block mb-8">
+                  <span className="absolute -top-4 -right-4 text-[40px] font-headline italic text-primary/5 select-none">{item.step}</span>
+                  <div className="w-16 h-16 bg-paper rounded-full flex items-center justify-center mx-auto transition-transform group-hover:scale-110 duration-500 shadow-sm border border-primary/5">
+                    <item.icon className="w-6 h-6 text-accent" />
+                  </div>
                 </div>
                 <h3 className="font-headline text-2xl text-primary">{item.title}</h3>
                 <p className="text-primary/60 text-sm leading-relaxed max-w-[250px] mx-auto">
@@ -90,11 +119,8 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      <section ref={(el) => { if (el) scrollRefs.current[1] = el }} className="reveal-on-scroll">
-        <CustomOrder />
-      </section>
       
+      {/* Contact Section */}
       <section 
         id="contact" 
         className="py-40 bg-white"
@@ -109,7 +135,7 @@ export default function Home() {
                 <span className="italic">Us.</span>
               </h2>
               <p className="text-xl text-primary/60 italic leading-relaxed max-w-sm">
-                Have questions about a product or a custom order? We are here to help.
+                Have questions about a product? We are here to help.
               </p>
               
               <div className="mt-20 space-y-4">
@@ -154,7 +180,7 @@ export default function Home() {
                     className="border-none bg-transparent p-0 min-h-[150px] text-xl placeholder:text-primary/10 rounded-none focus-visible:ring-0 resize-none" 
                   />
                </div>
-               <Button type="submit" className="bg-primary hover:bg-primary/90 text-white h-16 px-16 rounded-none text-[11px] font-bold uppercase tracking-[0.3em] w-full sm:w-auto">
+               <Button type="submit" className="bg-primary hover:bg-primary/90 text-white h-16 px-16 rounded-none text-[11px] font-bold uppercase tracking-[0.3em] w-full sm:w-auto transition-all active:scale-95 shadow-lg">
                  Send Message <Send className="ml-4 w-4 h-4" />
                </Button>
             </form>

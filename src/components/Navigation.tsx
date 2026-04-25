@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useEffect } from 'react';
@@ -41,9 +42,9 @@ export function Navigation() {
   }, []);
 
   const navLinks = [
-    { name: 'Shop', href: '/#shop' },
-    { name: 'Custom', href: '/#custom' },
+    { name: 'Collection', href: '/#shop' },
     { name: 'Our Story', href: '/about' },
+    { name: 'Contact', href: '/#contact' },
   ];
 
   const SearchButton = () => (
@@ -87,7 +88,7 @@ export function Navigation() {
                    <button 
                     key={cat} 
                     onClick={() => setSearchQuery(cat)}
-                    className="text-left py-3 px-4 bg-muted hover:bg-primary/5 transition-colors text-sm font-medium"
+                    className="text-left py-3 px-4 bg-muted hover:bg-primary/5 transition-colors text-sm font-medium rounded-lg"
                    >
                      {cat}
                    </button>
@@ -122,14 +123,17 @@ export function Navigation() {
 
   return (
     <>
-      <div className="bg-primary text-primary-foreground text-[10px] font-bold uppercase tracking-[0.3em] py-2.5 text-center fixed top-0 w-full z-[70] transition-transform duration-500">
+      <div className={cn(
+        "bg-primary text-primary-foreground text-[10px] font-bold uppercase tracking-[0.3em] py-2.5 text-center fixed top-0 w-full z-[70] transition-transform duration-500",
+        isScrolled ? "-translate-y-full" : "translate-y-0"
+      )}>
         Free Hand-Stitched Magic on Orders Over ₹2,000
       </div>
 
       <nav className={cn(
         "fixed top-0 left-0 right-0 z-[60] transition-all duration-700 mt-[35px]",
         isScrolled 
-          ? "bg-background/90 backdrop-blur-xl shadow-md py-4 mt-0" 
+          ? "bg-background/90 backdrop-blur-xl shadow-md py-4 mt-0 border-b border-primary/5" 
           : "bg-transparent py-8"
       )}>
         <div className="container mx-auto px-6 flex items-center justify-between">
@@ -141,7 +145,7 @@ export function Navigation() {
               )}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
-              {isMobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+              <Menu className="w-4 h-4" />
             </button>
             <div className="hidden md:flex items-center space-x-12">
               {navLinks.map((link) => (
@@ -162,7 +166,7 @@ export function Navigation() {
           <div className="flex-shrink-0 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
             <Link href="/" className="hover:opacity-80 transition-opacity">
               <Logo className={cn(
-                "w-12 h-12 transition-colors duration-700",
+                "w-10 h-10 transition-colors duration-700",
                 isScrolled ? "text-primary" : "text-white"
               )} />
             </Link>
@@ -180,15 +184,15 @@ export function Navigation() {
           isMobileMenuOpen ? "translate-x-0 opacity-100" : "-translate-x-full opacity-0"
         )}>
           <button 
-            className="absolute top-10 right-8 text-primary"
+            className="absolute top-10 right-8 text-primary p-2"
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            <X className="w-8 h-8" />
+            <X className="w-6 h-6" />
           </button>
           
           <div className="space-y-10 text-center max-w-xs mx-auto">
             <div className="flex justify-center mb-16">
-               <Logo className="w-20 h-20 text-primary" />
+               <Logo className="w-16 h-16 text-primary" />
             </div>
             {navLinks.map((link, idx) => (
               <Link 
@@ -202,13 +206,12 @@ export function Navigation() {
               </Link>
             ))}
             <div className="pt-20 border-t border-primary/10">
-              <p className="text-[10px] font-bold uppercase tracking-widest text-primary/40 mb-8">Artisan Portal</p>
               <Link 
                 href="/admin/login" 
-                className="inline-block py-4 px-10 rounded-full border border-primary/20 text-sm font-bold uppercase tracking-widest text-primary/60 hover:bg-primary hover:text-white transition-all"
+                className="inline-block py-4 px-10 rounded-full border border-primary/20 text-xs font-bold uppercase tracking-widest text-primary/60"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Login
+                Artisan Login
               </Link>
             </div>
           </div>

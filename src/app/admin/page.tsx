@@ -7,7 +7,6 @@ import { useUser, useAuth, useFirestore, useCollection, useMemoFirebase } from '
 import { AdminProductManager } from '@/components/AdminProductManager';
 import { AdminOrderManager } from '@/components/AdminOrderManager';
 import { AdminSettingsManager } from '@/components/AdminSettingsManager';
-import { Navigation } from '@/components/Navigation';
 import { Button } from '@/components/ui/button';
 import { collection, limit, onSnapshot, query } from 'firebase/firestore';
 import { 
@@ -18,17 +17,18 @@ import {
   Sparkles,
   ExternalLink,
   ChevronRight,
-  ShieldCheck,
-  ShieldAlert,
   BarChart3,
   Settings,
-  AlertCircle,
   Copy,
   CheckCircle2,
-  Globe
+  Globe,
+  Home,
+  LayoutDashboard
 } from 'lucide-react';
 import { signOut } from 'firebase/auth';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import Link from 'next/link';
+import { cn } from '@/lib/utils';
 
 export default function AdminDashboard() {
   const { user, loading } = useUser();
@@ -36,7 +36,6 @@ export default function AdminDashboard() {
   const db = useFirestore();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<'inventory' | 'orders' | 'settings'>('inventory');
-  const [dbStatus, setDbStatus] = useState<'checking' | 'connected' | 'error'>('checking');
   const [copied, setCopied] = useState(false);
 
   const productsQuery = useMemoFirebase(() => {
@@ -60,22 +59,9 @@ export default function AdminDashboard() {
     }
   }, [user, loading, router]);
 
-  useEffect(() => {
-    if (!user || !db) return;
-    
-    const q = query(collection(db, 'products'), limit(1));
-    const unsubscribe = onSnapshot(q, 
-      () => setDbStatus('connected'),
-      () => setDbStatus('error')
-    );
-    
-    return () => unsubscribe();
-  }, [db, user]);
-
   const firestoreRules = `rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Anyone can see your treasures and site settings
     match /products/{productId} {
       allow read: if true;
       allow write: if request.auth != null;
@@ -84,14 +70,8 @@ service cloud.firestore {
       allow read: if true;
       allow write: if request.auth != null;
     }
-    // Only you can see and manage orders
     match /orders/{orderId} {
       allow read, write: if request.auth != null;
-    }
-    // Only you can manage specific site configuration
-    match /settings/{settingId} {
-      allow write: if request.auth != null;
-      allow read: if true;
     }
   }
 }`;
@@ -118,135 +98,131 @@ service cloud.firestore {
   const firebaseConsoleUrl = `https://console.firebase.google.com/project/${process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID}/firestore/rules`;
 
   return (
-    <div className="min-h-screen bg-paper pb-40 selection:bg-accent/20">
-      <Navigation />
-      
-      <div className="pt-40 container mx-auto px-6">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-8">
-          <div className="animate-fade-in-up">
-            <div className="flex items-center gap-4 mb-4">
-              <Sparkles className="text-accent w-6 h-6 animate-pulse" />
-              <span className="text-accent font-bold uppercase tracking-[0.5em] text-[10px]">The Inner Sanctum</span>
+    <div className="min-h-screen bg-background flex flex-col md:flex-row selection:bg-accent/20">
+      {/* Sidebar Navigation */}
+      <aside className="w-full md:w-80 bg-white md:border-r border-primary/5 p-6 md:p-10 flex flex-col justify-between sticky top-0 h-auto md:h-screen z-50">
+        <div className="space-y-12">
+          <Link href="/" className="flex items-center gap-4 group">
+            <div className="w-12 h-12 bg-primary rounded-2xl flex items-center justify-center text-white transition-transform group-hover:rotate-12">
+              <Sparkles className="w-6 h-6" />
             </div>
-            <h1 className="font-headline text-6xl md:text-7xl text-primary mb-4 leading-tight">Studio Control</h1>
-            <p className="text-muted-foreground font-medium italic text-xl max-w-2xl">
-              "Welcome back, Master Artisan. Ensure your 'Magic Boundaries' are open so the world can see your work."
-            </p>
+            <div>
+              <h2 className="font-headline text-xl text-primary leading-none">Studio</h2>
+              <span className="text-[9px] font-bold uppercase tracking-[0.3em] text-accent">Master Portal</span>
+            </div>
+          </Link>
+
+          <nav className="space-y-4">
+            <label className="text-[10px] font-bold uppercase tracking-[0.3em] text-primary/30 ml-4 mb-2 block">Menu</label>
+            {[
+              { id: 'inventory', icon: Package, label: 'Treasures' },
+              { id: 'orders', icon: History, label: 'Scrolls' },
+              { id: 'settings', icon: Settings, label: 'Site Visuals' },
+            ].map((item) => (
+              <button 
+                key={item.id}
+                onClick={() => setActiveTab(item.id as any)}
+                className={cn(
+                  "w-full flex items-center justify-between px-6 py-4 rounded-2xl font-bold text-xs uppercase tracking-[0.1em] transition-all",
+                  activeTab === item.id 
+                    ? "bg-primary text-white shadow-xl shadow-primary/20 scale-[1.02]" 
+                    : "text-primary/50 hover:bg-paper hover:text-primary"
+                )}
+              >
+                <div className="flex items-center gap-4">
+                  <item.icon className="w-4 h-4" />
+                  {item.label}
+                </div>
+                {activeTab === item.id && <ChevronRight className="w-3 h-3" />}
+              </button>
+            ))}
+          </nav>
+
+          <div className="p-6 bg-paper rounded-3xl space-y-6">
+            <div className="flex items-center gap-3">
+              <BarChart3 className="w-4 h-4 text-accent" />
+              <h4 className="font-bold text-[9px] uppercase tracking-[0.2em] text-primary/60">Insights</h4>
+            </div>
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                <span className="text-[10px] text-muted-foreground uppercase font-medium">Revenue</span>
+                <span className="font-bold text-primary text-xs">₹ {totalRevenue.toLocaleString('en-IN')}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-[10px] text-muted-foreground uppercase font-medium">Stock</span>
+                <span className="font-bold text-primary text-xs">{products?.length || 0} items</span>
+              </div>
+            </div>
           </div>
-          <div className="flex flex-wrap gap-4">
-            <Button 
-              variant="outline" 
-              asChild
-              className="rounded-full px-8 h-14 border-accent/20 text-accent hover:bg-accent hover:text-white transition-all shadow-lg"
-            >
+        </div>
+
+        <div className="pt-8 border-t border-primary/5 space-y-4 mt-12 md:mt-0">
+          <Button 
+            variant="ghost" 
+            onClick={() => auth && signOut(auth)}
+            className="w-full justify-start text-primary/50 hover:text-destructive hover:bg-destructive/5 rounded-2xl px-6 h-12"
+          >
+            <LogOut className="w-4 h-4 mr-3" /> Sign Out
+          </Button>
+          <Button asChild variant="outline" className="w-full h-12 rounded-2xl border-primary/10">
+            <Link href="/"><Home className="w-4 h-4 mr-3" /> Visit Boutique</Link>
+          </Button>
+        </div>
+      </aside>
+
+      {/* Main Content Area */}
+      <main className="flex-1 p-6 md:p-16 pb-32">
+        <div className="max-w-6xl mx-auto space-y-12">
+          <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="text-accent font-bold uppercase tracking-[0.4em] text-[9px]">Portal Active</span>
+              </div>
+              <h1 className="font-headline text-5xl md:text-6xl text-primary leading-tight">Master Weaver Control</h1>
+            </div>
+            <Button asChild className="rounded-full px-8 h-14 bg-primary text-white shadow-xl hover:scale-105 transition-transform">
               <a href={firebaseConsoleUrl} target="_blank" rel="noopener noreferrer">
-                <ExternalLink className="w-4 h-4 mr-2" /> Open Firestore Rules
+                <Globe className="w-4 h-4 mr-2" /> Firestore Rules
               </a>
             </Button>
-            <Button 
-              variant="outline" 
-              onClick={() => auth && signOut(auth)}
-              className="rounded-full px-8 h-14 border-primary/20 text-primary hover:bg-destructive hover:text-white hover:border-destructive transition-all shadow-lg active:scale-95"
-            >
-              <LogOut className="w-4 h-4 mr-2" /> Sign Out
-            </Button>
-          </div>
-        </div>
+          </header>
 
-        {/* CRITICAL: Rules Warning */}
-        <Alert variant="destructive" className="mb-10 rounded-[2rem] border-2 border-destructive bg-white p-8 shadow-2xl animate-in slide-in-from-top-4 duration-500 ring-4 ring-destructive/10">
-          <Globe className="h-8 w-8 text-destructive mb-4" />
-          <AlertTitle className="font-headline text-3xl mb-4">Make Your Site Global! 🌍</AlertTitle>
-          <AlertDescription className="text-base space-y-6">
-            <p className="font-medium text-lg">
-              If visitors see an empty shop, it's because your <strong>Firestore Rules</strong> are set to private. 
-              To fix this, you MUST copy the code below and publish it in your Firebase Console:
-            </p>
-            
-            <div className="bg-slate-950 text-slate-50 p-6 rounded-2xl relative group border-2 border-white/10 shadow-inner">
-              <pre className="text-xs overflow-x-auto font-mono leading-relaxed">
-                {firestoreRules}
-              </pre>
-              <Button 
-                size="sm"
-                variant="secondary"
-                onClick={handleCopyRules}
-                className="absolute top-4 right-4 rounded-xl shadow-lg"
-              >
-                {copied ? <CheckCircle2 className="w-4 h-4 mr-2 text-emerald-400" /> : <Copy className="w-4 h-4 mr-2" />}
-                {copied ? "Copied!" : "Copy These Rules"}
-              </Button>
-            </div>
-
-            <div className="flex flex-col sm:flex-row gap-6 pt-4 items-center">
-              <Button asChild className="rounded-full h-16 px-10 bg-primary hover:bg-primary/90 text-lg shadow-xl">
-                <a href={firebaseConsoleUrl} target="_blank" rel="noopener noreferrer">
-                  1. Go to Firebase Rules Tab <ExternalLink className="w-4 h-4 ml-2" />
-                </a>
-              </Button>
-              <div className="flex items-center text-sm font-bold text-muted-foreground uppercase tracking-widest bg-paper px-6 py-3 rounded-full border">
-                2. Paste code & click "Publish"
-              </div>
-            </div>
-          </AlertDescription>
-        </Alert>
-
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-16">
-          <div className="lg:col-span-1 space-y-6 animate-fade-in-up">
-            <div className="space-y-4">
-              <label className="text-[10px] font-bold uppercase tracking-[0.3em] text-primary/40 ml-4">Navigation</label>
-              {[
-                { id: 'inventory', icon: Package, label: 'Inventory' },
-                { id: 'orders', icon: History, label: 'Stitch Scrolls' },
-                { id: 'settings', icon: Settings, label: 'Site Settings' },
-              ].map((item) => (
-                <button 
-                  key={item.id}
-                  onClick={() => setActiveTab(item.id as any)}
-                  className={`w-full flex items-center justify-between px-10 py-6 rounded-[2.5rem] font-bold text-xs uppercase tracking-[0.2em] transition-all group ${
-                    activeTab === item.id 
-                      ? 'bg-primary text-white shadow-2xl shadow-primary/30 scale-[1.02]' 
-                      : 'bg-white/60 text-primary/50 hover:bg-white hover:text-primary'
-                  }`}
+          {/* Rules Security Alert */}
+          <Alert variant="destructive" className="rounded-3xl border-2 border-primary/5 bg-white p-8 shadow-2xl relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-110 transition-transform duration-1000"></div>
+            <AlertTitle className="font-headline text-2xl text-primary mb-4 flex items-center gap-3">
+              <Globe className="h-6 w-6 text-accent" /> Set Your Studio Live 🌍
+            </AlertTitle>
+            <AlertDescription className="space-y-6">
+              <p className="text-sm font-medium text-primary/60 italic leading-relaxed">
+                If the boutique looks empty to visitors, your "Magic Boundaries" (Firestore Rules) are closed. 
+                Copy these rules and publish them in your Firebase Console.
+              </p>
+              
+              <div className="bg-slate-950 text-slate-50 p-6 rounded-2xl relative font-mono text-[10px] leading-relaxed shadow-inner border border-white/10">
+                <pre className="overflow-x-auto no-scrollbar">{firestoreRules}</pre>
+                <Button 
+                  size="sm"
+                  variant="secondary"
+                  onClick={handleCopyRules}
+                  className="absolute top-4 right-4 rounded-xl shadow-lg"
                 >
-                  <div className="flex items-center gap-5">
-                    <item.icon className={`w-5 h-5 ${activeTab === item.id ? 'text-white' : 'text-accent'}`} />
-                    {item.label}
-                  </div>
-                  {activeTab === item.id ? <Sparkles className="w-4 h-4 animate-pulse" /> : <ChevronRight className="w-4 h-4 opacity-20" />}
-                </button>
-              ))}
-            </div>
+                  {copied ? <CheckCircle2 className="w-3 h-3 mr-2" /> : <Copy className="w-3 h-3 mr-2" />}
+                  {copied ? "Copied" : "Copy Rules"}
+                </Button>
+              </div>
+            </AlertDescription>
+          </Alert>
 
-            <div className="p-10 bg-white/60 rounded-[3rem] border border-white/50 shadow-sm space-y-8">
-              <div className="flex items-center gap-3">
-                <BarChart3 className="w-4 h-4 text-accent" />
-                <h4 className="font-bold text-[10px] uppercase tracking-[0.3em] text-primary/60">Studio Insights</h4>
-              </div>
-              <div className="grid gap-6">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-medium text-muted-foreground">Revenue</span>
-                  <span className="font-bold text-primary">₹ {totalRevenue.toLocaleString('en-IN')}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-medium text-muted-foreground">Products</span>
-                  <span className="font-bold text-primary">{products?.length || 0}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="lg:col-span-3">
-            <div className="bg-white/40 backdrop-blur-sm p-2 rounded-[4.5rem] border border-white/50 shadow-inner">
-              <div className="bg-transparent rounded-[4rem] overflow-hidden">
-                {activeTab === 'inventory' && <AdminProductManager />}
-                {activeTab === 'orders' && <AdminOrderManager />}
-                {activeTab === 'settings' && <AdminSettingsManager />}
-              </div>
-            </div>
+          {/* Active Component Section */}
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
+            {activeTab === 'inventory' && <AdminProductManager />}
+            {activeTab === 'orders' && <AdminOrderManager />}
+            {activeTab === 'settings' && <AdminSettingsManager />}
           </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 }

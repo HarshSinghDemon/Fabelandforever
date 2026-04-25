@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
-import { ImageIcon, Loader2, Sparkles, Layout, X, Plus, Trash2 } from 'lucide-react';
+import { ImageIcon, Loader2, Sparkles, Layout, Plus, Trash2, Wand2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import Image from 'next/image';
 import { uploadToSupabase } from '@/app/actions/supabase-upload';
@@ -67,10 +67,10 @@ export function AdminSettingsManager() {
       if (result.success && result.url) {
         if (type === 'hero') {
           setHeroImages(prev => [...prev, result.url!]);
-          toast({ title: "Visual Captured! ✨", description: "Hero visual added to your collection." });
+          toast({ title: "Visual Added ✨", description: "Hero visual appended to rotation." });
         } else {
           setCustomImageUrl(result.url!);
-          toast({ title: "Visual Captured! ✨", description: "Custom section visual updated." });
+          toast({ title: "Visual Updated ✨", description: "Custom section vision updated." });
         }
       } else {
         throw new Error(result.error || "Failed to upload image");
@@ -101,7 +101,7 @@ export function AdminSettingsManager() {
 
     setDoc(ref, data, { merge: true })
       .then(() => {
-        toast({ title: "Magic Applied! ✨", description: `The ${type} section has been transformed.` });
+        toast({ title: "Site Transformed ✨", description: `The ${type} section is now updated.` });
       })
       .catch(async (error) => {
         const permissionError = new FirestorePermissionError({
@@ -119,123 +119,137 @@ export function AdminSettingsManager() {
 
   if (loadingHero || loadingCustom) {
     return (
-      <div className="flex justify-center py-20">
-        <Loader2 className="w-12 h-12 text-primary animate-spin" />
+      <div className="flex justify-center py-40">
+        <Loader2 className="w-16 h-16 text-primary animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-16">
       <div className="flex items-center gap-4">
         <Layout className="text-accent w-6 h-6" />
         <h3 className="font-headline text-3xl text-primary">Studio Visuals</h3>
       </div>
 
       <div className="grid grid-cols-1 gap-12">
-        <Card className="border-none shadow-xl rounded-[3rem] overflow-hidden bg-white">
-          <CardContent className="p-12 space-y-10">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
+        {/* Hero Gallery Section */}
+        <div className="bg-white rounded-[4rem] p-10 md:p-16 shadow-2xl relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-2 bg-primary"></div>
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-16">
+            <div className="space-y-2">
+              <div className="flex items-center gap-3">
                 <Sparkles className="text-accent w-5 h-5" />
-                <h4 className="font-bold text-lg text-primary uppercase tracking-widest">Homepage Hero Gallery</h4>
+                <h4 className="font-bold text-xl text-primary uppercase tracking-widest">Hero Storyboard</h4>
               </div>
-              <span className="text-[10px] font-bold uppercase tracking-widest text-primary/40">
-                {heroImages.length} Visuals in Rotation
-              </span>
+              <p className="text-[10px] font-bold uppercase tracking-widest text-primary/30 ml-8">Manage the auto-sliding visuals on your landing page</p>
             </div>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {heroImages.map((url, idx) => (
-                <div key={idx} className="relative aspect-video rounded-2xl overflow-hidden border-2 border-primary/5 group">
-                  <Image src={url} alt={`Hero ${idx}`} fill className="object-cover" />
+            <div className="px-6 py-2 bg-paper rounded-full text-[10px] font-bold text-primary/40 uppercase tracking-widest">
+              {heroImages.length} Visuals active
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+            {heroImages.map((url, idx) => (
+              <div key={idx} className="relative aspect-video rounded-[2.5rem] overflow-hidden group shadow-lg border-2 border-primary/5">
+                <Image src={url} alt={`Hero ${idx}`} fill className="object-cover" />
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                   <button 
                     onClick={() => removeHeroImage(idx)}
-                    className="absolute top-3 right-3 p-2 bg-destructive text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
+                    className="p-4 bg-destructive text-white rounded-2xl shadow-2xl hover:scale-110 transition-transform"
                   >
-                    <Trash2 className="w-4 h-4" />
+                    <Trash2 className="w-5 h-5" />
                   </button>
                 </div>
-              ))}
-              
-              <div className="relative aspect-video rounded-2xl border-2 border-dashed border-primary/10 flex flex-col items-center justify-center gap-4 hover:border-accent transition-colors cursor-pointer bg-paper/30">
-                <input 
-                  type="file" 
-                  onChange={(e) => handleImageUpload(e, 'hero')} 
-                  className="absolute inset-0 opacity-0 cursor-pointer z-10" 
-                  accept="image/*" 
-                  disabled={uploadingHero} 
-                />
-                {uploadingHero ? (
-                  <Loader2 className="w-8 h-8 animate-spin text-accent" />
-                ) : (
-                  <>
-                    <div className="p-4 bg-white rounded-full shadow-sm">
-                      <Plus className="w-6 h-6 text-accent" />
-                    </div>
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-primary/40">Add Hero Visual</p>
-                  </>
-                )}
               </div>
-            </div>
-
-            <Button 
-              onClick={() => handleSaveSetting('hero')}
-              disabled={savingHero || uploadingHero || heroImages.length === 0}
-              className="w-full h-20 rounded-[2rem] bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-[0.3em] transition-all shadow-xl active:scale-95"
-            >
-              {savingHero ? <Loader2 className="animate-spin mr-2" /> : <Sparkles className="mr-2 h-5 w-5" />}
-              {savingHero ? "Weaving Reality..." : "Update Hero Rotation"}
-            </Button>
-          </CardContent>
-        </Card>
-
-        <Card className="border-none shadow-xl rounded-[3rem] overflow-hidden bg-white">
-          <CardContent className="p-12 space-y-10">
-            <div className="flex items-center gap-4">
-              <Layout className="text-accent w-5 h-5" />
-              <h4 className="font-bold text-lg text-primary uppercase tracking-widest">Custom Order Section Visual</h4>
-            </div>
+            ))}
             
-            <div className="space-y-6">
-              <Label className="text-[10px] font-bold uppercase tracking-widest text-primary/50 ml-4">Current Custom Visual</Label>
-              <div className="relative aspect-square max-w-md mx-auto w-full rounded-[2.5rem] overflow-hidden bg-muted border-2 border-primary/5 group">
-                {customImageUrl ? (
-                  <Image src={customImageUrl} alt="Custom preview" fill className="object-cover" />
-                ) : (
-                  <div className="w-full h-full flex flex-col items-center justify-center text-muted-foreground/30 gap-4">
-                    <ImageIcon className="w-12 h-12" />
-                    <p className="text-xs font-medium italic">No custom section image set</p>
+            <div className="relative aspect-video rounded-[2.5rem] border-2 border-dashed border-primary/10 flex flex-col items-center justify-center gap-4 hover:border-accent transition-all cursor-pointer bg-paper/30 group">
+              <input 
+                type="file" 
+                onChange={(e) => handleImageUpload(e, 'hero')} 
+                className="absolute inset-0 opacity-0 cursor-pointer z-10" 
+                accept="image/*" 
+                disabled={uploadingHero} 
+              />
+              {uploadingHero ? (
+                <Loader2 className="w-8 h-8 animate-spin text-accent" />
+              ) : (
+                <>
+                  <div className="p-5 bg-white rounded-full shadow-lg group-hover:scale-110 transition-transform">
+                    <Plus className="w-6 h-6 text-accent" />
                   </div>
-                )}
-              </div>
+                  <p className="text-[9px] font-bold uppercase tracking-[0.4em] text-primary/30">Add Vision</p>
+                </>
+              )}
+            </div>
+          </div>
 
-              <div className="flex gap-4">
-                <Input 
-                  placeholder="Custom Section Image URL..." 
-                  value={customImageUrl}
-                  onChange={(e) => setCustomImageUrl(e.target.value)}
-                  className="h-14 rounded-2xl border-2 border-primary/5 bg-muted/20 flex-1 truncate"
-                />
-                <div className="relative">
-                  <input type="file" onChange={(e) => handleImageUpload(e, 'custom')} className="absolute inset-0 opacity-0 cursor-pointer z-10" accept="image/*" disabled={uploadingCustom} />
-                  <Button type="button" variant="outline" className="h-14 w-14 rounded-2xl border-2 border-primary/5 shadow-sm">
-                    {uploadingCustom ? <Loader2 className="animate-spin" /> : <ImageIcon />}
-                  </Button>
+          <Button 
+            onClick={() => handleSaveSetting('hero')}
+            disabled={savingHero || uploadingHero || heroImages.length === 0}
+            className="w-full h-20 rounded-[2.5rem] bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-[0.3em] shadow-2xl shadow-primary/20 active:scale-95 transition-all"
+          >
+            {savingHero ? <Loader2 className="animate-spin mr-3" /> : <Wand2 className="mr-3 h-5 w-5" />}
+            {savingHero ? "Transforming Studio..." : "Update Storyboard ✨"}
+          </Button>
+        </div>
+
+        {/* Custom Section Visual */}
+        <div className="bg-white rounded-[4rem] p-10 md:p-16 shadow-2xl relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-2 bg-accent"></div>
+          <div className="flex items-center gap-4 mb-16">
+            <div className="p-4 bg-accent/5 rounded-2xl">
+              <Layout className="text-accent w-6 h-6" />
+            </div>
+            <div>
+              <h4 className="font-bold text-xl text-primary uppercase tracking-widest">Custom Order Visual</h4>
+              <p className="text-[10px] font-bold uppercase tracking-widest text-primary/30 mt-1">The banner visual for personalization inquiries</p>
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+            <div className="relative aspect-square rounded-[3rem] overflow-hidden bg-paper border-2 border-primary/5 shadow-inner">
+              {customImageUrl ? (
+                <Image src={customImageUrl} alt="Custom Preview" fill className="object-cover" />
+              ) : (
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-primary/10 gap-4">
+                  <ImageIcon className="w-16 h-16" />
+                  <p className="text-[10px] font-bold uppercase tracking-widest">No Visual Set</p>
+                </div>
+              )}
+            </div>
+
+            <div className="flex flex-col justify-center space-y-10">
+              <div className="space-y-4">
+                <Label className="text-[9px] font-bold uppercase tracking-widest text-primary/40 ml-4">Visual Origin (URL)</Label>
+                <div className="flex gap-4">
+                  <Input 
+                    placeholder="Visual URL..." 
+                    value={customImageUrl}
+                    onChange={(e) => setCustomImageUrl(e.target.value)}
+                    className="h-16 rounded-3xl border-2 border-primary/5 bg-paper/50 flex-1 truncate px-8"
+                  />
+                  <div className="relative">
+                    <input type="file" onChange={(e) => handleImageUpload(e, 'custom')} className="absolute inset-0 opacity-0 cursor-pointer z-10" accept="image/*" disabled={uploadingCustom} />
+                    <Button type="button" variant="outline" className="h-16 w-16 rounded-3xl border-2 border-primary/5 shadow-sm">
+                      {uploadingCustom ? <Loader2 className="animate-spin" /> : <Plus className="w-5 h-5 text-accent" />}
+                    </Button>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <Button 
-              onClick={() => handleSaveSetting('custom')}
-              disabled={savingCustom || uploadingCustom}
-              className="w-full h-20 rounded-[2rem] bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-[0.3em] transition-all shadow-xl active:scale-95"
-            >
-              {savingCustom ? <Loader2 className="animate-spin mr-2" /> : <Sparkles className="mr-2 h-5 w-5" />}
-              {savingCustom ? "Stitching Vision..." : "Update Custom Visual"}
-            </Button>
-          </CardContent>
-        </Card>
+              <Button 
+                onClick={() => handleSaveSetting('custom')}
+                disabled={savingCustom || uploadingCustom}
+                className="w-full h-20 rounded-[2.5rem] bg-accent hover:bg-accent/90 text-white font-bold uppercase tracking-[0.3em] shadow-2xl shadow-accent/20 active:scale-95 transition-all"
+              >
+                {savingCustom ? <Loader2 className="animate-spin mr-3" /> : <Sparkles className="mr-3 h-5 w-5" />}
+                {savingCustom ? "Weaving Vision..." : "Apply Custom Visual ✨"}
+              </Button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

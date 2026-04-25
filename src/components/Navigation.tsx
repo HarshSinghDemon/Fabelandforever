@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Search, Loader2, Home, LayoutGrid, Sparkles, ArrowRight } from 'lucide-react';
 import { CartDrawer } from './CartDrawer';
@@ -18,6 +19,8 @@ export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const pathname = usePathname();
+  const isHomePage = pathname === '/';
 
   const db = useFirestore();
   const productsQuery = useMemoFirebase(() => {
@@ -60,11 +63,13 @@ export function Navigation() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 40);
+      // On home page, wait a bit longer for the reveal
+      const threshold = isHomePage ? 200 : 40;
+      setIsScrolled(window.scrollY > threshold);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isHomePage]);
 
   const navLinks = [
     { name: 'Shop All', href: '/shop' },
@@ -77,37 +82,48 @@ export function Navigation() {
     { name: 'Our Story', href: '/about' },
   ];
 
+  // Logic to determine brand visibility in header
+  const showBrand = !isHomePage || isScrolled;
+
   return (
     <>
       <nav className={cn(
-        "fixed top-0 left-0 right-0 z-[60] transition-all duration-500",
+        "fixed top-0 left-0 right-0 z-[60] transition-all duration-700",
         isScrolled 
-          ? "bg-white border-b border-primary/5 py-3 shadow-sm" 
+          ? "bg-white/95 backdrop-blur-xl border-b border-primary/5 py-2.5 shadow-sm" 
           : "bg-transparent py-6"
       )}>
         <div className="container mx-auto px-4 md:px-6 max-w-7xl">
           <div className="flex items-center justify-between relative h-12">
             <div className="flex-shrink-0">
-              <Link href="/" className="flex items-center gap-2 group">
-                <Logo className={cn(
-                  "w-8 h-8 md:w-10 md:h-10 transition-colors duration-500",
-                  isScrolled ? "text-primary" : "text-white"
-                )} />
+              <Link href="/" className="flex items-center gap-3 group">
+                <div className={cn(
+                  "transition-all duration-700 ease-in-out transform",
+                  showBrand ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4 pointer-events-none"
+                )}>
+                  <Logo className={cn(
+                    "w-8 h-8 md:w-9 md:h-9 transition-colors duration-500",
+                    isScrolled ? "text-primary" : "text-white"
+                  )} />
+                </div>
                 <span className={cn(
-                  "font-headline text-xl md:text-2xl tracking-tight hidden sm:block",
+                  "font-headline text-xl md:text-2xl tracking-tighter hidden sm:block transition-all duration-1000 delay-100",
+                  showBrand ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4 pointer-events-none",
                   isScrolled ? "text-primary" : "text-white"
-                )}>Fable & Forever</span>
+                )}>
+                  Fable & Forever
+                </span>
               </Link>
             </div>
 
-            <div className="hidden lg:flex items-center gap-6">
+            <div className="hidden lg:flex items-center gap-6 xl:gap-8">
               {navLinks.map((link) => (
                 <Link 
                   key={link.name} 
                   href={link.href}
                   className={cn(
-                    "text-[9px] font-bold uppercase tracking-[0.2em] transition-all hover:text-accent whitespace-nowrap",
-                    isScrolled ? "text-primary/60" : "text-white/60"
+                    "text-[8px] font-bold uppercase tracking-[0.3em] transition-all hover:text-accent whitespace-nowrap",
+                    isScrolled ? "text-primary/50" : "text-white/60"
                   )}
                 >
                   {link.name}
@@ -119,11 +135,11 @@ export function Navigation() {
               <button 
                 onClick={() => setIsSearchOpen(true)}
                 className={cn(
-                  "p-2 rounded-full transition-all active:scale-95",
+                  "p-2 rounded-full transition-all active:scale-95 hover:bg-white/5",
                   isScrolled ? "text-primary hover:bg-primary/5" : "text-white hover:bg-white/10"
                 )}
               >
-                <Search className="w-5 h-5" />
+                <Search className="w-4 h-4 md:w-5 md:h-5" />
               </button>
               <CartDrawer isLight={!isScrolled} />
             </div>
@@ -134,7 +150,7 @@ export function Navigation() {
           setIsSearchOpen(open);
           if (!open) setSearchQuery('');
         }}>
-          <DialogContent className="sm:max-w-[500px] w-[95vw] border-none shadow-2xl p-0 overflow-hidden rounded-[2.5rem] bg-paper">
+          <DialogContent className="sm:max-w-[500px] w-[95vw] border-none shadow-2xl p-0 overflow-hidden rounded-none bg-paper">
             <div className="absolute top-0 left-0 w-full h-1 bg-accent/20"></div>
             
             <DialogHeader className="p-10 pb-4">
@@ -142,7 +158,7 @@ export function Navigation() {
                 <DialogTitle className="font-headline text-4xl text-primary tracking-tighter">
                   Search
                 </DialogTitle>
-                <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-accent/60">Exploring the boutique scrolls</p>
+                <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-accent/60 italic">Exploring the boutique scrolls</p>
               </div>
               
               <div className="relative group">
@@ -168,7 +184,7 @@ export function Navigation() {
                 
                 {searchQuery && filteredProducts.length === 0 && !loadingProducts ? (
                   <div className="text-center py-12 space-y-3">
-                    <p className="text-primary/60 italic font-medium">"No pieces match this query."</p>
+                    <p className="text-primary/60 italic font-medium">"No creations match this query."</p>
                   </div>
                 ) : (
                   <div className="flex flex-col gap-3">
@@ -177,9 +193,9 @@ export function Navigation() {
                         key={product.id} 
                         href={`/products/${product.id}`}
                         onClick={() => setIsSearchOpen(false)}
-                        className="flex items-center gap-4 p-4 hover:bg-white rounded-[2rem] border border-transparent hover:border-primary/5 transition-all group shadow-sm hover:shadow-md"
+                        className="flex items-center gap-4 p-4 hover:bg-white rounded-none border border-transparent hover:border-primary/5 transition-all group shadow-sm hover:shadow-md"
                       >
-                        <div className="relative w-12 h-16 overflow-hidden bg-muted/20 rounded-xl">
+                        <div className="relative w-12 h-16 overflow-hidden bg-muted/20 rounded-none">
                           {product.image && (
                             <Image 
                               src={product.image} 

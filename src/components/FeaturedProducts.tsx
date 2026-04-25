@@ -46,8 +46,8 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
   const filteredProducts = categoryFilter 
     ? allItems.filter(p => p.category === categoryFilter)
     : isBestseller 
-      ? allItems.slice(0, 8) // Simplified bestseller logic
-      : allItems.slice(allItems.length - 8); // Simplified new arrivals logic
+      ? allItems.slice(0, 8) 
+      : allItems.slice(allItems.length - 8);
 
   const handleAddToCart = (e: React.MouseEvent, product: any) => {
     e.preventDefault();
@@ -74,9 +74,9 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
       <div className="container mx-auto px-6">
         
         <div className="text-center mb-16 reveal-on-scroll">
-          <h2 className="font-headline text-4xl sm:text-5xl text-primary leading-tight">{title}</h2>
+          <h2 className="font-headline text-4xl sm:text-5xl text-primary tracking-tight">{title}</h2>
           <div className="flex justify-center mt-4">
-             <Link href="/#shop" className="text-[9px] font-bold uppercase tracking-[0.4em] text-primary/40 hover:text-primary transition-all flex items-center gap-2">
+             <Link href="/#shop" className="text-[10px] font-bold uppercase tracking-[0.4em] text-primary/40 hover:text-primary transition-all flex items-center gap-2">
                View all <ArrowRight className="w-3 h-3" />
              </Link>
           </div>
@@ -100,15 +100,15 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
                       </div>
                     </Link>
                     
-                    <div className="space-y-4 text-center">
+                    <div className="space-y-5 text-center px-4">
                       <div className="space-y-1">
-                        <h3 className="font-headline text-2xl text-primary group-hover:text-accent transition-colors truncate px-2">{product.title}</h3>
-                        <p className="font-bold text-primary/60 text-sm">Rs. {Number(product.price).toLocaleString('en-IN')}</p>
+                        <h3 className="font-headline text-2xl text-primary group-hover:text-accent transition-colors truncate">{product.title}</h3>
+                        <p className="font-bold text-primary/60 text-sm italic">Rs. {Number(product.price).toLocaleString('en-IN')}</p>
                       </div>
                       
                       <Button 
                         onClick={(e) => handleAddToCart(e, product)}
-                        className="w-full h-12 rounded-xl bg-black hover:bg-black/90 text-white font-bold uppercase tracking-widest text-[10px] transition-all active:scale-95"
+                        className="w-full h-14 rounded-none bg-black hover:bg-black/90 text-white font-bold uppercase tracking-widest text-[11px] transition-all active:scale-95 shadow-lg"
                       >
                         Add to cart
                       </Button>
@@ -117,9 +117,9 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <div className="hidden sm:flex justify-center gap-4 mt-12">
-              <CarouselPrevious className="static translate-y-0 h-12 w-12 border-primary/10 hover:bg-primary hover:text-white" />
-              <CarouselNext className="static translate-y-0 h-12 w-12 border-primary/10 hover:bg-primary hover:text-white" />
+            <div className="hidden sm:flex justify-center gap-4 mt-16">
+              <CarouselPrevious className="static translate-y-0 h-12 w-12 border-primary/10 hover:bg-black hover:text-white" />
+              <CarouselNext className="static translate-y-0 h-12 w-12 border-primary/10 hover:bg-black hover:text-white" />
             </div>
           </Carousel>
         </div>

@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useEffect } from 'react';
@@ -6,12 +7,8 @@ import { Footer } from '@/components/Footer';
 import { Heart, Sparkles, Feather, Palette, BookOpen, Scroll, Quote, ArrowRight, MousePointer2 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export default function AboutPage() {
-  const heritageBanner = PlaceHolderImages.find(img => img.id === 'heritage-banner');
-  const heroMain = PlaceHolderImages.find(img => img.id === 'hero-main');
-
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {

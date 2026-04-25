@@ -73,15 +73,15 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller, bannerIm
   if (filteredProducts.length === 0) return null;
 
   return (
-    <section className="py-24 bg-background overflow-hidden border-t border-primary/5">
+    <section className="py-12 bg-background overflow-hidden border-t border-primary/5">
       <div className="container mx-auto px-6">
         <div className={cn(
-          "grid grid-cols-1 lg:grid-cols-12 gap-10 items-start",
+          "grid grid-cols-1 lg:grid-cols-12 gap-8 items-start",
           reverse ? "lg:flex-row-reverse" : ""
         )}>
-          {/* Featured Banner (Left/Right) */}
+          {/* Featured Banner */}
           <div className={cn(
-            "lg:col-span-5 h-[600px] lg:h-[700px] relative rounded-[2rem] overflow-hidden shadow-2xl reveal-on-scroll",
+            "lg:col-span-5 h-[500px] lg:h-[600px] relative rounded-[1.5rem] overflow-hidden shadow-xl reveal-on-scroll",
             reverse ? "lg:order-last" : ""
           )}>
             <Image 
@@ -91,17 +91,17 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller, bannerIm
               className="object-cover transition-transform duration-[10s] hover:scale-110"
               data-ai-hint="luxury crochet"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex flex-col justify-end p-12">
-              <h3 className="font-headline text-5xl text-white mb-4 italic">Most Loved</h3>
-              <p className="text-white/80 font-bold uppercase tracking-[0.3em] text-xs">Exclusively in Kolkata</p>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex flex-col justify-end p-8">
+              <h3 className="font-headline text-4xl text-white mb-2 italic">Most Loved</h3>
+              <p className="text-white/80 font-bold uppercase tracking-[0.3em] text-[10px]">Exclusively in Kolkata</p>
             </div>
           </div>
 
           {/* Carousel Side */}
-          <div className="lg:col-span-7 space-y-12">
+          <div className="lg:col-span-7 space-y-8">
             <div className="text-center lg:text-left reveal-on-scroll">
-              <h2 className="font-headline text-4xl sm:text-5xl text-primary tracking-tight mb-2">{title}</h2>
-              <Link href="/#shop" className="text-[10px] font-bold uppercase tracking-[0.4em] text-primary/40 hover:text-accent transition-all inline-flex items-center gap-2">
+              <h2 className="font-headline text-3xl sm:text-4xl text-primary tracking-tight mb-1">{title}</h2>
+              <Link href="/#shop" className="text-[9px] font-bold uppercase tracking-[0.4em] text-primary/40 hover:text-accent transition-all inline-flex items-center gap-2">
                 View all <ArrowRight className="w-3 h-3" />
               </Link>
             </div>
@@ -111,9 +111,9 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller, bannerIm
                 <CarouselContent className="-ml-3">
                   {filteredProducts.map((product: any) => (
                     <CarouselItem key={product.id} className="pl-3 basis-[85%] sm:basis-1/2 lg:basis-1/3">
-                      <div className="group space-y-4">
+                      <div className="group space-y-3">
                         <Link href={`/products/${product.id}`} className="block">
-                          <div className="relative aspect-square overflow-hidden bg-muted rounded-2xl shadow-sm transition-all group-hover:shadow-xl border border-primary/5">
+                          <div className="relative aspect-square overflow-hidden bg-muted rounded-xl shadow-sm transition-all group-hover:shadow-lg border border-primary/5">
                             <Image
                               src={product.image}
                               alt={product.title}
@@ -124,15 +124,15 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller, bannerIm
                           </div>
                         </Link>
                         
-                        <div className="space-y-4 text-center px-2">
-                          <div className="space-y-1">
-                            <h3 className="font-bold text-primary group-hover:text-accent transition-colors truncate text-sm">{product.title}</h3>
-                            <p className="font-bold text-primary/60 text-xs">Rs. {Number(product.price).toLocaleString('en-IN')}</p>
+                        <div className="space-y-3 text-center px-1">
+                          <div className="space-y-0.5">
+                            <h3 className="font-bold text-primary group-hover:text-accent transition-colors truncate text-xs">{product.title}</h3>
+                            <p className="font-bold text-primary/60 text-[11px]">Rs. {Number(product.price).toLocaleString('en-IN')}</p>
                           </div>
                           
                           <Button 
                             onClick={(e) => handleAddToCart(e, product)}
-                            className="w-full h-12 rounded-xl bg-black hover:bg-black/90 text-white font-bold uppercase tracking-widest text-[10px] transition-all active:scale-95 shadow-lg"
+                            className="w-full h-10 rounded-lg bg-black hover:bg-black/90 text-white font-bold uppercase tracking-widest text-[9px] transition-all active:scale-95 shadow-md"
                           >
                             Add to cart
                           </Button>
@@ -141,9 +141,9 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller, bannerIm
                     </CarouselItem>
                   ))}
                 </CarouselContent>
-                <div className="flex justify-center lg:justify-start gap-3 mt-10">
-                  <CarouselPrevious className="static translate-y-0 h-10 w-10 border-primary/10 hover:bg-black hover:text-white" />
-                  <CarouselNext className="static translate-y-0 h-10 w-10 border-primary/10 hover:bg-black hover:text-white" />
+                <div className="flex justify-center lg:justify-start gap-2 mt-6">
+                  <CarouselPrevious className="static translate-y-0 h-8 w-8 border-primary/10 hover:bg-black hover:text-white" />
+                  <CarouselNext className="static translate-y-0 h-8 w-8 border-primary/10 hover:bg-black hover:text-white" />
                 </div>
               </Carousel>
             </div>

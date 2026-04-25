@@ -57,7 +57,7 @@ export function Navigation() {
       <nav className={cn(
         "fixed top-0 left-0 right-0 z-[60] transition-all duration-500",
         isScrolled 
-          ? "bg-white border-b border-primary/5 py-3" 
+          ? "bg-white border-b border-primary/5 py-3 shadow-sm" 
           : "bg-transparent py-6"
       )}>
         <div className="container mx-auto px-4 md:px-6">
@@ -106,8 +106,8 @@ export function Navigation() {
         </div>
 
         <Dialog open={isSearchOpen} onOpenChange={setIsSearchOpen}>
-          <DialogContent className="sm:max-w-[700px] w-[95vw] border-none shadow-2xl p-0 overflow-hidden rounded-[2.5rem] sm:rounded-[4rem] bg-white/40 backdrop-blur-3xl border border-white/20">
-            <div className="absolute top-0 left-0 w-full h-1.5 bg-accent/30"></div>
+          <DialogContent className="sm:max-w-[700px] w-[95vw] border-none shadow-2xl p-0 overflow-hidden rounded-[2.5rem] sm:rounded-[3.5rem] bg-paper">
+            <div className="absolute top-0 left-0 w-full h-1.5 bg-accent/20"></div>
             
             <DialogHeader className="p-8 md:p-12 pb-6">
               <div className="flex items-center justify-between mb-8">
@@ -115,17 +115,17 @@ export function Navigation() {
                   <DialogTitle className="font-headline text-4xl sm:text-5xl text-primary tracking-tighter">
                     Search
                   </DialogTitle>
-                  <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-accent/60">Artisanal Catalog</p>
+                  <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-accent/60 italic">"Finding your forever loop"</p>
                 </div>
               </div>
               
               <div className="relative group">
                 <Search className="absolute left-0 top-1/2 -translate-y-1/2 w-5 h-5 text-primary/30 group-focus-within:text-accent transition-colors" />
                 <Input 
-                  placeholder="What can the weavers find for you?" 
+                  placeholder="What shall we find for you?" 
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 h-16 border-none border-b-2 border-primary/5 bg-transparent text-xl sm:text-2xl placeholder:text-primary/10 focus-visible:ring-0 rounded-none text-primary font-headline"
+                  className="pl-10 h-16 border-none border-b border-primary/10 bg-transparent text-xl sm:text-2xl placeholder:text-primary/10 focus-visible:ring-0 rounded-none text-primary font-headline"
                   autoFocus
                 />
               </div>
@@ -136,7 +136,7 @@ export function Navigation() {
                 {loadingProducts ? (
                   <div className="flex flex-col items-center justify-center py-20 gap-4">
                     <Loader2 className="w-8 h-8 text-accent animate-spin" />
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-primary/40">Opening the Scrolls...</p>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-primary/40">Opening the scrolls...</p>
                   </div>
                 ) : searchQuery && filteredProducts.length === 0 ? (
                   <div className="text-center py-20 space-y-4">
@@ -152,8 +152,9 @@ export function Navigation() {
                         key={product.id} 
                         href={`/products/${product.id}`}
                         onClick={() => setIsSearchOpen(false)}
-                        className="flex items-center gap-4 p-4 bg-white/50 backdrop-blur-md rounded-[1.5rem] border border-white/30 hover:border-accent/30 transition-all hover:shadow-2xl hover:-translate-y-1 group"
+                        className="flex items-center gap-4 p-4 bg-white rounded-[1.5rem] border border-primary/5 hover:border-accent/30 transition-all hover:shadow-xl hover:-translate-y-1 group relative overflow-hidden"
                       >
+                        <div className="absolute inset-0 bg-accent/[0.02] opacity-0 group-hover:opacity-100 transition-opacity"></div>
                         <div className="relative w-16 h-20 sm:w-20 sm:h-24 overflow-hidden bg-muted/10 rounded-xl shadow-sm">
                           {product.image && (
                             <Image 
@@ -164,7 +165,7 @@ export function Navigation() {
                             />
                           )}
                         </div>
-                        <div className="flex-1 space-y-1">
+                        <div className="flex-1 space-y-1 relative z-10">
                           <h4 className="font-bold text-primary group-hover:text-accent transition-colors text-sm sm:text-base leading-tight uppercase tracking-tight">
                             {product.title}
                           </h4>
@@ -184,8 +185,8 @@ export function Navigation() {
             
             {!searchQuery && (
               <div className="px-12 pb-8 flex items-center gap-4 text-primary/40 italic text-[11px] font-medium">
-                <Sparkles className="w-4 h-4" />
-                <span>Try searching for "Candles", "Flowers", or "Decor"</span>
+                <Sparkles className="w-4 h-4 text-accent/40" />
+                <span>Popular: Candles, Flowers, or Decor</span>
               </div>
             )}
           </DialogContent>
@@ -193,7 +194,7 @@ export function Navigation() {
       </nav>
 
       {/* Bottom Nav for Mobile */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-[100] bg-white/70 backdrop-blur-2xl border-t border-primary/5 h-20 flex items-center justify-around px-4 pb-4 pt-2 shadow-[0_-4px_30px_-4px_rgba(0,0,0,0.1)]">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-[100] bg-white/90 backdrop-blur-xl border-t border-primary/5 h-20 flex items-center justify-around px-4 pb-4 pt-2 shadow-[0_-4px_30px_-4px_rgba(0,0,0,0.05)]">
         <Link href="/" className="flex flex-col items-center gap-1.5 group">
           <Home className="w-5 h-5 text-primary" />
           <span className="text-[9px] font-bold uppercase tracking-widest text-primary/40">Home</span>

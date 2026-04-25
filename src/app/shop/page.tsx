@@ -24,7 +24,6 @@ export default function ShopPage() {
   const [canScrollRight, setCanScrollRight] = useState(false);
   
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const heritageBanner = PlaceHolderImages.find(img => img.id === 'heritage-banner');
 
   const productsQuery = useMemoFirebase(() => {
     if (!db) return null;
@@ -124,6 +123,8 @@ export default function ShopPage() {
     });
   };
 
+  const heroImageUrl = "https://plus.unsplash.com/premium_photo-1675799559554-f2395a6afa45?q=80&w=1472&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+
   return (
     <main className="min-h-screen bg-white selection:bg-accent/20 flex flex-col">
       <Navigation />
@@ -132,14 +133,14 @@ export default function ShopPage() {
       <section className="relative pt-32 pb-20 sm:pt-48 sm:pb-32 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image 
-            src={heritageBanner?.imageUrl || "https://picsum.photos/seed/shop-hero/1920/1080"} 
+            src={heroImageUrl} 
             alt="Shop Catalog" 
             fill 
             className="object-cover opacity-70" 
             priority
-            data-ai-hint="crochet hands"
+            data-ai-hint="crochet craft"
           />
-          <div className="absolute inset-0 bg-black/50"></div>
+          <div className="absolute inset-0 bg-black/60"></div>
         </div>
         
         <div className="container mx-auto px-6 max-w-6xl text-center relative z-10 text-white">
@@ -243,7 +244,7 @@ export default function ShopPage() {
             >
               <div className="container mx-auto px-6 max-w-7xl">
                 
-                {/* Minimalist Category Header - No transparency, solid and clean */}
+                {/* Minimalist Category Header - Solid and clean */}
                 <div className="mb-12 py-10 px-8 rounded-[2rem] bg-primary/5 text-center">
                   <div className="flex items-center justify-center gap-3 mb-2">
                     <div className="w-6 h-[1px] bg-primary/20"></div>
@@ -256,7 +257,7 @@ export default function ShopPage() {
                   </p>
                 </div>
 
-                {/* 2x1 Minimalist Matrix Grid - Strictly 2 columns for a high-end look */}
+                {/* 2x1 Minimalist Matrix Grid */}
                 <div className="grid grid-cols-2 gap-4 md:gap-10">
                   {catProducts.map((product) => (
                     <div 

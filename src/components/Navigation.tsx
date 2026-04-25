@@ -85,8 +85,8 @@ export function Navigation() {
       <nav className={cn(
         "fixed top-0 left-0 right-0 z-[60] transition-all duration-700",
         isScrolled 
-          ? "bg-white/95 backdrop-blur-xl border-b border-primary/5 py-2.5 shadow-sm" 
-          : "bg-transparent py-6"
+          ? "bg-white/95 backdrop-blur-xl border-b border-primary/5 py-4 shadow-sm" 
+          : "bg-transparent py-8"
       )}>
         <div className="container mx-auto px-4 md:px-6 max-w-7xl">
           <div className="flex items-center justify-between relative h-12">
@@ -94,12 +94,12 @@ export function Navigation() {
               <Link href="/" className="flex items-center gap-4 group">
                 <div className="transition-all duration-700 ease-in-out transform">
                   <Logo className={cn(
-                    "w-8 h-8 md:w-9 md:h-9 transition-colors duration-500",
+                    "w-10 h-10 md:w-11 md:h-11 transition-colors duration-500",
                     isScrolled ? "text-primary" : "text-white"
                   )} />
                 </div>
                 <span className={cn(
-                  "font-headline text-xl md:text-2xl font-bold tracking-tighter hidden sm:block transition-all duration-1000 delay-100",
+                  "font-headline text-2xl md:text-3xl font-bold tracking-tighter hidden sm:block transition-all duration-1000 delay-100",
                   showBrandText ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4 pointer-events-none",
                   isScrolled ? "text-primary" : "text-white"
                 )}>
@@ -108,14 +108,14 @@ export function Navigation() {
               </Link>
             </div>
 
-            <div className="hidden lg:flex items-center gap-10 xl:gap-14">
+            <div className="hidden lg:flex items-center gap-12 xl:gap-16">
               {navLinks.map((link) => (
                 <Link 
                   key={link.name} 
                   href={link.href}
                   className={cn(
-                    "text-[10px] md:text-[11px] font-bold uppercase tracking-[0.3em] transition-all hover:text-accent whitespace-nowrap",
-                    isScrolled ? "text-primary" : "text-white shadow-sm"
+                    "text-xs md:text-sm font-extrabold uppercase tracking-[0.4em] transition-all hover:text-accent whitespace-nowrap drop-shadow-sm",
+                    isScrolled ? "text-primary" : "text-white"
                   )}
                 >
                   {link.name}
@@ -123,15 +123,15 @@ export function Navigation() {
               ))}
             </div>
 
-            <div className="flex items-center gap-3 sm:gap-6">
+            <div className="flex items-center gap-4 sm:gap-8">
               <button 
                 onClick={() => setIsSearchOpen(true)}
                 className={cn(
-                  "p-2 rounded-full transition-all active:scale-95",
+                  "p-2.5 rounded-full transition-all active:scale-95",
                   isScrolled ? "text-primary hover:bg-primary/5" : "text-white hover:bg-white/10"
                 )}
               >
-                <Search className="w-4 h-4 md:w-5 md:h-5" />
+                <Search className="w-5 h-5 md:w-6 md:h-6" />
               </button>
               <CartDrawer isLight={!isScrolled} />
             </div>
@@ -226,15 +226,15 @@ export function Navigation() {
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-[100] bg-white/95 backdrop-blur-2xl border-t border-primary/5 h-20 flex items-center justify-around px-4 pb-4 pt-2 shadow-[0_-4px_30px_-4px_rgba(0,0,0,0.05)]">
         <Link href="/" className="flex flex-col items-center gap-1.5 group">
           <Home className="w-5 h-5 text-primary" />
-          <span className="text-[9px] font-bold uppercase tracking-widest text-primary">Home</span>
+          <span className="text-[10px] font-extrabold uppercase tracking-widest text-primary">Home</span>
         </Link>
         <Link href="/shop" className="flex flex-col items-center gap-1.5 group">
           <LayoutGrid className="w-5 h-5 text-primary/60 group-hover:text-primary" />
-          <span className="text-[9px] font-bold uppercase tracking-widest text-primary/60">Shop</span>
+          <span className="text-[10px] font-extrabold uppercase tracking-widest text-primary/60">Shop</span>
         </Link>
         <button onClick={() => setIsSearchOpen(true)} className="flex flex-col items-center gap-1.5 group">
           <Search className="w-5 h-5 text-primary/60 group-hover:text-primary" />
-          <span className="text-[9px] font-bold uppercase tracking-widest text-primary/60">Search</span>
+          <span className="text-[10px] font-extrabold uppercase tracking-widest text-primary/60">Search</span>
         </button>
         <CartDrawer isLight={false} />
       </div>

@@ -67,7 +67,7 @@ export function Hero() {
           opts={{
             align: "start",
             loop: true,
-            duration: 50, // Transition speed between slides
+            duration: 50, 
           }}
         >
           <CarouselContent className="h-screen ml-0">
@@ -79,7 +79,7 @@ export function Hero() {
                     alt={`Artisanal Heritage ${index + 1}`}
                     fill
                     quality={100}
-                    className="object-cover opacity-85 animate-ken-burns"
+                    className="object-cover opacity-90 animate-ken-burns"
                     priority={index === 0}
                     sizes="100vw"
                   />
@@ -90,8 +90,8 @@ export function Hero() {
         </Carousel>
         
         {/* Softened Overlays for better visibility */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/70 pointer-events-none z-[5]"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_black_80%)] opacity-30 pointer-events-none z-[5]"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/60 pointer-events-none z-[5]"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_black_90%)] opacity-20 pointer-events-none z-[5]"></div>
       </div>
       
       {/* Editorial Content Overlay */}
@@ -100,20 +100,20 @@ export function Hero() {
           
           {/* Tagline */}
           <div className="overflow-hidden">
-             <span className="text-[10px] md:text-[12px] font-bold uppercase tracking-[1em] md:tracking-[1.5em] text-white/40 block animate-loop-in opacity-0">
+             <span className="text-[11px] md:text-[14px] font-extrabold uppercase tracking-[1em] md:tracking-[1.5em] text-white/60 block animate-loop-in opacity-0">
                Hand-Stitched Legacy
              </span>
           </div>
 
           {/* Dramatic Brand Stack */}
           <div className="relative">
-            <h1 className="font-headline text-7xl sm:text-9xl md:text-[13rem] leading-[0.85] tracking-tighter drop-shadow-2xl flex flex-col items-center">
+            <h1 className="font-headline text-8xl sm:text-9xl md:text-[14rem] leading-[0.85] tracking-tighter drop-shadow-2xl flex flex-col items-center">
               <span className="block overflow-hidden">
                 <span className="block animate-loop-in stagger-1 opacity-0">Fable</span>
               </span>
               
               <div className="h-0 relative z-20 flex justify-center items-center">
-                <span className="font-fancy text-8xl md:text-[11rem] text-accent/90 block animate-loop-in stagger-2 opacity-0 -rotate-3">
+                <span className="font-fancy text-9xl md:text-[15rem] text-accent/90 block animate-loop-in stagger-2 opacity-0 -rotate-3">
                   &
                 </span>
               </div>
@@ -126,44 +126,44 @@ export function Hero() {
           
           {/* Subtext & Meta */}
           <div className="space-y-6 max-w-2xl mx-auto">
-            <p className="text-[11px] md:text-sm leading-relaxed font-bold uppercase tracking-[0.4em] text-white/60 animate-loop-in stagger-4 opacity-0">
+            <p className="text-[12px] md:text-base leading-relaxed font-extrabold uppercase tracking-[0.4em] text-white/70 animate-loop-in stagger-4 opacity-0">
               Bespoke crochet collections designed for the heritage heart.
             </p>
             <div className="flex items-center justify-center gap-4 animate-loop-in stagger-4 opacity-0">
-              <div className="h-[1px] w-8 bg-white/20"></div>
-              <span className="text-[8px] md:text-[9px] font-bold uppercase tracking-[0.8em] text-white/30">
+              <div className="h-[1px] w-12 bg-white/30"></div>
+              <span className="text-[9px] md:text-[11px] font-extrabold uppercase tracking-[0.8em] text-white/50">
                 Only in Kolkata
               </span>
-              <div className="h-[1px] w-8 bg-white/20"></div>
+              <div className="h-[1px] w-12 bg-white/30"></div>
             </div>
           </div>
           
           {/* CTA Group */}
-          <div className="pt-8 flex flex-col sm:flex-row items-center justify-center gap-8 md:gap-12 animate-loop-in stagger-4 opacity-0">
-            <Button asChild className="bg-white text-primary hover:bg-white/90 px-12 md:px-20 h-16 md:h-20 rounded-none text-[9px] md:text-[11px] font-bold uppercase tracking-[0.5em] transition-all hover:scale-105 active:scale-95 shadow-2xl shadow-black/40 group overflow-hidden">
+          <div className="pt-8 flex flex-col sm:flex-row items-center justify-center gap-10 md:gap-14 animate-loop-in stagger-4 opacity-0">
+            <Button asChild className="bg-white text-primary hover:bg-white/90 px-14 md:px-24 h-18 md:h-24 rounded-none text-[10px] md:text-[12px] font-black uppercase tracking-[0.6em] transition-all hover:scale-105 active:scale-95 shadow-2xl shadow-black/50 group overflow-hidden">
               <Link href="#shop" className="flex items-center relative z-10">
-                Explore Collection <ArrowRight className="ml-4 w-4 h-4 group-hover:translate-x-2 transition-transform" />
+                Explore Collection <ArrowRight className="ml-4 w-5 h-5 group-hover:translate-x-3 transition-transform" />
               </Link>
             </Button>
             
             <Link 
               href="/about" 
-              className="text-[9px] md:text-[11px] font-bold uppercase tracking-[0.5em] text-white/80 hover:text-white transition-all border-b border-white/20 pb-2 hover:border-white group flex items-center gap-3"
+              className="text-[10px] md:text-[12px] font-black uppercase tracking-[0.6em] text-white/90 hover:text-white transition-all border-b-2 border-white/20 pb-2 hover:border-white group flex items-center gap-4"
             >
-              Read Our Story <Sparkles className="w-4 h-4 text-accent group-hover:rotate-45 transition-transform" />
+              Read Our Story <Sparkles className="w-5 h-5 text-accent group-hover:rotate-45 transition-transform" />
             </Link>
           </div>
         </div>
       </div>
 
       {/* Floating Scroll Indicator */}
-      <div className="absolute bottom-12 md:bottom-20 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-6 opacity-30">
-        <div className="w-[1px] h-20 bg-gradient-to-b from-white via-white/20 to-transparent overflow-hidden relative">
-          <div className="absolute top-0 left-0 w-full h-1/2 bg-white/40 animate-soft-pulse"></div>
+      <div className="absolute bottom-12 md:bottom-20 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-6 opacity-40">
+        <div className="w-[1px] h-24 bg-gradient-to-b from-white via-white/20 to-transparent overflow-hidden relative">
+          <div className="absolute top-0 left-0 w-full h-1/2 bg-white/60 animate-soft-pulse"></div>
         </div>
         <div className="flex flex-col items-center gap-2">
-          <MousePointer2 className="w-4 h-4 text-white/40 animate-float" />
-          <span className="text-[8px] font-bold uppercase tracking-[0.8em] text-white/40">Scroll</span>
+          <MousePointer2 className="w-5 h-5 text-white/60 animate-float" />
+          <span className="text-[9px] font-extrabold uppercase tracking-[1em] text-white/60">Scroll</span>
         </div>
       </div>
     </section>

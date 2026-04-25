@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState } from 'react';
@@ -11,6 +12,8 @@ import { Plus, Trash2, ImageIcon, Loader2, Sparkles } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import Image from 'next/image';
 import { uploadToSupabase } from '@/app/actions/supabase-upload';
+import { errorEmitter } from '@/firebase/error-emitter';
+import { FirestorePermissionError, type SecurityRuleContext } from '@/firebase/errors';
 
 export function AdminProductManager() {
   const db = useFirestore();
@@ -52,45 +55,55 @@ export function AdminProductManager() {
     }
   };
 
-  const handleAddProduct = async (e: React.FormEvent) => {
+  const handleAddProduct = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.title || !formData.price || !formData.image) {
+    if (!formData.title || !formData.price || !formData.image || !productsCollection) {
       toast({ variant: "destructive", title: "Incomplete Spell", description: "Title, price, and image are required." });
       return;
     }
 
     setAdding(true);
-    try {
-      await addDoc(productsCollection, {
-        title: formData.title.trim(),
-        price: parseFloat(formData.price),
-        category: formData.category.trim() || 'Bespoke',
-        image: formData.image,
-        description: formData.description.trim(),
-        createdAt: new Date().toISOString()
+    const data = {
+      title: formData.title.trim(),
+      price: parseFloat(formData.price),
+      category: formData.category.trim() || 'Bespoke',
+      image: formData.image,
+      description: formData.description.trim(),
+      createdAt: new Date().toISOString()
+    };
+
+    addDoc(productsCollection, data)
+      .then(() => {
+        setFormData({ title: '', price: '', category: '', image: '', description: '' });
+        toast({ title: "Magic Manifested! ✨", description: "Item is now live in the boutique." });
+      })
+      .catch(async (error) => {
+        const permissionError = new FirestorePermissionError({
+          path: productsCollection.path,
+          operation: 'create',
+          requestResourceData: data,
+        } satisfies SecurityRuleContext);
+        errorEmitter.emit('permission-error', permissionError);
+      })
+      .finally(() => {
+        setAdding(false);
       });
-      setFormData({ title: '', price: '', category: '', image: '', description: '' });
-      toast({ title: "Magic Manifested! ✨", description: "Item is now live in the boutique." });
-    } catch (error: any) {
-      console.error("Firestore Add Error:", error);
-      toast({ 
-        variant: "destructive", 
-        title: "Creation Failed", 
-        description: "There was an error saving the stitch to the database." 
-      });
-    } finally {
-      setAdding(false);
-    }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm("Unravel this creation?")) return;
-    try {
-      await deleteDoc(doc(db, 'products', id));
-      toast({ title: "Treasure Unraveled" });
-    } catch (error: any) {
-      toast({ variant: "destructive", title: "Unraveling Failed" });
-    }
+  const handleDelete = (id: string) => {
+    if (!confirm("Unravel this creation?") || !db) return;
+    const docRef = doc(db, 'products', id);
+    deleteDoc(docRef)
+      .then(() => {
+        toast({ title: "Treasure Unraveled" });
+      })
+      .catch(async (error) => {
+        const permissionError = new FirestorePermissionError({
+          path: docRef.path,
+          operation: 'delete',
+        } satisfies SecurityRuleContext);
+        errorEmitter.emit('permission-error', permissionError);
+      });
   };
 
   return (

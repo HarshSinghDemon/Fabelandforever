@@ -12,6 +12,8 @@ import { ImageIcon, Loader2, Sparkles, Layout, X, Plus, Trash2 } from 'lucide-re
 import { useToast } from '@/hooks/use-toast';
 import Image from 'next/image';
 import { uploadToSupabase } from '@/app/actions/supabase-upload';
+import { errorEmitter } from '@/firebase/error-emitter';
+import { FirestorePermissionError, type SecurityRuleContext } from '@/firebase/errors';
 
 export function AdminSettingsManager() {
   const db = useFirestore();
@@ -42,7 +44,6 @@ export function AdminSettingsManager() {
     if (heroSetting?.values) {
       setHeroImages(heroSetting.values);
     } else if (heroSetting?.value) {
-      // Migrate old single value to array
       setHeroImages([heroSetting.value]);
     }
   }, [heroSetting]);
@@ -86,31 +87,34 @@ export function AdminSettingsManager() {
     setHeroImages(prev => prev.filter((_, i) => i !== index));
   };
 
-  const handleSaveSetting = async (type: 'hero' | 'custom') => {
+  const handleSaveSetting = (type: 'hero' | 'custom') => {
     if (!db || !heroSettingRef || !customSettingRef) return;
     
     if (type === 'hero') setSavingHero(true);
     if (type === 'custom') setSavingCustom(true);
 
-    try {
-      if (type === 'hero') {
-        await setDoc(heroSettingRef, {
-          values: heroImages,
-          updatedAt: serverTimestamp()
-        }, { merge: true });
-      } else {
-        await setDoc(customSettingRef, {
-          value: customImageUrl,
-          updatedAt: serverTimestamp()
-        }, { merge: true });
-      }
-      toast({ title: "Magic Applied! ✨", description: `The ${type} section has been transformed.` });
-    } catch (error: any) {
-      toast({ variant: "destructive", title: "Save Failed", description: "Check your permissions." });
-    } finally {
-      if (type === 'hero') setSavingHero(false);
-      if (type === 'custom') setSavingCustom(false);
-    }
+    const data = type === 'hero' 
+      ? { values: heroImages, updatedAt: serverTimestamp() }
+      : { value: customImageUrl, updatedAt: serverTimestamp() };
+
+    const ref = type === 'hero' ? heroSettingRef : customSettingRef;
+
+    setDoc(ref, data, { merge: true })
+      .then(() => {
+        toast({ title: "Magic Applied! ✨", description: `The ${type} section has been transformed.` });
+      })
+      .catch(async (error) => {
+        const permissionError = new FirestorePermissionError({
+          path: ref.path,
+          operation: 'write',
+          requestResourceData: data,
+        } satisfies SecurityRuleContext);
+        errorEmitter.emit('permission-error', permissionError);
+      })
+      .finally(() => {
+        if (type === 'hero') setSavingHero(false);
+        if (type === 'custom') setSavingCustom(false);
+      });
   };
 
   if (loadingHero || loadingCustom) {
@@ -129,7 +133,6 @@ export function AdminSettingsManager() {
       </div>
 
       <div className="grid grid-cols-1 gap-12">
-        {/* Hero Section Settings */}
         <Card className="border-none shadow-xl rounded-[3rem] overflow-hidden bg-white">
           <CardContent className="p-12 space-y-10">
             <div className="flex items-center justify-between">
@@ -187,7 +190,6 @@ export function AdminSettingsManager() {
           </CardContent>
         </Card>
 
-        {/* Custom Section Settings */}
         <Card className="border-none shadow-xl rounded-[3rem] overflow-hidden bg-white">
           <CardContent className="p-12 space-y-10">
             <div className="flex items-center gap-4">

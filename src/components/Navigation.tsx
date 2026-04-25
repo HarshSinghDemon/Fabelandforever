@@ -28,10 +28,14 @@ export function Navigation() {
 
   const { data: allProducts, loading: loadingProducts } = useCollection(productsQuery);
 
-  const filteredProducts = allProducts?.filter(product => 
-    product.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    product.category?.toLowerCase().includes(searchQuery.toLowerCase())
-  ) || [];
+  const filteredProducts = React.useMemo(() => {
+    if (!allProducts || !searchQuery) return [];
+    return allProducts.filter(product => {
+      const titleMatch = product.title?.toLowerCase().includes(searchQuery.toLowerCase());
+      const categoryMatch = product.category?.toLowerCase().includes(searchQuery.toLowerCase());
+      return titleMatch || categoryMatch;
+    });
+  }, [allProducts, searchQuery]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -167,12 +171,12 @@ export function Navigation() {
                         className="flex items-center gap-8 group"
                       >
                         <div className="relative w-24 h-32 overflow-hidden bg-muted rounded-2xl">
-                          <Image src={product.image} alt={product.title} fill className="object-cover transition-transform duration-1000 group-hover:scale-105" />
+                          {product.image && <Image src={product.image} alt={product.title} fill className="object-cover transition-transform duration-1000 group-hover:scale-105" />}
                         </div>
                         <div className="flex-1">
                           <h4 className="font-bold text-primary group-hover:opacity-60 transition-opacity text-lg">{product.title}</h4>
                           <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-accent mt-2">{product.category}</p>
-                          <p className="font-bold text-primary/80 text-sm mt-2">₹ {product.price.toLocaleString('en-IN')}</p>
+                          <p className="font-bold text-primary/80 text-sm mt-2">₹ {product.price?.toLocaleString('en-IN')}</p>
                         </div>
                       </Link>
                     ))}

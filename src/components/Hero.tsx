@@ -1,10 +1,10 @@
 
 "use client";
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, ImageIcon, Sparkles } from 'lucide-react';
+import { ArrowRight, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import { useFirestore, useDoc, useMemoFirebase } from '@/firebase';
 import { doc } from 'firebase/firestore';
@@ -22,14 +22,19 @@ export function Hero() {
   
   const heroPlaceholder = PlaceHolderImages.find(img => img.id === 'hero-main');
   
-  // Use either the multi-image gallery or fall back to single value or placeholder
-  const heroImages = heroSetting?.values?.length > 0 
-    ? heroSetting.values 
-    : heroSetting?.value 
-      ? [heroSetting.value] 
-      : [heroPlaceholder?.imageUrl || "https://picsum.photos/seed/hero/1920/1080"];
+  const heroImages = React.useMemo(() => {
+    if (heroSetting?.values && Array.isArray(heroSetting.values) && heroSetting.values.length > 0) {
+      return heroSetting.values;
+    }
+    if (heroSetting?.value) {
+      return [heroSetting.value];
+    }
+    return [heroPlaceholder?.imageUrl || "https://picsum.photos/seed/hero/1920/1080"];
+  }, [heroSetting, heroPlaceholder]);
 
-  const [emblaRef] = useEmblaCarousel({ loop: true }, [Autoplay({ delay: 5000, stopOnInteraction: false })]);
+  const [emblaRef] = useEmblaCarousel({ loop: true }, [
+    Autoplay({ delay: 5000, stopOnInteraction: false })
+  ]);
 
   if (loading) {
     return (
@@ -41,11 +46,10 @@ export function Hero() {
 
   return (
     <section className="relative h-screen w-full overflow-hidden bg-black group">
-      {/* Immersive Slidable Background */}
       <div className="absolute inset-0 z-0 overflow-hidden" ref={emblaRef}>
         <div className="flex h-full">
           {heroImages.map((url: string, index: number) => (
-            <div key={index} className="relative flex-[0_0_100%] min-w-0 h-full">
+            <div key={`${url}-${index}`} className="relative flex-[0_0_100%] min-w-0 h-full">
               <Image
                 src={url}
                 alt={`Artisanal Story ${index + 1}`}
@@ -56,11 +60,9 @@ export function Hero() {
             </div>
           ))}
         </div>
-        {/* Cinematic Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-black/70 pointer-events-none"></div>
       </div>
       
-      {/* Content Overlay */}
       <div className="container mx-auto px-6 relative z-10 h-full flex items-center justify-center text-center text-white">
         <div className="max-w-5xl mx-auto space-y-12 animate-fade-in-up">
           <div className="space-y-6">
@@ -87,7 +89,6 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Floating Scroll Indicator */}
       <div className="absolute bottom-16 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-8 opacity-40">
         <div className="w-[1px] h-20 bg-gradient-to-b from-white via-white/40 to-transparent overflow-hidden relative">
           <div className="absolute top-0 left-0 w-full h-1/2 bg-white animate-bounce-slow"></div>

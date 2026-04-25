@@ -11,18 +11,19 @@ export function FirebaseErrorListener() {
 
   useEffect(() => {
     const handlePermissionError = (error: FirestorePermissionError) => {
-      const path = error.context.path.toLowerCase();
+      const context = error.context;
+      const path = context?.path?.toLowerCase() || '';
       const isPublicPath = 
         path.includes('products') || 
         path.includes('settings');
       
       const isReadOperation = 
-        error.context.operation === 'list' || 
-        error.context.operation === 'get';
+        context?.operation === 'list' || 
+        context?.operation === 'get';
 
       if (isPublicPath && isReadOperation) {
         console.error(
-          `%c PUBLIC ACCESS BLOCKED: %c The treasures at ${error.context.path} are private. ` +
+          `%c PUBLIC ACCESS BLOCKED: %c The treasures at ${path} are private. ` +
           `The artisan has attempted to open the grimoire. If you still see this, please click 'Publish' in your Firebase Console Rules tab.`,
           "color: white; background: red; font-weight: bold; padding: 4px; border-radius: 4px;",
           "color: red; font-weight: bold;"
@@ -39,7 +40,7 @@ export function FirebaseErrorListener() {
       toast({
         variant: "destructive",
         title: "Magic Boundary Encountered",
-        description: `The loom blocked a ${error.context.operation} at ${error.context.path}. Check your Security Rules.`,
+        description: `The loom blocked a ${context?.operation || 'action'} at ${path || 'unknown path'}. Check your Security Rules.`,
       });
     };
 

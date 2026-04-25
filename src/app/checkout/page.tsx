@@ -14,7 +14,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useToast } from '@/hooks/use-toast';
 import { useFirestore, useUser } from '@/firebase';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, addDoc } from 'firebase/firestore';
+import { errorEmitter } from '@/firebase/error-emitter';
+import { FirestorePermissionError, type SecurityRuleContext } from '@/firebase/errors';
 
 export default function CheckoutPage() {
   const { cart, cartTotal, clearCart } = useCart();
@@ -31,47 +33,55 @@ export default function CheckoutPage() {
     address: ''
   });
 
-  const handleSubmitOrder = async (e: React.FormEvent) => {
+  const handleSubmitOrder = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.phone || !formData.address) return;
+    if (!formData.name || !formData.phone || !formData.address || !db) return;
 
     setIsSubmitting(true);
-    try {
-      const orderData = {
-        userId: user?.uid || 'guest',
-        customerName: formData.name,
-        customerPhone: formData.phone,
-        customerAddress: formData.address,
-        items: cart.map(item => ({
-          id: item.id,
-          title: item.title,
-          price: item.price,
-          quantity: item.quantity,
-          category: item.category
-        })),
-        total: cartTotal,
-        status: 'pending',
-        createdAt: new Date().toISOString()
-      };
+    const orderData = {
+      userId: user?.uid || 'guest',
+      customerName: formData.name,
+      customerPhone: formData.phone,
+      customerAddress: formData.address,
+      items: cart.map(item => ({
+        id: item.id,
+        title: item.title,
+        price: item.price,
+        quantity: item.quantity,
+        category: item.category
+      })),
+      total: cartTotal,
+      status: 'pending',
+      createdAt: new Date().toISOString()
+    };
 
-      await addDoc(collection(db, 'orders'), orderData);
-      
-      setOrderComplete(true);
-      clearCart();
-      toast({
-        title: "Order Received ✨",
-        description: "Your treasures are being prepared in our grimoire.",
+    const ordersRef = collection(db, 'orders');
+    addDoc(ordersRef, orderData)
+      .then(() => {
+        setOrderComplete(true);
+        clearCart();
+        toast({
+          title: "Order Received ✨",
+          description: "Your treasures are being prepared in our grimoire.",
+        });
+      })
+      .catch(async (error) => {
+        const permissionError = new FirestorePermissionError({
+          path: ordersRef.path,
+          operation: 'create',
+          requestResourceData: orderData,
+        } satisfies SecurityRuleContext);
+        errorEmitter.emit('permission-error', permissionError);
+        
+        toast({
+          variant: "destructive",
+          title: "Magic Interrupted",
+          description: "There was a glitch in the loom. Please try again.",
+        });
+      })
+      .finally(() => {
+        setIsSubmitting(false);
       });
-    } catch (error: any) {
-      console.error("Order Submission Error:", error);
-      toast({
-        variant: "destructive",
-        title: "Magic Interrupted",
-        description: "There was a glitch in the loom. Please try again.",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
   };
 
   if (orderComplete) {
@@ -134,7 +144,6 @@ export default function CheckoutPage() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
-          {/* Order Summary */}
           <div className="lg:col-span-5 space-y-8">
             <div className="bg-white rounded-[3rem] p-10 shadow-xl border border-accent/5 stitching-border overflow-hidden relative">
               <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl"></div>
@@ -167,7 +176,6 @@ export default function CheckoutPage() {
             </div>
           </div>
 
-          {/* Form Step */}
           <div className="lg:col-span-7">
             <div className="bg-white rounded-[4rem] p-10 md:p-16 shadow-2xl relative overflow-hidden">
               <div className="absolute top-0 left-0 w-full h-2 bg-primary"></div>

@@ -128,8 +128,8 @@ export default function ShopPage() {
     <main className="min-h-screen bg-white selection:bg-accent/20 flex flex-col">
       <Navigation />
       
-      {/* Shop Hero - Cinematic Editorial Header */}
-      <section className="relative pt-48 pb-32 overflow-hidden">
+      {/* Shop Hero - Slimmer Editorial Header for Mobile */}
+      <section className="relative pt-32 pb-20 sm:pt-48 sm:pb-32 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image 
             src={heritageBanner?.imageUrl || "https://picsum.photos/seed/shop-hero/1920/1080"} 
@@ -144,11 +144,10 @@ export default function ShopPage() {
         
         <div className="container mx-auto px-6 max-w-6xl text-center relative z-10 text-white">
           <div className="reveal-on-scroll active">
-            <span className="text-white/60 font-bold tracking-[1em] uppercase text-[9px] mb-6 block">The Collective</span>
-            <h1 className="font-headline text-6xl sm:text-8xl leading-none mb-8 tracking-tighter drop-shadow-2xl">
+            <h1 className="font-headline text-5xl sm:text-8xl leading-none mb-6 tracking-tighter drop-shadow-2xl">
               Shop <span className="italic">Catalog.</span>
             </h1>
-            <p className="text-white/80 font-bold uppercase tracking-[0.4em] text-[10px] max-w-md mx-auto leading-relaxed italic drop-shadow-lg">
+            <p className="text-white/80 font-bold uppercase tracking-[0.4em] text-[9px] sm:text-[10px] max-w-md mx-auto leading-relaxed italic drop-shadow-lg">
               "Curated treasures for the heritage home, hand-stitched with love and slow-woven loops."
             </p>
           </div>
@@ -175,7 +174,7 @@ export default function ShopPage() {
             <div 
               ref={scrollContainerRef}
               onScroll={checkScroll}
-              className="flex items-center gap-3 overflow-x-auto no-scrollbar scroll-smooth py-1 px-8 w-full"
+              className="flex items-center gap-2 overflow-x-auto no-scrollbar scroll-smooth py-1 px-8 w-full"
             >
               {categories.map((cat) => {
                 const id = cat.toLowerCase();
@@ -194,7 +193,7 @@ export default function ShopPage() {
                       }
                     }}
                     className={cn(
-                      "whitespace-nowrap px-6 py-3 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] transition-all duration-300 border-2 shrink-0 cursor-pointer",
+                      "whitespace-nowrap px-5 py-2.5 rounded-full text-[9px] font-bold uppercase tracking-[0.2em] transition-all duration-300 border-2 shrink-0 cursor-pointer",
                       activeTab === id 
                         ? "bg-primary text-white border-primary shadow-lg" 
                         : "bg-white text-primary/40 border-primary/5 hover:border-accent hover:text-primary"
@@ -245,27 +244,27 @@ export default function ShopPage() {
               <div className="container mx-auto px-6 max-w-7xl">
                 
                 {/* Minimalist Category Header - No transparency, solid and clean */}
-                <div className="mb-12 py-12 px-8 rounded-[2.5rem] bg-primary/5 text-center">
-                  <div className="flex items-center justify-center gap-4 mb-3">
-                    <div className="w-8 h-[1px] bg-primary/20"></div>
-                    <span className="text-primary/40 font-bold tracking-[0.6em] uppercase text-[9px]">The Collection</span>
-                    <div className="w-8 h-[1px] bg-primary/20"></div>
+                <div className="mb-12 py-10 px-8 rounded-[2rem] bg-primary/5 text-center">
+                  <div className="flex items-center justify-center gap-3 mb-2">
+                    <div className="w-6 h-[1px] bg-primary/20"></div>
+                    <span className="text-primary/40 font-bold tracking-[0.5em] uppercase text-[8px]">The Collection</span>
+                    <div className="w-6 h-[1px] bg-primary/20"></div>
                   </div>
-                  <h2 className="font-headline text-4xl sm:text-6xl text-primary tracking-tighter leading-none mb-4">{category}</h2>
-                  <p className="text-primary/60 text-[11px] italic font-medium leading-relaxed max-w-md mx-auto">
+                  <h2 className="font-headline text-3xl sm:text-5xl text-primary tracking-tighter leading-none mb-3">{category}</h2>
+                  <p className="text-primary/60 text-[10px] italic font-medium leading-relaxed max-w-xs mx-auto">
                     "Hand-stitched precision meets the warmth of our {category.toLowerCase()} treasures."
                   </p>
                 </div>
 
                 {/* 2x1 Minimalist Matrix Grid - Strictly 2 columns for a high-end look */}
-                <div className="grid grid-cols-2 gap-4 md:gap-12">
+                <div className="grid grid-cols-2 gap-4 md:gap-10">
                   {catProducts.map((product) => (
                     <div 
                       key={product.id} 
-                      className="group space-y-6"
+                      className="group space-y-4"
                     >
                       <Link href={`/products/${product.id}`} className="block">
-                        <div className="relative aspect-[3/4] overflow-hidden bg-muted rounded-3xl border border-primary/5 transition-all duration-500 shadow-sm">
+                        <div className="relative aspect-[3/4] overflow-hidden bg-muted rounded-2xl border border-primary/5 transition-all duration-500 shadow-sm">
                           <Image
                             src={product.image}
                             alt={product.title}
@@ -276,15 +275,15 @@ export default function ShopPage() {
                         </div>
                       </Link>
                       
-                      <div className="space-y-4 text-center">
-                        <div className="space-y-1">
-                          <h3 className="font-bold text-primary text-[11px] tracking-[0.1em] uppercase">{product.title}</h3>
-                          <p className="font-bold text-primary/60 text-[10px] tracking-[0.2em]">₹ {Number(product.price).toLocaleString('en-IN')}</p>
+                      <div className="space-y-3 text-center">
+                        <div className="space-y-1 px-1">
+                          <h3 className="font-bold text-primary text-[10px] tracking-[0.1em] uppercase truncate">{product.title}</h3>
+                          <p className="font-bold text-primary/60 text-[9px] tracking-[0.2em]">₹ {Number(product.price).toLocaleString('en-IN')}</p>
                         </div>
                         
                         <button 
                           onClick={(e) => handleAddToCart(e, product)}
-                          className="w-full h-12 rounded-full bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-[0.4em] text-[8px] transition-all active:scale-95 shadow-md"
+                          className="w-full h-10 rounded-full bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-[0.3em] text-[7px] transition-all active:scale-95 shadow-md"
                         >
                           Adopt Piece
                         </button>

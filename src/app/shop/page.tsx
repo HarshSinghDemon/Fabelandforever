@@ -12,7 +12,7 @@ import Link from 'next/link';
 import { useCart } from '@/context/CartContext';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
-import { ShoppingBasket, Sparkles, ChevronRight, LayoutGrid } from 'lucide-react';
+import { ShoppingBasket, ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export default function ShopPage() {
@@ -20,7 +20,11 @@ export default function ShopPage() {
   const { toast } = useToast();
   const db = useFirestore();
   const [activeTab, setActiveTab] = useState('');
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+  
   const categoryBarRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const productsQuery = useMemoFirebase(() => {
     if (!db) return null;
@@ -49,6 +53,31 @@ export default function ShopPage() {
     return cats.sort();
   }, [allItems]);
 
+  // Check scroll positions
+  const checkScroll = () => {
+    if (scrollContainerRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+      setCanScrollLeft(scrollLeft > 10);
+      setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 10);
+    }
+  };
+
+  useEffect(() => {
+    checkScroll();
+    window.addEventListener('resize', checkScroll);
+    return () => window.removeEventListener('resize', checkScroll);
+  }, [categories]);
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (scrollContainerRef.current) {
+      const scrollAmount = 200;
+      scrollContainerRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
+
   // Scroll Spy Logic
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -59,7 +88,7 @@ export default function ShopPage() {
           }
         });
       },
-      { threshold: [0.1, 0.4, 0.8], rootMargin: "-20% 0% -20% 0%" }
+      { threshold: [0.1, 0.4, 0.8], rootMargin: "-25% 0% -25% 0%" }
     );
 
     const sectionElements = document.querySelectorAll('section[id]');
@@ -70,8 +99,8 @@ export default function ShopPage() {
 
   // Auto-scroll the active pill into view
   useEffect(() => {
-    if (activeTab && categoryBarRef.current) {
-      const activePill = categoryBarRef.current.querySelector(`[data-category="${activeTab}"]`);
+    if (activeTab && scrollContainerRef.current) {
+      const activePill = scrollContainerRef.current.querySelector(`[data-category="${activeTab}"]`);
       if (activePill) {
         activePill.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
       }
@@ -97,8 +126,8 @@ export default function ShopPage() {
     <main className="min-h-screen bg-paper selection:bg-accent/20 flex flex-col">
       <Navigation />
       
-      {/* Shop Hero - Slimmer & More Editorial */}
-      <section className="pt-40 pb-20 border-b border-primary/5 bg-white/30 backdrop-blur-sm">
+      {/* Shop Hero */}
+      <section className="pt-40 pb-16 border-b border-primary/5 bg-white/30 backdrop-blur-sm">
         <div className="container mx-auto px-6 max-w-6xl text-center">
           <div className="reveal-on-scroll active">
             <span className="text-accent font-bold tracking-[1em] uppercase text-[8px] mb-6 block">The Collective</span>
@@ -113,11 +142,23 @@ export default function ShopPage() {
       </section>
 
       {/* Modern Sticky Slim Category Bar */}
-      <div className="sticky top-16 md:top-20 z-[40] bg-paper/80 backdrop-blur-xl border-b border-primary/5 py-4 transition-all shadow-sm">
-        <div className="container mx-auto px-6 relative">
+      <div className="sticky top-16 md:top-20 z-[40] bg-paper/90 backdrop-blur-xl border-b border-primary/5 py-4 transition-all shadow-sm">
+        <div className="container mx-auto px-6 relative group">
+          
+          {/* Left Scroll Button */}
+          {canScrollLeft && (
+            <button 
+              onClick={() => scroll('left')}
+              className="absolute left-2 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/80 shadow-lg border border-primary/5 flex items-center justify-center text-primary hover:bg-white transition-all hidden md:flex"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+          )}
+
           <div 
-            ref={categoryBarRef}
-            className="flex items-center gap-2 overflow-x-auto no-scrollbar scroll-smooth py-1"
+            ref={scrollContainerRef}
+            onScroll={checkScroll}
+            className="flex items-center gap-2 overflow-x-auto no-scrollbar scroll-smooth py-1 px-4 md:px-0"
           >
             {categories.map((cat) => {
               const id = cat.toLowerCase();
@@ -127,7 +168,7 @@ export default function ShopPage() {
                   href={`#${id}`}
                   data-category={id}
                   className={cn(
-                    "whitespace-nowrap px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] transition-all duration-500 border-2",
+                    "whitespace-nowrap px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] transition-all duration-500 border-2 shrink-0",
                     activeTab === id 
                       ? "bg-primary text-white border-primary shadow-lg scale-105" 
                       : "bg-white/50 text-primary/40 border-primary/5 hover:border-accent/30 hover:text-primary"
@@ -138,10 +179,26 @@ export default function ShopPage() {
               );
             })}
           </div>
+
+          {/* Right Scroll Button */}
+          {canScrollRight && (
+            <button 
+              onClick={() => scroll('right')}
+              className="absolute right-2 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/80 shadow-lg border border-primary/5 flex items-center justify-center text-primary hover:bg-white transition-all hidden md:flex"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          )}
           
           {/* Subtle Fades for scroll indication */}
-          <div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-paper to-transparent pointer-events-none z-10 opacity-0 md:opacity-100" />
-          <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-paper to-transparent pointer-events-none z-10 opacity-0 md:opacity-100" />
+          <div className={cn(
+            "absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-paper to-transparent pointer-events-none z-10 transition-opacity duration-300",
+            canScrollLeft ? "opacity-100" : "opacity-0"
+          )} />
+          <div className={cn(
+            "absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-paper to-transparent pointer-events-none z-10 transition-opacity duration-300",
+            canScrollRight ? "opacity-100" : "opacity-0"
+          )} />
         </div>
       </div>
 

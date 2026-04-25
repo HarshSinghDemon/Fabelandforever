@@ -44,13 +44,33 @@ export default function Home() {
       
       <Hero />
       
-      {/* Product Sections - Floriy Style */}
-      <FeaturedProducts title="New Arrivals" />
-      <FeaturedProducts title="Bestsellers" isBestseller />
-      <FeaturedProducts title="Floral Treasures" categoryFilter="Flowers" />
-      <FeaturedProducts title="Artisanal Candles" categoryFilter="Candles" />
+      {/* Product Sections - Luxury Split Dynamic */}
+      <FeaturedProducts 
+        title="New Arrivals" 
+        bannerImage="https://picsum.photos/seed/new-arrivals-banner/800/1200"
+      />
+      
+      <FeaturedProducts 
+        title="Bestsellers" 
+        isBestseller 
+        reverse 
+        bannerImage="https://picsum.photos/seed/bestseller-banner/800/1200"
+      />
+      
+      <FeaturedProducts 
+        title="Floral Treasures" 
+        categoryFilter="Flowers" 
+        bannerImage="https://picsum.photos/seed/floral-banner/800/1200"
+      />
+      
+      <FeaturedProducts 
+        title="Artisanal Candles" 
+        categoryFilter="Candles" 
+        reverse 
+        bannerImage="https://picsum.photos/seed/candle-banner/800/1200"
+      />
 
-      {/* Shop by Category Grid */}
+      {/* Shop by Category Carousel */}
       <CategoryGrid />
 
       {/* The Artisanal Process Block */}

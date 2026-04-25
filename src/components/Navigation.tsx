@@ -1,9 +1,10 @@
+
 "use client";
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
-import { Search, Loader2, Home, LayoutGrid, X, Sparkles } from 'lucide-react';
+import { Search, Loader2, Home, LayoutGrid, Sparkles, ArrowRight } from 'lucide-react';
 import { CartDrawer } from './CartDrawer';
 import { Logo } from './Logo';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -12,6 +13,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { useFirestore, useCollection, useMemoFirebase } from '@/firebase';
 import { collection } from 'firebase/firestore';
 import Image from 'next/image';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -24,16 +26,40 @@ export function Navigation() {
     return collection(db, 'products');
   }, [db]);
 
-  const { data: allProducts, loading: loadingProducts } = useCollection(productsQuery);
+  const { data: allDbProducts, loading: loadingProducts } = useCollection(productsQuery);
+
+  // Unified Search Algorithm: Combine DB and Placeholders
+  const allAvailableProducts = React.useMemo(() => {
+    const dbItems = allDbProducts || [];
+    const placeholders = PlaceHolderImages.map(p => ({
+      id: p.id,
+      title: p.description,
+      price: p.price,
+      category: p.category,
+      image: p.imageUrl,
+      description: p.story
+    }));
+    
+    // Deduplicate if IDs overlap (though they shouldn't)
+    const combined = [...dbItems];
+    placeholders.forEach(p => {
+      if (!combined.some(item => item.id === p.id)) {
+        combined.push(p);
+      }
+    });
+    
+    return combined;
+  }, [allDbProducts]);
 
   const filteredProducts = React.useMemo(() => {
-    if (!allProducts || !searchQuery) return [];
-    return allProducts.filter(product => {
-      const titleMatch = product.title?.toLowerCase().includes(searchQuery.toLowerCase());
-      const categoryMatch = product.category?.toLowerCase().includes(searchQuery.toLowerCase());
+    if (!searchQuery.trim()) return [];
+    const query = searchQuery.toLowerCase();
+    return allAvailableProducts.filter(product => {
+      const titleMatch = product.title?.toLowerCase().includes(query);
+      const categoryMatch = product.category?.toLowerCase().includes(query);
       return titleMatch || categoryMatch;
     });
-  }, [allProducts, searchQuery]);
+  }, [allAvailableProducts, searchQuery]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -49,7 +75,7 @@ export function Navigation() {
     { name: 'Gift Sets', href: '/#shop' },
     { name: 'Decor', href: '/#shop' },
     { name: 'Our Story', href: '/about' },
-    { name: 'Contact', href: '/#contact' },
+    { name: 'Connect', href: '/#contact' },
   ];
 
   return (
@@ -105,57 +131,56 @@ export function Navigation() {
           </div>
         </div>
 
-        <Dialog open={isSearchOpen} onOpenChange={setIsSearchOpen}>
-          <DialogContent className="sm:max-w-[700px] w-[95vw] border-none shadow-2xl p-0 overflow-hidden rounded-[2.5rem] sm:rounded-[3.5rem] bg-paper">
-            <div className="absolute top-0 left-0 w-full h-1.5 bg-accent/20"></div>
+        <Dialog open={isSearchOpen} onOpenChange={(open) => {
+          setIsSearchOpen(open);
+          if (!open) setSearchQuery('');
+        }}>
+          <DialogContent className="sm:max-w-[500px] w-[95vw] border-none shadow-2xl p-0 overflow-hidden rounded-[2rem] bg-paper">
+            <div className="absolute top-0 left-0 w-full h-1 bg-accent/20"></div>
             
-            <DialogHeader className="p-8 md:p-12 pb-6">
-              <div className="flex items-center justify-between mb-8">
-                <div className="flex flex-col gap-1">
-                  <DialogTitle className="font-headline text-4xl sm:text-5xl text-primary tracking-tighter">
-                    Search
-                  </DialogTitle>
-                  <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-accent/60 italic">"Finding your forever loop"</p>
-                </div>
+            <DialogHeader className="p-8 pb-4">
+              <div className="flex flex-col gap-1 mb-6">
+                <DialogTitle className="font-headline text-4xl text-primary tracking-tighter">
+                  Search
+                </DialogTitle>
+                <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-accent/60">Exploring the boutique scrolls</p>
               </div>
               
               <div className="relative group">
-                <Search className="absolute left-0 top-1/2 -translate-y-1/2 w-5 h-5 text-primary/30 group-focus-within:text-accent transition-colors" />
+                <Search className="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/30 group-focus-within:text-accent transition-colors" />
                 <Input 
-                  placeholder="What shall we find for you?" 
+                  placeholder="What shall we find?" 
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 h-16 border-none border-b border-primary/10 bg-transparent text-xl sm:text-2xl placeholder:text-primary/10 focus-visible:ring-0 rounded-none text-primary font-headline"
+                  className="pl-8 h-12 border-none border-b border-primary/10 bg-transparent text-xl placeholder:text-primary/10 focus-visible:ring-0 rounded-none text-primary font-headline"
                   autoFocus
                 />
               </div>
             </DialogHeader>
 
-            <ScrollArea className="h-[50vh] px-8 md:px-12 pb-10">
-              <div className="space-y-8">
-                {loadingProducts ? (
-                  <div className="flex flex-col items-center justify-center py-20 gap-4">
-                    <Loader2 className="w-8 h-8 text-accent animate-spin" />
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-primary/40">Opening the scrolls...</p>
+            <ScrollArea className="max-h-[60vh] px-8 pb-8">
+              <div className="space-y-4">
+                {loadingProducts && searchQuery && (
+                  <div className="flex flex-col items-center justify-center py-12 gap-3">
+                    <Loader2 className="w-6 h-6 text-accent animate-spin" />
+                    <p className="text-[9px] font-bold uppercase tracking-widest text-primary/40 italic">Weaving results...</p>
                   </div>
-                ) : searchQuery && filteredProducts.length === 0 ? (
-                  <div className="text-center py-20 space-y-4">
-                    <div className="w-16 h-16 bg-primary/5 rounded-full flex items-center justify-center mx-auto">
-                      <Search className="w-6 h-6 text-primary/20" />
-                    </div>
-                    <p className="text-primary/60 italic font-medium text-lg">"No treasures match your search."</p>
+                )}
+                
+                {searchQuery && filteredProducts.length === 0 && !loadingProducts ? (
+                  <div className="text-center py-12 space-y-3">
+                    <p className="text-primary/60 italic font-medium">"No treasures match this query."</p>
                   </div>
                 ) : (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    {(searchQuery ? filteredProducts : allProducts?.slice(0, 6))?.map((product) => (
+                  <div className="flex flex-col gap-3">
+                    {filteredProducts.map((product) => (
                       <Link 
                         key={product.id} 
                         href={`/products/${product.id}`}
                         onClick={() => setIsSearchOpen(false)}
-                        className="flex items-center gap-4 p-4 bg-white rounded-[1.5rem] border border-primary/5 hover:border-accent/30 transition-all hover:shadow-xl hover:-translate-y-1 group relative overflow-hidden"
+                        className="flex items-center gap-4 p-3 hover:bg-white rounded-2xl border border-transparent hover:border-primary/5 transition-all group"
                       >
-                        <div className="absolute inset-0 bg-accent/[0.02] opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                        <div className="relative w-16 h-20 sm:w-20 sm:h-24 overflow-hidden bg-muted/10 rounded-xl shadow-sm">
+                        <div className="relative w-12 h-16 overflow-hidden bg-muted/20 rounded-lg shadow-sm">
                           {product.image && (
                             <Image 
                               src={product.image} 
@@ -165,30 +190,47 @@ export function Navigation() {
                             />
                           )}
                         </div>
-                        <div className="flex-1 space-y-1 relative z-10">
-                          <h4 className="font-bold text-primary group-hover:text-accent transition-colors text-sm sm:text-base leading-tight uppercase tracking-tight">
+                        <div className="flex-1 min-w-0">
+                          <h4 className="font-bold text-primary group-hover:text-accent transition-colors text-sm uppercase tracking-tight truncate">
                             {product.title}
                           </h4>
-                          <p className="text-[8px] font-bold uppercase tracking-[0.2em] text-accent/60">
-                            {product.category}
-                          </p>
-                          <p className="font-bold text-primary/60 text-[10px] sm:text-xs">
-                            ₹ {product.price?.toLocaleString('en-IN')}
-                          </p>
+                          <div className="flex items-center gap-2 mt-1">
+                            <span className="text-[8px] font-bold uppercase tracking-widest text-accent/60">
+                              {product.category}
+                            </span>
+                            <span className="w-1 h-1 bg-primary/10 rounded-full"></span>
+                            <span className="font-bold text-primary/60 text-[10px]">
+                              ₹ {product.price?.toLocaleString('en-IN')}
+                            </span>
+                          </div>
                         </div>
+                        <ArrowRight className="w-4 h-4 text-primary/10 group-hover:text-accent group-hover:translate-x-1 transition-all" />
                       </Link>
                     ))}
                   </div>
                 )}
+                
+                {!searchQuery && (
+                  <div className="py-6 space-y-6">
+                    <div className="flex items-center gap-3 text-primary/40 italic text-[11px] font-medium">
+                      <Sparkles className="w-4 h-4 text-accent/40" />
+                      <span>Popular suggestions</span>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {['Candles', 'Flowers', 'Decor', 'Dragon'].map(tag => (
+                        <button 
+                          key={tag}
+                          onClick={() => setSearchQuery(tag)}
+                          className="px-4 py-2 rounded-full border border-primary/5 text-[10px] font-bold uppercase tracking-widest text-primary/60 hover:border-accent hover:text-accent transition-all"
+                        >
+                          {tag}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </ScrollArea>
-            
-            {!searchQuery && (
-              <div className="px-12 pb-8 flex items-center gap-4 text-primary/40 italic text-[11px] font-medium">
-                <Sparkles className="w-4 h-4 text-accent/40" />
-                <span>Popular: Candles, Flowers, or Decor</span>
-              </div>
-            )}
           </DialogContent>
         </Dialog>
       </nav>

@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useEffect, useState } from 'react';
@@ -54,14 +53,13 @@ export default function ShopPage() {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add('active');
-            // Update active tab based on intersection
-            if (entry.intersectionRatio > 0.5) {
+            if (entry.intersectionRatio > 0.4) {
                setActiveTab(entry.target.id);
             }
           }
         });
       },
-      { threshold: [0.1, 0.5, 0.9] }
+      { threshold: [0.1, 0.4, 0.8] }
     );
 
     const elements = document.querySelectorAll('.reveal-on-scroll');
@@ -108,13 +106,13 @@ export default function ShopPage() {
       </section>
 
       {/* Modern Responsive Category Bar */}
-      <div className="sticky top-[72px] z-50 bg-white/80 backdrop-blur-xl border-b border-primary/5 py-4 sm:py-6">
-        <div className="container mx-auto px-4 md:px-6 relative">
-          {/* Edge fade for mobile scroll */}
-          <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white/80 to-transparent z-10 sm:hidden pointer-events-none"></div>
+      <div className="sticky top-[72px] z-50 bg-white/90 backdrop-blur-xl border-b border-primary/5">
+        <div className="container mx-auto relative px-0 overflow-hidden">
+          {/* Subtle edge fades to indicate scrolling on mobile */}
+          <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-white/90 to-transparent z-10 sm:hidden pointer-events-none"></div>
+          <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white/90 to-transparent z-10 sm:hidden pointer-events-none"></div>
           
-          <div className="flex items-center gap-4 sm:gap-12 overflow-x-auto no-scrollbar scroll-smooth">
-             <div className="flex-shrink-0 sm:flex-grow-0 sm:ml-auto"></div>
+          <div className="flex items-center gap-3 sm:gap-12 overflow-x-auto no-scrollbar scroll-smooth py-4 sm:py-6 px-6 sm:px-12 flex-nowrap touch-pan-x">
              {categories.map((cat) => (
                 <a 
                   key={cat} 
@@ -129,7 +127,8 @@ export default function ShopPage() {
                   {cat}
                 </a>
              ))}
-             <div className="flex-shrink-0 sm:flex-grow-0 sm:mr-auto"></div>
+             {/* Spacer for scroll-padding effect */}
+             <div className="w-6 flex-shrink-0 sm:hidden"></div>
           </div>
         </div>
       </div>

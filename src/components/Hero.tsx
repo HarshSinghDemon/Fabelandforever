@@ -73,29 +73,29 @@ export function Hero() {
       
       <div className="container mx-auto px-6 relative z-10 h-full flex items-center justify-center text-center text-white">
         <div className="max-w-6xl mx-auto space-y-12 md:space-y-16">
-          <div className="space-y-6 md:space-y-10 reveal-on-scroll active">
+          <div className="space-y-6 md:space-y-10">
             <div className="overflow-hidden mb-6">
-               <span className="text-[10px] md:text-[12px] font-bold uppercase tracking-[0.8em] md:tracking-[1.2em] text-white/50 block animate-fade-in-up">Hand-Stitched Legacy</span>
+               <span className="text-[10px] md:text-[12px] font-bold uppercase tracking-[0.8em] md:tracking-[1.2em] text-white/50 block animate-loop-in">Hand-Stitched Legacy</span>
             </div>
             <h1 className="font-headline text-6xl sm:text-8xl md:text-[11rem] leading-none tracking-tighter drop-shadow-2xl">
               <span className="block overflow-hidden">
-                <span className="block animate-fade-in-up stagger-1">Artisan</span>
+                <span className="block animate-loop-in stagger-1">Artisan</span>
               </span>
               <span className="block overflow-hidden -mt-4 md:-mt-10">
-                <span className="italic block animate-fade-in-up stagger-2">Threads</span>
+                <span className="italic block animate-loop-in stagger-2">Threads</span>
               </span>
             </h1>
           </div>
           
           <div className="overflow-hidden">
-            <p className="text-[11px] md:text-sm max-w-sm md:max-w-2xl mx-auto leading-relaxed font-bold uppercase tracking-[0.4em] text-white/60 animate-fade-in-up stagger-3">
+            <p className="text-[11px] md:text-sm max-w-sm md:max-w-2xl mx-auto leading-relaxed font-bold uppercase tracking-[0.4em] text-white/60 animate-loop-in stagger-3">
               Bespoke crochet treasures designed for the heritage heart.
             </p>
           </div>
           
-          <div className="pt-8 md:pt-16 flex flex-col sm:flex-row items-center justify-center gap-8 md:gap-12 animate-fade-in-up stagger-3">
-            <Button asChild className="bg-white text-primary hover:bg-white/90 px-12 md:px-20 h-14 md:h-20 rounded-none text-[9px] md:text-[11px] font-bold uppercase tracking-[0.5em] transition-all hover:scale-105 active:scale-95 shadow-2xl shadow-black/40 group">
-              <Link href="#shop" className="flex items-center">
+          <div className="pt-8 md:pt-16 flex flex-col sm:flex-row items-center justify-center gap-8 md:gap-12 animate-loop-in stagger-3">
+            <Button asChild className="bg-white text-primary hover:bg-white/90 px-12 md:px-20 h-14 md:h-20 rounded-none text-[9px] md:text-[11px] font-bold uppercase tracking-[0.5em] transition-all hover:scale-105 active:scale-95 shadow-2xl shadow-black/40 group overflow-hidden">
+              <Link href="#shop" className="flex items-center relative z-10">
                 Shop Collection <ArrowRight className="ml-4 w-4 h-4 group-hover:translate-x-2 transition-transform" />
               </Link>
             </Button>
@@ -108,7 +108,7 @@ export function Hero() {
 
       <div className="absolute bottom-12 md:bottom-20 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-10 opacity-30">
         <div className="w-[1px] h-20 md:h-32 bg-gradient-to-b from-white via-white/20 to-transparent overflow-hidden relative">
-          <div className="absolute top-0 left-0 w-full h-1/2 bg-white/40 animate-[bounce_3s_infinite]"></div>
+          <div className="absolute top-0 left-0 w-full h-1/2 bg-white/40 animate-soft-pulse"></div>
         </div>
       </div>
     </section>

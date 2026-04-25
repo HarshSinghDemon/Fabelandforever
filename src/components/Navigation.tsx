@@ -1,10 +1,9 @@
-
 "use client";
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
-import { Menu, X, Sparkles, Search, ShoppingBag, ArrowRight, Loader2 } from 'lucide-react';
+import { Menu, X, Search, ShoppingBasket, Loader2 } from 'lucide-react';
 import { CartDrawer } from './CartDrawer';
 import { Logo } from './Logo';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -35,75 +34,82 @@ export function Navigation() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      setIsScrolled(window.scrollY > 50);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const navLinks = [
-    { name: 'The Shop 🛍️', href: '/#shop' },
-    { name: 'Custom 🧶', href: '/#custom' },
-    { name: 'Our Story 📖', href: '/#story' },
-    { name: 'Contact 💌', href: '/#contact' },
+    { name: 'Shop', href: '/#shop' },
+    { name: 'Custom', href: '/#custom' },
+    { name: 'Our Story', href: '/#story' },
   ];
 
   const SearchButton = () => (
     <Dialog open={isSearchOpen} onOpenChange={setIsSearchOpen}>
       <DialogTrigger asChild>
-        <button className="text-primary/60 hover:text-primary transition-colors p-2 rounded-full hover:bg-primary/5 active:scale-90">
-          <Search className="w-4 h-4 sm:w-5 sm:h-5" />
+        <button className="text-primary hover:opacity-60 transition-opacity p-2">
+          <Search className="w-5 h-5" />
         </button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px] rounded-[2.5rem] border-none shadow-2xl p-0 overflow-hidden">
-        <DialogHeader className="p-8 pb-4 bg-paper">
-          <DialogTitle className="font-headline text-3xl text-primary mb-4">Find a Treasure</DialogTitle>
-          <div className="relative">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-primary/30" />
+      <DialogContent className="sm:max-w-[700px] border-none shadow-2xl p-0 overflow-hidden rounded-none sm:rounded-none">
+        <DialogHeader className="p-8 pb-4 bg-background">
+          <DialogTitle className="font-headline text-3xl text-primary mb-6 text-center">Search Boutique</DialogTitle>
+          <div className="relative border-b border-primary/20 pb-4">
+            <Search className="absolute left-0 top-1/2 -translate-y-1/2 w-5 h-5 text-primary/40" />
             <Input 
-              placeholder="Search for toys, blankets, or magic..." 
+              placeholder="What are you looking for?" 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-12 h-16 rounded-2xl border-2 border-primary/5 focus:border-accent bg-white text-lg"
+              className="pl-8 h-12 border-none bg-transparent text-xl placeholder:text-primary/20 focus-visible:ring-0"
               autoFocus
             />
           </div>
         </DialogHeader>
-        <ScrollArea className="h-[400px] p-8 pt-0 bg-white">
-          <div className="space-y-6">
+        <ScrollArea className="h-[60vh] p-8 pt-0 bg-background">
+          <div className="space-y-8">
             {loadingProducts ? (
-              <div className="flex justify-center py-10">
+              <div className="flex justify-center py-20">
                 <Loader2 className="w-8 h-8 text-primary animate-spin" />
               </div>
             ) : searchQuery && filteredProducts.length === 0 ? (
-              <div className="text-center py-10">
-                <p className="text-muted-foreground italic">"No treasures match your whisper... try another spell."</p>
+              <div className="text-center py-20">
+                <p className="text-muted-foreground italic">No treasures match your search.</p>
               </div>
             ) : searchQuery === '' ? (
-              <div className="text-center py-10">
-                <p className="text-muted-foreground italic text-sm">"What are you looking for today?"</p>
+              <div className="grid grid-cols-2 gap-4">
+                 <p className="col-span-2 text-[10px] uppercase tracking-widest text-primary/40 font-bold mb-2">Suggested Categories</p>
+                 {['Creatures', 'Guardians', 'Enchanted', 'Toys'].map(cat => (
+                   <button 
+                    key={cat} 
+                    onClick={() => setSearchQuery(cat)}
+                    className="text-left py-3 px-4 bg-muted hover:bg-primary/5 transition-colors text-sm font-medium"
+                   >
+                     {cat}
+                   </button>
+                 ))}
               </div>
             ) : (
-              filteredProducts.map((product) => (
-                <Link 
-                  key={product.id} 
-                  href="/#shop" 
-                  onClick={() => setIsSearchOpen(false)}
-                  className="flex items-center gap-6 p-4 rounded-3xl hover:bg-paper transition-all group border border-transparent hover:border-accent/10"
-                >
-                  <div className="relative w-20 h-20 rounded-2xl overflow-hidden border-2 border-accent/10">
-                    <Image src={product.image} alt={product.title} fill className="object-cover" />
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="font-bold text-primary text-lg group-hover:text-accent transition-colors">{product.title}</h4>
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-accent">{product.category}</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="font-bold text-primary">₹ {product.price.toLocaleString('en-IN')}</p>
-                    <ArrowRight className="w-4 h-4 ml-auto text-primary/20 group-hover:text-accent group-hover:translate-x-1 transition-all" />
-                  </div>
-                </Link>
-              ))
+              <div className="grid gap-6">
+                {filteredProducts.map((product) => (
+                  <Link 
+                    key={product.id} 
+                    href="/#shop" 
+                    onClick={() => setIsSearchOpen(false)}
+                    className="flex items-center gap-6 group"
+                  >
+                    <div className="relative w-24 h-24 overflow-hidden bg-muted">
+                      <Image src={product.image} alt={product.title} fill className="object-cover transition-transform duration-700 group-hover:scale-105" />
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="font-bold text-primary group-hover:opacity-60 transition-opacity">{product.title}</h4>
+                      <p className="text-[10px] font-bold uppercase tracking-widest text-accent mt-1">{product.category}</p>
+                      <p className="font-medium text-primary/60 text-sm mt-1">₹ {product.price.toLocaleString('en-IN')}</p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
             )}
           </div>
         </ScrollArea>
@@ -112,78 +118,86 @@ export function Navigation() {
   );
 
   return (
-    <nav className={cn(
-      "fixed top-3 sm:top-6 left-0 right-0 z-50 transition-all duration-700 px-3 sm:px-6",
-    )}>
-      <div className={cn(
-        "max-w-6xl mx-auto flex items-center justify-between px-4 sm:px-10 py-2 sm:py-5 rounded-[1.5rem] sm:rounded-[2.5rem] transition-all duration-700",
-        isScrolled 
-          ? "bg-white/90 backdrop-blur-xl shadow-[0_15px_30px_-10px_rgba(0,0,0,0.1)] border border-white/40 py-2 sm:py-3 scale-[0.98]" 
-          : "bg-white/60 backdrop-blur-md border border-white/20"
-      )}>
-        <Link href="/" className="flex items-center gap-2 sm:gap-4 hover:scale-105 transition-all group">
-          <Logo className="w-7 h-7 sm:w-10 sm:h-10 text-primary" />
-          <span className="font-headline text-base sm:text-2xl text-primary font-bold whitespace-nowrap">
-            Fable & Forever
-          </span>
-        </Link>
+    <>
+      <div className="bg-primary text-primary-foreground text-[10px] font-bold uppercase tracking-[0.3em] py-3 text-center fixed top-0 w-full z-[60]">
+        Free Hand-Stitched Magic on Orders Over ₹2,000
+      </div>
 
-        {/* Desktop Menu */}
-        <div className="hidden md:flex items-center space-x-8 lg:space-x-12">
-          {navLinks.map((link) => (
-            <Link 
-              key={link.name} 
-              href={link.href}
-              className="text-[10px] font-bold uppercase tracking-[0.3em] text-primary/70 hover:text-accent transition-colors relative group py-2"
+      <nav className={cn(
+        "fixed top-10 left-0 right-0 z-50 transition-all duration-500",
+        isScrolled ? "bg-background/95 backdrop-blur-md shadow-sm py-4" : "bg-transparent py-8"
+      )}>
+        <div className="container mx-auto px-6 flex items-center justify-between">
+          <div className="flex-1 flex items-center">
+            <button 
+              className="md:hidden text-primary p-2 -ml-2"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
-              {link.name}
-              <span className="absolute bottom-0 left-1/2 w-0 h-1 bg-accent/40 rounded-full transition-all group-hover:w-full group-hover:left-0"></span>
+              {isMobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+            </button>
+            <div className="hidden md:flex items-center space-x-10">
+              {navLinks.map((link) => (
+                <Link 
+                  key={link.name} 
+                  href={link.href}
+                  className="text-[11px] font-bold uppercase tracking-[0.2em] text-primary hover:opacity-50 transition-opacity"
+                >
+                  {link.name}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex-shrink-0 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+            <Link href="/" className="hover:opacity-80 transition-opacity">
+              <Logo className="w-10 h-10 text-primary" />
             </Link>
-          ))}
-          <div className="flex items-center gap-4 pl-4 border-l border-primary/10">
+          </div>
+
+          <div className="flex-1 flex items-center justify-end space-x-2 sm:space-x-4">
             <SearchButton />
             <CartDrawer />
           </div>
         </div>
 
-        {/* Mobile Toggle */}
-        <div className="flex md:hidden items-center gap-1 sm:gap-2">
-          <SearchButton />
-          <CartDrawer />
+        <div className={cn(
+          "md:hidden fixed inset-0 top-0 bg-background z-[70] transition-all duration-500 p-8 pt-24",
+          isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+        )}>
           <button 
-            className="text-primary p-2 hover:bg-accent/20 rounded-full transition-colors active:scale-90"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile Menu Overlay */}
-      <div className={cn(
-        "md:hidden fixed inset-x-3 top-16 sm:top-20 bg-white/95 backdrop-blur-2xl rounded-[1.8rem] sm:rounded-[2.5rem] p-6 sm:p-10 flex flex-col space-y-5 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.2)] border border-white/30 transition-all duration-500 origin-top z-[60]",
-        isMobileMenuOpen ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-95 -translate-y-4 pointer-events-none"
-      )}>
-        {navLinks.map((link) => (
-          <Link 
-            key={link.name} 
-            href={link.href}
-            className="text-xl sm:text-3xl font-headline text-primary hover:text-accent transition-all flex items-center justify-between group"
+            className="absolute top-8 right-8 text-primary"
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            {link.name}
-            <Sparkles className="w-5 h-5 opacity-0 group-hover:opacity-100 text-accent transition-all" />
-          </Link>
-        ))}
-        <div className="pt-4 border-t border-primary/10">
-          <button 
-            onClick={() => setIsMobileMenuOpen(false)}
-            className="w-full bg-primary text-white py-4 rounded-xl font-bold text-base shadow-xl shadow-primary/20 active:scale-95 transition-transform"
-          >
-            Explore Treasures ✨
+            <X className="w-6 h-6" />
           </button>
+          
+          <div className="space-y-8 text-center">
+            <div className="flex justify-center mb-12">
+               <Logo className="w-16 h-16 text-primary" />
+            </div>
+            {navLinks.map((link) => (
+              <Link 
+                key={link.name} 
+                href={link.href}
+                className="block text-3xl font-headline text-primary"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                {link.name}
+              </Link>
+            ))}
+            <div className="pt-12 border-t border-primary/10">
+              <p className="text-[10px] font-bold uppercase tracking-widest text-primary/40 mb-6">Our Studio</p>
+              <Link 
+                href="/admin/login" 
+                className="text-sm font-medium text-primary/60 hover:text-primary transition-colors"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Artisan Login
+              </Link>
+            </div>
+          </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </>
   );
 }

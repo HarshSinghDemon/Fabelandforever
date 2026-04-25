@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
-import { Search, Loader2, Home, LayoutGrid, X } from 'lucide-react';
+import { Search, Loader2, Home, LayoutGrid, X, Sparkles } from 'lucide-react';
 import { CartDrawer } from './CartDrawer';
 import { Logo } from './Logo';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -106,48 +106,74 @@ export function Navigation() {
         </div>
 
         <Dialog open={isSearchOpen} onOpenChange={setIsSearchOpen}>
-          <DialogContent className="sm:max-w-[700px] w-[95vw] border-none shadow-2xl p-0 overflow-hidden rounded-[2rem] bg-background">
-            <DialogHeader className="p-6 md:p-10 pb-4">
-              <div className="flex items-center justify-between mb-6">
-                <DialogTitle className="font-headline text-2xl text-primary uppercase tracking-tighter">Find Treasure</DialogTitle>
+          <DialogContent className="sm:max-w-[700px] w-[95vw] border-none shadow-2xl p-0 overflow-hidden rounded-[2rem] sm:rounded-[3rem] bg-paper">
+            <div className="absolute top-0 left-0 w-full h-1.5 bg-accent/20"></div>
+            
+            <DialogHeader className="p-8 md:p-12 pb-6">
+              <div className="flex items-center justify-between mb-8">
+                <div className="flex flex-col gap-1">
+                  <DialogTitle className="font-headline text-3xl sm:text-4xl text-primary tracking-tighter">
+                    Search <span className="italic">Treasures</span>
+                  </DialogTitle>
+                  <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-accent">Artisanal Catalog</p>
+                </div>
               </div>
-              <div className="relative border-b border-primary/10 pb-4">
-                <Search className="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/30" />
+              
+              <div className="relative group">
+                <Search className="absolute left-0 top-1/2 -translate-y-1/2 w-5 h-5 text-primary/30 group-focus-within:text-accent transition-colors" />
                 <Input 
-                  placeholder="Search our catalog..." 
+                  placeholder="What can the weavers find for you?" 
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-8 h-10 border-none bg-transparent text-lg placeholder:text-primary/20 focus-visible:ring-0 rounded-none text-primary"
+                  className="pl-10 h-14 border-none border-b-2 border-primary/5 bg-transparent text-xl placeholder:text-primary/20 focus-visible:ring-0 rounded-none text-primary font-headline"
                   autoFocus
                 />
               </div>
             </DialogHeader>
-            <ScrollArea className="h-[50vh] px-6 md:px-10 pb-8">
-              <div className="space-y-6">
+
+            <ScrollArea className="h-[50vh] px-8 md:px-12 pb-10">
+              <div className="space-y-8">
                 {loadingProducts ? (
-                  <div className="flex justify-center py-10">
-                    <Loader2 className="w-6 h-6 text-primary animate-spin" />
+                  <div className="flex flex-col items-center justify-center py-20 gap-4">
+                    <Loader2 className="w-8 h-8 text-accent animate-spin" />
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-primary/40">Opening the Scrolls...</p>
                   </div>
                 ) : searchQuery && filteredProducts.length === 0 ? (
-                  <div className="text-center py-10">
-                    <p className="text-muted-foreground italic font-medium text-sm">No treasures match your search.</p>
+                  <div className="text-center py-20 space-y-4">
+                    <div className="w-16 h-16 bg-primary/5 rounded-full flex items-center justify-center mx-auto">
+                      <Search className="w-6 h-6 text-primary/20" />
+                    </div>
+                    <p className="text-primary/60 italic font-medium text-lg">"No treasures match your search."</p>
                   </div>
                 ) : (
-                  <div className="grid gap-6">
-                    {(searchQuery ? filteredProducts : allProducts?.slice(0, 4))?.map((product) => (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    {(searchQuery ? filteredProducts : allProducts?.slice(0, 6))?.map((product) => (
                       <Link 
                         key={product.id} 
                         href={`/products/${product.id}`}
                         onClick={() => setIsSearchOpen(false)}
-                        className="flex items-center gap-4 group"
+                        className="flex items-center gap-4 p-4 bg-white rounded-2xl border border-primary/5 hover:border-accent/30 transition-all hover:shadow-xl hover:-translate-y-1 group"
                       >
-                        <div className="relative w-14 h-14 md:w-20 md:h-20 overflow-hidden bg-muted rounded-xl">
-                          {product.image && <Image src={product.image} alt={product.title} fill className="object-cover" />}
+                        <div className="relative w-16 h-20 sm:w-20 sm:h-24 overflow-hidden bg-muted rounded-xl shadow-sm">
+                          {product.image && (
+                            <Image 
+                              src={product.image} 
+                              alt={product.title} 
+                              fill 
+                              className="object-cover group-hover:scale-110 transition-transform duration-700" 
+                            />
+                          )}
                         </div>
-                        <div className="flex-1">
-                          <h4 className="font-bold text-primary group-hover:text-accent transition-colors text-xs md:text-sm">{product.title}</h4>
-                          <p className="text-[8px] font-bold uppercase tracking-[0.2em] text-primary/30 mt-1">{product.category}</p>
-                          <p className="font-bold text-primary/80 text-[10px] md:text-xs mt-0.5">₹ {product.price?.toLocaleString('en-IN')}</p>
+                        <div className="flex-1 space-y-1">
+                          <h4 className="font-bold text-primary group-hover:text-accent transition-colors text-sm sm:text-base leading-tight uppercase tracking-tight">
+                            {product.title}
+                          </h4>
+                          <p className="text-[8px] font-bold uppercase tracking-[0.2em] text-accent/60">
+                            {product.category}
+                          </p>
+                          <p className="font-bold text-primary/40 text-[10px] sm:text-xs">
+                            ₹ {product.price?.toLocaleString('en-IN')}
+                          </p>
                         </div>
                       </Link>
                     ))}
@@ -155,6 +181,13 @@ export function Navigation() {
                 )}
               </div>
             </ScrollArea>
+            
+            {!searchQuery && (
+              <div className="px-12 pb-8 flex items-center gap-4 text-primary/20 italic text-[11px] font-medium">
+                <Sparkles className="w-4 h-4" />
+                <span>Try searching for "Candles", "Flowers", or "Mythical"</span>
+              </div>
+            )}
           </DialogContent>
         </Dialog>
       </nav>

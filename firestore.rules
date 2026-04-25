@@ -1,117 +1,58 @@
+
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
     /**
-     * CORE SECURITY PHILOSOPHY
-     * This ruleset implements a strict user-ownership model for private data while maintaining 
-     * a public-facing product catalog. 
+     * FABLE & FOREVER - SECURITY RULES v1.5
      * 
-     * DATA STRUCTURE
-     * - /users/{userId}: Private user profiles.
-     * - /products: Public product catalog for gallery display.
-     * - /users/{userId}/customOrders: Private order requests per user.
-     * - /users/{userId}/crochetIdeas: Private AI-generated or saved concepts.
-     * 
-     * KEY SECURITY DECISIONS
-     * 1. Public Read for Products: To fix the reported error, list and get operations on /products 
-     *    are explicitly allowed for all users (including unauthenticated ones).
-     * 2. Path-Based Ownership: Private data is nested under /users/{userId}. Access is granted 
-     *    only if the authenticated UID matches the {userId} in the path.
-     * 3. Denormalization for Performance: userId and document IDs are enforced within the 
-     *    document data to ensure relational integrity without requiring cross-collection get() calls.
-     * 4. Administrative Access: Products are protected by a role-based check against a 
-     *    dedicated /roles_admin collection.
+     * 1. PUBLIC READ: Products and Settings are globally readable for landing page visuals.
+     * 2. PUBLIC CREATE: Anyone can place an order (orders collection).
+     * 3. MASTER WEAVER ACCESS: harshroop100@gmail.com has full authority over all documents.
      */
 
     // --- Helper Functions ---
 
-    /** Checks if the user is authenticated with Firebase Auth. */
     function isSignedIn() {
       return request.auth != null;
     }
 
-    /** Checks if the authenticated user's UID matches the provided userId. */
-    function isOwner(userId) {
-      return isSignedIn() && request.auth.uid == userId;
-    }
-
-    /** Combined check for existence and ownership for state-changing operations. */
-    function isExistingOwner(userId) {
-      return resource != null && isOwner(userId);
-    }
-
-    /** Checks if the authenticated user has an administrator role entry. */
     function isAdmin() {
-      return isSignedIn() && exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid));
+      return isSignedIn() && (
+        request.auth.token.email == "harshroop100@gmail.com" ||
+        exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid))
+      );
     }
 
     // --- Rules ---
 
-    /**
-     * @description Rules for User Profiles. Users can only manage their own profile data.
-     * @path /users/{userId}
-     * @allow (create) if auth.uid == userId and data.id == userId
-     * @deny (get) if auth.uid != userId
-     * @principle Ownership and Self-Creation validation.
-     */
-    match /users/{userId} {
-      allow get, list: if isOwner(userId);
-      allow create: if isOwner(userId) && request.resource.data.id == userId;
-      allow update: if isExistingOwner(userId) && request.resource.data.id == resource.data.id;
-      allow delete: if isExistingOwner(userId);
-
-      /**
-       * @description Rules for Custom Orders. Nested under the user for simplified ownership logic.
-       * @path /users/{userId}/customOrders/{customOrderId}
-       * @allow (list) if auth.uid == userId
-       * @deny (update) if auth.uid != userId
-       * @principle Path-based authorization with relational field validation.
-       */
-      match /customOrders/{customOrderId} {
-        allow get, list: if isOwner(userId);
-        allow create: if isOwner(userId) && request.resource.data.userId == request.auth.uid;
-        allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
-        allow delete: if isExistingOwner(userId);
-      }
-
-      /**
-       * @description Rules for Crochet Ideas. Private design concepts saved by the user.
-       * @path /users/{userId}/crochetIdeas/{crochetIdeaId}
-       * @allow (get) if auth.uid == userId
-       * @deny (create) if request.resource.data.userId != auth.uid
-       * @principle Immutable ownership field enforcement.
-       */
-      match /crochetIdeas/{crochetIdeaId} {
-        allow get, list: if isOwner(userId);
-        allow create: if isOwner(userId) && request.resource.data.userId == request.auth.uid;
-        allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
-        allow delete: if isExistingOwner(userId);
-      }
-    }
-
-    /**
-     * @description Rules for the Product Catalog. Publicly readable to fix dashboard permission errors.
-     * @path /products/{productId}
-     * @allow (list) if true
-     * @deny (write) if !isAdmin()
-     * @principle Public read with role-based administrative writes.
-     */
+    // Product Catalog: Publicly readable, admin managed.
     match /products/{productId} {
       allow get, list: if true;
-      allow create, update, delete: if isAdmin();
+      allow write: if isAdmin();
     }
 
-    /**
-     * @description Administrative roles collection. Used for DBAC (Database-wide Access Control).
-     * @path /roles_admin/{uid}
-     * @allow (get) if isSignedIn()
-     * @deny (write) if true
-     * @principle Read-only administrative registry.
-     */
+    // Site Visuals & Settings: Publicly readable, admin managed.
+    match /settings/{settingId} {
+      allow get, list: if true;
+      allow write: if isAdmin();
+    }
+
+    // Orders: Public can create, Admin can manage.
+    match /orders/{orderId} {
+      allow create: if true;
+      allow get, list, update, delete: if isAdmin();
+    }
+
+    // Admin Roles: Read-only registry.
     match /roles_admin/{uid} {
       allow get: if isSignedIn();
       allow list, create, update, delete: if false;
+    }
+    
+    // Legacy path for backward compatibility if needed
+    match /users/{userId}/{allPaths=**} {
+      allow read, write: if isAdmin() || (isSignedIn() && request.auth.uid == userId);
     }
   }
 }

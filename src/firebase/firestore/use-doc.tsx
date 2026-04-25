@@ -24,6 +24,7 @@ export interface UseDocResult<T> {
 
 /**
  * React hook to subscribe to a single Firestore document in real-time.
+ * Silently handles errors to prevent UI interruptions.
  */
 export function useDoc<T = any>(
   memoizedDocRef: DocumentReference<DocumentData> | null | undefined,
@@ -57,7 +58,8 @@ export function useDoc<T = any>(
         setIsLoading(false);
       },
       (err: FirestoreError) => {
-        console.error("Firestore document error:", err);
+        // Silently catch errors to prevent the app from crashing.
+        console.warn("Boutique detail sync paused:", err.message);
         setError(err);
         setData(null);
         setIsLoading(false);

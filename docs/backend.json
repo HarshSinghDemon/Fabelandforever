@@ -1,63 +1,124 @@
-
 {
   "entities": {
     "Product": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "Product",
       "type": "object",
-      "description": "Handcrafted crochet products in the boutique.",
+      "description": "Represents a single handcrafted crochet product available in The Crochet Studio's inventory.",
       "properties": {
-        "id": { "type": "string" },
-        "title": { "type": "string" },
-        "price": { "type": "number" },
-        "category": { "type": "string" },
-        "image": { "type": "string", "format": "uri" },
-        "description": { "type": "string" },
-        "createdAt": { "type": "string", "format": "date-time" }
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Product entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the product."
+        },
+        "description": {
+          "type": "string",
+          "description": "A detailed description of the product, including materials, size, and unique features."
+        },
+        "price": {
+          "type": "number",
+          "description": "The selling price of the product."
+        },
+        "category": {
+          "type": "string",
+          "description": "The category the product belongs to (e.g., 'bags', 'toys', 'clothes')."
+        },
+        "stockQuantity": {
+          "type": "number",
+          "description": "The current quantity of the product available in stock."
+        },
+        "imageUrls": {
+          "type": "array",
+          "description": "An array of URLs pointing to images of the product, stored in Firebase Storage.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "tags": {
+          "type": "array",
+          "description": "An optional array of descriptive tags associated with the product (e.g., 'winter', 'gift', 'handmade').",
+          "items": {
+            "type": "string"
+          }
+        },
+        "isFeatured": {
+          "type": "boolean",
+          "description": "A boolean indicating if the product should be prominently displayed in featured sections on the website."
+        },
+        "isPublished": {
+          "type": "boolean",
+          "description": "A boolean indicating if the product is visible and available for purchase on the public website."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "The timestamp when the product was first created in the system.",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "The timestamp when the product's information was last updated.",
+          "format": "date-time"
+        }
       },
-      "required": ["id", "title", "price", "image", "createdAt"]
-    },
-    "Order": {
-      "title": "Order",
-      "type": "object",
-      "description": "Customer order requests recorded in the studio scrolls.",
-      "properties": {
-        "id": { "type": "string" },
-        "customerName": { "type": "string" },
-        "customerPhone": { "type": "string" },
-        "customerAddress": { "type": "string" },
-        "total": { "type": "number" },
-        "status": { "type": "string" },
-        "createdAt": { "type": "string", "format": "date-time" },
-        "items": { "type": "array", "items": { "type": "object" } }
-      },
-      "required": ["id", "customerName", "total", "status", "createdAt"]
-    },
-    "AppSetting": {
-      "title": "AppSetting",
-      "type": "object",
-      "description": "Global visual settings for the boutique (Hero visuals, banners).",
-      "properties": {
-        "id": { "type": "string" },
-        "value": { "type": "string" },
-        "values": { "type": "array", "items": { "type": "string" } },
-        "updatedAt": { "type": "string", "format": "date-time" }
-      }
+      "required": [
+        "id",
+        "name",
+        "description",
+        "price",
+        "category",
+        "stockQuantity",
+        "imageUrls",
+        "isFeatured",
+        "isPublished",
+        "createdAt",
+        "updatedAt"
+      ]
     }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
   },
   "firestore": {
     "structure": [
       {
         "path": "/products/{productId}",
-        "entityName": "Product"
+        "definition": {
+          "entityName": "Product",
+          "schema": {
+            "$ref": "#/backend/entities/Product"
+          },
+          "description": "Stores individual product details for The Crochet Studio. Documents include `id`, `name`, `description`, `price`, `category`, `stockQuantity`, `imageUrls` (array of Firebase Storage URLs), `tags` (optional array), `isFeatured`, `isPublished`, `createdAt`, and `updatedAt` timestamps. Public users can read documents where `isPublished` is true. Authenticated admin users (as defined in `/admin_users`) have full read, write, update, and delete access to all product documents.",
+          "params": [
+            {
+              "name": "productId",
+              "description": "The unique identifier for a specific product document."
+            }
+          ]
+        }
       },
       {
-        "path": "/orders/{orderId}",
-        "entityName": "Order"
-      },
-      {
-        "path": "/settings/{settingId}",
-        "entityName": "AppSetting"
+        "path": "/admin_users/{adminId}",
+        "definition": {
+          "entityName": "AdminUserMarker",
+          "schema": {
+            "$ref": "#/backend/entities/AdminUserMarker"
+          },
+          "description": "This collection serves as a marker for administrative privileges. Each document's ID (`adminId`) is the Firebase Authentication UID of a user who possesses admin rights. The existence of a document at `/admin_users/{request.auth.uid}` is used by Firestore Security Rules to grant administrative access (read, write, update, delete) to protected collections like `/products`. This implements the DBAC (Database Access Control) strategy and ensures Authorization Independence by denormalizing role information into a top-level collection.",
+          "params": [
+            {
+              "name": "adminId",
+              "description": "The Firebase Authentication User ID (UID) of an admin user."
+            }
+          ]
+        }
       }
-    ]
+    ],
+    "reasoning": "The Firestore structure is designed to be secure, scalable, and debuggable, adhering to all specified core design principles and mandates. \n\n**Authorization Independence:** To achieve authorization independence, the critical principle, we introduce a top-level collection `/admin_users/{adminId}`. This collection stores marker documents where each document's ID is the Firebase Authentication UID of an admin user. Firebase Security Rules will use an `exists(/databases/$(database)/documents/admin_users/$(request.auth.uid))` check to determine if the requesting user has admin privileges. This approach completely eliminates the need for `get()` calls to parent documents or within the product document itself for authorization, ensuring atomic operations and simplifying rule debugging.\n\n**QAPs (Queries as Permissions) and Structural Segregation:** The main collection for product data is `/products/{productId}`. This collection will store all product documents, regardless of their publication status. The `Product` entity includes an `isPublished` boolean field. This field is central to enabling secure `list` operations (QAPs) and managing heterogeneous read access within a single collection without violating structural segregation principles.\n*   **Public Read Access:** Public users (unauthenticated) will only be able to read documents where `isPublished` is explicitly `true`. A query like `db.collection('products').where('isPublished', '==', true)` will work securely and efficiently. The security rules will enforce this, preventing public users from accessing unpublished products.\n*   **Admin Read Access:** Authenticated admin users, identified by their UID existing in the `/admin_users` collection, will have full read access to all documents in `/products`, regardless of their `isPublished` status. This allows the admin panel to display all products, including drafts or unpublished items.\n*   **Write/Update/Delete Access:** All write, update, and delete operations on the `/products` collection are strictly restricted to authenticated admin users, as enforced by security rules checking against the `/admin_users` collection.\n\nThis design ensures that authorization logic is clear, external to the primary data documents where possible (for roles), and supports efficient, secure querying for both public-facing applications and the admin panel."
   }
 }

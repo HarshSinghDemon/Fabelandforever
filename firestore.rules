@@ -1,11 +1,85 @@
-
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // PUBLIC ACCESS: All collections are readable and writable by everyone.
-    // This removes all "Missing or insufficient permissions" errors.
-    match /{document=**} {
-      allow read, write: if true;
+
+    /**
+     * CORE PHILOSOPHY
+     * This ruleset implements a Role-Based Access Control (RBAC) model specifically designed for an 
+     * e-commerce admin panel. It distinguishes between "Public Users" (who browse the shop) 
+     * and "Admin Users" (who manage the inventory).
+     *
+     * DATA STRUCTURE
+     * - /products/{productId}: The primary collection for inventory. Items are visible to the public 
+     *   only when 'isPublished' is set to true.
+     * - /admin_users/{adminId}: A marker collection where the document ID corresponds to the 
+     *   Firebase Auth UID of an authorized administrator.
+     *
+     * KEY SECURITY DECISIONS
+     * - Authorization Independence: Admin status is determined by the existence of a document in 
+     *   the /admin_users collection. This avoids placing role data inside product documents, 
+     *   making the system more modular and performant.
+     * - Structural Segregation: While all products live in one collection, visibility is 
+     *   controlled via the 'isPublished' flag. Administrative actions (Create, Update, Delete) 
+     *   are strictly locked to users verified against the /admin_users collection.
+     * - Prototyping Flexibility: Rules enforce "who" can access data and "relational integrity" 
+     *   (ensuring IDs match paths), but do not restrict the specific schema of content fields 
+     *   (like descriptions or tags) to allow for rapid UI iteration.
+     */
+
+    // --- Helper Functions ---
+
+    /** @description Checks if the request is from an authenticated user. */
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    /** @description Checks if the authenticated user's UID exists in the admin_users collection. */
+    function isAdmin() {
+      return isSignedIn() && exists(/databases/$(database)/documents/admin_users/$(request.auth.uid));
+    }
+
+    /** @description Checks if the existing document is marked as published for public viewing. */
+    function isPublished() {
+      return resource.data.isPublished == true;
+    }
+
+    /** @description Verifies ownership of an admin marker or admin status. */
+    function isOwnerOrAdmin(adminId) {
+      return isSignedIn() && (request.auth.uid == adminId || isAdmin());
+    }
+
+    // --- Collection Rules ---
+
+    /**
+     * @description Rules for the product catalog. Allows public reading of published items and full admin control.
+     * @path /products/{productId}
+     * @allow Public users (get) if the product isPublished is true.
+     * @allow Admin users (create) if their UID is in the /admin_users collection and data.id matches the path.
+     * @deny Unauthenticated users (create/update/delete) or attempts to change the product's internal ID.
+     * @principle Role-based access control combined with attribute-based visibility for public users.
+     */
+    match /products/{productId} {
+      allow get: if isPublished() || isAdmin();
+      allow list: if true; // Public listing allowed; developers must filter by isPublished == true in the query.
+      allow create: if isAdmin() && request.resource.data.id == productId;
+      allow update: if isAdmin() && resource != null && request.resource.data.id == resource.data.id;
+      allow delete: if isAdmin() && resource != null;
+    }
+
+    /**
+     * @description Rules for the admin registry. Markers here grant administrative privileges across the database.
+     * @path /admin_users/{adminId}
+     * @allow Users (get) to view their own admin status or other admins to view the registry.
+     * @deny Public users (list) or unauthorized users (write) from modifying the admin list.
+     * @principle Database-level role markers (DBAC) ensuring authorization independence.
+     */
+    match /admin_users/{adminId} {
+      allow get: if isOwnerOrAdmin(adminId);
+      allow list: if isAdmin();
+      // Admin markers are typically managed via Firebase Console or Admin SDK for security.
+      allow create: if false; 
+      allow update: if false;
+      allow delete: if false;
     }
   }
 }

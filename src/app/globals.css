@@ -23,7 +23,7 @@
     --border: 175 10% 90%;
     --input: 175 10% 90%;
     --ring: 175 45% 25%;
-    --radius: 0.5rem;
+    --radius: 0rem;
   }
 }
 
@@ -40,23 +40,24 @@
 
 .font-headline {
   font-family: 'Playfair Display', serif;
-  font-weight: 400;
-  letter-spacing: -0.02em;
+  font-weight: 300;
+  letter-spacing: -0.03em;
 }
 
 .font-sans {
   font-family: 'Quicksand', sans-serif;
+  letter-spacing: 0.02em;
 }
 
 .font-fancy {
   font-family: 'Pacifico', cursive;
 }
 
-/* Luxury Transitions */
+/* Cinematic Transitions like Floriy */
 .reveal-on-scroll {
   opacity: 0;
-  transform: translateY(20px);
-  transition: all 1.2s cubic-bezier(0.2, 1, 0.3, 1);
+  transform: translateY(40px);
+  transition: all 1.4s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform, opacity;
 }
 
@@ -76,27 +77,21 @@
   @apply bg-primary/20 rounded-full hover:bg-primary/40 transition-colors;
 }
 
-/* Floriy-like image focus */
+/* High-end image focus */
 .img-hover-zoom {
   overflow: hidden;
 }
 .img-hover-zoom img {
-  transition: transform 1.5s cubic-bezier(0.2, 1, 0.3, 1);
+  transition: transform 2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .img-hover-zoom:hover img {
-  transform: scale(1.05);
+  transform: scale(1.04);
 }
 
-/* Animation for slideshow-like feel on mobile */
-@media (max-width: 768px) {
-  .container {
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-  }
-  
-  .animate-marquee {
-    animation: marquee 30s linear infinite;
-  }
+.animate-marquee {
+  display: flex;
+  width: fit-content;
+  animation: marquee 80s linear infinite;
 }
 
 @keyframes marquee {
@@ -104,17 +99,34 @@
   100% { transform: translateX(-50%); }
 }
 
-.animate-marquee {
-  display: flex;
-  width: fit-content;
-  animation: marquee 60s linear infinite;
+.stitching-border {
+  position: relative;
+}
+.stitching-border::after {
+  content: '';
+  position: absolute;
+  inset: 12px;
+  border: 1px dashed hsla(var(--primary), 0.1);
+  pointer-events: none;
+  border-radius: inherit;
 }
 
-/* Interactive elements */
-.active-squish:active {
-  transform: scale(0.95);
+.bg-paper {
+  background-color: hsl(var(--background));
 }
 
-.glow-hover:hover {
-  box-shadow: 0 0 20px hsla(var(--primary), 0.2);
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@keyframes bounce-slow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+.animate-bounce-slow {
+  animation: bounce-slow 3s ease-in-out infinite;
 }

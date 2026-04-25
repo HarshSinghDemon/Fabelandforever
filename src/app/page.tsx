@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useEffect, useRef, useState } from 'react';
@@ -6,7 +5,7 @@ import { Navigation } from '@/components/Navigation';
 import { Hero } from '@/components/Hero';
 import { FeaturedProducts } from '@/components/FeaturedProducts';
 import { Footer } from '@/components/Footer';
-import { Send, ArrowRight, Mail, Sparkles, Feather, Palette, BookOpen } from 'lucide-react';
+import { Send, ArrowRight, Sparkles, Feather, Palette } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -29,12 +28,11 @@ export default function Home() {
           }
         });
       },
-      { threshold: 0.1 }
+      { threshold: 0.15 }
     );
 
-    scrollRefs.current.forEach((ref) => {
-      if (ref) observer.observe(ref);
-    });
+    const elements = document.querySelectorAll('.reveal-on-scroll');
+    elements.forEach((el) => observer.observe(el));
 
     return () => observer.disconnect();
   }, []);
@@ -42,7 +40,7 @@ export default function Home() {
   const handleContactSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const recipient = "fableandforevercompany@gmail.com";
-    const subject = encodeURIComponent(`New Inquiry: ${contactForm.name}`);
+    const subject = encodeURIComponent(`Studio Inquiry: ${contactForm.name}`);
     const body = encodeURIComponent(contactForm.message);
     window.open(`mailto:${recipient}?subject=${subject}&body=${body}`, '_blank');
   };
@@ -53,135 +51,141 @@ export default function Home() {
       
       <Hero />
       
-      {/* Dynamic Marquee */}
-      <div className="py-20 border-y border-primary/5 overflow-hidden whitespace-nowrap bg-white">
-        <div className="flex animate-marquee gap-20">
+      {/* High-end Infinite Marquee */}
+      <div className="py-24 border-y border-primary/5 overflow-hidden whitespace-nowrap bg-white/50 backdrop-blur-sm">
+        <div className="flex animate-marquee gap-32">
           {[...Array(4)].map((_, i) => (
-            <div key={i} className="flex gap-20">
-              <span className="text-[10px] font-bold uppercase tracking-[0.5em] text-primary/40">Handmade with care</span>
-              <span className="text-[10px] font-bold uppercase tracking-[0.5em] text-primary/40">100% Quality Yarn</span>
-              <span className="text-[10px] font-bold uppercase tracking-[0.5em] text-primary/40">Unique Designs</span>
+            <div key={i} className="flex gap-32 items-center">
+              <span className="text-[9px] font-bold uppercase tracking-[0.8em] text-primary/20 italic">Artisan Heritage</span>
+              <div className="w-1 h-1 bg-primary/10 rounded-full"></div>
+              <span className="text-[9px] font-bold uppercase tracking-[0.8em] text-primary/20">Hand-Stitched Magic</span>
+              <div className="w-1 h-1 bg-primary/10 rounded-full"></div>
+              <span className="text-[9px] font-bold uppercase tracking-[0.8em] text-primary/20 italic">Ethical Sourcing</span>
+              <div className="w-1 h-1 bg-primary/10 rounded-full"></div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Featured Collection */}
-      <section ref={(el) => { if (el) scrollRefs.current[0] = el }} className="reveal-on-scroll">
+      {/* Primary Collection spread */}
+      <section className="reveal-on-scroll">
         <FeaturedProducts />
       </section>
 
-      {/* The Process Section */}
-      <section className="py-40 bg-white border-y border-primary/5 overflow-hidden">
+      {/* The Artisanal Process Block */}
+      <section className="py-60 bg-white border-y border-primary/5 overflow-hidden">
         <div className="container mx-auto px-6">
-          <div className="text-center mb-24">
-            <span className="text-accent font-bold tracking-[0.4em] uppercase text-[10px] mb-6 block">Craftsmanship</span>
-            <h2 className="font-headline text-5xl sm:text-7xl text-primary leading-tight mb-8">
-              The <span className="italic">Process.</span>
+          <div className="text-center mb-32 reveal-on-scroll">
+            <span className="text-accent font-bold tracking-[0.6em] uppercase text-[9px] mb-8 block">Our Ethos</span>
+            <h2 className="font-headline text-6xl sm:text-8xl text-primary leading-none">
+              The <span className="italic">Journey.</span>
             </h2>
-            <div className="w-24 h-[1px] bg-accent/30 mx-auto"></div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-24 md:gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-32 lg:gap-20">
             {[
               { 
                 icon: Feather, 
-                title: 'Material Choice', 
-                desc: 'We select the softest, most durable ethically sourced yarns for every loop.',
-                step: '01'
+                title: 'Pure Materials', 
+                desc: 'Every loop begins with the highest quality, ethically sourced fibers.',
+                step: 'I'
               },
               { 
                 icon: Palette, 
-                title: 'Color Curation', 
-                desc: 'Artisanal color palettes designed to bring warmth and elegance to your space.',
-                step: '02'
+                title: 'Color Artistry', 
+                desc: 'Palettes curated to evoke emotion and complement modern interiors.',
+                step: 'II'
               },
               { 
                 icon: Sparkles, 
                 title: 'Slow Stitching', 
-                desc: 'Detailed hand-craftsmanship ensures each piece is a lasting legacy.',
-                step: '03'
+                desc: 'A rejection of fast-fashion. Each piece is a meditation in patience.',
+                step: 'III'
               }
             ].map((item, idx) => (
-              <div key={idx} className="text-center space-y-6 group">
-                <div className="relative inline-block mb-8">
-                  <span className="absolute -top-4 -right-4 text-[40px] font-headline italic text-primary/5 select-none">{item.step}</span>
-                  <div className="w-16 h-16 bg-paper rounded-full flex items-center justify-center mx-auto transition-transform group-hover:scale-110 duration-500 shadow-sm border border-primary/5">
-                    <item.icon className="w-6 h-6 text-accent" />
+              <div key={idx} className="text-center space-y-8 group reveal-on-scroll" style={{ animationDelay: `${idx * 0.2}s` }}>
+                <div className="relative inline-block mb-10">
+                  <span className="absolute -top-10 -right-10 text-8xl font-headline italic text-primary/5 select-none">{item.step}</span>
+                  <div className="w-20 h-20 bg-paper rounded-full flex items-center justify-center mx-auto transition-all duration-1000 group-hover:scale-110 shadow-sm border border-primary/5">
+                    <item.icon className="w-6 h-6 text-accent opacity-60" />
                   </div>
                 </div>
-                <h3 className="font-headline text-2xl text-primary">{item.title}</h3>
-                <p className="text-primary/60 text-sm leading-relaxed max-w-[250px] mx-auto">
-                  {item.desc}
-                </p>
+                <div className="space-y-4">
+                  <h3 className="font-headline text-3xl text-primary uppercase tracking-tighter">{item.title}</h3>
+                  <p className="text-primary/50 text-sm leading-relaxed max-w-[280px] mx-auto font-medium italic">
+                    {item.desc}
+                  </p>
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
       
-      {/* Contact Section */}
+      {/* Minimalist Connection Form */}
       <section 
         id="contact" 
-        className="py-40 bg-white"
-        ref={(el) => { if (el) scrollRefs.current[3] = el }}
+        className="py-60 bg-background"
       >
-        <div className="container mx-auto px-6 max-w-7xl">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-start">
-            <div>
-              <span className="text-accent font-bold tracking-[0.4em] uppercase text-[10px] mb-8 block">Get in Touch</span>
-              <h2 className="font-headline text-6xl sm:text-8xl text-primary leading-none mb-12">
-                Contact <br />
-                <span className="italic">Us.</span>
+        <div className="container mx-auto px-6 max-w-6xl">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-40 items-start">
+            <div className="reveal-on-scroll">
+              <span className="text-accent font-bold tracking-[0.6em] uppercase text-[9px] mb-10 block">Connection</span>
+              <h2 className="font-headline text-7xl sm:text-9xl text-primary leading-none mb-16">
+                Say <br />
+                <span className="italic">Hello.</span>
               </h2>
-              <p className="text-xl text-primary/60 italic leading-relaxed max-w-sm">
-                Have questions about a product? We are here to help.
-              </p>
-              
-              <div className="mt-20 space-y-4">
-                <p className="text-[10px] font-bold uppercase tracking-widest text-primary/30">Email Us</p>
-                <Link href="mailto:fableandforevercompany@gmail.com" className="text-2xl font-headline text-primary hover:text-accent transition-colors flex items-center gap-4">
-                  fableandforevercompany@gmail.com <ArrowRight className="w-6 h-6" />
-                </Link>
+              <div className="space-y-10">
+                <div className="space-y-2">
+                  <p className="text-[9px] font-bold uppercase tracking-[0.4em] text-primary/30">Studio Inquiry</p>
+                  <Link href="mailto:fableandforevercompany@gmail.com" className="text-2xl font-headline text-primary hover:text-accent transition-all flex items-center gap-6 group">
+                    Email the Weaver <ArrowRight className="w-6 h-6 group-hover:translate-x-4 transition-transform" />
+                  </Link>
+                </div>
+                <div className="pt-10 border-t border-primary/5">
+                  <p className="text-xs font-bold text-primary/40 uppercase tracking-widest leading-relaxed">
+                    Based in Bengal<br />Shipping Worldwide
+                  </p>
+                </div>
               </div>
             </div>
 
-            <form onSubmit={handleContactSubmit} className="space-y-12">
-               <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-                  <div className="space-y-4 border-b border-primary/10 pb-4">
-                    <label className="text-[10px] font-bold uppercase tracking-widest text-primary/40">Full Name</label>
+            <form onSubmit={handleContactSubmit} className="space-y-20 reveal-on-scroll">
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+                  <div className="space-y-6 border-b border-primary/10 pb-6 group focus-within:border-primary transition-colors">
+                    <label className="text-[9px] font-bold uppercase tracking-[0.4em] text-primary/40">Identity</label>
                     <Input 
                       required
                       value={contactForm.name}
                       onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
-                      placeholder="Enter your name" 
-                      className="border-none bg-transparent p-0 h-10 text-xl placeholder:text-primary/10 rounded-none focus-visible:ring-0" 
+                      placeholder="Your Name" 
+                      className="border-none bg-transparent p-0 h-10 text-2xl placeholder:text-primary/10 rounded-none focus-visible:ring-0 font-headline" 
                     />
                   </div>
-                  <div className="space-y-4 border-b border-primary/10 pb-4">
-                    <label className="text-[10px] font-bold uppercase tracking-widest text-primary/40">Email Address</label>
+                  <div className="space-y-6 border-b border-primary/10 pb-6 group focus-within:border-primary transition-colors">
+                    <label className="text-[9px] font-bold uppercase tracking-[0.4em] text-primary/40">Email</label>
                     <Input 
                       required
                       type="email" 
                       value={contactForm.email}
                       onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
-                      placeholder="your@email.com" 
-                      className="border-none bg-transparent p-0 h-10 text-xl placeholder:text-primary/10 rounded-none focus-visible:ring-0" 
+                      placeholder="you@domain.com" 
+                      className="border-none bg-transparent p-0 h-10 text-2xl placeholder:text-primary/10 rounded-none focus-visible:ring-0 font-headline" 
                     />
                   </div>
                </div>
-               <div className="space-y-4 border-b border-primary/10 pb-4">
-                  <label className="text-[10px] font-bold uppercase tracking-widest text-primary/40">Message</label>
+               <div className="space-y-6 border-b border-primary/10 pb-6 group focus-within:border-primary transition-colors">
+                  <label className="text-[9px] font-bold uppercase tracking-[0.4em] text-primary/40">Whisper</label>
                   <Textarea 
                     required
                     value={contactForm.message}
                     onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
-                    placeholder="How can we help you?" 
-                    className="border-none bg-transparent p-0 min-h-[150px] text-xl placeholder:text-primary/10 rounded-none focus-visible:ring-0 resize-none" 
+                    placeholder="Tell us about your vision..." 
+                    className="border-none bg-transparent p-0 min-h-[120px] text-2xl placeholder:text-primary/10 rounded-none focus-visible:ring-0 resize-none font-headline" 
                   />
                </div>
-               <Button type="submit" className="bg-primary hover:bg-primary/90 text-white h-16 px-16 rounded-none text-[11px] font-bold uppercase tracking-[0.3em] w-full sm:w-auto transition-all active:scale-95 shadow-lg">
-                 Send Message <Send className="ml-4 w-4 h-4" />
+               <Button type="submit" className="bg-primary hover:bg-primary/90 text-white h-16 px-20 rounded-none text-[9px] font-bold uppercase tracking-[0.5em] w-full sm:w-auto transition-all active:scale-95 shadow-2xl">
+                 Transmit Message
                </Button>
             </form>
           </div>

@@ -2,8 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { Card, CardContent } from '@/components/ui/card';
-import { Loader2, ShoppingBag, ArrowRight } from 'lucide-react';
+import { Loader2, ArrowRight, ShoppingBasket } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useToast } from '@/hooks/use-toast';
 import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
@@ -33,16 +32,16 @@ export function FeaturedProducts() {
       image: product.image || productPlaceholders[0].imageUrl
     });
     toast({
-      title: "Added to Bag",
-      description: `${product.title} has been added to your order.`,
+      title: "Treasure Selected",
+      description: `${product.title} added to your basket.`,
     });
   };
 
   if (loading || !db) {
     return (
-      <div className="py-40 flex flex-col items-center justify-center gap-4">
-        <Loader2 className="w-8 h-8 text-primary animate-spin" />
-        <p className="text-[10px] font-bold uppercase tracking-widest opacity-40">Loading Shop...</p>
+      <div className="py-60 flex flex-col items-center justify-center gap-6">
+        <Loader2 className="w-6 h-6 text-primary animate-spin" />
+        <p className="text-[9px] font-bold uppercase tracking-[0.4em] text-primary/30">Preparing Collection</p>
       </div>
     );
   }
@@ -52,26 +51,27 @@ export function FeaturedProducts() {
     : productPlaceholders.map((p, i) => ({
         id: `placeholder-${i}`,
         title: p.description.split('.')[0],
-        price: 1500 + (i * 200),
-        category: i % 2 === 0 ? 'Toys' : 'Accessories',
+        price: 1800 + (i * 300),
+        category: i % 2 === 0 ? 'Home' : 'Art',
         image: p.imageUrl,
         imageHint: p.imageHint
       }));
 
   return (
-    <section id="shop" className="py-24 sm:py-40 bg-background">
+    <section id="shop" className="py-40 bg-background">
       <div className="container mx-auto px-6">
         
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
-          <div className="max-w-2xl">
-            <span className="text-accent font-bold text-[10px] uppercase tracking-[0.4em] mb-4 block">New Arrivals</span>
-            <h2 className="font-headline text-5xl sm:text-6xl text-primary leading-tight">Our <span className="italic">Collection.</span></h2>
+        {/* Editorial Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-24 gap-12">
+          <div className="max-w-xl">
+            <span className="text-accent font-bold text-[9px] uppercase tracking-[0.5em] mb-6 block">Curated Series</span>
+            <h2 className="font-headline text-6xl sm:text-7xl text-primary leading-none">Seasonal <br /><span className="italic">Treasures</span></h2>
           </div>
-          <div className="flex gap-8 overflow-x-auto pb-4 no-scrollbar">
-            {['All', 'Toys', 'Clothing', 'Home Decor'].map((cat) => (
+          <div className="flex gap-10 overflow-x-auto pb-6 no-scrollbar border-b border-primary/5">
+            {['All Items', 'Heirlooms', 'Miniatures', 'Decor'].map((cat) => (
               <button 
                 key={cat}
-                className="whitespace-nowrap text-[11px] font-bold uppercase tracking-widest text-primary/40 hover:text-primary transition-colors pb-1 border-b-2 border-transparent hover:border-primary"
+                className="whitespace-nowrap text-[9px] font-bold uppercase tracking-[0.4em] text-primary/30 hover:text-primary transition-all pb-1 hover:scale-105"
               >
                 {cat}
               </button>
@@ -79,10 +79,15 @@ export function FeaturedProducts() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-24">
-          {displayProducts.map((product: any) => (
-            <div key={product.id} className="group cursor-pointer block">
-              <div className="relative aspect-[4/5] overflow-hidden bg-muted mb-8 img-hover-zoom">
+        {/* Cinematic Product Spread */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-32">
+          {displayProducts.map((product: any, idx: number) => (
+            <div 
+              key={product.id} 
+              className="group cursor-pointer reveal-on-scroll"
+              style={{ animationDelay: `${idx * 0.1}s` }}
+            >
+              <div className="relative aspect-[3/4] overflow-hidden bg-muted mb-10 img-hover-zoom">
                 <Image
                   src={product.image}
                   alt={product.title}
@@ -92,33 +97,37 @@ export function FeaturedProducts() {
                   data-ai-hint={product.imageHint || "crochet"}
                 />
                 
-                <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-8 p-4">
+                {/* Floating Action Button */}
+                <div className="absolute bottom-8 right-8 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
                    <button 
                     onClick={(e) => {
                       e.stopPropagation();
                       handleAddToCart(product);
                     }}
-                    className="bg-white text-primary text-[10px] font-bold uppercase tracking-widest px-8 h-12 w-full max-w-[200px] shadow-2xl hover:bg-primary hover:text-white transition-all transform translate-y-4 group-hover:translate-y-0"
+                    className="bg-white text-primary p-5 shadow-2xl hover:bg-primary hover:text-white transition-all transform active:scale-90"
+                    aria-label="Add to basket"
                    >
-                     Add to Bag
+                     <ShoppingBasket className="w-5 h-5" />
                    </button>
                 </div>
               </div>
               
-              <div className="space-y-2">
-                <div className="flex justify-between items-start">
-                  <h3 className="font-bold text-lg text-primary">{product.title}</h3>
-                  <span className="font-medium text-primary/60">₹ {Number(product.price).toLocaleString('en-IN')}</span>
+              <div className="space-y-4 text-center">
+                <p className="text-[9px] uppercase tracking-[0.4em] text-primary/30 font-bold">{product.category || 'General'}</p>
+                <div className="space-y-1">
+                  <h3 className="font-headline text-2xl text-primary">{product.title}</h3>
+                  <p className="font-medium text-primary/40 text-sm italic">₹ {Number(product.price).toLocaleString('en-IN')}</p>
                 </div>
-                <p className="text-[10px] uppercase tracking-widest text-primary/40 font-bold">{product.category || 'General'}</p>
               </div>
             </div>
           ))}
         </div>
 
-        <div className="mt-24 text-center">
-          <button className="inline-flex items-center gap-4 text-xs font-bold uppercase tracking-[0.3em] text-primary group">
-            View All Products <div className="w-12 h-[1px] bg-primary/20 group-hover:w-20 transition-all"></div> <ArrowRight className="w-4 h-4" />
+        {/* High-end Narrative Link */}
+        <div className="mt-40 text-center">
+          <button className="group inline-flex flex-col items-center gap-6">
+            <span className="text-[9px] font-bold uppercase tracking-[0.5em] text-primary opacity-60">See Entire Portfolio</span>
+            <div className="w-1 h-12 bg-gradient-to-b from-primary/40 to-transparent group-hover:h-20 transition-all duration-700"></div>
           </button>
         </div>
       </div>

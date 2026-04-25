@@ -21,57 +21,57 @@ export function Hero() {
   const heroImageUrl = heroSetting?.value || heroPlaceholder?.imageUrl;
 
   return (
-    <section className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-[#111]">
-      {/* Background Image */}
+    <section className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-[#0a0a0a]">
+      {/* Immersive Background */}
       <div className="absolute inset-0 z-0">
         {heroImageUrl ? (
           <Image
             src={heroImageUrl}
-            alt="Handmade Crochet"
+            alt="Artisanal Crochet"
             fill
-            className="object-cover opacity-80 transition-transform duration-[10s] hover:scale-110"
+            className="object-cover opacity-70 transition-transform duration-[20s] hover:scale-110"
             priority
             data-ai-hint={heroPlaceholder?.imageHint || "luxury crochet"}
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center bg-muted/10">
+          <div className="w-full h-full flex items-center justify-center bg-muted/5">
             <ImageIcon className="w-20 h-20 text-white/5" />
           </div>
         )}
-        {/* Cinematic Overlays */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-black/60"></div>
+        {/* Cinematic Gradient Vignette */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-black/90"></div>
       </div>
       
-      {/* Content */}
+      {/* Minimalist Content Overlay */}
       <div className="container mx-auto px-6 relative z-10 text-center text-white">
-        <div className="max-w-5xl mx-auto space-y-10 animate-fade-in-up">
-          <span className="text-[10px] font-bold uppercase tracking-[0.6em] opacity-80 block mb-4">Premium Crochet Boutique</span>
+        <div className="max-w-5xl mx-auto space-y-12 animate-fade-in-up">
+          <div className="space-y-6">
+            <span className="text-[9px] font-bold uppercase tracking-[0.8em] opacity-60 block mb-6 animate-pulse">Hand-Stitched Legacy</span>
+            <h1 className="font-headline text-7xl sm:text-9xl md:text-[11rem] leading-[0.85] mb-8 tracking-tighter">
+              Artisan <br /> <span className="italic">Threads</span>
+            </h1>
+          </div>
           
-          <h1 className="font-headline text-6xl sm:text-8xl md:text-[8rem] leading-[0.9] mb-6 tracking-tighter">
-            Handmade <br /> <span className="italic">with Love</span>
-          </h1>
-          
-          <p className="text-lg sm:text-xl max-w-2xl mx-auto leading-relaxed font-medium opacity-80">
-            High-quality, hand-crocheted items designed for your home and lifestyle.
+          <p className="text-sm sm:text-base max-w-xl mx-auto leading-relaxed font-bold uppercase tracking-widest opacity-50">
+            Slow-crafted crochet treasures designed to last a lifetime.
           </p>
           
-          <div className="pt-8 flex flex-col sm:flex-row items-center justify-center gap-6">
-            <Button asChild size="lg" className="bg-white text-primary hover:bg-white/90 px-14 h-16 rounded-full text-[11px] font-bold uppercase tracking-widest transition-all hover:scale-105 shadow-2xl">
+          <div className="pt-12 flex flex-col sm:flex-row items-center justify-center gap-8">
+            <Button asChild className="bg-white text-primary hover:bg-white/90 px-16 h-14 rounded-none text-[9px] font-bold uppercase tracking-[0.4em] transition-all hover:scale-105 shadow-2xl">
               <Link href="#shop">
-                Shop Collection <ArrowRight className="ml-4 w-4 h-4" />
+                Explore Collection <ArrowRight className="ml-4 w-3 h-3" />
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="border-white/40 text-white hover:bg-white hover:text-primary px-14 h-16 rounded-full text-[11px] font-bold uppercase tracking-widest transition-all">
-              <Link href="#custom">Custom Orders</Link>
-            </Button>
+            <Link href="/about" className="text-[9px] font-bold uppercase tracking-[0.4em] text-white hover:opacity-50 transition-all border-b border-white/20 pb-1">
+              Read Our Story
+            </Link>
           </div>
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-6 opacity-60">
-        <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-white/80 transform rotate-180 [writing-mode:vertical-lr]">Scroll</span>
-        <div className="w-[1px] h-16 bg-gradient-to-b from-white to-transparent overflow-hidden relative">
+      {/* Floating Scroll Indicator */}
+      <div className="absolute bottom-16 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-8 opacity-40">
+        <div className="w-[1px] h-20 bg-gradient-to-b from-white via-white/40 to-transparent overflow-hidden relative">
           <div className="absolute top-0 left-0 w-full h-1/2 bg-white animate-bounce-slow"></div>
         </div>
       </div>

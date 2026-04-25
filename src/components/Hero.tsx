@@ -1,13 +1,16 @@
+
 "use client";
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, ImageIcon } from 'lucide-react';
+import { ArrowRight, ImageIcon, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import { useFirestore, useDoc, useMemoFirebase } from '@/firebase';
 import { doc } from 'firebase/firestore';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import useEmblaCarousel from 'embla-carousel-react';
+import Autoplay from 'embla-carousel-autoplay';
 
 export function Hero() {
   const db = useFirestore();
@@ -15,35 +18,50 @@ export function Hero() {
     if (!db) return null;
     return doc(db, 'settings', 'hero');
   }, [db]);
-  const { data: heroSetting } = useDoc(heroSettingRef);
+  const { data: heroSetting, loading } = useDoc(heroSettingRef);
   
   const heroPlaceholder = PlaceHolderImages.find(img => img.id === 'hero-main');
-  const heroImageUrl = heroSetting?.value || heroPlaceholder?.imageUrl;
+  
+  // Use either the multi-image gallery or fall back to single value or placeholder
+  const heroImages = heroSetting?.values?.length > 0 
+    ? heroSetting.values 
+    : heroSetting?.value 
+      ? [heroSetting.value] 
+      : [heroPlaceholder?.imageUrl || "https://picsum.photos/seed/hero/1920/1080"];
+
+  const [emblaRef] = useEmblaCarousel({ loop: true }, [Autoplay({ delay: 5000, stopOnInteraction: false })]);
+
+  if (loading) {
+    return (
+      <div className="h-screen w-full bg-black flex items-center justify-center">
+        <Sparkles className="w-12 h-12 text-white animate-pulse" />
+      </div>
+    );
+  }
 
   return (
-    <section className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-black">
-      {/* Immersive Background */}
-      <div className="absolute inset-0 z-0">
-        {heroImageUrl ? (
-          <Image
-            src={heroImageUrl}
-            alt="Artisanal Crochet"
-            fill
-            className="object-cover opacity-60 transition-transform duration-[20s] hover:scale-110"
-            priority
-            data-ai-hint={heroPlaceholder?.imageHint || "luxury crochet"}
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center bg-muted/5">
-            <ImageIcon className="w-20 h-20 text-white/5" />
-          </div>
-        )}
-        {/* Cinematic Gradient Overlay for Readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-black/70"></div>
+    <section className="relative h-screen w-full overflow-hidden bg-black group">
+      {/* Immersive Slidable Background */}
+      <div className="absolute inset-0 z-0 overflow-hidden" ref={emblaRef}>
+        <div className="flex h-full">
+          {heroImages.map((url: string, index: number) => (
+            <div key={index} className="relative flex-[0_0_100%] min-w-0 h-full">
+              <Image
+                src={url}
+                alt={`Artisanal Story ${index + 1}`}
+                fill
+                className="object-cover opacity-60 transition-transform duration-[20s] hover:scale-110"
+                priority={index === 0}
+              />
+            </div>
+          ))}
+        </div>
+        {/* Cinematic Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-black/70 pointer-events-none"></div>
       </div>
       
       {/* Content Overlay */}
-      <div className="container mx-auto px-6 relative z-10 text-center text-white">
+      <div className="container mx-auto px-6 relative z-10 h-full flex items-center justify-center text-center text-white">
         <div className="max-w-5xl mx-auto space-y-12 animate-fade-in-up">
           <div className="space-y-6">
             <span className="text-[10px] font-bold uppercase tracking-[0.8em] text-white/60 block mb-6 animate-pulse">Hand-Stitched Legacy</span>

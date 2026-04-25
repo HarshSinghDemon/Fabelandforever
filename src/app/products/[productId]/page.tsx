@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { use, useState, useEffect } from 'react';
@@ -25,16 +26,9 @@ import {
   Heart,
   Undo2,
   Leaf,
-  ArrowLeft
+  ArrowLeft,
+  MessageCircle
 } from 'lucide-react';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import {
   Carousel,
   CarouselContent,
@@ -53,7 +47,6 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
   const [quantity, setQuantity] = useState(1);
-  const [isCustomOpen, setIsCustomOpen] = useState(false);
 
   useEffect(() => {
     if (!api) return;
@@ -208,44 +201,18 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
             </div>
 
             <div className="pt-2">
-              <Dialog open={isCustomOpen} onOpenChange={setIsCustomOpen}>
-                <DialogTrigger asChild>
-                  <button className="w-full flex items-center justify-center gap-4 py-8 bg-accent/5 text-accent hover:bg-accent/10 transition-all border border-accent/10 shadow-sm relative overflow-hidden group">
-                    <Sparkles className="w-5 h-5 group-hover:rotate-12 transition-transform" /> 
-                    <span className="text-[10px] font-bold uppercase tracking-[0.6em]">Customize Request</span>
-                  </button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[450px] border-none shadow-2xl p-0 overflow-hidden bg-white rounded-none">
-                  <div className="h-2 bg-accent/20 w-full"></div>
-                  <div className="p-10">
-                    <DialogHeader className="text-center space-y-6 mb-10">
-                      <div className="w-16 h-16 bg-accent/5 rounded-full flex items-center justify-center mx-auto">
-                        <Feather className="w-7 h-7 text-accent" />
-                      </div>
-                      <DialogTitle className="font-headline text-3xl text-primary">Customize Request</DialogTitle>
-                      <DialogDescription className="text-primary/40 text-[11px] italic font-medium leading-relaxed tracking-wide">
-                        "Let's weave your unique vision into reality. Reach out via your preferred scroll."
-                      </DialogDescription>
-                    </DialogHeader>
-                    <div className="grid gap-4">
-                      <a href="https://www.instagram.com/fable.and.forever/" target="_blank" rel="noopener noreferrer" className="flex items-center justify-between p-6 bg-paper hover:bg-accent/5 transition-all group">
-                        <div className="flex items-center gap-6">
-                          <Instagram className="w-6 h-6 text-accent" />
-                          <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Instagram DM</span>
-                        </div>
-                        <ChevronRight className="w-4 h-4 text-accent/20 group-hover:translate-x-1 transition-transform" />
-                      </a>
-                      <a href="mailto:fableandforevercompany@gmail.com" className="flex items-center justify-between p-6 bg-paper hover:bg-primary/5 transition-all group">
-                        <div className="flex items-center gap-6">
-                          <Mail className="w-6 h-6 text-primary" />
-                          <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Direct Email</span>
-                        </div>
-                        <ChevronRight className="w-4 h-4 text-primary/20 group-hover:translate-x-1 transition-transform" />
-                      </a>
-                    </div>
-                  </div>
-                </DialogContent>
-              </Dialog>
+              <Link 
+                href="https://www.instagram.com/fable.and.forever/"
+                target="_blank"
+                className="w-full flex items-center justify-center gap-4 py-8 bg-accent/5 text-accent hover:bg-accent/10 transition-all border border-accent/10 shadow-sm relative overflow-hidden group"
+              >
+                <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-accent via-transparent to-transparent"></div>
+                <Instagram className="w-5 h-5 group-hover:rotate-12 transition-transform" /> 
+                <div className="flex flex-col items-center">
+                  <span className="text-[10px] font-black uppercase tracking-[0.6em]">DM for Custom Order</span>
+                  <span className="text-[7px] font-bold uppercase tracking-widest text-accent/40 mt-1 italic">Consult the Weaver</span>
+                </div>
+              </Link>
             </div>
           </div>
 

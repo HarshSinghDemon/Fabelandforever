@@ -80,12 +80,12 @@ export function Hero() {
           </div>
 
           <div className="relative">
-            <h1 className="font-headline text-5xl sm:text-7xl md:text-[10rem] lg:text-[12rem] leading-[0.85] tracking-tighter drop-shadow-2xl flex flex-col items-center select-none px-4">
+            <h1 className="font-headline text-5xl sm:text-7xl md:text-[8rem] lg:text-[10rem] leading-[0.85] tracking-tighter drop-shadow-2xl flex flex-col items-center select-none px-4">
               <span className="block overflow-hidden">
                 <span className="block animate-loop-in stagger-1 opacity-0">Fable</span>
               </span>
               <div className="h-0 relative z-20 flex justify-center items-center">
-                <span className="font-fancy text-5xl md:text-9xl lg:text-[14rem] text-accent/90 block animate-loop-in stagger-2 opacity-0 -rotate-3">
+                <span className="font-fancy text-5xl md:text-9xl lg:text-[12rem] text-accent/90 block animate-loop-in stagger-2 opacity-0 -rotate-3">
                   &
                 </span>
               </div>
@@ -108,10 +108,11 @@ export function Hero() {
               </Button>
               
               <Link 
-                href="/about" 
+                href="https://www.instagram.com/fable.and.forever/"
+                target="_blank"
                 className="text-[10px] md:text-[12px] font-black uppercase tracking-[0.4em] md:tracking-[0.5em] text-white/90 hover:text-white transition-all border-b-2 border-white/20 pb-2 hover:border-white group flex items-center gap-4"
               >
-                Read Our Story <Sparkles className="w-4 h-4 md:w-5 md:h-5 text-accent group-hover:rotate-45 transition-transform" />
+                DM Us on Instagram <Sparkles className="w-4 h-4 md:w-5 md:h-5 text-accent group-hover:rotate-45 transition-transform" />
               </Link>
             </div>
           </div>

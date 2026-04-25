@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { Search, Loader2, Home, LayoutGrid, Sparkles, ArrowRight } from 'lucide-react';
+import { Search, Loader2, Home, LayoutGrid, Sparkles, ArrowRight, Instagram } from 'lucide-react';
 import { CartDrawer } from './CartDrawer';
 import { Logo } from './Logo';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -101,6 +101,18 @@ export function Navigation() {
             </div>
 
             <div className="flex items-center gap-6 md:gap-10">
+              <Link 
+                href="https://www.instagram.com/fable.and.forever/"
+                target="_blank"
+                className={cn(
+                  "hidden xs:flex items-center gap-3 px-6 py-2 rounded-full border transition-all text-[9px] font-black uppercase tracking-widest",
+                  isScrolled 
+                    ? "border-primary/10 text-primary hover:bg-primary hover:text-white" 
+                    : "border-white/20 text-white hover:bg-white hover:text-primary"
+                )}
+              >
+                DM Us <Instagram className="w-3.5 h-3.5" />
+              </Link>
               <button 
                 onClick={() => setIsSearchOpen(true)}
                 className={cn(

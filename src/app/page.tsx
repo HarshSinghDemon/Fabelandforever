@@ -52,14 +52,11 @@ export default function Home() {
       <div id="shop" className="space-y-0">
         <FeaturedProducts 
           title="New Arrivals" 
-          bannerImage="https://picsum.photos/seed/new-arrivals-banner/800/1200"
         />
         
         <FeaturedProducts 
           title="Bestsellers" 
           isBestseller 
-          reverse 
-          bannerImage="https://picsum.photos/seed/bestseller-banner/800/1200"
         />
 
         <EditorialBanner 
@@ -72,7 +69,6 @@ export default function Home() {
         <FeaturedProducts 
           title="Floral Treasures" 
           categoryFilter="Flowers" 
-          bannerImage="https://picsum.photos/seed/floral-banner/800/1200"
         />
 
         <EditorialBanner 
@@ -85,8 +81,6 @@ export default function Home() {
         <FeaturedProducts 
           title="Artisanal Candles" 
           categoryFilter="Candles" 
-          reverse 
-          bannerImage="https://picsum.photos/seed/candle-banner/800/1200"
         />
 
         <CategoryGrid />

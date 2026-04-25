@@ -1,3 +1,4 @@
+
 "use client";
 
 import React from 'react';
@@ -17,11 +18,10 @@ interface FeaturedProductsProps {
   title: string;
   categoryFilter?: string;
   isBestseller?: boolean;
-  bannerImage?: string;
-  reverse?: boolean;
+  reverse?: boolean; // Kept for API compatibility, but layout is now standardized
 }
 
-export function FeaturedProducts({ title, categoryFilter, isBestseller, bannerImage, reverse = false }: FeaturedProductsProps) {
+export function FeaturedProducts({ title, categoryFilter, isBestseller }: FeaturedProductsProps) {
   const { addToCart } = useCart();
   const { toast } = useToast();
   const db = useFirestore();
@@ -74,78 +74,53 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller, bannerIm
   return (
     <section className="py-12 bg-background overflow-hidden border-t border-primary/5">
       <div className="container mx-auto px-6">
-        <div className={cn(
-          "grid grid-cols-1 lg:grid-cols-12 gap-8 items-start",
-          reverse ? "lg:flex-row-reverse" : ""
-        )}>
-          {/* Featured Banner */}
-          <div className={cn(
-            "lg:col-span-5 h-[500px] lg:h-[600px] relative rounded-[1.5rem] overflow-hidden shadow-xl reveal-on-scroll",
-            reverse ? "lg:order-last" : ""
-          )}>
-            <Image 
-              src={bannerImage || `https://picsum.photos/seed/${title}/800/1200`}
-              alt={title}
-              fill
-              className="object-cover transition-transform duration-[10s] hover:scale-110"
-              data-ai-hint="luxury crochet"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex flex-col justify-end p-8">
-              <p className="text-white/80 font-bold uppercase tracking-[0.3em] text-[10px]">Exclusively in Kolkata</p>
-            </div>
-          </div>
+        <div className="text-center mb-10 reveal-on-scroll">
+          <h2 className="font-headline text-3xl sm:text-4xl text-primary tracking-tight mb-2">{title}</h2>
+          <Link href="/#shop" className="text-[10px] font-bold uppercase tracking-[0.4em] text-primary/40 hover:text-accent transition-all underline decoration-accent/20 underline-offset-4">
+            View all
+          </Link>
+        </div>
 
-          {/* Carousel Side */}
-          <div className="lg:col-span-7 space-y-8">
-            <div className="text-center lg:text-left reveal-on-scroll">
-              <h2 className="font-headline text-3xl sm:text-4xl text-primary tracking-tight mb-1">{title}</h2>
-              <Link href="/#shop" className="text-[9px] font-bold uppercase tracking-[0.4em] text-primary/40 hover:text-accent transition-all inline-flex items-center gap-2">
-                View all <ArrowRight className="w-3 h-3" />
-              </Link>
-            </div>
-
-            <div className="relative reveal-on-scroll">
-              <Carousel opts={{ align: "start", loop: false }} className="w-full">
-                <CarouselContent className="-ml-3">
-                  {filteredProducts.map((product: any) => (
-                    <CarouselItem key={product.id} className="pl-3 basis-[85%] sm:basis-1/2 lg:basis-1/3">
-                      <div className="group space-y-3">
-                        <Link href={`/products/${product.id}`} className="block">
-                          <div className="relative aspect-square overflow-hidden bg-muted rounded-xl shadow-sm transition-all group-hover:shadow-lg border border-primary/5">
-                            <Image
-                              src={product.image}
-                              alt={product.title}
-                              fill
-                              className="object-cover transition-transform duration-1000 group-hover:scale-105"
-                              sizes="(max-width: 768px) 100vw, 33vw"
-                            />
-                          </div>
-                        </Link>
-                        
-                        <div className="space-y-3 text-center px-1">
-                          <div className="space-y-0.5">
-                            <h3 className="font-bold text-primary group-hover:text-accent transition-colors truncate text-xs">{product.title}</h3>
-                            <p className="font-bold text-primary/60 text-[11px]">Rs. {Number(product.price).toLocaleString('en-IN')}</p>
-                          </div>
-                          
-                          <Button 
-                            onClick={(e) => handleAddToCart(e, product)}
-                            className="w-full h-10 rounded-lg bg-black hover:bg-black/90 text-white font-bold uppercase tracking-widest text-[9px] transition-all active:scale-95 shadow-md"
-                          >
-                            Add to cart
-                          </Button>
-                        </div>
+        <div className="relative reveal-on-scroll max-w-7xl mx-auto">
+          <Carousel opts={{ align: "start", loop: false }} className="w-full">
+            <CarouselContent className="-ml-4 sm:-ml-6">
+              {filteredProducts.map((product: any) => (
+                <CarouselItem key={product.id} className="pl-4 sm:pl-6 basis-[85%] sm:basis-1/2 lg:basis-1/4">
+                  <div className="group space-y-4">
+                    <Link href={`/products/${product.id}`} className="block">
+                      <div className="relative aspect-[3/4] overflow-hidden bg-muted rounded-xl shadow-sm transition-all group-hover:shadow-lg border border-primary/5">
+                        <Image
+                          src={product.image}
+                          alt={product.title}
+                          fill
+                          className="object-cover transition-transform duration-1000 group-hover:scale-105"
+                          sizes="(max-width: 768px) 100vw, 25vw"
+                        />
                       </div>
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-                <div className="flex justify-center lg:justify-start gap-2 mt-6">
-                  <CarouselPrevious className="static translate-y-0 h-8 w-8 border-primary/10 hover:bg-black hover:text-white" />
-                  <CarouselNext className="static translate-y-0 h-8 w-8 border-primary/10 hover:bg-black hover:text-white" />
-                </div>
-              </Carousel>
+                    </Link>
+                    
+                    <div className="space-y-4 text-center px-1">
+                      <div className="space-y-1">
+                        <h3 className="font-bold text-primary group-hover:text-accent transition-colors truncate text-sm tracking-tight">{product.title}</h3>
+                        <p className="font-bold text-primary/60 text-xs">Rs. {Number(product.price).toLocaleString('en-IN')}</p>
+                      </div>
+                      
+                      <Button 
+                        onClick={(e) => handleAddToCart(e, product)}
+                        className="w-full h-12 rounded-lg bg-black hover:bg-black/90 text-white font-bold uppercase tracking-[0.2em] text-[10px] transition-all active:scale-95 shadow-md"
+                      >
+                        Add to cart
+                      </Button>
+                    </div>
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <div className="flex justify-center gap-4 mt-10">
+              <CarouselPrevious className="static translate-y-0 h-10 w-10 border-primary/10 hover:bg-black hover:text-white transition-all shadow-sm" />
+              <CarouselNext className="static translate-y-0 h-10 w-10 border-primary/10 hover:bg-black hover:text-white transition-all shadow-sm" />
             </div>
-          </div>
+          </Carousel>
         </div>
       </div>
     </section>

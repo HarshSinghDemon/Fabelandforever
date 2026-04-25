@@ -1,4 +1,3 @@
-
 "use client";
 
 import React from 'react';
@@ -92,7 +91,6 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller, bannerIm
               data-ai-hint="luxury crochet"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex flex-col justify-end p-8">
-              <h3 className="font-headline text-4xl text-white mb-2 italic">Most Loved</h3>
               <p className="text-white/80 font-bold uppercase tracking-[0.3em] text-[10px]">Exclusively in Kolkata</p>
             </div>
           </div>

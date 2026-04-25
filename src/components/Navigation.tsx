@@ -46,80 +46,6 @@ export function Navigation() {
     { name: 'Contact', href: '/#contact' },
   ];
 
-  const SearchButton = () => (
-    <Dialog open={isSearchOpen} onOpenChange={setIsSearchOpen}>
-      <DialogTrigger asChild>
-        <button className={cn(
-          "transition-all p-2 rounded-full",
-          isScrolled ? "text-primary hover:bg-primary/5" : "text-white hover:bg-white/10"
-        )}>
-          <Search className="w-4 h-4" />
-        </button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[800px] border-none shadow-2xl p-0 overflow-hidden rounded-none bg-background">
-        <DialogHeader className="p-8 pb-4">
-          <DialogTitle className="font-headline text-3xl text-primary mb-8 text-left uppercase tracking-tighter">Find Treasure</DialogTitle>
-          <div className="relative border-b border-primary/10 pb-4">
-            <Search className="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/30" />
-            <Input 
-              placeholder="Search our catalog..." 
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-8 h-12 border-none bg-transparent text-xl placeholder:text-primary/20 focus-visible:ring-0 rounded-none text-primary"
-              autoFocus
-            />
-          </div>
-        </DialogHeader>
-        <ScrollArea className="h-[60vh] p-8 pt-0">
-          <div className="space-y-12">
-            {loadingProducts ? (
-              <div className="flex justify-center py-20">
-                <Loader2 className="w-6 h-6 text-primary animate-spin" />
-              </div>
-            ) : searchQuery && filteredProducts.length === 0 ? (
-              <div className="text-center py-20">
-                <p className="text-muted-foreground italic font-medium">No results found.</p>
-              </div>
-            ) : searchQuery === '' ? (
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                 <p className="col-span-full text-[9px] uppercase tracking-[0.3em] text-primary/40 font-bold mb-4">Trending Collections</p>
-                 {['Amigurumi', 'Home Decor', 'Accessories', 'Limited'].map(cat => (
-                   <button 
-                    key={cat} 
-                    onClick={() => setSearchQuery(cat)}
-                    className="text-left py-4 px-6 bg-paper hover:bg-primary/10 transition-all text-xs font-bold uppercase tracking-widest border border-primary/5 text-primary"
-                   >
-                     {cat}
-                   </button>
-                 ))}
-              </div>
-            ) : (
-              <div className="grid gap-10">
-                {filteredProducts.map((product) => (
-                  <Link 
-                    key={product.id} 
-                    href="/#shop" 
-                    onClick={() => setIsSearchOpen(false)}
-                    className="flex items-center gap-8 group"
-                  >
-                    <div className="relative w-24 h-32 overflow-hidden bg-muted">
-                      <Image src={product.image} alt={product.title} fill className="object-cover transition-transform duration-1000 group-hover:scale-105" />
-                    </div>
-                    <div className="flex-1">
-                      <h4 className="font-bold text-primary group-hover:opacity-60 transition-opacity text-lg">{product.title}</h4>
-                      <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-accent mt-2">{product.category}</p>
-                      <p className="font-bold text-primary/80 text-sm mt-2">₹ {product.price.toLocaleString('en-IN')}</p>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            )}
-          </div>
-        </ScrollArea>
-      </DialogContent>
-    </Dialog>
-  );
-
   return (
     <>
       <nav className={cn(
@@ -132,7 +58,7 @@ export function Navigation() {
           <div className="flex-1 flex items-center gap-8">
             <button 
               className={cn(
-                "p-2 -ml-2 transition-colors",
+                "p-2 -ml-2 transition-all active:scale-90",
                 isScrolled ? "text-primary" : "text-white"
               )}
               onClick={() => setIsMobileMenuOpen(true)}
@@ -165,18 +91,88 @@ export function Navigation() {
           </div>
 
           <div className="flex-1 flex items-center justify-end space-x-4">
-            <SearchButton />
+            <Dialog open={isSearchOpen} onOpenChange={setIsSearchOpen}>
+              <DialogTrigger asChild>
+                <button className={cn(
+                  "transition-all p-2 rounded-full active:scale-90",
+                  isScrolled ? "text-primary hover:bg-primary/5" : "text-white hover:bg-white/10"
+                )}>
+                  <Search className="w-4 h-4" />
+                </button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[800px] border-none shadow-2xl p-0 overflow-hidden rounded-[2.5rem] bg-background">
+                <DialogHeader className="p-8 pb-4">
+                  <DialogTitle className="font-headline text-3xl text-primary mb-8 text-left uppercase tracking-tighter">Find Treasure</DialogTitle>
+                  <div className="relative border-b border-primary/10 pb-4">
+                    <Search className="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/30" />
+                    <Input 
+                      placeholder="Search our catalog..." 
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="pl-8 h-12 border-none bg-transparent text-xl placeholder:text-primary/20 focus-visible:ring-0 rounded-none text-primary"
+                      autoFocus
+                    />
+                  </div>
+                </DialogHeader>
+                <ScrollArea className="h-[60vh] p-8 pt-0">
+                  <div className="space-y-12">
+                    {loadingProducts ? (
+                      <div className="flex justify-center py-20">
+                        <Loader2 className="w-6 h-6 text-primary animate-spin" />
+                      </div>
+                    ) : searchQuery && filteredProducts.length === 0 ? (
+                      <div className="text-center py-20">
+                        <p className="text-muted-foreground italic font-medium">No results found.</p>
+                      </div>
+                    ) : searchQuery === '' ? (
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                         <p className="col-span-full text-[9px] uppercase tracking-[0.3em] text-primary/40 font-bold mb-4">Trending Collections</p>
+                         {['Creature', 'Enchanted', 'Guardian', 'Limited'].map(cat => (
+                           <button 
+                            key={cat} 
+                            onClick={() => setSearchQuery(cat)}
+                            className="text-left py-4 px-6 bg-paper hover:bg-primary/10 transition-all text-xs font-bold uppercase tracking-widest border border-primary/5 text-primary rounded-2xl"
+                           >
+                             {cat}
+                           </button>
+                         ))}
+                      </div>
+                    ) : (
+                      <div className="grid gap-10">
+                        {filteredProducts.map((product) => (
+                          <Link 
+                            key={product.id} 
+                            href="/#shop" 
+                            onClick={() => setIsSearchOpen(false)}
+                            className="flex items-center gap-8 group"
+                          >
+                            <div className="relative w-24 h-32 overflow-hidden bg-muted rounded-2xl">
+                              <Image src={product.image} alt={product.title} fill className="object-cover transition-transform duration-1000 group-hover:scale-105" />
+                            </div>
+                            <div className="flex-1">
+                              <h4 className="font-bold text-primary group-hover:opacity-60 transition-opacity text-lg">{product.title}</h4>
+                              <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-accent mt-2">{product.category}</p>
+                              <p className="font-bold text-primary/80 text-sm mt-2">₹ {product.price.toLocaleString('en-IN')}</p>
+                            </div>
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </ScrollArea>
+              </DialogContent>
+            </Dialog>
             <CartDrawer isLight={!isScrolled} />
           </div>
         </div>
 
         {/* Cinematic Mobile Menu Overlay */}
         <div className={cn(
-          "fixed inset-0 bg-background/98 backdrop-blur-3xl z-[80] transition-all duration-700 p-10 pt-32",
-          isMobileMenuOpen ? "translate-x-0 opacity-100" : "-translate-x-full opacity-0"
+          "fixed inset-x-4 top-4 bottom-4 bg-background/98 backdrop-blur-3xl z-[80] transition-all duration-700 p-10 pt-32 rounded-[3rem] shadow-2xl",
+          isMobileMenuOpen ? "translate-x-0 opacity-100" : "-translate-x-[110%] opacity-0"
         )}>
           <button 
-            className="absolute top-10 right-10 text-primary p-2 hover:rotate-90 transition-transform"
+            className="absolute top-10 right-10 text-primary p-2 transition-all active:scale-90"
             onClick={() => setIsMobileMenuOpen(false)}
           >
             <X className="w-5 h-5" />
@@ -189,7 +185,7 @@ export function Navigation() {
             </div>
             
             <div className="space-y-10">
-              {navLinks.map((link, idx) => (
+              {navLinks.map((link) => (
                 <Link 
                   key={link.name} 
                   href={link.href}
@@ -212,6 +208,9 @@ export function Navigation() {
                   <Link href="/admin/login" className="text-sm font-bold text-primary hover:text-accent">Artisan Login</Link>
                 </div>
               </div>
+              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary/30">
+                Based in Kolkata • Delivering within Kolkata
+              </p>
             </div>
           </div>
         </div>

@@ -12,7 +12,6 @@ import { Textarea } from '@/components/ui/textarea';
 import Link from 'next/link';
 
 export default function Home() {
-  const scrollRefs = useRef<(HTMLElement | null)[]>([]);
   const [contactForm, setContactForm] = useState({
     name: '',
     email: '',
@@ -56,18 +55,18 @@ export default function Home() {
         <div className="flex animate-marquee gap-32">
           {[...Array(4)].map((_, i) => (
             <div key={i} className="flex gap-32 items-center">
-              <span className="text-[9px] font-bold uppercase tracking-[0.8em] text-primary/20 italic">Artisan Heritage</span>
+              <span className="text-[9px] font-bold uppercase tracking-[0.8em] text-primary/20 italic">Kolkata Heritage</span>
               <div className="w-1 h-1 bg-primary/10 rounded-full"></div>
               <span className="text-[9px] font-bold uppercase tracking-[0.8em] text-primary/20">Hand-Stitched Magic</span>
               <div className="w-1 h-1 bg-primary/10 rounded-full"></div>
-              <span className="text-[9px] font-bold uppercase tracking-[0.8em] text-primary/20 italic">Ethical Sourcing</span>
+              <span className="text-[9px] font-bold uppercase tracking-[0.8em] text-primary/20 italic">Local Artistry</span>
               <div className="w-1 h-1 bg-primary/10 rounded-full"></div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Primary Collection spread */}
+      {/* Collection spread */}
       <section className="reveal-on-scroll">
         <FeaturedProducts />
       </section>
@@ -103,7 +102,7 @@ export default function Home() {
                 step: 'III'
               }
             ].map((item, idx) => (
-              <div key={idx} className="text-center space-y-8 group reveal-on-scroll" style={{ animationDelay: `${idx * 0.2}s` }}>
+              <div key={idx} className="text-center space-y-8 group reveal-on-scroll" style={{ transitionDelay: `${idx * 0.2}s` }}>
                 <div className="relative inline-block mb-10">
                   <span className="absolute -top-10 -right-10 text-8xl font-headline italic text-primary/5 select-none">{item.step}</span>
                   <div className="w-20 h-20 bg-paper rounded-full flex items-center justify-center mx-auto transition-all duration-1000 group-hover:scale-110 shadow-sm border border-primary/5">
@@ -122,11 +121,8 @@ export default function Home() {
         </div>
       </section>
       
-      {/* Minimalist Connection Form */}
-      <section 
-        id="contact" 
-        className="py-60 bg-background"
-      >
+      {/* Contact Section */}
+      <section id="contact" className="py-60 bg-background">
         <div className="container mx-auto px-6 max-w-6xl">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-40 items-start">
             <div className="reveal-on-scroll">
@@ -144,7 +140,7 @@ export default function Home() {
                 </div>
                 <div className="pt-10 border-t border-primary/5">
                   <p className="text-xs font-bold text-primary/40 uppercase tracking-widest leading-relaxed">
-                    Based in Bengal<br />Shipping Worldwide
+                    Based in Kolkata<br />Delivering within Kolkata
                   </p>
                 </div>
               </div>

@@ -32,8 +32,8 @@ export function Footer() {
           <div className="lg:col-span-3 space-y-10">
             <h4 className="text-[9px] font-bold uppercase tracking-[0.6em] text-accent">Menu</h4>
             <ul className="space-y-6 text-[10px] font-bold uppercase tracking-[0.3em]">
-              <li><Link href="/#shop" className="text-white/30 hover:text-white transition-colors">Portfolios</Link></li>
-              <li><Link href="/about" className="text-white/30 hover:text-white transition-colors">Our Ethos</Link></li>
+              <li><Link href="/#shop" className="text-white/30 hover:text-white transition-colors">Collection</Link></li>
+              <li><Link href="/about" className="text-white/30 hover:text-white transition-colors">Our Story</Link></li>
               <li><Link href="/#contact" className="text-white/30 hover:text-white transition-colors">Connect</Link></li>
             </ul>
           </div>
@@ -44,7 +44,7 @@ export function Footer() {
               <MapPin className="w-5 h-5 shrink-0 opacity-20" />
               <p className="text-xs font-bold uppercase tracking-widest leading-loose">
                 Bespoke Artisanal Studio<br />
-                Hand-Stitched in Bengal
+                Hand-Stitched in Kolkata
               </p>
             </div>
           </div>

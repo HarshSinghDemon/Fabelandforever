@@ -3,7 +3,7 @@
 import React from 'react';
 import { Navigation } from '@/components/Navigation';
 import { Footer } from '@/components/Footer';
-import { Scroll, Gavel, Package, CreditCard, Mail } from 'lucide-react';
+import { Scroll, Gavel, Package, CreditCard, Mail, MapPin } from 'lucide-react';
 
 export default function TermsPage() {
   return (
@@ -45,9 +45,11 @@ export default function TermsPage() {
           </section>
 
           <section className="space-y-4">
-            <h2 className="font-headline text-3xl text-primary">4. Shipping and Returns</h2>
+            <h2 className="font-headline text-3xl text-primary flex items-center gap-3">
+              <MapPin className="w-6 h-6 text-accent" /> 4. Shipping and Delivery
+            </h2>
             <p>
-              Since each piece is made-to-order, shipping times vary. We do not accept returns on custom-commissioned items unless they arrive damaged. Please inspect your treasure upon arrival and contact us immediately if there is a problem.
+              <strong>Fable & Forever is based in Kolkata and currently only delivers within Kolkata city limits.</strong> Since each piece is made-to-order, delivery times vary. We do not accept returns on custom-commissioned items unless they arrive damaged. Please inspect your treasure upon arrival and contact us immediately if there is a problem.
             </p>
           </section>
 

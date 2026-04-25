@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useEffect } from 'react';
@@ -34,7 +35,7 @@ export function Navigation() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      setIsScrolled(window.scrollY > 20);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -49,11 +50,14 @@ export function Navigation() {
   const SearchButton = () => (
     <Dialog open={isSearchOpen} onOpenChange={setIsSearchOpen}>
       <DialogTrigger asChild>
-        <button className="text-primary hover:opacity-60 transition-opacity p-2">
+        <button className={cn(
+          "transition-all p-2 rounded-full hover:bg-white/10",
+          isScrolled ? "text-primary" : "text-white"
+        )}>
           <Search className="w-5 h-5" />
         </button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[700px] border-none shadow-2xl p-0 overflow-hidden rounded-none sm:rounded-none">
+      <DialogContent className="sm:max-w-[700px] border-none shadow-2xl p-0 overflow-hidden rounded-none sm:rounded-3xl">
         <DialogHeader className="p-8 pb-4 bg-background">
           <DialogTitle className="font-headline text-3xl text-primary mb-6 text-center">Search Boutique</DialogTitle>
           <div className="relative border-b border-primary/20 pb-4">
@@ -99,7 +103,7 @@ export function Navigation() {
                     onClick={() => setIsSearchOpen(false)}
                     className="flex items-center gap-6 group"
                   >
-                    <div className="relative w-24 h-24 overflow-hidden bg-muted">
+                    <div className="relative w-24 h-24 overflow-hidden bg-muted rounded-xl">
                       <Image src={product.image} alt={product.title} fill className="object-cover transition-transform duration-700 group-hover:scale-105" />
                     </div>
                     <div className="flex-1">
@@ -119,28 +123,36 @@ export function Navigation() {
 
   return (
     <>
-      <div className="bg-primary text-primary-foreground text-[10px] font-bold uppercase tracking-[0.3em] py-3 text-center fixed top-0 w-full z-[60]">
+      <div className="bg-primary text-primary-foreground text-[10px] font-bold uppercase tracking-[0.3em] py-2.5 text-center fixed top-0 w-full z-[70] transition-transform duration-500">
         Free Hand-Stitched Magic on Orders Over ₹2,000
       </div>
 
       <nav className={cn(
-        "fixed top-10 left-0 right-0 z-50 transition-all duration-500",
-        isScrolled ? "bg-background/95 backdrop-blur-md shadow-sm py-4" : "bg-transparent py-8"
+        "fixed top-0 left-0 right-0 z-[60] transition-all duration-700 mt-[35px]",
+        isScrolled 
+          ? "bg-background/90 backdrop-blur-xl shadow-md py-4 mt-0" 
+          : "bg-transparent py-8"
       )}>
         <div className="container mx-auto px-6 flex items-center justify-between">
           <div className="flex-1 flex items-center">
             <button 
-              className="md:hidden text-primary p-2 -ml-2"
+              className={cn(
+                "md:hidden p-2 -ml-2 transition-colors",
+                isScrolled ? "text-primary" : "text-white"
+              )}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
-              {isMobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+              {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
-            <div className="hidden md:flex items-center space-x-10">
+            <div className="hidden md:flex items-center space-x-12">
               {navLinks.map((link) => (
                 <Link 
                   key={link.name} 
                   href={link.href}
-                  className="text-[11px] font-bold uppercase tracking-[0.2em] text-primary hover:opacity-50 transition-opacity"
+                  className={cn(
+                    "text-[11px] font-bold uppercase tracking-[0.3em] transition-all hover:opacity-60",
+                    isScrolled ? "text-primary" : "text-white"
+                  )}
                 >
                   {link.name}
                 </Link>
@@ -150,49 +162,54 @@ export function Navigation() {
 
           <div className="flex-shrink-0 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
             <Link href="/" className="hover:opacity-80 transition-opacity">
-              <Logo className="w-10 h-10 text-primary" />
+              <Logo className={cn(
+                "w-12 h-12 transition-colors duration-700",
+                isScrolled ? "text-primary" : "text-white"
+              )} />
             </Link>
           </div>
 
-          <div className="flex-1 flex items-center justify-end space-x-2 sm:space-x-4">
+          <div className="flex-1 flex items-center justify-end space-x-3 sm:space-x-6">
             <SearchButton />
-            <CartDrawer />
+            <CartDrawer isLight={!isScrolled} />
           </div>
         </div>
 
+        {/* Mobile Menu Overlay */}
         <div className={cn(
-          "md:hidden fixed inset-0 top-0 bg-background z-[70] transition-all duration-500 p-8 pt-24",
-          isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+          "md:hidden fixed inset-0 top-0 bg-background/98 backdrop-blur-2xl z-[80] transition-all duration-700 p-8 pt-32",
+          isMobileMenuOpen ? "translate-x-0 opacity-100" : "-translate-x-full opacity-0"
         )}>
           <button 
-            className="absolute top-8 right-8 text-primary"
+            className="absolute top-10 right-8 text-primary"
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            <X className="w-6 h-6" />
+            <X className="w-8 h-8" />
           </button>
           
-          <div className="space-y-8 text-center">
-            <div className="flex justify-center mb-12">
-               <Logo className="w-16 h-16 text-primary" />
+          <div className="space-y-10 text-center max-w-xs mx-auto">
+            <div className="flex justify-center mb-16">
+               <Logo className="w-20 h-20 text-primary" />
             </div>
-            {navLinks.map((link) => (
+            {navLinks.map((link, idx) => (
               <Link 
                 key={link.name} 
                 href={link.href}
-                className="block text-3xl font-headline text-primary"
+                className="block text-4xl font-headline text-primary animate-fade-in-up"
+                style={{ animationDelay: `${idx * 100}ms` }}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {link.name}
               </Link>
             ))}
-            <div className="pt-12 border-t border-primary/10">
-              <p className="text-[10px] font-bold uppercase tracking-widest text-primary/40 mb-6">Our Studio</p>
+            <div className="pt-20 border-t border-primary/10">
+              <p className="text-[10px] font-bold uppercase tracking-widest text-primary/40 mb-8">Artisan Portal</p>
               <Link 
                 href="/admin/login" 
-                className="text-sm font-medium text-primary/60 hover:text-primary transition-colors"
+                className="inline-block py-4 px-10 rounded-full border border-primary/20 text-sm font-bold uppercase tracking-widest text-primary/60 hover:bg-primary hover:text-white transition-all"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Artisan Login
+                Login
               </Link>
             </div>
           </div>

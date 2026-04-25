@@ -1,3 +1,4 @@
+
 "use client";
 
 import React from 'react';
@@ -7,55 +8,68 @@ import { Button } from '@/components/ui/button';
 import { ShoppingBasket, Trash2, Plus, Minus, ShoppingBag, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { cn } from '@/lib/utils';
 
-export function CartDrawer() {
+interface CartDrawerProps {
+  isLight?: boolean;
+}
+
+export function CartDrawer({ isLight }: CartDrawerProps) {
   const { cart, cartTotal, cartCount, removeFromCart, updateQuantity, clearCart } = useCart();
 
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <button className="relative bg-primary text-white px-3 py-1.5 sm:px-6 sm:py-2 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-widest hover:bg-primary/90 transition-all shadow-md group active:scale-95">
-          <span className="flex items-center gap-1.5 sm:gap-2">
-            <span className="hidden xs:inline">Basket</span> <ShoppingBasket className="w-3 h-3 sm:w-4 sm:h-4 group-hover:rotate-12 transition-transform" />
+        <button className={cn(
+          "relative px-4 py-2 sm:px-6 sm:py-2.5 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-widest transition-all active:scale-95 group",
+          isLight 
+            ? "bg-white text-primary hover:bg-white/90 shadow-xl" 
+            : "bg-primary text-white hover:bg-primary/90"
+        )}>
+          <span className="flex items-center gap-2">
+            <span className="hidden xs:inline">Basket</span> <ShoppingBasket className="w-4 h-4 group-hover:rotate-12 transition-transform" />
           </span>
           {cartCount > 0 && (
-            <span className="absolute -top-1.5 -right-1.5 bg-accent text-accent-foreground w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center text-[8px] sm:text-[10px] border-2 border-white shadow-sm font-bold animate-in zoom-in">
+            <span className={cn(
+              "absolute -top-1.5 -right-1.5 w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center text-[8px] sm:text-[10px] border-2 shadow-sm font-bold animate-in zoom-in",
+              isLight ? "bg-accent text-white border-white" : "bg-white text-primary border-primary"
+            )}>
               {cartCount}
             </span>
           )}
         </button>
       </SheetTrigger>
-      <SheetContent className="w-full sm:max-w-md flex flex-col">
-        <SheetHeader className="pb-6 border-b">
+      <SheetContent className="w-full sm:max-w-md flex flex-col bg-background/98 backdrop-blur-2xl">
+        <SheetHeader className="pb-6 border-b border-primary/5">
           <SheetTitle className="font-fancy text-3xl text-primary flex items-center gap-3">
             Your Treasures <ShoppingBag className="text-accent" />
           </SheetTitle>
         </SheetHeader>
 
-        <div className="flex-1 overflow-y-auto py-6 space-y-6">
+        <div className="flex-1 overflow-y-auto py-8 space-y-8 no-scrollbar">
           {cart.length === 0 ? (
-            <div className="h-full flex flex-col items-center justify-center text-center p-8 space-y-4">
-              <div className="w-24 h-24 bg-accent/20 rounded-full flex items-center justify-center mb-4">
-                <ShoppingBasket className="w-12 h-12 text-primary/40" />
+            <div className="h-full flex flex-col items-center justify-center text-center p-12 space-y-6">
+              <div className="w-32 h-32 bg-primary/5 rounded-full flex items-center justify-center mb-4">
+                <ShoppingBasket className="w-16 h-16 text-primary/20" />
               </div>
-              <p className="text-muted-foreground font-medium">Your basket is currently as light as a cloud!</p>
+              <p className="text-primary/60 font-medium italic">"Your basket is currently as light as a cloud."</p>
               <SheetTrigger asChild>
-                <Button variant="outline" className="rounded-full px-8">Browse Shop</Button>
+                <Button variant="outline" className="rounded-full px-10 h-14 font-bold uppercase tracking-widest text-[10px]">Start Exploring</Button>
               </SheetTrigger>
             </div>
           ) : (
             cart.map((item) => (
-              <div key={item.id} className="flex gap-4 group">
-                <div className="relative w-24 h-24 rounded-2xl overflow-hidden bg-muted border-2 border-accent/20">
+              <div key={item.id} className="flex gap-6 group">
+                <div className="relative w-28 h-28 rounded-2xl overflow-hidden bg-muted border border-primary/5">
                   <Image src={item.image} alt={item.title} fill className="object-cover" />
                 </div>
-                <div className="flex-1 flex flex-col justify-between">
+                <div className="flex-1 flex flex-col justify-between py-1">
                   <div>
-                    <h4 className="font-bold text-primary">{item.title}</h4>
-                    <p className="text-xs text-accent font-bold uppercase tracking-wider">{item.category}</p>
+                    <h4 className="font-bold text-primary text-base">{item.title}</h4>
+                    <p className="text-[10px] text-accent font-bold uppercase tracking-widest mt-1">{item.category}</p>
                   </div>
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center bg-muted/50 rounded-full px-2 py-1">
+                    <div className="flex items-center bg-primary/5 rounded-full px-3 py-1.5 scale-90 -ml-4">
                       <button 
                         onClick={() => updateQuantity(item.id, -1)}
                         className="p-1 hover:text-primary transition-colors"
@@ -75,7 +89,7 @@ export function CartDrawer() {
                 </div>
                 <button 
                   onClick={() => removeFromCart(item.id)}
-                  className="text-muted-foreground hover:text-destructive transition-colors"
+                  className="text-primary/20 hover:text-destructive transition-colors h-fit p-1"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
@@ -85,26 +99,26 @@ export function CartDrawer() {
         </div>
 
         {cart.length > 0 && (
-          <div className="pt-6 border-t space-y-4">
-            <div className="flex justify-between items-center text-lg font-bold">
-              <span className="text-primary">Total Magic:</span>
-              <span className="text-primary">₹ {cartTotal.toLocaleString('en-IN')}</span>
+          <div className="pt-8 border-t border-primary/5 space-y-6">
+            <div className="flex justify-between items-center text-xl font-headline">
+              <span className="text-primary/40">Total Magic</span>
+              <span className="text-primary font-bold">₹ {cartTotal.toLocaleString('en-IN')}</span>
             </div>
-            <p className="text-[10px] text-muted-foreground italic text-center">
-              * Hand-stitched with love. Free shipping on orders over ₹2000!
+            <p className="text-[9px] text-primary/40 uppercase tracking-[0.2em] font-bold text-center">
+              Hand-stitched with love in our boutique
             </p>
             <SheetTrigger asChild>
-              <Button asChild className="w-full py-6 rounded-2xl bg-primary hover:bg-primary/90 text-lg font-bold shadow-xl shadow-primary/20">
+              <Button asChild className="w-full py-8 rounded-[2rem] bg-primary hover:bg-primary/90 text-white font-bold text-lg uppercase tracking-[0.3em] shadow-2xl shadow-primary/20">
                 <Link href="/checkout">
-                  Checkout Now <ArrowRight className="ml-2 w-5 h-5" />
+                  Checkout <ArrowRight className="ml-3 w-5 h-5" />
                 </Link>
               </Button>
             </SheetTrigger>
             <button 
               onClick={clearCart}
-              className="w-full text-xs text-muted-foreground hover:text-primary transition-colors uppercase tracking-widest font-bold"
+              className="w-full text-[9px] text-primary/30 hover:text-primary transition-colors uppercase tracking-[0.4em] font-bold"
             >
-              Clear Basket
+              Empty Basket
             </button>
           </div>
         )}

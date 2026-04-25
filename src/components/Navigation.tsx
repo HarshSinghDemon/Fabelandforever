@@ -82,8 +82,8 @@ export function Navigation() {
     { name: 'Our Story', href: '/about' },
   ];
 
-  // Logic to determine brand visibility in header
-  const showBrand = !isHomePage || isScrolled;
+  // Logic to determine written brand visibility in header
+  const showBrandText = !isHomePage || isScrolled;
 
   return (
     <>
@@ -97,10 +97,7 @@ export function Navigation() {
           <div className="flex items-center justify-between relative h-12">
             <div className="flex-shrink-0">
               <Link href="/" className="flex items-center gap-3 group">
-                <div className={cn(
-                  "transition-all duration-700 ease-in-out transform",
-                  showBrand ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4 pointer-events-none"
-                )}>
+                <div className="transition-all duration-700 ease-in-out transform">
                   <Logo className={cn(
                     "w-8 h-8 md:w-9 md:h-9 transition-colors duration-500",
                     isScrolled ? "text-primary" : "text-white"
@@ -108,7 +105,7 @@ export function Navigation() {
                 </div>
                 <span className={cn(
                   "font-headline text-xl md:text-2xl tracking-tighter hidden sm:block transition-all duration-1000 delay-100",
-                  showBrand ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4 pointer-events-none",
+                  showBrandText ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4 pointer-events-none",
                   isScrolled ? "text-primary" : "text-white"
                 )}>
                   Fable & Forever

@@ -1,13 +1,10 @@
-
 "use client";
 
 import React, { useState, useEffect } from 'react';
 import { useFirestore, useDoc, useMemoFirebase } from '@/firebase';
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent } from '@/components/ui/card';
 import { ImageIcon, Loader2, Sparkles, Layout, Plus, Trash2, Wand2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import Image from 'next/image';
@@ -67,16 +64,16 @@ export function AdminSettingsManager() {
       if (result.success && result.url) {
         if (type === 'hero') {
           setHeroImages(prev => [...prev, result.url!]);
-          toast({ title: "Visual Added ✨", description: "Hero visual appended to rotation." });
+          toast({ title: "Hero Vision Added ✨", description: "Visual linked to Supabase cloud." });
         } else {
           setCustomImageUrl(result.url!);
-          toast({ title: "Visual Updated ✨", description: "Custom section vision updated." });
+          toast({ title: "Custom Vision Updated ✨", description: "Banner visual stored in Supabase." });
         }
       } else {
         throw new Error(result.error || "Failed to upload image");
       }
     } catch (error: any) {
-      toast({ variant: "destructive", title: "Upload Failed", description: error.message });
+      toast({ variant: "destructive", title: "Cloud Upload Failed", description: error.message });
     } finally {
       if (type === 'hero') setUploadingHero(false);
       if (type === 'custom') setUploadingCustom(false);
@@ -101,7 +98,7 @@ export function AdminSettingsManager() {
 
     setDoc(ref, data, { merge: true })
       .then(() => {
-        toast({ title: "Site Transformed ✨", description: `The ${type} section is now updated.` });
+        toast({ title: "Site Transformed ✨", description: `The ${type} visions are now live.` });
       })
       .catch(async (error) => {
         const permissionError = new FirestorePermissionError({
@@ -129,7 +126,7 @@ export function AdminSettingsManager() {
     <div className="space-y-16">
       <div className="flex items-center gap-4">
         <Layout className="text-accent w-6 h-6" />
-        <h3 className="font-headline text-3xl text-primary">Studio Visuals</h3>
+        <h3 className="font-headline text-3xl text-primary">Supabase Cloud Visuals</h3>
       </div>
 
       <div className="grid grid-cols-1 gap-12">
@@ -138,14 +135,8 @@ export function AdminSettingsManager() {
           <div className="absolute top-0 left-0 w-full h-2 bg-primary"></div>
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-16">
             <div className="space-y-2">
-              <div className="flex items-center gap-3">
-                <Sparkles className="text-accent w-5 h-5" />
-                <h4 className="font-bold text-xl text-primary uppercase tracking-widest">Hero Storyboard</h4>
-              </div>
-              <p className="text-[10px] font-bold uppercase tracking-widest text-primary/30 ml-8">Manage the auto-sliding visuals on your landing page</p>
-            </div>
-            <div className="px-6 py-2 bg-paper rounded-full text-[10px] font-bold text-primary/40 uppercase tracking-widest">
-              {heroImages.length} Visuals active
+              <h4 className="font-bold text-xl text-primary uppercase tracking-widest">Hero Storyboard</h4>
+              <p className="text-[10px] font-bold uppercase tracking-widest text-primary/30">Managed via Supabase Storage</p>
             </div>
           </div>
 
@@ -165,13 +156,7 @@ export function AdminSettingsManager() {
             ))}
             
             <div className="relative aspect-video rounded-[2.5rem] border-2 border-dashed border-primary/10 flex flex-col items-center justify-center gap-4 hover:border-accent transition-all cursor-pointer bg-paper/30 group">
-              <input 
-                type="file" 
-                onChange={(e) => handleImageUpload(e, 'hero')} 
-                className="absolute inset-0 opacity-0 cursor-pointer z-10" 
-                accept="image/*" 
-                disabled={uploadingHero} 
-              />
+              <input type="file" onChange={(e) => handleImageUpload(e, 'hero')} className="absolute inset-0 opacity-0 cursor-pointer z-10" accept="image/*" disabled={uploadingHero} />
               {uploadingHero ? (
                 <Loader2 className="w-8 h-8 animate-spin text-accent" />
               ) : (
@@ -179,7 +164,7 @@ export function AdminSettingsManager() {
                   <div className="p-5 bg-white rounded-full shadow-lg group-hover:scale-110 transition-transform">
                     <Plus className="w-6 h-6 text-accent" />
                   </div>
-                  <p className="text-[9px] font-bold uppercase tracking-[0.4em] text-primary/30">Add Vision</p>
+                  <p className="text-[9px] font-bold uppercase tracking-[0.4em] text-primary/30">Upload to Cloud</p>
                 </>
               )}
             </div>
@@ -188,25 +173,17 @@ export function AdminSettingsManager() {
           <Button 
             onClick={() => handleSaveSetting('hero')}
             disabled={savingHero || uploadingHero || heroImages.length === 0}
-            className="w-full h-20 rounded-[2.5rem] bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-[0.3em] shadow-2xl shadow-primary/20 active:scale-95 transition-all"
+            className="w-full h-20 rounded-[2.5rem] bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-[0.3em] shadow-2xl active:scale-95 transition-all"
           >
             {savingHero ? <Loader2 className="animate-spin mr-3" /> : <Wand2 className="mr-3 h-5 w-5" />}
-            {savingHero ? "Transforming Studio..." : "Update Storyboard ✨"}
+            {savingHero ? "Transforming Studio..." : "Apply Cloud Storyboard ✨"}
           </Button>
         </div>
 
         {/* Custom Section Visual */}
         <div className="bg-white rounded-[4rem] p-10 md:p-16 shadow-2xl relative overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-2 bg-accent"></div>
-          <div className="flex items-center gap-4 mb-16">
-            <div className="p-4 bg-accent/5 rounded-2xl">
-              <Layout className="text-accent w-6 h-6" />
-            </div>
-            <div>
-              <h4 className="font-bold text-xl text-primary uppercase tracking-widest">Custom Order Visual</h4>
-              <p className="text-[10px] font-bold uppercase tracking-widest text-primary/30 mt-1">The banner visual for personalization inquiries</p>
-            </div>
-          </div>
+          <h4 className="font-bold text-xl text-primary uppercase tracking-widest mb-16">Custom Section Banner</h4>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
             <div className="relative aspect-square rounded-[3rem] overflow-hidden bg-paper border-2 border-primary/5 shadow-inner">
@@ -215,37 +192,30 @@ export function AdminSettingsManager() {
               ) : (
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-primary/10 gap-4">
                   <ImageIcon className="w-16 h-16" />
-                  <p className="text-[10px] font-bold uppercase tracking-widest">No Visual Set</p>
+                  <p className="text-[10px] font-bold uppercase tracking-widest">No Cloud Vision</p>
                 </div>
               )}
             </div>
 
             <div className="flex flex-col justify-center space-y-10">
               <div className="space-y-4">
-                <Label className="text-[9px] font-bold uppercase tracking-widest text-primary/40 ml-4">Visual Origin (URL)</Label>
-                <div className="flex gap-4">
-                  <Input 
-                    placeholder="Visual URL..." 
-                    value={customImageUrl}
-                    onChange={(e) => setCustomImageUrl(e.target.value)}
-                    className="h-16 rounded-3xl border-2 border-primary/5 bg-paper/50 flex-1 truncate px-8"
-                  />
-                  <div className="relative">
-                    <input type="file" onChange={(e) => handleImageUpload(e, 'custom')} className="absolute inset-0 opacity-0 cursor-pointer z-10" accept="image/*" disabled={uploadingCustom} />
-                    <Button type="button" variant="outline" className="h-16 w-16 rounded-3xl border-2 border-primary/5 shadow-sm">
-                      {uploadingCustom ? <Loader2 className="animate-spin" /> : <Plus className="w-5 h-5 text-accent" />}
-                    </Button>
-                  </div>
+                <Label className="text-[9px] font-bold uppercase tracking-widest text-primary/40 ml-4">Upload Banner to Supabase</Label>
+                <div className="relative">
+                  <input type="file" onChange={(e) => handleImageUpload(e, 'custom')} className="absolute inset-0 opacity-0 cursor-pointer z-10" accept="image/*" disabled={uploadingCustom} />
+                  <Button type="button" variant="outline" className="h-20 w-full rounded-3xl border-2 border-dashed border-primary/10 group-hover:border-accent">
+                    {uploadingCustom ? <Loader2 className="animate-spin mr-3" /> : <Plus className="w-5 h-5 text-accent mr-3" />}
+                    {uploadingCustom ? "Uploading..." : "Select New Visual"}
+                  </Button>
                 </div>
               </div>
 
               <Button 
                 onClick={() => handleSaveSetting('custom')}
                 disabled={savingCustom || uploadingCustom}
-                className="w-full h-20 rounded-[2.5rem] bg-accent hover:bg-accent/90 text-white font-bold uppercase tracking-[0.3em] shadow-2xl shadow-accent/20 active:scale-95 transition-all"
+                className="w-full h-20 rounded-[2.5rem] bg-accent hover:bg-accent/90 text-white font-bold uppercase tracking-[0.3em] shadow-2xl active:scale-95 transition-all"
               >
                 {savingCustom ? <Loader2 className="animate-spin mr-3" /> : <Sparkles className="mr-3 h-5 w-5" />}
-                {savingCustom ? "Weaving Vision..." : "Apply Custom Visual ✨"}
+                {savingCustom ? "Weaving Vision..." : "Manifest Banner ✨"}
               </Button>
             </div>
           </div>

@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState } from 'react';
@@ -8,8 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent } from '@/components/ui/card';
-import { Plus, Trash2, ImageIcon, Loader2, Sparkles, Package, IndianRupee, Tag, Info } from 'lucide-react';
+import { Plus, Trash2, ImageIcon, Loader2, Sparkles, Package, IndianRupee } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import Image from 'next/image';
 import { uploadToSupabase } from '@/app/actions/supabase-upload';
@@ -49,7 +47,7 @@ export function AdminProductManager() {
       const result = await uploadToSupabase(uploadFormData);
       if (result.success && result.url) {
         setFormData(prev => ({ ...prev, image: result.url! }));
-        toast({ title: "Visual Captured ✨", description: "Product visual stored in the cloud." });
+        toast({ title: "Visual Captured ✨", description: "Treasure visual stored in Supabase." });
       } else {
         throw new Error(result.error || "Failed to upload image");
       }
@@ -63,7 +61,7 @@ export function AdminProductManager() {
   const handleAddProduct = (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.title || !formData.price || !formData.image || !productsCollection) {
-      toast({ variant: "destructive", title: "Incomplete Spell", description: "Please fill all required threads." });
+      toast({ variant: "destructive", title: "Incomplete Spell", description: "Please ensure a visual is uploaded and all details are filled." });
       return;
     }
 
@@ -101,9 +99,6 @@ export function AdminProductManager() {
 
     const docRef = doc(db, 'products', id);
     deleteDoc(docRef)
-      .then(() => {
-        toast({ title: "Treasure Unraveled" });
-      })
       .catch(async (error) => {
         const permissionError = new FirestorePermissionError({
           path: docRef.path,
@@ -122,8 +117,8 @@ export function AdminProductManager() {
             <Plus className="text-primary w-6 h-6" />
           </div>
           <div>
-            <h3 className="font-headline text-3xl text-primary">Stitch New Treasure</h3>
-            <p className="text-[10px] font-bold uppercase tracking-widest text-primary/30 mt-1">Add to your live inventory</p>
+            <h3 className="font-headline text-3xl text-primary">Manifest New Treasure</h3>
+            <p className="text-[10px] font-bold uppercase tracking-widest text-primary/30 mt-1">Stored securely in Supabase Cloud</p>
           </div>
         </div>
 
@@ -167,7 +162,7 @@ export function AdminProductManager() {
             </div>
 
             <div className="space-y-3">
-              <Label className="text-[9px] font-bold uppercase tracking-widest text-primary/40 ml-4">The Story Behind (Description)</Label>
+              <Label className="text-[9px] font-bold uppercase tracking-widest text-primary/40 ml-4">Stitch Story (Description)</Label>
               <Textarea 
                 placeholder="Once upon a stitch..." 
                 value={formData.description}
@@ -179,21 +174,21 @@ export function AdminProductManager() {
 
           <div className="space-y-8">
             <div className="space-y-3">
-              <Label className="text-[9px] font-bold uppercase tracking-widest text-primary/40 ml-4">Treasure Visual</Label>
+              <Label className="text-[9px] font-bold uppercase tracking-widest text-primary/40 ml-4">Supabase Cloud Visual</Label>
               <div className="relative aspect-square rounded-[3rem] overflow-hidden bg-paper border-2 border-dashed border-primary/10 group">
                 {formData.image ? (
                   <Image src={formData.image} alt="Preview" fill className="object-cover" />
                 ) : (
                   <div className="absolute inset-0 flex flex-col items-center justify-center text-primary/10 gap-4">
                     <ImageIcon className="w-16 h-16" />
-                    <p className="text-[10px] font-bold uppercase tracking-widest">No Image Selected</p>
+                    <p className="text-[10px] font-bold uppercase tracking-widest">Awaiting Vision</p>
                   </div>
                 )}
                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                   <input type="file" onChange={handleImageUpload} className="absolute inset-0 opacity-0 cursor-pointer z-20" accept="image/*" disabled={uploading} />
                   <Button type="button" variant="secondary" className="rounded-full px-8 pointer-events-none">
                     {uploading ? <Loader2 className="animate-spin mr-2" /> : <ImageIcon className="mr-2" />}
-                    {uploading ? "Uploading..." : "Change Visual"}
+                    {uploading ? "Linking to Cloud..." : "Change Visual"}
                   </Button>
                 </div>
               </div>
@@ -218,7 +213,7 @@ export function AdminProductManager() {
             <h3 className="font-headline text-3xl text-primary">Live Inventory</h3>
           </div>
           <span className="text-[10px] font-bold uppercase tracking-widest text-primary/30">
-            {products?.length || 0} items in boutique
+            {products?.length || 0} treasures live
           </span>
         </div>
 
@@ -226,7 +221,7 @@ export function AdminProductManager() {
           <div className="flex justify-center py-20"><Loader2 className="animate-spin text-primary w-12 h-12" /></div>
         ) : !products || products.length === 0 ? (
           <div className="p-32 bg-white/60 rounded-[4rem] border-2 border-dashed border-primary/10 text-center italic text-muted-foreground text-xl">
-            "Your boutique is empty. Let's stitch your first treasure above."
+            "Your boutique is empty. Manifest your first treasure above."
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -248,7 +243,7 @@ export function AdminProductManager() {
                   </div>
                   <div className="flex justify-between items-center pt-4 border-t border-primary/5">
                     <span className="font-bold text-primary text-lg">₹ {Number(product.price).toLocaleString('en-IN')}</span>
-                    <span className="text-[9px] font-bold text-primary/30 uppercase tracking-widest">In Stock</span>
+                    <span className="text-[9px] font-bold text-emerald-500 uppercase tracking-widest">In Stock</span>
                   </div>
                 </div>
               </div>

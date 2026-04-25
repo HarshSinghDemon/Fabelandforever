@@ -2,6 +2,7 @@
 
 /**
  * @fileOverview Server action to handle image uploads to Supabase Storage.
+ * This is the central hub for storing all boutique visuals.
  */
 
 export async function uploadToSupabase(formData: FormData) {
@@ -19,17 +20,18 @@ export async function uploadToSupabase(formData: FormData) {
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
   if (!supabaseUrl || !serviceRoleKey) {
-    return { success: false, error: 'Supabase credentials missing.' };
+    return { success: false, error: 'Supabase credentials missing. Please check your environment variables.' };
   }
 
   const bucket = 'uploads';
-  // Use a simple folder structure in the bucket
-  const fileName = `products/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.]/g, '_')}`;
+  // Standardized naming convention for the studio
+  const fileName = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.]/g, '_')}`;
   
   try {
     const arrayBuffer = await file.arrayBuffer();
     const body = Buffer.from(arrayBuffer);
-    const uploadUrl = `${supabaseUrl.replace(/\/$/, '')}/storage/v1/object/${bucket}/${fileName}`;
+    const cleanUrl = supabaseUrl.replace(/\/$/, '');
+    const uploadUrl = `${cleanUrl}/storage/v1/object/${bucket}/${fileName}`;
 
     const response = await fetch(uploadUrl, {
       method: 'POST',
@@ -48,7 +50,7 @@ export async function uploadToSupabase(formData: FormData) {
     }
 
     // Public URL format for Supabase Storage
-    const publicUrl = `${supabaseUrl.replace(/\/$/, '')}/storage/v1/object/public/${bucket}/${fileName}`;
+    const publicUrl = `${cleanUrl}/storage/v1/object/public/${bucket}/${fileName}`;
 
     return { success: true, url: publicUrl };
   } catch (error: any) {

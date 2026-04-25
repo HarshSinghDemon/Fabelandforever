@@ -59,10 +59,11 @@ export default function Home() {
         />
 
         <EditorialBanner 
-          title="The Heritage Edit"
+          title="Hair Accessories"
           subtitle="LEGACY IN EVERY STITCH"
           imageUrl={heritageBanner?.imageUrl || "https://picsum.photos/seed/heritage/1920/800"}
-          imageHint="vintage crochet"
+          imageHint="crochet clips"
+          link="/shop#hair accessories"
           className="reveal-on-scroll"
         />
         

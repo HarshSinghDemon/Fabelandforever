@@ -20,7 +20,6 @@ import {
   ShieldCheck, 
   Truck, 
   CheckCircle2,
-  ChevronRight,
   Info
 } from 'lucide-react';
 
@@ -49,7 +48,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
     description: placeholder.story || "A unique piece from our artisanal collection.",
     details: [
       "100% Hand-stitched with premium fibers",
-      "Dimensions: Approximately 12\" x 12\"",
+      "Kolkata Heritage Crafted",
       "Care: Gentle hand wash, dry flat",
       "Origin: Proudly made in Kolkata"
     ]
@@ -70,7 +69,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
     });
   };
 
-  if (loading) {
+  if (loading && !dbProduct && !placeholder) {
     return (
       <div className="min-h-screen bg-paper flex items-center justify-center">
         <Sparkles className="w-12 h-12 text-primary animate-pulse" />
@@ -108,7 +107,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 sm:gap-24 items-start">
           {/* Visual Showcase */}
           <div className="space-y-12">
-            <div className="relative aspect-[3/4] w-full rounded-[2rem] overflow-hidden bg-muted shadow-2xl reveal-on-scroll">
+            <div className="relative aspect-[3/4] w-full rounded-[1rem] overflow-hidden bg-muted shadow-xl reveal-on-scroll">
               <Image 
                 src={product.image} 
                 alt={product.title} 
@@ -118,14 +117,14 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
               />
               <div className="absolute top-8 left-8">
                 <span className="bg-white/90 backdrop-blur-sm px-6 py-2 rounded-full text-[9px] font-bold uppercase tracking-widest text-primary shadow-lg border border-primary/5">
-                  Limited Edition
+                  Artisanal One-Off
                 </span>
               </div>
             </div>
 
             <div className="grid grid-cols-3 gap-6 reveal-on-scroll">
               {[1, 2, 3].map((i) => (
-                <div key={i} className="relative aspect-square rounded-2xl overflow-hidden bg-muted group cursor-pointer opacity-60 hover:opacity-100 transition-all border-2 border-transparent hover:border-accent">
+                <div key={i} className="relative aspect-square rounded-xl overflow-hidden bg-muted group cursor-pointer opacity-60 hover:opacity-100 transition-all border-2 border-transparent hover:border-accent">
                    <Image src={product.image} alt="detail" fill className="object-cover scale-150" />
                 </div>
               ))}
@@ -139,20 +138,20 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
                 <div className="w-12 h-[1px] bg-accent/30"></div>
                 <p className="text-accent font-bold uppercase tracking-[0.5em] text-[10px]">{product.category}</p>
               </div>
-              <h1 className="font-headline text-5xl sm:text-7xl text-primary leading-tight">{product.title}</h1>
+              <h1 className="font-headline text-5xl sm:text-7xl text-primary leading-tight tracking-tighter">{product.title}</h1>
               <p className="text-3xl font-headline text-primary/60 italic">₹ {Number(product.price).toLocaleString('en-IN')}</p>
             </div>
 
             <div className="space-y-8 py-10 border-y border-primary/5">
               <div className="space-y-4">
-                <h4 className="text-[10px] font-bold uppercase tracking-[0.4em] text-primary/30">The Stitch Story</h4>
+                <h4 className="text-[10px] font-bold uppercase tracking-[0.4em] text-primary/30">Stitch Story</h4>
                 <p className="text-lg text-primary/80 leading-relaxed font-medium italic">
                   "{product.description}"
                 </p>
               </div>
 
               <div className="space-y-4">
-                <h4 className="text-[10px] font-bold uppercase tracking-[0.4em] text-primary/30">Artisan Specs</h4>
+                <h4 className="text-[10px] font-bold uppercase tracking-[0.4em] text-primary/30">Specifications</h4>
                 <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {(product.details || [
                     "100% Cotton & Wool Blend",
@@ -169,26 +168,24 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
             </div>
 
             <div className="space-y-8">
-              <div className="flex items-center gap-6 p-6 bg-white rounded-3xl border border-primary/5 shadow-sm">
+              <div className="flex items-center gap-6 p-6 bg-white rounded-2xl border border-primary/5 shadow-sm">
                 <div className="p-3 bg-primary/5 rounded-2xl">
                   <Truck className="w-5 h-5 text-accent" />
                 </div>
                 <div>
-                  <p className="text-xs font-bold text-primary">Delivery Territory</p>
+                  <p className="text-xs font-bold text-primary">Delivery Area</p>
                   <p className="text-[10px] text-primary/40 uppercase tracking-widest font-bold mt-1">
-                    Exclusively available in Kolkata
+                    Exclusively in Kolkata
                   </p>
                 </div>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-6">
-                <Button 
-                  onClick={handleAddToCart}
-                  className="flex-1 h-20 rounded-full bg-primary hover:bg-primary/90 text-white font-bold text-sm uppercase tracking-[0.3em] shadow-2xl transition-all active:scale-95 group"
-                >
-                  Adopt Treasure <ShoppingBasket className="ml-4 w-5 h-5 group-hover:rotate-12 transition-transform" />
-                </Button>
-              </div>
+              <Button 
+                onClick={handleAddToCart}
+                className="w-full h-20 rounded-full bg-primary hover:bg-primary/90 text-white font-bold text-sm uppercase tracking-[0.3em] shadow-2xl transition-all active:scale-95 group"
+              >
+                Add to Basket <ShoppingBasket className="ml-4 w-5 h-5 group-hover:rotate-12 transition-transform" />
+              </Button>
             </div>
 
             <div className="grid grid-cols-3 gap-6 pt-8">
@@ -208,7 +205,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
               <div className="flex items-start gap-4 p-6 rounded-3xl bg-amber-50/30 text-amber-900/60 border border-amber-100/50">
                 <Info className="w-5 h-5 shrink-0 mt-0.5" />
                 <p className="text-[11px] leading-relaxed italic font-medium">
-                  <strong>Made to Order:</strong> Since every loop is hand-stitched by a single artisan, please allow 7-14 days for crafting before delivery.
+                  <strong>Crafting Notice:</strong> Every loop is hand-stitched by a single artisan. Please allow 7-14 days for crafting.
                 </p>
               </div>
             </div>

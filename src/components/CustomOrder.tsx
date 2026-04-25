@@ -1,3 +1,4 @@
+
 "use client";
 
 import React from 'react';
@@ -6,13 +7,15 @@ import { ArrowRight, ImageIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useFirestore, useDoc, useMemoFirebase } from '@/firebase';
 import { doc } from 'firebase/firestore';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export function CustomOrder() {
   const db = useFirestore();
   const customSettingRef = useMemoFirebase(() => doc(db, 'settings', 'custom'), [db]);
   const { data: customSetting } = useDoc(customSettingRef);
   
-  const customImageUrl = customSetting?.value;
+  const customPlaceholder = PlaceHolderImages.find(img => img.id === 'custom-section');
+  const customImageUrl = customSetting?.value || customPlaceholder?.imageUrl;
 
   return (
     <section id="custom" className="py-24 sm:py-40 bg-white">
@@ -28,6 +31,7 @@ export function CustomOrder() {
                     alt="Bespoke Crochet"
                     fill
                     className="object-cover"
+                    data-ai-hint={customPlaceholder?.imageHint || "crochet hands"}
                   />
                 ) : (
                   <div className="w-full h-full flex flex-col items-center justify-center text-primary/5">

@@ -1,3 +1,4 @@
+
 "use client";
 
 import React from 'react';
@@ -7,6 +8,7 @@ import { ArrowRight, ImageIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useFirestore, useDoc, useMemoFirebase } from '@/firebase';
 import { doc } from 'firebase/firestore';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export function Hero() {
   const db = useFirestore();
@@ -16,7 +18,8 @@ export function Hero() {
   }, [db]);
   const { data: heroSetting } = useDoc(heroSettingRef);
   
-  const heroImageUrl = heroSetting?.value;
+  const heroPlaceholder = PlaceHolderImages.find(img => img.id === 'hero-main');
+  const heroImageUrl = heroSetting?.value || heroPlaceholder?.imageUrl;
 
   return (
     <section className="relative h-[95vh] w-full flex items-center justify-center overflow-hidden bg-[#F9F8F6]">
@@ -29,6 +32,7 @@ export function Hero() {
             fill
             className="object-cover opacity-90 transition-transform duration-[3s] hover:scale-105"
             priority
+            data-ai-hint={heroPlaceholder?.imageHint || "luxury crochet"}
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-muted/20">
@@ -71,17 +75,3 @@ export function Hero() {
     </section>
   );
 }
-
-// Helper style for vertical text if needed
-const style = `
-.vertical-text {
-  writing-mode: vertical-rl;
-}
-@keyframes bounce-slow {
-  0%, 100% { transform: translateY(-100%); }
-  50% { transform: translateY(100%); }
-}
-.animate-bounce-slow {
-  animation: bounce-slow 3s ease-in-out infinite;
-}
-`;

@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useEffect, useRef, useState } from 'react';
@@ -6,7 +7,7 @@ import { Hero } from '@/components/Hero';
 import { FeaturedProducts } from '@/components/FeaturedProducts';
 import { CustomOrder } from '@/components/CustomOrder';
 import { Footer } from '@/components/Footer';
-import { Send, ArrowRight, Mail } from 'lucide-react';
+import { Send, ArrowRight, Mail, Sparkles, Feather, Palette } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -68,6 +69,29 @@ export default function Home() {
 
       <section ref={(el) => { if (el) scrollRefs.current[0] = el }} className="reveal-on-scroll">
         <FeaturedProducts />
+      </section>
+
+      {/* Process Section (The "Floriy" Way) */}
+      <section className="py-40 bg-white border-y border-primary/5 overflow-hidden">
+        <div className="container mx-auto px-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-24 md:gap-12">
+            {[
+              { icon: Feather, title: 'Ethical Sourcing', desc: 'We select only the finest, most sustainable fibers for every loop.' },
+              { icon: Palette, title: 'Artisanal Palette', desc: 'Each color is chosen to evoke a specific fable or feeling.' },
+              { icon: Sparkles, title: 'Heirloom Finish', desc: 'Designed to be passed down, stitch by enduring stitch.' }
+            ].map((item, idx) => (
+              <div key={idx} className="text-center space-y-6 group">
+                <div className="w-16 h-16 bg-paper rounded-full flex items-center justify-center mx-auto mb-8 transition-transform group-hover:scale-110 duration-500">
+                  <item.icon className="w-6 h-6 text-accent" />
+                </div>
+                <h3 className="font-headline text-2xl text-primary">{item.title}</h3>
+                <p className="text-primary/60 text-sm leading-relaxed max-w-[250px] mx-auto italic">
+                  {item.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
       </section>
 
       <section ref={(el) => { if (el) scrollRefs.current[1] = el }} className="reveal-on-scroll">

@@ -2,22 +2,52 @@
 {
   "placeholderImages": [
     {
+      "id": "hero-main",
+      "description": "A close-up of a luxury teal crochet blanket with intricate floral patterns.",
+      "imageUrl": "https://picsum.photos/seed/luxury-crochet-hero/1920/1080",
+      "imageHint": "luxury crochet"
+    },
+    {
+      "id": "custom-section",
+      "description": "An artisan's hands working with a golden crochet hook and cream yarn.",
+      "imageUrl": "https://picsum.photos/seed/artisan-hands/800/800",
+      "imageHint": "crochet hands"
+    },
+    {
       "id": "product-1",
-      "description": "A small teal crochet forest sprite amigurumi with tiny wings.",
-      "imageUrl": "https://picsum.photos/seed/teal-sprite/600/600",
-      "imageHint": "teal crochet toy"
+      "description": "A teal amigurumi forest dragon with golden wings.",
+      "imageUrl": "https://picsum.photos/seed/teal-dragon/600/800",
+      "imageHint": "crochet toy"
     },
     {
       "id": "product-2",
-      "description": "A golden crochet honey bear with a small crown.",
-      "imageUrl": "https://picsum.photos/seed/gold-bear/600/600",
-      "imageHint": "crochet bear"
+      "description": "An elegant cream-colored crochet shawl with lace detailing.",
+      "imageUrl": "https://picsum.photos/seed/cream-shawl/600/800",
+      "imageHint": "crochet shawl"
     },
     {
       "id": "product-3",
-      "description": "A set of five pastel crochet flower coasters.",
-      "imageUrl": "https://picsum.photos/seed/flower-coasters/600/600",
+      "description": "A collection of pastel crochet flower coasters on a wooden table.",
+      "imageUrl": "https://picsum.photos/seed/flower-coasters/600/800",
       "imageHint": "crochet coasters"
+    },
+    {
+      "id": "product-4",
+      "description": "A small golden honey bear amigurumi wearing a tiny crown.",
+      "imageUrl": "https://picsum.photos/seed/gold-bear/600/800",
+      "imageHint": "crochet bear"
+    },
+    {
+      "id": "product-5",
+      "description": "A modern geometric crochet wall hanging in earth tones.",
+      "imageUrl": "https://picsum.photos/seed/wall-hanging/600/800",
+      "imageHint": "crochet decor"
+    },
+    {
+      "id": "product-6",
+      "description": "A pair of soft, chunky knit-style crochet slippers in slate gray.",
+      "imageUrl": "https://picsum.photos/seed/crochet-slippers/600/800",
+      "imageHint": "crochet slippers"
     }
   ]
 }

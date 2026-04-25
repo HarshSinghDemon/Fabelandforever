@@ -1,3 +1,4 @@
+
 "use client";
 
 import React from 'react';
@@ -8,6 +9,7 @@ import { useCart } from '@/context/CartContext';
 import { useToast } from '@/hooks/use-toast';
 import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
 import { collection } from 'firebase/firestore';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export function FeaturedProducts() {
   const { addToCart } = useCart();
@@ -21,13 +23,15 @@ export function FeaturedProducts() {
 
   const { data: products, loading } = useCollection(productsQuery);
 
+  const productPlaceholders = PlaceHolderImages.filter(img => img.id.startsWith('product-'));
+
   const handleAddToCart = (product: any) => {
     addToCart({
       id: product.id,
       title: product.title,
       price: product.price,
       category: product.category || 'Enchanted',
-      image: product.image || "https://picsum.photos/seed/tale/600/800"
+      image: product.image || productPlaceholders[0].imageUrl
     });
     toast({
       title: "Added to Basket",
@@ -43,6 +47,18 @@ export function FeaturedProducts() {
       </div>
     );
   }
+
+  // If no products in DB, show curated placeholders for a better "First Look"
+  const displayProducts = products && products.length > 0 
+    ? products 
+    : productPlaceholders.map((p, i) => ({
+        id: `placeholder-${i}`,
+        title: p.description.split('.')[0],
+        price: 1500 + (i * 200),
+        category: i % 2 === 0 ? 'Creatures' : 'Lifestyle',
+        image: p.imageUrl,
+        imageHint: p.imageHint
+      }));
 
   return (
     <section id="shop" className="py-24 sm:py-40 bg-background">
@@ -66,49 +82,43 @@ export function FeaturedProducts() {
           </div>
         </div>
 
-        {!products || products.length === 0 ? (
-          <div className="text-center py-40 border border-primary/5 bg-muted/20">
-            <ShoppingBag className="w-12 h-12 text-primary/10 mx-auto mb-6" />
-            <p className="text-primary/60 italic font-medium">The boutique shelves are resting.</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-24">
-            {products.map((product: any) => (
-              <div key={product.id} className="group cursor-pointer block">
-                <div className="relative aspect-[4/5] overflow-hidden bg-muted mb-8 img-hover-zoom">
-                  <Image
-                    src={product.image || "https://picsum.photos/seed/tale/600/800"}
-                    alt={product.title}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  />
-                  
-                  {/* Quick Add Overlay */}
-                  <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-8 p-4">
-                     <button 
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleAddToCart(product);
-                      }}
-                      className="bg-white text-primary text-[10px] font-bold uppercase tracking-widest px-8 h-12 w-full max-w-[200px] shadow-2xl hover:bg-primary hover:text-white transition-all transform translate-y-4 group-hover:translate-y-0"
-                     >
-                       Quick Add +
-                     </button>
-                  </div>
-                </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-24">
+          {displayProducts.map((product: any, idx: number) => (
+            <div key={product.id} className="group cursor-pointer block">
+              <div className="relative aspect-[4/5] overflow-hidden bg-muted mb-8 img-hover-zoom">
+                <Image
+                  src={product.image}
+                  alt={product.title}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  data-ai-hint={product.imageHint || "crochet"}
+                />
                 
-                <div className="space-y-2">
-                  <div className="flex justify-between items-start">
-                    <h3 className="font-bold text-lg text-primary">{product.title}</h3>
-                    <span className="font-medium text-primary/60">₹ {Number(product.price).toLocaleString('en-IN')}</span>
-                  </div>
-                  <p className="text-[10px] uppercase tracking-widest text-primary/40 font-bold">{product.category || 'Enchanted'}</p>
+                {/* Quick Add Overlay */}
+                <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-8 p-4">
+                   <button 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleAddToCart(product);
+                    }}
+                    className="bg-white text-primary text-[10px] font-bold uppercase tracking-widest px-8 h-12 w-full max-w-[200px] shadow-2xl hover:bg-primary hover:text-white transition-all transform translate-y-4 group-hover:translate-y-0"
+                   >
+                     Quick Add +
+                   </button>
                 </div>
               </div>
-            ))}
-          </div>
-        )}
+              
+              <div className="space-y-2">
+                <div className="flex justify-between items-start">
+                  <h3 className="font-bold text-lg text-primary">{product.title}</h3>
+                  <span className="font-medium text-primary/60">₹ {Number(product.price).toLocaleString('en-IN')}</span>
+                </div>
+                <p className="text-[10px] uppercase tracking-widest text-primary/40 font-bold">{product.category || 'Enchanted'}</p>
+              </div>
+            </div>
+          ))}
+        </div>
 
         {/* View All Button */}
         <div className="mt-24 text-center">

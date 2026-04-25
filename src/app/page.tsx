@@ -96,32 +96,6 @@ export default function Home() {
       </section>
       
       <section 
-        id="story" 
-        ref={(el) => { if (el) scrollRefs.current[2] = el }}
-        className="py-40 bg-[#F9F8F6] reveal-on-scroll"
-      >
-        <div className="container mx-auto px-6">
-          <div className="max-w-4xl mx-auto text-center space-y-16">
-            <span className="text-accent font-bold tracking-[0.4em] uppercase text-[10px]">About Us</span>
-            
-            <h2 className="font-headline text-5xl sm:text-7xl md:text-8xl text-primary leading-tight">
-              Our <span className="italic">Story.</span>
-            </h2>
-
-            <div className="space-y-8 max-w-2xl mx-auto">
-              <p className="text-xl sm:text-2xl text-primary font-headline italic leading-relaxed">
-                আমাদের প্রতিটি সৃষ্টি, ভালোবাসার রঙে রাঙানো এবং যত্নে বোনা। গল্পের প্রতিটি স্টিচ, হৃদয়ের ছোঁয়ায়।
-              </p>
-            </div>
-
-            <p className="text-lg text-primary/70 leading-relaxed font-medium max-w-3xl mx-auto">
-              Fable & Forever started as a passion for high-quality handmade crafts. We believe in the beauty of items that take time to create—objects that carry the personal touch of the maker.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section 
         id="contact" 
         className="py-40 bg-white"
         ref={(el) => { if (el) scrollRefs.current[3] = el }}

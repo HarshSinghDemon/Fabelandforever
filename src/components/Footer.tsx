@@ -43,7 +43,7 @@ export function Footer() {
             <ul className="space-y-4 text-xs font-bold uppercase tracking-[0.2em]">
               <li><Link href="/#shop" className="text-white/40 hover:text-white transition-colors">Shop All</Link></li>
               <li><Link href="/#custom" className="text-white/40 hover:text-white transition-colors">Commissions</Link></li>
-              <li><Link href="/#story" className="text-white/40 hover:text-white transition-colors">History</Link></li>
+              <li><Link href="/about" className="text-white/40 hover:text-white transition-colors">Our Story</Link></li>
               <li><Link href="/#contact" className="text-white/40 hover:text-white transition-colors">Contact</Link></li>
             </ul>
           </div>

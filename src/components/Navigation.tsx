@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useEffect } from 'react';
@@ -44,7 +43,7 @@ export function Navigation() {
   const navLinks = [
     { name: 'Shop', href: '/#shop' },
     { name: 'Custom', href: '/#custom' },
-    { name: 'Our Story', href: '/#story' },
+    { name: 'Our Story', href: '/about' },
   ];
 
   const SearchButton = () => (
@@ -142,7 +141,7 @@ export function Navigation() {
               )}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
-              {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              {isMobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
             </button>
             <div className="hidden md:flex items-center space-x-12">
               {navLinks.map((link) => (

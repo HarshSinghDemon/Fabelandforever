@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useEffect } from 'react';
@@ -13,10 +12,18 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import Link from 'next/link';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { useFirestore, useDoc, useMemoFirebase } from '@/firebase';
+import { doc } from 'firebase/firestore';
 
 export default function Home() {
-  const gardenBanner = PlaceHolderImages.find(img => img.id === 'garden-banner');
+  const db = useFirestore();
+
+  // Fetch Curation Settings
+  const hairBannerRef = useMemoFirebase(() => db ? doc(db, 'settings', 'banner_hair') : null, [db]);
+  const bandanaBannerRef = useMemoFirebase(() => db ? doc(db, 'settings', 'banner_bandana') : null, [db]);
+  
+  const { data: hairSetting } = useDoc(hairBannerRef);
+  const { data: bandanaSetting } = useDoc(bandanaBannerRef);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -42,11 +49,9 @@ export default function Home() {
     window.open(`mailto:${recipient}`, '_blank');
   };
 
-  // Official Hair Accessories Editorial Image
-  const hairAccessoriesImageUrl = "https://qigxixiekbdkeperulpk.supabase.co/storage/v1/object/public/uploads/anya-chernykh-kwrYG3RdVt4-unsplash.jpg";
-  
-  // Artisan Bandanas Editorial Image
-  const bandanasImageUrl = "https://images.unsplash.com/photo-1591051649443-453d2e0a716d?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+  // Defaults
+  const defaultHairImg = "https://qigxixiekbdkeperulpk.supabase.co/storage/v1/object/public/uploads/anya-chernykh-kwrYG3RdVt4-unsplash.jpg";
+  const defaultBandanaImg = "https://images.unsplash.com/photo-1591051649443-453d2e0a716d?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
 
   return (
     <main className="min-h-screen bg-background selection:bg-accent/20 relative pb-20 md:pb-0">
@@ -67,11 +72,10 @@ export default function Home() {
         <EditorialBanner 
           title="Hair Accessories"
           subtitle="LEGACY IN EVERY STITCH"
-          imageUrl={hairAccessoriesImageUrl}
+          imageUrl={hairSetting?.value || defaultHairImg}
           imageHint="crochet clips"
           link="/shop#hair accessories"
           className="reveal-on-scroll"
-          imageClassName=""
         />
         
         <FeaturedProducts 
@@ -82,7 +86,7 @@ export default function Home() {
         <EditorialBanner 
           title="Artisan Bandanas"
           subtitle="PREMIUM COLLECTIONS"
-          imageUrl={bandanasImageUrl}
+          imageUrl={bandanaSetting?.value || defaultBandanaImg}
           imageHint="crochet bandana"
           link="/shop#bandana"
           className="reveal-on-scroll"

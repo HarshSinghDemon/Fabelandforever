@@ -31,14 +31,14 @@ export function CategoryGrid() {
           <div className="w-10 h-[1px] bg-accent/30 mx-auto mt-2"></div>
         </div>
 
-        <div className="relative reveal-on-scroll">
+        <div className="relative reveal-on-scroll px-4 md:px-12">
           <Carousel 
             opts={{ 
               align: "start", 
               loop: true,
               dragFree: false
             }} 
-            className="w-full"
+            className="w-full relative"
           >
             <CarouselContent className="-ml-0">
               {collections.map((cat, idx) => (
@@ -75,10 +75,8 @@ export function CategoryGrid() {
               ))}
             </CarouselContent>
             
-            <div className="hidden md:flex justify-end gap-3 mt-6 pr-4">
-              <CarouselPrevious className="static translate-y-0 h-12 w-12 border-primary/5 bg-white shadow-xl hover:bg-primary hover:text-white transition-all" />
-              <CarouselNext className="static translate-y-0 h-12 w-12 border-primary/5 bg-white shadow-xl hover:bg-primary hover:text-white transition-all" />
-            </div>
+            <CarouselPrevious className="hidden md:flex -left-6 lg:-left-10 h-12 w-12 border-primary/5 bg-white/80 backdrop-blur-sm shadow-xl hover:bg-primary hover:text-white transition-all" />
+            <CarouselNext className="hidden md:flex -right-6 lg:-right-10 h-12 w-12 border-primary/5 bg-white/80 backdrop-blur-sm shadow-xl hover:bg-primary hover:text-white transition-all" />
           </Carousel>
         </div>
       </div>

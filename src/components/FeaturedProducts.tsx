@@ -88,8 +88,8 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
           <div className="w-12 h-[1px] bg-accent/30 mt-4"></div>
         </div>
 
-        <div className="max-w-7xl mx-auto">
-          <Carousel opts={{ align: "start", loop: false }} className="w-full">
+        <div className="max-w-7xl mx-auto px-4 md:px-12">
+          <Carousel opts={{ align: "start", loop: false }} className="w-full relative">
             <CarouselContent className="-ml-6">
               {filteredProducts.map((product: any, idx: number) => (
                 <CarouselItem key={product.id} className="pl-6 basis-1/2 sm:basis-1/3 lg:basis-1/4">
@@ -128,10 +128,8 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
               ))}
             </CarouselContent>
             
-            <div className="hidden md:flex justify-center gap-4 mt-8">
-              <CarouselPrevious className="static translate-y-0 h-14 w-14 border-primary/10 hover:bg-primary hover:text-white transition-all shadow-xl rounded-full" />
-              <CarouselNext className="static translate-y-0 h-14 w-14 border-primary/10 hover:bg-primary hover:text-white transition-all shadow-xl rounded-full" />
-            </div>
+            <CarouselPrevious className="hidden md:flex -left-6 lg:-left-10 h-14 w-14 border-primary/10 bg-white/80 backdrop-blur-sm hover:bg-primary hover:text-white transition-all shadow-xl rounded-full" />
+            <CarouselNext className="hidden md:flex -right-6 lg:-right-10 h-14 w-14 border-primary/10 bg-white/80 backdrop-blur-sm hover:bg-primary hover:text-white transition-all shadow-xl rounded-full" />
           </Carousel>
         </div>
       </div>

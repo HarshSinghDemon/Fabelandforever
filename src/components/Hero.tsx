@@ -1,13 +1,18 @@
 "use client";
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Sparkles, MousePointer2 } from 'lucide-react';
 import Link from 'next/link';
 import { useFirestore, useDoc, useMemoFirebase } from '@/firebase';
 import { doc } from 'firebase/firestore';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
 
 export function Hero() {
   const db = useFirestore();
@@ -16,12 +21,29 @@ export function Hero() {
     return doc(db, 'settings', 'hero');
   }, [db]);
   const { data: heroSetting, loading } = useDoc(heroSettingRef);
-  
-  const heroPlaceholder = PlaceHolderImages.find(img => img.id === 'hero-main');
-  
-  const heroImageUrl = React.useMemo(() => {
-    if (heroSetting?.value) return heroSetting.value;
-    return "https://qigxixiekbdkeperulpk.supabase.co/storage/v1/object/public/uploads/products/Gemini_Generated_Image_bx4li2bx4li2bx4l.png";
+
+  // Setup autoplay plugin for 10 seconds
+  const plugin = React.useRef(
+    Autoplay({ delay: 10000, stopOnInteraction: false })
+  );
+
+  const heroImages = useMemo(() => {
+    // If we have an array of values in settings, use those
+    if (heroSetting?.values && heroSetting.values.length > 0) {
+      return heroSetting.values;
+    }
+    // If we have a single value in settings, use that + the second default
+    if (heroSetting?.value) {
+      return [
+        heroSetting.value,
+        "https://qigxixiekbdkeperulpk.supabase.co/storage/v1/object/public/uploads/products/Gemini_Generated_Image_t8i3g7t8i3g7t8i3.png"
+      ];
+    }
+    // Default fallback images
+    return [
+      "https://qigxixiekbdkeperulpk.supabase.co/storage/v1/object/public/uploads/products/Gemini_Generated_Image_bx4li2bx4li2bx4l.png",
+      "https://qigxixiekbdkeperulpk.supabase.co/storage/v1/object/public/uploads/products/Gemini_Generated_Image_t8i3g7t8i3g7t8i3.png"
+    ];
   }, [heroSetting]);
 
   if (loading) {
@@ -37,23 +59,43 @@ export function Hero() {
 
   return (
     <section className="relative h-screen w-full overflow-hidden bg-black">
-      {/* Cinematic Background */}
+      {/* Cinematic Background Carousel */}
       <div className="absolute inset-0 z-0">
-        <Image
-          src={heroImageUrl}
-          alt="Artisanal Heritage"
-          fill
-          quality={100}
-          className="object-cover opacity-85 animate-ken-burns"
-          priority
-          sizes="100vw"
-        />
+        <Carousel
+          plugins={[plugin.current]}
+          className="w-full h-full"
+          opts={{
+            align: "start",
+            loop: true,
+            duration: 50, // Transition speed between slides
+          }}
+        >
+          <CarouselContent className="h-screen ml-0">
+            {heroImages.map((imgUrl, index) => (
+              <CarouselItem key={index} className="h-full pl-0 relative">
+                <div className="relative w-full h-full overflow-hidden">
+                  <Image
+                    src={imgUrl}
+                    alt={`Artisanal Heritage ${index + 1}`}
+                    fill
+                    quality={100}
+                    className="object-cover opacity-85 animate-ken-burns"
+                    priority={index === 0}
+                    sizes="100vw"
+                  />
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+        </Carousel>
+        
         {/* Softened Overlays for better visibility */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/70 pointer-events-none"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_black_80%)] opacity-30"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/70 pointer-events-none z-[5]"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_black_80%)] opacity-30 pointer-events-none z-[5]"></div>
       </div>
       
-      <div className="container mx-auto px-6 relative z-10 h-full flex items-center justify-center text-center text-white pt-20">
+      {/* Editorial Content Overlay */}
+      <div className="container mx-auto px-6 relative z-10 h-full flex items-center justify-center text-center text-white pt-24">
         <div className="max-w-7xl mx-auto space-y-12 md:space-y-16">
           
           {/* Tagline */}

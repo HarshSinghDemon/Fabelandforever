@@ -3,7 +3,6 @@ import './globals.css';
 import { CartProvider } from '@/context/CartContext';
 import { Toaster } from '@/components/ui/toaster';
 import { FirebaseClientProvider } from '@/firebase/client-provider';
-import { FirebaseErrorListener } from '@/components/FirebaseErrorListener';
 
 export const metadata: Metadata = {
   title: 'Fable & Forever | Artisanal Crochet Tales',
@@ -24,7 +23,6 @@ export default function RootLayout({
       </head>
       <body className="font-cute antialiased bg-background text-foreground scroll-smooth">
         <FirebaseClientProvider>
-          <FirebaseErrorListener />
           <CartProvider>
             {children}
             <Toaster />

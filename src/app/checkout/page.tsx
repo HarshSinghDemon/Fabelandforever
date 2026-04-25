@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState } from 'react';
@@ -9,19 +8,16 @@ import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { ShoppingBag, Package, Heart, ArrowLeft, Send, CheckCircle2, Loader2, Sparkles } from 'lucide-react';
+import { ShoppingBag, Package, ArrowLeft, CheckCircle2, Loader2, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useToast } from '@/hooks/use-toast';
-import { useFirestore, useUser } from '@/firebase';
+import { useFirestore } from '@/firebase';
 import { collection, addDoc } from 'firebase/firestore';
-import { errorEmitter } from '@/firebase/error-emitter';
-import { FirestorePermissionError, type SecurityRuleContext } from '@/firebase/errors';
 
 export default function CheckoutPage() {
   const { cart, cartTotal, clearCart } = useCart();
   const { toast } = useToast();
-  const { user } = useUser();
   const db = useFirestore();
   const router = useRouter();
   
@@ -39,7 +35,7 @@ export default function CheckoutPage() {
 
     setIsSubmitting(true);
     const orderData = {
-      userId: user?.uid || 'guest',
+      userId: 'guest',
       customerName: formData.name,
       customerPhone: formData.phone,
       customerAddress: formData.address,
@@ -65,14 +61,8 @@ export default function CheckoutPage() {
           description: "Your treasures are being prepared in our grimoire.",
         });
       })
-      .catch(async (error) => {
-        const permissionError = new FirestorePermissionError({
-          path: ordersRef.path,
-          operation: 'create',
-          requestResourceData: orderData,
-        } satisfies SecurityRuleContext);
-        errorEmitter.emit('permission-error', permissionError);
-        
+      .catch((error) => {
+        console.error("Order error:", error);
         toast({
           variant: "destructive",
           title: "Magic Interrupted",

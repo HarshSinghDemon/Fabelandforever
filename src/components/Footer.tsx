@@ -1,4 +1,3 @@
-
 "use client";
 
 import React from 'react';
@@ -57,7 +56,6 @@ export function Footer() {
           <div className="flex gap-12">
             <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
             <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
-            <Link href="/admin/login" className="hover:text-white transition-colors">Access</Link>
           </div>
         </div>
       </div>

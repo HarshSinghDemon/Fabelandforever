@@ -1,10 +1,9 @@
-
 "use client";
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
-import { Menu, X, Search, User, Loader2, ShoppingBasket, Home, LayoutGrid, ShoppingBag } from 'lucide-react';
+import { Search, Loader2, Home, LayoutGrid } from 'lucide-react';
 import { CartDrawer } from './CartDrawer';
 import { Logo } from './Logo';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -16,7 +15,6 @@ import Image from 'next/image';
 
 export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
@@ -56,7 +54,6 @@ export function Navigation() {
 
   return (
     <>
-      {/* Desktop & Mobile Header Container */}
       <nav className={cn(
         "fixed top-0 left-0 right-0 z-[60] transition-all duration-500",
         isScrolled 
@@ -64,7 +61,6 @@ export function Navigation() {
           : "bg-transparent py-6"
       )}>
         <div className="container mx-auto px-4 md:px-6">
-          {/* Top Row: Mobile Logo Centered / Desktop Standard */}
           <div className="flex items-center justify-between gap-4 md:gap-8 relative h-12">
             <div className="md:flex-shrink-0">
               <Link href="/" className="flex items-center gap-2 group">
@@ -79,7 +75,6 @@ export function Navigation() {
               </Link>
             </div>
 
-            {/* Logo for mobile absolute center */}
             <div className="absolute left-1/2 -translate-x-1/2 md:hidden">
                <Link href="/" className={cn(
                 "font-headline text-xl tracking-tight uppercase",
@@ -88,17 +83,10 @@ export function Navigation() {
             </div>
 
             <div className="flex items-center gap-3 sm:gap-6">
-              <Link href="/admin/login" className={cn(
-                "p-2 transition-all hover:opacity-50",
-                isScrolled ? "text-primary" : "text-white"
-              )}>
-                <User className="w-5 h-5" />
-              </Link>
               <CartDrawer isLight={!isScrolled} />
             </div>
           </div>
 
-          {/* Search Row: Visible on Mobile, Inline on Desktop */}
           <div className="mt-4 md:hidden">
             <div 
               onClick={() => setIsSearchOpen(true)}
@@ -112,7 +100,6 @@ export function Navigation() {
             </div>
           </div>
 
-          {/* Desktop Links Row */}
           <div className="mt-4 flex justify-center items-center gap-8 hidden lg:flex">
             {navLinks.map((link) => (
               <Link 
@@ -129,7 +116,6 @@ export function Navigation() {
           </div>
         </div>
 
-        {/* Search Modal */}
         <Dialog open={isSearchOpen} onOpenChange={setIsSearchOpen}>
           <DialogContent className="sm:max-w-[800px] w-[95vw] border-none shadow-2xl p-0 overflow-hidden rounded-[1.5rem] md:rounded-[2.5rem] bg-background">
             <DialogHeader className="p-6 md:p-8 pb-4">
@@ -182,7 +168,6 @@ export function Navigation() {
         </Dialog>
       </nav>
 
-      {/* Persistent Mobile Bottom Navigation */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-[100] bg-white border-t border-primary/5 h-20 flex items-center justify-around px-4 pb-4 pt-2 shadow-[0_-4px_20px_-4px_rgba(0,0,0,0.05)]">
         <Link href="/" className="flex flex-col items-center gap-1.5 group">
           <Home className="w-5 h-5 text-primary" />
@@ -193,10 +178,6 @@ export function Navigation() {
           <span className="text-[9px] font-bold uppercase tracking-widest text-primary/40 group-hover:text-primary transition-colors">Shop All</span>
         </Link>
         <CartDrawer isLight={false} />
-        <Link href="/admin/login" className="flex flex-col items-center gap-1.5 group">
-          <User className="w-5 h-5 text-primary/40 group-hover:text-primary" />
-          <span className="text-[9px] font-bold uppercase tracking-widest text-primary/40 group-hover:text-primary transition-colors">Account</span>
-        </Link>
       </div>
     </>
   );

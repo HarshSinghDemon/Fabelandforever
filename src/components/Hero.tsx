@@ -25,7 +25,7 @@ export function Hero() {
   const { data: heroSetting } = useDoc(heroSettingRef);
 
   const plugin = React.useRef(
-    Autoplay({ delay: 8000, stopOnInteraction: false })
+    Autoplay({ delay: 6000, stopOnInteraction: false })
   );
 
   const heroImages = useMemo(() => {
@@ -41,15 +41,38 @@ export function Hero() {
 
   return (
     <section className="relative h-screen w-full overflow-hidden bg-[#050505]">
-      {/* Visual Layer: Cinematic Background Carousel */}
-      <div className="absolute inset-0 z-0 h-full w-full">
+      
+      {/* 1. MOBILE ONLY: Dual-Layer Background (Blurred) */}
+      <div className="absolute inset-0 z-0 block md:hidden">
+        <Carousel
+          plugins={[Autoplay({ delay: 6000 })]}
+          className="w-full h-full"
+          opts={{ loop: true }}
+        >
+          <CarouselContent className="h-screen ml-0">
+            {heroImages.map((imgUrl, index) => (
+              <CarouselItem key={index} className="h-full pl-0 relative basis-full">
+                <div className="relative w-full h-full opacity-40 blur-2xl scale-110">
+                  <Image
+                    src={imgUrl}
+                    alt="Atmospheric Background"
+                    fill
+                    className="object-cover"
+                    sizes="100vw"
+                  />
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+        </Carousel>
+      </div>
+
+      {/* 2. DESKTOP ONLY: Cinematic Full-Bleed (Crisp) */}
+      <div className="absolute inset-0 z-0 hidden md:block">
         <Carousel
           plugins={[plugin.current]}
           className="w-full h-full"
-          opts={{
-            align: "start",
-            loop: true,
-          }}
+          opts={{ align: "start", loop: true }}
         >
           <CarouselContent className="h-screen ml-0">
             {heroImages.map((imgUrl, index) => (
@@ -69,13 +92,53 @@ export function Hero() {
             ))}
           </CarouselContent>
         </Carousel>
-        
-        {/* Subtle Gradient Overlay to ensure text legibility */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/70 pointer-events-none z-[5]"></div>
       </div>
-      
-      {/* Narrative Content Layer */}
-      <div className="container mx-auto px-4 sm:px-6 relative z-10 h-full flex items-center justify-center text-center text-white pointer-events-none">
+
+      {/* 3. MOBILE ONLY: Crisp Inset Frame Focal Point */}
+      <div className="absolute inset-0 z-10 flex flex-col items-center justify-center md:hidden px-6">
+        <div className="w-full max-w-[400px] aspect-[4/5] rounded-[3.5rem] overflow-hidden shadow-[0_0_80px_rgba(0,0,0,0.5)] border-4 border-white/20 relative animate-fade-in-up">
+          <Carousel
+            plugins={[Autoplay({ delay: 6000 })]}
+            className="w-full h-full"
+            opts={{ loop: true }}
+          >
+            <CarouselContent className="h-full ml-0">
+              {heroImages.map((imgUrl, index) => (
+                <CarouselItem key={index} className="h-full pl-0 relative basis-full">
+                  <Image
+                    src={imgUrl}
+                    alt="Featured Loop"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 85vw, 400px"
+                  />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
+          {/* Internal Frame Overlay for text legibility */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/80 pointer-events-none"></div>
+          
+          {/* Mobile Text & UI Overlayed on Frame */}
+          <div className="absolute inset-0 z-20 flex flex-col items-center justify-end pb-12 text-center text-white p-6">
+            <span className="text-[10px] font-black uppercase tracking-[0.8em] text-accent mb-4 animate-loop-in">
+              Legacy Loop
+            </span>
+            <h1 className="font-headline text-5xl leading-none tracking-tighter mb-8 drop-shadow-2xl italic">
+              Fable <span className="block font-fancy text-6xl text-accent -mt-2 -rotate-3">&</span> Forever
+            </h1>
+            <Button asChild className="bg-white text-primary hover:bg-white/90 h-16 w-full rounded-2xl text-[10px] font-black uppercase tracking-[0.4em] shadow-2xl active:scale-95 transition-transform group">
+              <Link href="#shop" className="flex items-center justify-center">
+                Explore <ArrowRight className="ml-3 w-4 h-4 group-hover:translate-x-2 transition-transform" />
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      {/* 4. DESKTOP ONLY: Immersive Narrative Overlay */}
+      <div className="container mx-auto px-4 sm:px-6 relative z-10 h-full hidden md:flex items-center justify-center text-center text-white pointer-events-none">
         <div className="max-w-7xl mx-auto space-y-8 md:space-y-16 pointer-events-auto">
           <div className="overflow-hidden">
              <span className="text-[10px] md:text-sm font-black uppercase tracking-[0.8em] md:tracking-[1.5em] text-accent block animate-loop-in opacity-0">

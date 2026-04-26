@@ -53,11 +53,11 @@
   font-family: 'Pacifico', cursive;
 }
 
-/* Crochet Reveal: Weaving Motion */
+/* Artisanal Unroll: Smoother Scroll Reveals */
 .reveal-on-scroll {
   opacity: 0;
-  transform: translateY(20px) scale(0.98) skewY(1deg);
-  transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(30px) scale(0.96) skewY(1.5deg);
+  transition: opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1), transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform, opacity;
 }
 
@@ -69,11 +69,11 @@
 @keyframes loop-in {
   from {
     opacity: 0;
-    transform: translateY(40px) skewY(1deg);
+    transform: translateY(40px) skewY(1deg) scale(0.9);
   }
   to {
     opacity: 1;
-    transform: translateY(0) skewY(0deg);
+    transform: translateY(0) skewY(0deg) scale(1);
   }
 }
 
@@ -83,17 +83,17 @@
 }
 
 .animate-loop-in {
-  animation: loop-in 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: loop-in 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .animate-ken-burns {
   animation: ken-burns 25s ease-out forwards;
 }
 
-.stagger-1 { transition-delay: 0.1s; animation-delay: 0.1s; }
-.stagger-2 { transition-delay: 0.2s; animation-delay: 0.2s; }
-.stagger-3 { transition-delay: 0.3s; animation-delay: 0.3s; }
-.stagger-4 { transition-delay: 0.4s; animation-delay: 0.4s; }
+.stagger-1 { transition-delay: 0.15s; animation-delay: 0.15s; }
+.stagger-2 { transition-delay: 0.3s; animation-delay: 0.3s; }
+.stagger-3 { transition-delay: 0.45s; animation-delay: 0.45s; }
+.stagger-4 { transition-delay: 0.6s; animation-delay: 0.6s; }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
@@ -116,10 +116,10 @@
 
 @keyframes float {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  50% { transform: translateY(-12px); }
 }
 .animate-float {
-  animation: float 6s ease-in-out infinite;
+  animation: float 7s ease-in-out infinite;
 }
 
 .bg-paper {
@@ -127,8 +127,8 @@
 }
 
 @keyframes soft-pulse {
-  0%, 100% { opacity: 0.2; }
-  50% { opacity: 0.6; }
+  0%, 100% { opacity: 0.25; }
+  50% { opacity: 0.7; }
 }
 .animate-soft-pulse {
   animation: soft-pulse 4s ease-in-out infinite;
@@ -136,10 +136,10 @@
 
 @keyframes heartbeat {
   0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.1); }
+  50% { transform: scale(1.08); }
 }
 .animate-heartbeat {
-  animation: heartbeat 2s ease-in-out infinite;
+  animation: heartbeat 2.5s ease-in-out infinite;
 }
 
 /* Handmade Detail: Stitching Border */
@@ -164,6 +164,6 @@
 /* Typography Fluidity */
 @media (max-width: 768px) {
   .hero-title {
-    font-size: clamp(3rem, 15vw, 6rem);
+    font-size: clamp(3.5rem, 18vw, 7rem);
   }
 }

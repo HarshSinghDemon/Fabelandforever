@@ -107,7 +107,7 @@ export function AdminProductManager() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.price || !formData.category || !formData.imageUrls.length || !db) {
-      toast({ variant: "destructive", title: "Incomplete Loom", description: "Please provide a name, price, category, and at least one image." });
+      toast({ variant: "destructive", title: "Incomplete Loom", description: "Missing mandatory fields." });
       return;
     }
 
@@ -129,10 +129,9 @@ export function AdminProductManager() {
       await setDoc(productRef, submissionData, { merge: true });
       setFormData(initialForm);
       setEditingId(null);
-      toast({ title: editingId ? "Loop Refined ✨" : "New Creation Added ✨", description: `${formData.name} is safely stored.` });
+      toast({ title: editingId ? "Loop Refined ✨" : "New Creation Added ✨", description: `${formData.name} is stored.` });
     } catch (error) {
-      console.error(error);
-      toast({ variant: "destructive", title: "Magic Glitch", description: "The grimoire could not be updated." });
+      toast({ variant: "destructive", title: "Magic Glitch", description: "Could not update boutique." });
     } finally {
       setIsSubmitting(false);
     }
@@ -156,288 +155,112 @@ export function AdminProductManager() {
   };
 
   const handleDelete = (id: string) => {
-    if (!db || !window.confirm("Are you sure you want to unravel this loop forever?")) return;
+    if (!db || !window.confirm("Are you sure?")) return;
     deleteDocumentNonBlocking(doc(db, 'products', id));
-    toast({ title: "Unraveled", description: "The piece has been withdrawn from history." });
-  };
-
-  const removeImage = (index: number) => {
-    setFormData(prev => ({
-      ...prev,
-      imageUrls: prev.imageUrls.filter((_, i) => i !== index)
-    }));
+    toast({ title: "Unraveled", description: "The piece has been withdrawn." });
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-      <div className="lg:col-span-5 order-2 lg:order-1">
-        <div className="bg-white rounded-[2.5rem] p-8 md:p-10 shadow-2xl border border-primary/5 stitching-border lg:sticky lg:top-32">
-          <div className="flex items-center justify-between mb-8">
-            <h3 className="font-headline text-2xl md:text-3xl text-primary flex items-center gap-3">
-              {editingId ? <Edit3 className="w-5 h-5 md:w-6 md:h-6 text-accent" /> : <Plus className="w-5 h-5 md:w-6 md:h-6 text-accent" />}
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+      <div className="lg:col-span-5">
+        <div className="bg-white rounded-[3rem] p-10 shadow-2xl border border-primary/5 stitching-border sticky top-32">
+          <div className="flex items-center justify-between mb-10">
+            <h3 className="font-headline text-3xl text-primary flex items-center gap-3">
+              {editingId ? <Edit3 className="w-6 h-6 text-accent" /> : <Plus className="w-6 h-6 text-accent" />}
               {editingId ? "Refine Creation" : "New Creation"}
             </h3>
             {editingId && (
-              <button 
-                onClick={() => { setEditingId(null); setFormData(initialForm); }}
-                className="text-[9px] font-black uppercase tracking-widest text-primary/30 hover:text-destructive transition-colors px-4 py-2 bg-paper rounded-full"
-              >
-                Cancel
-              </button>
+              <button onClick={() => { setEditingId(null); setFormData(initialForm); }} className="text-[10px] font-black uppercase tracking-widest text-primary/30 hover:text-destructive px-5 py-2 bg-paper rounded-full transition-all">Cancel</button>
             )}
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6 md:space-y-8">
-            <div className="space-y-4">
-              <Label className="text-[10px] font-black uppercase tracking-widest text-primary/30 ml-4">Gallery Loop</Label>
-              <div className="grid grid-cols-2 gap-3 md:gap-4">
-                {formData.imageUrls.map((url, idx) => (
-                  <div key={idx} className="relative aspect-square rounded-2xl overflow-hidden group border border-primary/5 shadow-md">
-                    <Image src={url} alt="Gallery" fill className="object-cover" />
-                    <button 
-                      type="button"
-                      onClick={() => removeImage(idx)}
-                      className="absolute top-2 right-2 w-8 h-8 bg-black/60 backdrop-blur-sm rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity"
-                    >
-                      <X className="w-4 h-4" />
-                    </button>
-                  </div>
-                ))}
-                {formData.imageUrls.length < 4 && (
-                  <SupabaseImageUpload 
-                    onUploadSuccess={(url) => setFormData(prev => ({ ...prev, imageUrls: [...prev.imageUrls, url] }))}
-                    className="aspect-square"
-                  />
-                )}
-              </div>
-            </div>
-
-            <div className="space-y-4 md:space-y-5">
-              <div className="space-y-2">
-                <Label className="text-[9px] font-black uppercase tracking-widest text-primary/20 ml-4">Product Name</Label>
-                <Input 
-                  placeholder="e.g., Whispering Willow Scarf"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="bg-paper border-none h-12 md:h-14 px-6 rounded-2xl font-black text-sm shadow-inner"
-                />
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-5">
-                <div className="space-y-2">
-                  <Label className="text-[9px] font-black uppercase tracking-widest text-primary/20 ml-4">Price (₹)</Label>
-                  <Input 
-                    type="number"
-                    placeholder="2500"
-                    value={formData.price}
-                    onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                    className="bg-paper border-none h-12 md:h-14 px-6 rounded-2xl font-black text-sm shadow-inner"
-                  />
+          <form onSubmit={handleSubmit} className="space-y-8">
+            <div className="grid grid-cols-2 gap-4">
+              {formData.imageUrls.map((url, idx) => (
+                <div key={idx} className="relative aspect-square rounded-3xl overflow-hidden border border-primary/5 shadow-inner">
+                  <Image src={url} alt="Gallery" fill className="object-cover" />
+                  <button type="button" onClick={() => setFormData(p => ({...p, imageUrls: p.imageUrls.filter((_, i) => i !== idx)}))} className="absolute top-2 right-2 w-8 h-8 bg-black/60 rounded-full flex items-center justify-center text-white"><X className="w-4 h-4" /></button>
                 </div>
-                <div className="space-y-2">
-                  <Label className="text-[9px] font-black uppercase tracking-widest text-primary/20 ml-4">Category</Label>
-                  <Select 
-                    value={formData.category} 
-                    onValueChange={(val) => setFormData({ ...formData, category: val })}
-                  >
-                    <SelectTrigger className="bg-paper border-none h-12 md:h-14 px-6 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-inner">
-                      <SelectValue placeholder="Select Category" />
-                    </SelectTrigger>
-                    <SelectContent className="rounded-2xl border-none shadow-2xl">
-                      {CATEGORIES.map(cat => (
-                        <SelectItem key={cat} value={cat} className="text-[10px] font-black uppercase tracking-widest py-3">
-                          {cat}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-5">
-                <div className="space-y-2">
-                  <Label className="text-[9px] font-black uppercase tracking-widest text-primary/20 ml-4">Stock Loop</Label>
-                  <Input 
-                    type="number"
-                    placeholder="1"
-                    value={formData.stockQuantity}
-                    onChange={(e) => setFormData({ ...formData, stockQuantity: e.target.value })}
-                    className="bg-paper border-none h-12 md:h-14 px-6 rounded-2xl font-black text-sm shadow-inner"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label className="text-[9px] font-black uppercase tracking-widest text-primary/20 ml-4">Tags</Label>
-                  <Input 
-                    placeholder="vintage, soft, heirloom"
-                    value={formData.tags}
-                    onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
-                    className="bg-paper border-none h-12 md:h-14 px-6 rounded-2xl font-black text-sm shadow-inner"
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <Label className="text-[9px] font-black uppercase tracking-widest text-primary/20 ml-4">The Stitch Story</Label>
-                <Textarea 
-                  placeholder="Describe the soul of this piece..."
-                  value={formData.description}
-                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  className="bg-paper border-none min-h-[120px] p-6 rounded-3xl font-medium text-sm italic shadow-inner"
-                />
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="flex items-center justify-between p-4 bg-paper rounded-2xl border border-primary/5 shadow-inner">
-                  <div className="space-y-1">
-                    <p className="text-[10px] font-black uppercase tracking-widest text-primary">Bestseller</p>
-                    <p className="text-[7px] text-primary/30 font-black uppercase tracking-widest">Homepage hit</p>
-                  </div>
-                  <Switch 
-                    checked={formData.isBestseller}
-                    onCheckedChange={(val) => setFormData({ ...formData, isBestseller: val })}
-                  />
-                </div>
-
-                <div className="flex items-center justify-between p-4 bg-paper rounded-2xl border border-primary/5 shadow-inner">
-                  <div className="space-y-1">
-                    <p className="text-[10px] font-black uppercase tracking-widest text-primary">Published</p>
-                    <p className="text-[7px] text-primary/30 font-black uppercase tracking-widest">Public view</p>
-                  </div>
-                  <Switch 
-                    checked={formData.isPublished}
-                    onCheckedChange={(val) => setFormData({ ...formData, isPublished: val })}
-                  />
-                </div>
-              </div>
-            </div>
-
-            <Button 
-              type="submit" 
-              disabled={isSubmitting}
-              className="w-full h-16 md:h-20 rounded-full bg-primary hover:bg-primary/90 text-white font-black uppercase tracking-[0.3em] text-[10px] shadow-2xl shadow-primary/30 transition-all hover:scale-[1.02] active:scale-95 group"
-            >
-              {isSubmitting ? (
-                <Loader2 className="animate-spin w-6 h-6" />
-              ) : (
-                <div className="flex items-center gap-3">
-                  {editingId ? "Finalize Ritual" : "Add to Boutique"} 
-                  <Sparkles className="w-5 h-5 group-hover:rotate-45 transition-transform" />
-                </div>
+              ))}
+              {formData.imageUrls.length < 4 && (
+                <SupabaseImageUpload onUploadSuccess={(url) => setFormData(prev => ({ ...prev, imageUrls: [...prev.imageUrls, url] }))} className="aspect-square" />
               )}
+            </div>
+
+            <div className="space-y-5">
+              <Input placeholder="Product Name" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="bg-paper border-none h-14 px-6 rounded-2xl font-black text-sm shadow-inner" />
+              <div className="grid grid-cols-2 gap-5">
+                <Input type="number" placeholder="Price (₹)" value={formData.price} onChange={(e) => setFormData({ ...formData, price: e.target.value })} className="bg-paper border-none h-14 px-6 rounded-2xl font-black text-sm shadow-inner" />
+                <Select value={formData.category} onValueChange={(val) => setFormData({ ...formData, category: val })}>
+                  <SelectTrigger className="bg-paper border-none h-14 px-6 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-inner"><SelectValue placeholder="Category" /></SelectTrigger>
+                  <SelectContent className="rounded-2xl">{CATEGORIES.map(cat => <SelectItem key={cat} value={cat} className="text-[10px] font-black uppercase tracking-widest">{cat}</SelectItem>)}</SelectContent>
+                </Select>
+              </div>
+              <Textarea placeholder="The Stitch Story..." value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} className="bg-paper border-none min-h-[140px] p-6 rounded-3xl font-medium text-sm italic shadow-inner" />
+              <div className="grid grid-cols-2 gap-4">
+                <div className="flex items-center justify-between p-5 bg-paper rounded-3xl border border-primary/5 shadow-inner">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-primary">Bestseller</span>
+                  <Switch checked={formData.isBestseller} onCheckedChange={(val) => setFormData({ ...formData, isBestseller: val })} />
+                </div>
+                <div className="flex items-center justify-between p-5 bg-paper rounded-3xl border border-primary/5 shadow-inner">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-primary">Published</span>
+                  <Switch checked={formData.isPublished} onCheckedChange={(val) => setFormData({ ...formData, isPublished: val })} />
+                </div>
+              </div>
+            </div>
+
+            <Button type="submit" disabled={isSubmitting} className="w-full h-20 rounded-full bg-primary hover:bg-primary/90 text-white font-black uppercase tracking-[0.4em] text-[10px] shadow-2xl group transition-all">
+              {isSubmitting ? <Loader2 className="animate-spin w-6 h-6" /> : <div className="flex items-center gap-3">{editingId ? "Finalize Ritual" : "Add to Boutique"} <Sparkles className="w-6 h-6 group-hover:rotate-45 transition-transform" /></div>}
             </Button>
           </form>
         </div>
       </div>
 
-      <div className="lg:col-span-7 order-1 lg:order-2 space-y-8 md:space-y-10">
-        <div className="flex flex-col gap-6 bg-white p-6 md:p-8 rounded-[2.5rem] shadow-xl border border-primary/5">
-          <div className="flex items-center justify-between flex-wrap gap-4">
-            <h3 className="font-headline text-2xl md:text-3xl text-primary">Boutique Gallery</h3>
-            <span className="text-[9px] font-black uppercase tracking-widest text-primary/30 px-5 py-2 bg-paper rounded-full shadow-inner">
-              {filteredProducts.length} Selections
-            </span>
+      <div className="lg:col-span-7 space-y-10">
+        <div className="bg-white p-8 rounded-[3rem] shadow-xl border border-primary/5 flex flex-col gap-6">
+          <div className="flex items-center justify-between">
+            <h3 className="font-headline text-4xl text-primary">Gallery</h3>
+            <span className="text-[10px] font-black uppercase tracking-widest text-primary/30 px-6 py-2 bg-paper rounded-full shadow-inner">{filteredProducts.length} Selections</span>
           </div>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             <div className="relative">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/20" />
-              <Input 
-                placeholder="Search history..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-11 h-12 rounded-full bg-paper border-none w-full text-xs font-black shadow-inner"
-              />
+              <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/20" />
+              <Input placeholder="Search..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="pl-12 h-14 rounded-full bg-paper border-none text-xs font-black shadow-inner" />
             </div>
             <Select value={filterCategory} onValueChange={setFilterCategory}>
-              <SelectTrigger className="h-12 w-full rounded-full bg-paper border-none text-[9px] font-black uppercase tracking-widest px-5 shadow-inner">
-                <SelectValue placeholder="Category" />
-              </SelectTrigger>
-              <SelectContent className="rounded-2xl border-none shadow-2xl">
-                <SelectItem value="all" className="text-[10px] font-black uppercase tracking-widest">All Categories</SelectItem>
-                {CATEGORIES.map(cat => (
-                  <SelectItem key={cat} value={cat} className="text-[10px] font-black uppercase tracking-widest">{cat}</SelectItem>
-                ))}
-              </SelectContent>
+              <SelectTrigger className="h-14 rounded-full bg-paper border-none text-[10px] font-black uppercase tracking-widest px-6 shadow-inner"><SelectValue placeholder="Category" /></SelectTrigger>
+              <SelectContent className="rounded-2xl"><SelectItem value="all" className="text-[10px] font-black uppercase tracking-widest">All</SelectItem>{CATEGORIES.map(cat => <SelectItem key={cat} value={cat} className="text-[10px] font-black uppercase tracking-widest">{cat}</SelectItem>)}</SelectContent>
             </Select>
             <Select value={sortBy} onValueChange={(val) => setSortBy(val as SortOption)}>
-              <SelectTrigger className="h-12 w-full rounded-full bg-paper border-none text-[9px] font-black uppercase tracking-widest px-5 shadow-inner">
-                <div className="flex items-center gap-2">
-                  <ArrowUpDown className="w-3 h-3" />
-                  <SelectValue placeholder="Sort By" />
-                </div>
-              </SelectTrigger>
-              <SelectContent className="rounded-2xl border-none shadow-2xl">
+              <SelectTrigger className="h-14 rounded-full bg-paper border-none text-[10px] font-black uppercase tracking-widest px-6 shadow-inner"><div className="flex items-center gap-2"><ArrowUpDown className="w-3 h-3" /><SelectValue placeholder="Sort" /></div></SelectTrigger>
+              <SelectContent className="rounded-2xl">
                 <SelectItem value="newest" className="text-[10px] font-black uppercase tracking-widest">Newest</SelectItem>
-                <SelectItem value="oldest" className="text-[10px] font-black uppercase tracking-widest">Oldest</SelectItem>
-                <SelectItem value="price-high" className="text-[10px] font-black uppercase tracking-widest">Price High</SelectItem>
-                <SelectItem value="price-low" className="text-[10px] font-black uppercase tracking-widest">Price Low</SelectItem>
+                <SelectItem value="price-high" className="text-[10px] font-black uppercase tracking-widest">High Price</SelectItem>
+                <SelectItem value="price-low" className="text-[10px] font-black uppercase tracking-widest">Low Price</SelectItem>
               </SelectContent>
             </Select>
           </div>
         </div>
 
-        {isLoading ? (
-          <div className="py-20 flex justify-center"><Loader2 className="w-10 h-10 animate-spin text-accent" /></div>
-        ) : filteredProducts.length === 0 ? (
-          <div className="py-20 text-center border-2 border-dashed border-primary/5 rounded-[3rem] bg-white/50 space-y-4">
-            <Package className="w-12 h-12 text-primary/10 mx-auto" />
-            <p className="text-primary/20 italic font-medium">"No creations found in the archives."</p>
-          </div>
-        ) : (
-          <div className="grid gap-4 md:gap-6">
+        {isLoading ? <div className="py-20 flex justify-center"><Loader2 className="w-12 h-12 animate-spin text-accent" /></div> : (
+          <div className="grid gap-6">
             {filteredProducts.map((prod) => (
-              <div key={prod.id} className="bg-white p-4 md:p-8 rounded-[2.5rem] shadow-xl hover:shadow-2xl transition-all duration-700 border border-primary/5 flex flex-col sm:flex-row gap-6 md:gap-8 items-center group relative overflow-hidden">
-                {prod.isBestseller && (
-                  <div className="absolute top-0 right-8 md:right-12 bg-accent text-white px-3 md:px-4 py-1.5 md:py-2 rounded-b-xl md:rounded-b-2xl shadow-lg">
-                    <Star className="w-4 h-4 fill-white" />
-                  </div>
-                )}
-                
-                <div className="relative w-full sm:w-28 sm:h-28 md:w-32 md:h-32 aspect-square rounded-3xl overflow-hidden bg-paper shrink-0 border border-primary/5 shadow-md">
-                  <Image 
-                    src={prod.imageUrls?.[0] || 'https://placehold.co/400x400?text=No+Image'} 
-                    alt={prod.name} 
-                    fill 
-                    className="object-cover" 
-                  />
-                  {!prod.isPublished && (
-                    <div className="absolute inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center">
-                      <EyeOff className="w-6 h-6 text-white" />
-                    </div>
-                  )}
+              <div key={prod.id} className="bg-white p-8 rounded-[3rem] shadow-xl hover:shadow-2xl transition-all duration-700 border border-primary/5 flex items-center gap-8 group">
+                <div className="relative w-32 h-32 aspect-square rounded-[2rem] overflow-hidden bg-paper shrink-0 shadow-lg border border-primary/5">
+                  <Image src={prod.imageUrls?.[0] || 'https://placehold.co/400x400'} alt={prod.name} fill className="object-cover" />
+                  {!prod.isPublished && <div className="absolute inset-0 bg-black/40 flex items-center justify-center"><EyeOff className="w-6 h-6 text-white" /></div>}
                 </div>
-
-                <div className="flex-1 min-w-0 space-y-2 md:space-y-3 text-center sm:text-left">
-                  <div className="flex items-center justify-center sm:justify-start gap-3">
-                    <span className="text-[8px] font-black uppercase tracking-widest text-accent bg-accent/10 px-4 py-1.5 rounded-full border border-accent/10 shadow-sm">
-                      {prod.category}
-                    </span>
-                    <span className="text-[8px] font-black uppercase tracking-widest text-primary/30">
-                      Stock: {prod.stockQuantity || 0}
-                    </span>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-3 mb-3">
+                    <span className="text-[8px] font-black uppercase tracking-widest text-accent bg-accent/5 px-4 py-1.5 rounded-full border border-accent/10">{prod.category}</span>
+                    <span className="text-[8px] font-black uppercase tracking-widest text-primary/30">Stock: {prod.stockQuantity}</span>
                   </div>
-                  
-                  <div className="space-y-1">
-                    <h4 className="font-headline text-2xl md:text-3xl text-primary group-hover:text-accent transition-colors truncate">{prod.name}</h4>
-                    <p className="font-black text-primary/40 text-sm italic">₹ {prod.price.toLocaleString('en-IN')}</p>
-                  </div>
+                  <h4 className="font-headline text-3xl text-primary truncate group-hover:text-accent transition-colors">{prod.name}</h4>
+                  <p className="font-black text-primary/40 text-sm mt-1 italic">₹ {prod.price.toLocaleString('en-IN')}</p>
                 </div>
-
-                <div className="flex sm:flex-col gap-3 w-full sm:w-auto">
-                  <button 
-                    onClick={() => handleEdit(prod)}
-                    className="flex-1 sm:flex-none w-12 h-12 rounded-full bg-paper flex items-center justify-center text-primary/40 hover:text-accent hover:bg-accent/10 transition-all shadow-md active:scale-90"
-                    title="Edit Ritual"
-                  >
-                    <Edit3 className="w-5 h-5" />
-                  </button>
-                  <button 
-                    onClick={() => handleDelete(prod.id)}
-                    className="flex-1 sm:flex-none w-12 h-12 rounded-full bg-paper flex items-center justify-center text-primary/20 hover:text-destructive hover:bg-destructive/10 transition-all shadow-md active:scale-90"
-                    title="Archive Loop"
-                  >
-                    <Trash2 className="w-5 h-5" />
-                  </button>
+                <div className="flex flex-col gap-3">
+                  <button onClick={() => handleEdit(prod)} className="w-14 h-14 rounded-full bg-paper flex items-center justify-center text-primary/40 hover:text-accent hover:bg-accent/10 transition-all shadow-md active:scale-90"><Edit3 className="w-6 h-6" /></button>
+                  <button onClick={() => handleDelete(prod.id)} className="w-14 h-14 rounded-full bg-paper flex items-center justify-center text-primary/20 hover:text-destructive hover:bg-destructive/10 transition-all shadow-md active:scale-90"><Trash2 className="w-6 h-6" /></button>
                 </div>
               </div>
             ))}

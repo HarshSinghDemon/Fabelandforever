@@ -19,7 +19,8 @@ import {
   Instagram,
   Mail,
   Navigation as NavIcon,
-  Phone
+  Phone,
+  Building
 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -27,38 +28,12 @@ import { useToast } from '@/hooks/use-toast';
 import { useFirestore } from '@/firebase';
 import { collection, addDoc } from 'firebase/firestore';
 
-// Basic Kolkata Pincode Mapping for Area Detection
+// Basic Kolkata Pincode Mapping for Area Detection (Fallback)
 const KOLKATA_LOCALITIES: Record<string, string> = {
-  "700001": "B.B.D. Bagh / Dalhousie",
-  "700002": "Cossipore",
-  "700003": "Baghbazar",
-  "700004": "Shambazar",
-  "700006": "Beadon Street",
-  "700007": "Burrabazar",
-  "700009": "Amherst Street",
-  "700010": "Beleghata",
-  "700012": "Bowbazar",
-  "700013": "Dharamtala",
-  "700016": "Park Street",
-  "700017": "Circus Avenue",
+  "700001": "B.B.D. Bagh",
   "700019": "Ballygunge",
-  "700020": "Lala Lajpat Rai Sarani",
-  "700025": "Bhawanipur",
-  "700026": "Kalighat",
   "700027": "Alipore",
-  "700029": "Sarat Bose Road",
-  "700031": "Dhakuria",
-  "700032": "Jadavpur University",
-  "700033": "Tollygunge",
-  "700045": "Lake Gardens",
-  "700047": "Naktala",
-  "700048": "Lake Town",
-  "700053": "New Alipore",
-  "700068": "Golf Green",
-  "700078": "Haltu",
-  "700091": "Salt Lake Sector V",
-  "700102": "Baguihati",
-  "700107": "Kasba",
+  "700091": "Salt Lake",
   "700156": "New Town",
 };
 
@@ -80,20 +55,17 @@ export default function CheckoutPage() {
     flat: '',
     street: '',
     locality: '',
+    city: '',
     pincode: '',
     gpsLocation: null as { lat: number, lng: number } | null
   });
 
-  // Auto-detect area based on pincode
+  // Auto-detect area based on pincode manually
   useEffect(() => {
-    if (formData.pincode.length === 6 && KOLKATA_LOCALITIES[formData.pincode]) {
-      setFormData(prev => ({ ...prev, locality: KOLKATA_LOCALITIES[formData.pincode] }));
-      toast({
-        title: "Area Detected ✨",
-        description: `Localizing your address to ${KOLKATA_LOCALITIES[formData.pincode]}.`,
-      });
+    if (formData.pincode.length === 6 && KOLKATA_LOCALITIES[formData.pincode] && !formData.locality) {
+      setFormData(prev => ({ ...prev, locality: KOLKATA_LOCALITIES[formData.pincode], city: 'Kolkata' }));
     }
-  }, [formData.pincode, toast]);
+  }, [formData.pincode]);
 
   const handleDetectGPS = () => {
     if (!navigator.geolocation) {
@@ -102,33 +74,44 @@ export default function CheckoutPage() {
     }
 
     setIsLocating(true);
-    const options = {
-      enableHighAccuracy: true,
-      timeout: 10000,
-      maximumAge: 0
-    };
-
     navigator.geolocation.getCurrentPosition(
-      (position) => {
+      async (position) => {
+        const { latitude, longitude } = position.coords;
         setFormData(prev => ({ 
           ...prev, 
-          gpsLocation: { 
-            lat: position.coords.latitude, 
-            lng: position.coords.longitude 
-          } 
+          gpsLocation: { lat: latitude, lng: longitude } 
         }));
-        setIsLocating(false);
-        toast({ title: "Coordinates Recorded 📍", description: "Your precise location has been added to the scroll." });
+
+        try {
+          // Attempt reverse geocoding via OpenStreetMap Nominatim
+          const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`);
+          const data = await response.json();
+          
+          if (data && data.address) {
+            const addr = data.address;
+            setFormData(prev => ({
+              ...prev,
+              street: addr.road || addr.pedestrian || addr.suburb || prev.street,
+              locality: addr.neighbourhood || addr.suburb || addr.city_district || addr.village || prev.locality,
+              city: addr.city || addr.town || addr.state_district || 'Kolkata',
+              pincode: addr.postcode || prev.pincode
+            }));
+            toast({ title: "Address Captured ✨", description: "Your destination details have been unrolled automatically." });
+          } else {
+            toast({ title: "Coordinates Recorded 📍", description: "GPS detected, but address lookup was shy. Please fill manually." });
+          }
+        } catch (err) {
+          console.error("Geocoding failed", err);
+          toast({ title: "Coordinates Recorded 📍", description: "Location captured. Address lookup failed." });
+        } finally {
+          setIsLocating(false);
+        }
       },
       (error) => {
         setIsLocating(false);
-        let msg = "Please enable location services for precise delivery.";
-        if (error.code === error.PERMISSION_DENIED) msg = "Location permission denied.";
-        if (error.code === error.POSITION_UNAVAILABLE) msg = "Location info is unavailable.";
-        if (error.code === error.TIMEOUT) msg = "Location request timed out.";
-        toast({ variant: "destructive", title: "GPS Denied", description: msg });
+        toast({ variant: "destructive", title: "GPS Denied", description: "Please enable location services for precise delivery." });
       },
-      options
+      { enableHighAccuracy: true, timeout: 10000 }
     );
   };
 
@@ -147,7 +130,7 @@ export default function CheckoutPage() {
         flat: formData.flat,
         street: formData.street,
         locality: formData.locality,
-        city: 'Kolkata',
+        city: formData.city,
         pincode: formData.pincode,
         gps: formData.gpsLocation
       },
@@ -168,22 +151,13 @@ export default function CheckoutPage() {
       .then(() => {
         setOrderComplete(true);
         clearCart();
-        toast({
-          title: "Order Received ✨",
-          description: "Your selections are being prepared in our scrolls.",
-        });
+        toast({ title: "Order Received ✨", description: "Your selections are recorded in our studio scrolls." });
       })
       .catch((error) => {
         console.error("Order error:", error);
-        toast({
-          variant: "destructive",
-          title: "Magic Interrupted",
-          description: "There was a glitch in the loom. Please try again.",
-        });
+        toast({ variant: "destructive", title: "Magic Interrupted", description: "Glitch in the loom. Try again." });
       })
-      .finally(() => {
-        setIsSubmitting(false);
-      });
+      .finally(() => setIsSubmitting(false));
   };
 
   if (orderComplete) {
@@ -197,31 +171,10 @@ export default function CheckoutPage() {
           </div>
           <h1 className="font-headline text-5xl md:text-7xl text-primary mb-6">Order Received! ✨</h1>
           <p className="text-xl text-muted-foreground italic mb-10 max-w-2xl leading-relaxed">
-            "Thank you for adopting our loops. We have safely recorded your details in our studio scrolls. We will contact you shortly via phone for confirmation and payment instructions."
+            "Thank you for adopting our loops. We will contact you shortly for confirmation."
           </p>
           <Button asChild className="rounded-full px-10 h-16 bg-primary hover:bg-primary/90 text-lg font-bold">
             <Link href="/">Return to Boutique</Link>
-          </Button>
-        </div>
-        <Footer />
-      </main>
-    );
-  }
-
-  if (cart.length === 0) {
-    return (
-      <main className="min-h-screen bg-paper">
-        <Navigation />
-        <div className="pt-40 pb-24 container mx-auto px-6 flex flex-col items-center justify-center text-center">
-          <div className="w-24 h-24 bg-accent/10 rounded-full flex items-center justify-center mb-8">
-            <ShoppingBag className="w-12 h-12 text-primary/40" />
-          </div>
-          <h1 className="font-headline text-5xl text-primary mb-6">Your Basket is Airy...</h1>
-          <p className="text-muted-foreground italic mb-10 max-w-md">
-            "It seems you haven't chosen any loops to bring home yet. Let's find something magical."
-          </p>
-          <Button asChild className="rounded-full px-10 h-14 bg-primary hover:bg-primary/90">
-            <Link href="/shop">Explore Collections</Link>
           </Button>
         </div>
         <Footer />
@@ -235,40 +188,35 @@ export default function CheckoutPage() {
       
       <div className="pt-40 pb-24 container mx-auto px-4 md:px-6 max-w-7xl">
         <div className="mb-12">
-          <Link 
-            href="/shop" 
-            className="inline-flex items-center text-primary/60 hover:text-primary transition-colors gap-2 font-bold uppercase tracking-widest text-[10px]"
-          >
+          <Link href="/shop" className="inline-flex items-center text-primary/60 hover:text-primary transition-colors gap-2 font-bold uppercase tracking-widest text-[10px]">
             <ArrowLeft className="w-4 h-4" /> Back to Boutique
           </Link>
           <h1 className="font-headline text-4xl md:text-7xl text-primary mt-6">Manifest Scroll</h1>
-          <p className="text-accent font-bold uppercase tracking-[0.4em] text-[10px] mt-4">Recording your heritage loop details</p>
+          <p className="text-accent font-bold uppercase tracking-[0.4em] text-[10px] mt-4">Recording your destination details</p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-16 items-start">
-          <div className="lg:col-span-4 space-y-8 order-2 lg:order-1">
-            <div className="bg-white rounded-[3rem] p-8 md:p-10 shadow-xl border border-accent/5 stitching-border overflow-hidden relative">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-16">
+          <div className="lg:col-span-4 space-y-8">
+            <div className="bg-white rounded-[3rem] p-8 shadow-xl border border-accent/5 stitching-border sticky top-32">
               <h3 className="font-headline text-2xl text-primary mb-8 flex items-center gap-3">
                 <Package className="w-6 h-6 text-accent" /> Selected Pieces
               </h3>
-              
               <div className="space-y-6">
                 {cart.map((item) => (
                   <div key={item.id} className="flex gap-4 items-center">
                     <div className="relative w-14 h-14 rounded-xl overflow-hidden border border-accent/10">
                       <Image src={item.image} alt={item.title} fill className="object-cover" />
                     </div>
-                    <div className="flex-1">
-                      <h4 className="font-bold text-primary text-xs md:text-sm leading-tight">{item.title}</h4>
-                      <p className="text-[9px] text-muted-foreground uppercase tracking-widest font-bold">Qty: {item.quantity}</p>
+                    <div className="flex-1 min-w-0">
+                      <h4 className="font-black text-primary text-xs truncate uppercase tracking-tight">{item.title}</h4>
+                      <p className="text-[8px] text-muted-foreground uppercase tracking-widest font-black">Qty: {item.quantity}</p>
                     </div>
-                    <span className="font-bold text-primary text-sm">₹ {(item.price * item.quantity).toLocaleString('en-IN')}</span>
+                    <span className="font-black text-primary text-sm whitespace-nowrap">₹ {(item.price * item.quantity).toLocaleString('en-IN')}</span>
                   </div>
                 ))}
               </div>
-
               <div className="mt-10 pt-8 border-t border-dashed border-primary/10">
-                <div className="flex justify-between items-center text-xl font-bold text-primary">
+                <div className="flex justify-between items-center text-2xl font-black text-primary font-headline">
                   <span>Total Magic</span>
                   <span>₹ {cartTotal.toLocaleString('en-IN')}</span>
                 </div>
@@ -276,157 +224,76 @@ export default function CheckoutPage() {
             </div>
           </div>
 
-          <div className="lg:col-span-8 order-1 lg:order-2">
-            <div className="bg-white rounded-[2rem] md:rounded-[4rem] p-8 md:p-16 shadow-2xl relative overflow-hidden">
+          <div className="lg:col-span-8">
+            <div className="bg-white rounded-[3rem] p-8 md:p-16 shadow-2xl relative overflow-hidden">
               <div className="absolute top-0 left-0 w-full h-2 bg-primary"></div>
               
               <form onSubmit={handleSubmitOrder} className="space-y-12">
-                {/* Identity Section */}
                 <div className="space-y-8">
-                  <div className="flex items-center gap-4 mb-2">
-                    <div className="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center text-accent">
-                      <CheckCircle2 className="w-4 h-4" />
-                    </div>
-                    <h3 className="font-headline text-2xl text-primary">Identity Ritual</h3>
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                  <h3 className="font-headline text-2xl text-primary">Identity Ritual</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <label className="text-[9px] font-bold uppercase tracking-widest text-primary/50 ml-4 flex items-center gap-2">Full Name</label>
-                      <Input 
-                        required
-                        placeholder="Your name" 
-                        value={formData.name}
-                        onChange={(e) => setFormData({...formData, name: e.target.value})}
-                        className="bg-paper border-none h-14 md:h-16 rounded-2xl md:rounded-3xl px-6 md:px-8 text-sm md:text-lg font-medium" 
-                      />
+                      <label className="text-[9px] font-black uppercase tracking-widest text-primary/50 ml-4">Full Name</label>
+                      <Input required placeholder="Your name" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} className="bg-paper border-none h-14 rounded-2xl px-6 font-bold" />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-[9px] font-bold uppercase tracking-widest text-primary/50 ml-4 flex items-center gap-2"><Phone className="w-3 h-3" /> Phone Number</label>
-                      <Input 
-                        required
-                        type="tel"
-                        placeholder="For delivery call" 
-                        value={formData.phone}
-                        onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                        className="bg-paper border-none h-14 md:h-16 rounded-2xl md:rounded-3xl px-6 md:px-8 text-sm md:text-lg font-medium" 
-                      />
+                      <label className="text-[9px] font-black uppercase tracking-widest text-primary/50 ml-4">Phone Number</label>
+                      <Input required type="tel" placeholder="For delivery call" value={formData.phone} onChange={(e) => setFormData({...formData, phone: e.target.value})} className="bg-paper border-none h-14 rounded-2xl px-6 font-bold" />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-[9px] font-bold uppercase tracking-widest text-primary/50 ml-4 flex items-center gap-2"><Instagram className="w-3 h-3" /> Instagram Handle</label>
-                      <Input 
-                        placeholder="@username" 
-                        value={formData.instagram}
-                        onChange={(e) => setFormData({...formData, instagram: e.target.value})}
-                        className="bg-paper border-none h-14 md:h-16 rounded-2xl md:rounded-3xl px-6 md:px-8 text-sm md:text-lg font-medium" 
-                      />
+                      <label className="text-[9px] font-black uppercase tracking-widest text-primary/50 ml-4">Instagram Handle</label>
+                      <Input placeholder="@username" value={formData.instagram} onChange={(e) => setFormData({...formData, instagram: e.target.value})} className="bg-paper border-none h-14 rounded-2xl px-6 font-bold" />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-[9px] font-bold uppercase tracking-widest text-primary/50 ml-4 flex items-center gap-2"><Mail className="w-3 h-3" /> Gmail (For Receipt)</label>
-                      <Input 
-                        required
-                        type="email"
-                        placeholder="hello@example.com" 
-                        value={formData.email}
-                        onChange={(e) => setFormData({...formData, email: e.target.value})}
-                        className="bg-paper border-none h-14 md:h-16 rounded-2xl md:rounded-3xl px-6 md:px-8 text-sm md:text-lg font-medium" 
-                      />
+                      <label className="text-[9px] font-black uppercase tracking-widest text-primary/50 ml-4">Gmail (For Receipt)</label>
+                      <Input required type="email" placeholder="hello@example.com" value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} className="bg-paper border-none h-14 rounded-2xl px-6 font-bold" />
                     </div>
                   </div>
                 </div>
 
-                {/* Destination Section */}
                 <div className="space-y-8 pt-8 border-t border-primary/5">
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-4">
-                      <div className="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center text-accent">
-                        <MapPin className="w-4 h-4" />
-                      </div>
-                      <h3 className="font-headline text-2xl text-primary">Destination Scroll</h3>
-                    </div>
-                    <Button 
-                      type="button" 
-                      variant="outline" 
-                      onClick={handleDetectGPS}
-                      disabled={isLocating}
-                      className="rounded-full h-10 border-accent/20 text-accent text-[9px] font-black uppercase tracking-widest bg-accent/5 hover:bg-accent hover:text-white transition-all"
-                    >
-                      {isLocating ? <Loader2 className="w-3 h-3 animate-spin mr-2" /> : <NavIcon className="w-3 h-3 mr-2" />}
-                      {formData.gpsLocation ? "Space Detected" : "Locate My Space"}
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-headline text-2xl text-primary">Destination Scroll</h3>
+                    <Button type="button" variant="outline" onClick={handleDetectGPS} disabled={isLocating} className="rounded-full h-12 border-accent/20 text-accent text-[9px] font-black uppercase tracking-widest bg-accent/5 hover:bg-accent hover:text-white transition-all">
+                      {isLocating ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <NavIcon className="w-4 h-4 mr-2" />}
+                      {formData.gpsLocation ? "Space Auto-Filled" : "Autofill via GPS"}
                     </Button>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2 md:col-span-2">
-                      <label className="text-[9px] font-bold uppercase tracking-widest text-primary/50 ml-4">Flat / House / Floor Number</label>
-                      <Input 
-                        required
-                        placeholder="e.g., Flat 4B, 2nd Floor" 
-                        value={formData.flat}
-                        onChange={(e) => setFormData({...formData, flat: e.target.value})}
-                        className="bg-paper border-none h-14 md:h-16 rounded-2xl md:rounded-3xl px-6 md:px-8 text-sm md:text-lg font-medium" 
-                      />
+                      <label className="text-[9px] font-black uppercase tracking-widest text-primary/50 ml-4">Flat / House Number</label>
+                      <Input required placeholder="e.g., Flat 4B, 2nd Floor" value={formData.flat} onChange={(e) => setFormData({...formData, flat: e.target.value})} className="bg-paper border-none h-14 rounded-2xl px-6 font-bold" />
+                    </div>
+                    <div className="space-y-2 md:col-span-2">
+                      <label className="text-[9px] font-black uppercase tracking-widest text-primary/50 ml-4">Street / Building</label>
+                      <Input required placeholder="e.g., Whispering Woods Apartments" value={formData.street} onChange={(e) => setFormData({...formData, street: e.target.value})} className="bg-paper border-none h-14 rounded-2xl px-6 font-bold" />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-[9px] font-bold uppercase tracking-widest text-primary/50 ml-4">Street / Landmark</label>
-                      <Input 
-                        required
-                        placeholder="e.g., Near Park Street" 
-                        value={formData.street}
-                        onChange={(e) => setFormData({...formData, street: e.target.value})}
-                        className="bg-paper border-none h-14 md:h-16 rounded-2xl md:rounded-3xl px-6 md:px-8 text-sm md:text-lg font-medium" 
-                      />
+                      <label className="text-[9px] font-black uppercase tracking-widest text-primary/50 ml-4">Area / Locality</label>
+                      <Input required placeholder="e.g., Park Street" value={formData.locality} onChange={(e) => setFormData({...formData, locality: e.target.value})} className="bg-paper border-none h-14 rounded-2xl px-6 font-bold" />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-[9px] font-bold uppercase tracking-widest text-primary/50 ml-4">Pincode (Kolkata Only)</label>
-                      <Input 
-                        required
-                        maxLength={6}
-                        placeholder="7000xx" 
-                        value={formData.pincode}
-                        onChange={(e) => setFormData({...formData, pincode: e.target.value})}
-                        className="bg-paper border-none h-14 md:h-16 rounded-2xl md:rounded-3xl px-6 md:px-8 text-sm md:text-lg font-medium" 
-                      />
+                      <label className="text-[9px] font-black uppercase tracking-widest text-primary/50 ml-4">Pincode</label>
+                      <Input required maxLength={6} placeholder="7000xx" value={formData.pincode} onChange={(e) => setFormData({...formData, pincode: e.target.value})} className="bg-paper border-none h-14 rounded-2xl px-6 font-bold" />
                     </div>
-                    <div className="space-y-2">
-                      <label className="text-[9px] font-bold uppercase tracking-widest text-primary/50 ml-4">Detected Locality</label>
-                      <Input 
-                        required
-                        placeholder="Locality name" 
-                        value={formData.locality}
-                        onChange={(e) => setFormData({...formData, locality: e.target.value})}
-                        className="bg-paper border-none h-14 md:h-16 rounded-2xl md:rounded-3xl px-6 md:px-8 text-sm md:text-lg font-medium" 
-                      />
+                    <div className="space-y-2 md:col-span-2">
+                      <label className="text-[9px] font-black uppercase tracking-widest text-primary/50 ml-4 flex items-center gap-2"><Building className="w-3 h-3" /> City</label>
+                      <Input required placeholder="e.g., Kolkata" value={formData.city} onChange={(e) => setFormData({...formData, city: e.target.value})} className="bg-paper border-none h-14 rounded-2xl px-6 font-bold" />
                     </div>
                   </div>
                 </div>
 
                 <div className="pt-6">
-                  <Button 
-                    type="submit" 
-                    disabled={isSubmitting}
-                    className="w-full h-16 md:h-24 rounded-2xl md:rounded-[2.5rem] bg-primary hover:bg-primary/90 text-white font-bold text-base md:text-xl uppercase tracking-[0.3em] shadow-2xl shadow-primary/30 transition-all hover:scale-[1.02] active:scale-97 group"
-                  >
-                    {isSubmitting ? (
-                      <div className="flex items-center gap-3">
-                        <Loader2 className="w-6 h-6 animate-spin" /> Recording Scroll...
-                      </div>
-                    ) : (
-                      <div className="flex items-center gap-3">
-                        Submit Order <Sparkles className="w-6 h-6 group-hover:rotate-45 transition-transform" />
-                      </div>
-                    )}
+                  <Button type="submit" disabled={isSubmitting} className="w-full h-20 rounded-[2rem] bg-primary hover:bg-primary/90 text-white font-black text-xl uppercase tracking-[0.3em] shadow-2xl transition-all hover:scale-[1.02] group">
+                    {isSubmitting ? <Loader2 className="w-6 h-6 animate-spin" /> : <div className="flex items-center gap-3">Submit Order <Sparkles className="w-6 h-6 group-hover:rotate-45 transition-transform" /></div>}
                   </Button>
-                  <p className="text-center text-[8px] md:text-[9px] text-primary/20 font-bold uppercase tracking-widest mt-6">
-                    Hand-delivery exclusively within Kolkata Heritage zones
-                  </p>
                 </div>
               </form>
             </div>
           </div>
         </div>
       </div>
-
       <Footer />
     </main>
   );

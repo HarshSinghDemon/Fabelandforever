@@ -39,7 +39,7 @@ export function Footer() {
                     <Instagram className="w-6 h-6 text-white" />
                   </div>
                   <div className="flex flex-col items-start text-left">
-                    <span className="text-[12px] font-black uppercase tracking-[0.4em] text-white">DM for Order</span>
+                    <span className="text-[12px] font-black uppercase tracking-[0.4em] text-white">Order via DM</span>
                     <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-accent animate-pulse mt-1">Start the Ritual</span>
                   </div>
                   <ArrowRight className="w-5 h-5 ml-4 opacity-20 group-hover:translate-x-2 transition-transform" />

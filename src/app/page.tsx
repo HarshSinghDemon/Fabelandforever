@@ -116,7 +116,7 @@ export default function Home() {
                   <div className="relative z-10 flex flex-col gap-6">
                     <div className="flex items-center gap-4">
                        <Instagram className="w-10 h-10" />
-                       <h3 className="font-headline text-2xl md:text-3xl">DM for Order</h3>
+                       <h3 className="font-headline text-2xl md:text-3xl">Order via DM</h3>
                     </div>
                     <p className="text-[10px] md:text-[11px] font-black uppercase tracking-[0.4em] leading-relaxed text-white/80">
                       Bespoke consultations and custom order manifesting exclusively via Instagram DMs.

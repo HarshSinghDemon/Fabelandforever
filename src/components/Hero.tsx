@@ -111,7 +111,7 @@ export function Hero() {
                 target="_blank"
                 className="text-[10px] md:text-[12px] font-black uppercase tracking-[0.4em] md:tracking-[0.5em] text-white/90 hover:text-accent transition-all border-b-2 border-accent/40 pb-2 hover:border-accent group flex items-center justify-center gap-4 bg-black/20 backdrop-blur-sm px-8 py-5 md:bg-transparent md:p-0 rounded-full w-full sm:w-auto"
               >
-                DM for Order <Sparkles className="w-5 h-5 text-accent group-hover:rotate-45 transition-transform" />
+                Order via DM <Sparkles className="w-5 h-5 text-accent group-hover:rotate-45 transition-transform" />
               </Link>
             </div>
           </div>

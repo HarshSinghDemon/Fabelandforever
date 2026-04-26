@@ -110,7 +110,7 @@ export function Navigation() {
                     : "border-white/30 text-white hover:bg-white hover:text-primary"
                 )}
               >
-                DM for Order <Instagram className="w-3.5 h-3.5 ml-1 group-hover/ig:rotate-12 transition-transform" />
+                Order via DM <Instagram className="w-3.5 h-3.5 ml-1 group-hover/ig:rotate-12 transition-transform" />
               </Link>
               <button 
                 onClick={() => setIsSearchOpen(true)}

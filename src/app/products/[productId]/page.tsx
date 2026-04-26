@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { use, useState, useEffect } from 'react';
@@ -208,7 +207,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
                 <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent animate-pulse"></div>
                 <Instagram className="w-7 h-7 md:w-8 md:h-8 group-hover:rotate-12 transition-transform" /> 
                 <div className="flex flex-col items-start">
-                  <span className="text-[10px] md:text-[11px] font-black uppercase tracking-[0.5em] md:tracking-[0.6em]">DM for Order</span>
+                  <span className="text-[10px] md:text-[11px] font-black uppercase tracking-[0.5em] md:tracking-[0.6em]">Order via DM</span>
                   <span className="text-[8px] font-bold uppercase tracking-widest text-white/60 mt-1 italic">Consult the Weaver</span>
                 </div>
                 <ChevronRight className="w-5 h-5 md:w-6 md:h-6 ml-auto mr-4 opacity-40 group-hover:translate-x-2 transition-transform" />

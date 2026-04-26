@@ -1,4 +1,3 @@
-
 "use client";
 
 import React from 'react';
@@ -12,14 +11,14 @@ export function FloatingContact() {
         target="_blank" 
         rel="noopener noreferrer"
         className="group relative flex items-center gap-4 bg-white/95 backdrop-blur-2xl p-3 pr-8 rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.2)] border border-primary/10 hover:scale-110 transition-all active:scale-95 animate-float"
-        aria-label="DM for Order on Instagram"
+        aria-label="Order via DM on Instagram"
       >
         <div className="bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white p-4 rounded-full shadow-lg group-hover:rotate-12 transition-transform">
           <Instagram className="w-6 h-6" />
         </div>
         <div className="flex flex-col">
           <span className="text-[10px] font-black uppercase tracking-[0.4em] text-accent leading-none mb-1.5 animate-pulse">Ritual</span>
-          <span className="text-[12px] font-black uppercase tracking-[0.2em] text-primary">DM for Order</span>
+          <span className="text-[12px] font-black uppercase tracking-[0.2em] text-primary">Order via DM</span>
         </div>
         
         {/* Animated notification glow */}

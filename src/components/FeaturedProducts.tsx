@@ -95,14 +95,14 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
                 <CarouselItem key={product.id} className="pl-2 md:pl-4 basis-1/2 lg:basis-1/3">
                   <div className="group relative py-2 md:py-4 px-1 md:px-2 transition-all duration-700 reveal-on-scroll active" style={{ transitionDelay: `${idx * 0.1}s` }}>
                     {/* Elevated background on hover/active */}
-                    <div className="absolute inset-x-0 -inset-y-4 bg-white rounded-[1rem] md:rounded-[3rem] opacity-0 group-hover:opacity-100 group-active:opacity-100 group-hover:bg-primary group-active:bg-primary shadow-[0_40px_80px_-20px_rgba(0,0,0,0.1)] group-hover:shadow-2xl group-active:shadow-2xl transition-all duration-500 -z-10 group-hover:-translate-y-2 group-active:-translate-y-2"></div>
+                    <div className="absolute inset-x-0 -inset-y-4 bg-white rounded-[1rem] md:rounded-[3rem] opacity-0 group-hover:opacity-100 group-active:opacity-100 group-hover:bg-primary group-active:bg-primary shadow-xl group-hover:shadow-2xl group-active:shadow-2xl transition-all duration-500 -z-10 group-hover:-translate-y-2 group-active:-translate-y-2"></div>
                     
                     <Link 
                       href={`/products/${product.id}`} 
                       className="block space-y-2 md:space-y-6 text-center transition-all duration-500 active:scale-95"
                     >
                       {/* Floating Image Container */}
-                      <div className="relative aspect-[3/4] mx-auto w-[92%] transition-all duration-700 group-hover:-translate-y-6 group-active:-translate-y-4 group-hover:scale-105 group-active:scale-105">
+                      <div className="relative aspect-[3/4] mx-auto w-[92%] transition-all duration-700 group-hover:-translate-y-6 group-active:-translate-y-3 group-hover:scale-105 group-active:scale-105">
                         {/* Interactive Shadow */}
                         <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-[80%] h-6 bg-black/10 blur-2xl rounded-full opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-opacity"></div>
                         
@@ -128,9 +128,6 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
                         </div>
                         
                         <div className="flex items-center justify-center gap-2 md:gap-4 pt-0.5 md:pt-1">
-                           <span className="text-[6px] md:text-[9px] font-black text-primary/20 uppercase tracking-widest group-hover:text-accent/40 group-active:text-accent/40 transition-colors duration-500 hidden xs:inline">
-                             Limited Piece
-                           </span>
                            <span className="font-headline text-xs md:text-2xl text-primary group-hover:text-accent group-active:text-accent transition-colors duration-500">
                              ₹ {Number(product.price).toLocaleString('en-IN')}
                            </span>
@@ -139,7 +136,7 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
                         <div className="pt-1 md:pt-2">
                           <Button 
                             onClick={(e) => handleAddToCart(e, product)}
-                            className="w-full h-8 md:h-12 rounded-full border border-accent text-accent bg-transparent hover:bg-accent hover:text-white group-hover:bg-accent group-hover:text-white group-active:bg-accent group-active:text-white group-hover:border-transparent group-active:border-transparent text-[7px] md:text-[10px] tracking-[0.3em] md:tracking-[0.4em] font-black uppercase shadow-sm hover:shadow-xl transition-all duration-500 group/btn active:scale-90"
+                            className="w-full h-8 md:h-12 rounded-full border border-accent text-accent bg-transparent hover:bg-accent hover:text-white group-hover:bg-accent group-hover:text-white group-active:bg-accent group-active:text-white transition-all duration-500 group/btn shadow-sm"
                           >
                             Add to Cart <ShoppingBag className="ml-1.5 w-3 h-3 md:w-3.5 md:h-3.5 group-hover/btn:rotate-12 transition-transform" />
                           </Button>

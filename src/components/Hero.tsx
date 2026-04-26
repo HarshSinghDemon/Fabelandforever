@@ -42,7 +42,7 @@ export function Hero() {
   return (
     <section className="relative h-screen w-full overflow-hidden bg-[#050505]">
       {/* Visual Layer: Cinematic Background Carousel */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0 h-full w-full">
         <Carousel
           plugins={[plugin.current]}
           className="w-full h-full"
@@ -51,9 +51,9 @@ export function Hero() {
             loop: true,
           }}
         >
-          <CarouselContent className="h-full ml-0">
+          <CarouselContent className="h-screen ml-0">
             {heroImages.map((imgUrl, index) => (
-              <CarouselItem key={index} className="h-full pl-0 relative">
+              <CarouselItem key={index} className="h-full pl-0 relative basis-full">
                 <div className="relative w-full h-full">
                   <Image
                     src={imgUrl}
@@ -71,7 +71,7 @@ export function Hero() {
         </Carousel>
         
         {/* Subtle Gradient Overlay to ensure text legibility */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/80 pointer-events-none z-[5]"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/70 pointer-events-none z-[5]"></div>
       </div>
       
       {/* Narrative Content Layer */}

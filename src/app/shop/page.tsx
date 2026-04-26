@@ -198,18 +198,18 @@ export default function ShopPage() {
                        <p className="text-primary/20 font-headline text-lg md:text-2xl italic px-6">"New loops coming soon to this collection."</p>
                     </div>
                   ) : (
-                    <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-8 lg:gap-12">
+                    <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-8 lg:gap-12 px-2 md:px-0">
                       {catProducts.map((product) => (
                         <div key={product.id} className="group relative py-4 px-2 transition-all duration-700">
-                          {/* Elevated background on hover/active - Transition to Lavender Text */}
+                          {/* Elevated background on hover/active */}
                           <div className="absolute inset-x-0 -inset-y-2 md:-inset-y-4 bg-white rounded-[1.5rem] md:rounded-[3rem] opacity-0 group-hover:opacity-100 group-active:opacity-100 group-hover:bg-primary group-active:bg-primary shadow-xl group-hover:shadow-2xl group-active:shadow-2xl transition-all duration-500 -z-10 group-hover:-translate-y-2 group-active:-translate-y-2"></div>
                           
                           <Link 
                             href={`/products/${product.id}`} 
                             className="block space-y-3 md:space-y-6 text-center transition-all duration-500 active:scale-95"
                           >
-                            {/* Floating Image with Shadow */}
-                            <div className="relative aspect-[3/4] mx-auto w-[92%] transition-all duration-700 group-hover:-translate-y-3 md:group-hover:-translate-y-6 group-active:-translate-y-3 group-hover:scale-105 group-active:scale-105">
+                            {/* Floating Image Container */}
+                            <div className="relative aspect-[3/4] mx-auto w-[92%] transition-all duration-700 group-hover:-translate-y-6 group-active:-translate-y-3 group-hover:scale-105 group-active:scale-105">
                               {/* Bottom Shadow Wrapper */}
                               <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-[80%] h-4 bg-black/10 blur-xl rounded-full opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-opacity"></div>
                               
@@ -243,7 +243,7 @@ export default function ShopPage() {
                               <div className="pt-1 md:pt-2">
                                 <button 
                                   onClick={(e) => handleAddToCart(e, product)}
-                                  className="w-full h-8 md:h-12 rounded-full border border-accent text-accent bg-transparent hover:bg-accent hover:text-white group-hover:bg-accent group-hover:text-white group-active:bg-accent group-active:text-white group-hover:border-transparent group-active:border-transparent transition-all duration-500 font-black uppercase tracking-[0.2em] text-[7px] md:text-[10px] flex items-center justify-center gap-1.5 group/btn shadow-sm active:scale-90"
+                                  className="w-full h-8 md:h-12 rounded-full border border-accent text-accent bg-transparent hover:bg-accent hover:text-white group-hover:bg-accent group-hover:text-white group-active:bg-accent group-active:text-white transition-all duration-500 font-black uppercase tracking-[0.2em] text-[7px] md:text-[10px] flex items-center justify-center gap-1.5 group/btn shadow-sm"
                                 >
                                   Add to Cart <ShoppingBag className="w-3 h-3 md:w-3.5 md:h-3.5 group-hover/btn:rotate-12 transition-transform" />
                                 </button>

@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useEffect } from 'react';
@@ -112,7 +111,7 @@ export function Navigation() {
                </Sheet>
             </div>
 
-            {/* Logo: Centered on Mobile, Left on PC */}
+            {/* Logo */}
             <div className="flex-1 lg:flex-none flex justify-center lg:justify-start">
               <Link href="/" className="flex items-center gap-3 md:gap-5 group active:scale-95 transition-transform">
                 <Logo className={cn(
@@ -241,31 +240,6 @@ export function Navigation() {
           </DialogContent>
         </Dialog>
       </nav>
-
-      {/* Mobile Bottom Navigation Bar: High-end App Style */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-[100] bg-white/95 backdrop-blur-2xl border-t border-primary/5 h-20 flex items-center justify-around px-6 pb-6 pt-3 shadow-[0_-8px_40px_-4px_rgba(0,0,0,0.1)] rounded-t-[2.5rem]">
-        <Link href="/" className={cn(
-          "flex flex-col items-center gap-1.5 transition-all active:scale-90",
-          pathname === '/' ? "text-primary scale-110" : "text-primary/30"
-        )}>
-          <Home className="w-6 h-6" />
-          <span className="text-[9px] font-black uppercase tracking-widest">Home</span>
-        </Link>
-        <Link href="/shop" className={cn(
-          "flex flex-col items-center gap-1.5 transition-all active:scale-90",
-          pathname === '/shop' ? "text-primary scale-110" : "text-primary/30"
-        )}>
-          <LayoutGrid className="w-6 h-6" />
-          <span className="text-[9px] font-black uppercase tracking-widest">Shop</span>
-        </Link>
-        <button onClick={() => setIsSearchOpen(true)} className="flex flex-col items-center gap-1.5 text-primary/30 active:scale-90">
-          <Search className="w-6 h-6" />
-          <span className="text-[9px] font-black uppercase tracking-widest">Search</span>
-        </button>
-        <div className="relative active:scale-90 transition-transform">
-          <CartDrawer isLight={false} />
-        </div>
-      </div>
     </>
   );
 }

@@ -1,10 +1,11 @@
+
 "use client";
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { Search, Loader2, Home, LayoutGrid, Sparkles, ArrowRight, Instagram } from 'lucide-react';
+import { Search, Loader2, Home, LayoutGrid, ArrowRight, Instagram } from 'lucide-react';
 import { CartDrawer } from './CartDrawer';
 import { Logo } from './Logo';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -68,14 +69,14 @@ export function Navigation() {
         "fixed top-0 left-0 right-0 z-[60] transition-all duration-700",
         useLightStyle 
           ? "bg-transparent py-10" 
-          : "bg-white/95 backdrop-blur-xl border-b border-primary/5 py-4 shadow-sm"
+          : "bg-white/95 backdrop-blur-xl border-b border-primary/10 py-3 md:py-4 shadow-sm"
       )}>
-        <div className="container mx-auto px-6 max-w-7xl">
+        <div className="container mx-auto px-4 md:px-6 max-w-7xl">
           <div className="flex items-center justify-between relative">
             <div className="flex-shrink-0">
               <Link href="/" className="flex items-center gap-3 md:gap-5 group">
                 <Logo className={cn(
-                  "w-9 h-9 md:w-12 md:h-12 transition-colors duration-500",
+                  "w-8 h-8 md:w-12 md:h-12 transition-colors duration-500",
                   useLightStyle ? "text-white" : "text-primary"
                 )} />
                 <span className={cn(
@@ -88,13 +89,13 @@ export function Navigation() {
               </Link>
             </div>
 
-            <div className="hidden lg:flex items-center gap-14">
+            <div className="hidden lg:flex items-center gap-12">
               {navLinks.map((link) => (
                 <Link 
                   key={link.name} 
                   href={link.href}
                   className={cn(
-                    "text-[11px] font-black uppercase tracking-[0.4em] transition-all hover:text-accent whitespace-nowrap",
+                    "text-[10px] font-black uppercase tracking-[0.4em] transition-all hover:text-accent whitespace-nowrap",
                     useLightStyle ? "text-white drop-shadow-md" : "text-primary"
                   )}
                 >
@@ -103,15 +104,15 @@ export function Navigation() {
               ))}
             </div>
 
-            <div className="flex items-center gap-4 md:gap-10">
+            <div className="flex items-center gap-3 md:gap-8">
               <Link 
                 href="https://www.instagram.com/fable.and.forever/"
                 target="_blank"
                 className={cn(
-                  "hidden xs:flex items-center gap-3 px-6 py-2.5 rounded-full border-2 transition-all text-[9px] font-black uppercase tracking-widest group/ig",
+                  "hidden xs:flex items-center gap-3 px-5 py-2 rounded-full border-2 transition-all text-[8px] font-black uppercase tracking-widest group/ig",
                   useLightStyle 
                     ? "border-white/30 text-white hover:bg-white hover:text-primary" 
-                    : "border-accent/20 text-accent hover:bg-accent hover:text-white"
+                    : "border-primary/20 text-primary hover:bg-primary hover:text-white"
                 )}
               >
                 Order via DM <Instagram className="w-3.5 h-3.5 ml-1 group-hover/ig:rotate-12 transition-transform" />
@@ -150,7 +151,7 @@ export function Navigation() {
                     placeholder="What shall we find?" 
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10 h-14 md:h-16 border-none border-b-2 border-primary/5 bg-transparent text-xl md:text-2xl placeholder:text-primary/10 focus-visible:ring-0 rounded-none text-primary font-headline"
+                    className="pl-10 h-14 md:h-16 border-none border-b-2 border-primary/10 bg-transparent text-xl md:text-2xl placeholder:text-primary/10 focus-visible:ring-0 rounded-none text-primary font-headline"
                     autoFocus
                   />
                 </div>
@@ -212,18 +213,18 @@ export function Navigation() {
         </Dialog>
       </nav>
 
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-[100] bg-white/95 backdrop-blur-2xl border-t border-primary/5 h-22 flex items-center justify-around px-4 pb-6 pt-3 shadow-[0_-4px_30px_-4px_rgba(0,0,0,0.05)]">
-        <Link href="/" className="flex flex-col items-center gap-1.5 group">
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-[100] bg-white/95 backdrop-blur-2xl border-t border-primary/5 h-20 flex items-center justify-around px-4 pb-4 pt-2 shadow-[0_-4px_30px_-4px_rgba(0,0,0,0.05)]">
+        <Link href="/" className="flex flex-col items-center gap-1 group">
           <Home className="w-5 h-5 text-primary" />
-          <span className="text-[9px] font-black uppercase tracking-widest text-primary">Home</span>
+          <span className="text-[8px] font-black uppercase tracking-widest text-primary">Home</span>
         </Link>
-        <Link href="/shop" className="flex flex-col items-center gap-1.5 group">
+        <Link href="/shop" className="flex flex-col items-center gap-1 group">
           <LayoutGrid className="w-5 h-5 text-primary/60" />
-          <span className="text-[9px] font-black uppercase tracking-widest text-primary/60">Shop</span>
+          <span className="text-[8px] font-black uppercase tracking-widest text-primary/60">Shop</span>
         </Link>
-        <button onClick={() => setIsSearchOpen(true)} className="flex flex-col items-center gap-1.5 group">
+        <button onClick={() => setIsSearchOpen(true)} className="flex flex-col items-center gap-1 group">
           <Search className="w-5 h-5 text-primary/60" />
-          <span className="text-[9px] font-black uppercase tracking-widest text-primary/60">Search</span>
+          <span className="text-[8px] font-black uppercase tracking-widest text-primary/60">Search</span>
         </button>
         <div className="scale-90">
           <CartDrawer isLight={false} />

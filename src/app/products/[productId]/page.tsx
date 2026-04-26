@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { use, useState, useEffect } from 'react';
@@ -132,7 +133,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
     <main className="min-h-screen bg-white selection:bg-accent/10 flex flex-col">
       <Navigation />
       
-      <div className="container mx-auto px-4 md:px-6 max-w-7xl pt-32 md:pt-48 pb-24 flex-1">
+      <div className="container mx-auto px-4 md:px-6 max-w-7xl pt-24 md:pt-48 pb-24 flex-1">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-16">
           
           {/* Column 1: Archive Sidebar (Desktop Only) */}
@@ -174,7 +175,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
           </aside>
 
           {/* Column 2: Visual Center Gallery */}
-          <div className="lg:col-span-5 space-y-8">
+          <div className="lg:col-span-5 space-y-6 md:space-y-8">
             <div className="relative aspect-[4/5] bg-paper overflow-hidden shadow-sm border border-primary/5 stitching-border group">
               {product.isBestseller && (
                 <div className="absolute top-6 left-6 z-20 bg-accent text-white px-5 py-2 text-[10px] font-black uppercase tracking-[0.2em] shadow-2xl animate-in zoom-in duration-500">
@@ -223,7 +224,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
           </div>
 
           {/* Column 3: Narrative Pillar Details */}
-          <div className="lg:col-span-5 space-y-10 lg:pl-6">
+          <div className="lg:col-span-5 space-y-8 lg:pl-6">
             <nav className="text-[9px] font-black uppercase tracking-[0.4em] text-primary/30 flex items-center gap-3">
               <Link href="/" className="hover:text-accent transition-colors">Home</Link>
               <ChevronRight className="w-3 h-3" />
@@ -232,16 +233,16 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
               <span className="text-accent">{product.name}</span>
             </nav>
 
-            <div className="space-y-6">
+            <div className="space-y-4 md:space-y-6">
               <div className="space-y-2">
-                <p className="text-[11px] font-black uppercase tracking-[0.5em] text-accent flex items-center gap-3">
+                <p className="text-[10px] md:text-[11px] font-black uppercase tracking-[0.5em] text-accent flex items-center gap-3">
                    <Sparkles className="w-4 h-4" /> {product.category}
                 </p>
-                <h1 className="font-headline text-5xl md:text-7xl lg:text-8xl text-primary tracking-tighter leading-[0.9] drop-shadow-sm">
+                <h1 className="font-headline text-4xl md:text-7xl lg:text-8xl text-primary tracking-tighter leading-[0.9] drop-shadow-sm">
                   {product.name}
                 </h1>
               </div>
-              <p className="text-base md:text-lg leading-relaxed text-primary/60 italic font-medium max-w-lg">
+              <p className="text-sm md:text-lg leading-relaxed text-primary/60 italic font-medium max-w-lg">
                 "{product.description}"
               </p>
             </div>
@@ -254,28 +255,19 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
             </div>
 
             <div className="flex items-baseline gap-4">
-               <span className="text-4xl md:text-5xl font-headline text-primary">
+               <span className="text-3xl md:text-5xl font-headline text-primary">
                  ₹ {Number(product.price).toLocaleString('en-IN')}
                </span>
                <span className="text-[10px] font-black uppercase tracking-widest text-primary/20">Tax Included</span>
             </div>
 
-            {/* Share Icons */}
-            <div className="flex gap-8 text-primary/10">
-              <Facebook className="w-5 h-5 hover:text-accent cursor-pointer transition-all hover:scale-125" />
-              <Twitter className="w-5 h-5 hover:text-accent cursor-pointer transition-all hover:scale-125" />
-              <Instagram className="w-5 h-5 hover:text-accent cursor-pointer transition-all hover:scale-125" />
-              <Share2 className="w-5 h-5 hover:text-accent cursor-pointer transition-all hover:scale-125" />
-            </div>
-
             {/* Action Row: Quantity & Buy */}
-            <div className="space-y-6">
+            <div className="space-y-4 md:space-y-6">
               <div className="flex flex-col sm:flex-row gap-4 items-stretch">
-                <div className="flex items-center border border-primary/10 h-16 md:h-20 bg-white shadow-sm overflow-hidden min-w-[160px] rounded-2xl">
+                <div className="flex items-center border border-primary/10 h-16 md:h-20 bg-white shadow-sm overflow-hidden min-w-[140px] rounded-2xl">
                   <button 
                     onClick={() => setQuantity(Math.max(1, quantity - 1))} 
                     className="flex-1 flex items-center justify-center hover:bg-primary/5 transition-colors h-full"
-                    aria-label="Decrease"
                   >
                     <Minus className="w-4 h-4 text-primary" />
                   </button>
@@ -283,14 +275,13 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
                   <button 
                     onClick={() => setQuantity(quantity + 1)} 
                     className="flex-1 flex items-center justify-center hover:bg-primary/5 transition-colors h-full"
-                    aria-label="Increase"
                   >
                     <Plus className="w-4 h-4 text-primary" />
                   </button>
                 </div>
                 <Button 
                   onClick={handleAddToCart}
-                  className="flex-1 h-16 md:h-20 bg-primary text-white text-[11px] font-black tracking-[0.5em] uppercase shadow-2xl transition-all hover:scale-[1.02] active:scale-95 rounded-2xl"
+                  className="flex-1 h-16 md:h-20 bg-primary text-white text-[10px] md:text-[11px] font-black tracking-[0.4em] uppercase shadow-2xl transition-all hover:scale-[1.02] active:scale-95 rounded-2xl"
                 >
                   Add to Cart
                 </Button>
@@ -299,46 +290,46 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
               <Button 
                 onClick={handleBuyNow}
                 variant="outline"
-                className="w-full h-16 md:h-20 border-primary/20 text-[11px] font-black tracking-[0.5em] uppercase hover:bg-primary hover:text-white transition-all rounded-2xl"
+                className="w-full h-16 md:h-20 border-primary/20 text-[10px] md:text-[11px] font-black tracking-[0.4em] uppercase hover:bg-primary hover:text-white transition-all rounded-2xl"
               >
                 Buy it Now
               </Button>
             </div>
 
             {/* Order via DM Portal */}
-            <div className="pt-4">
+            <div className="pt-2">
               <Link 
                 href="https://www.instagram.com/fable.and.forever/"
                 target="_blank"
-                className="w-full flex items-center justify-center gap-8 py-8 md:py-10 bg-accent text-white hover:bg-accent/90 transition-all shadow-[0_20px_50px_-15px_rgba(var(--accent),0.4)] relative overflow-hidden group rounded-[3rem]"
+                className="w-full flex items-center justify-center gap-6 md:gap-8 py-6 md:py-10 bg-accent text-white hover:bg-accent/90 transition-all shadow-[0_20px_50px_-15px_rgba(var(--accent),0.4)] relative overflow-hidden group rounded-[2.5rem] md:rounded-[3rem]"
               >
                 <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                <Instagram className="w-8 h-8 group-hover:rotate-12 transition-transform duration-500" /> 
+                <Instagram className="w-6 h-6 md:w-8 md:h-8 group-hover:rotate-12 transition-transform duration-500" /> 
                 <div className="flex flex-col items-start text-left">
-                  <span className="text-[12px] font-black uppercase tracking-[0.6em] leading-none">Customize Order</span>
+                  <span className="text-[10px] md:text-[12px] font-black uppercase tracking-[0.5em] leading-none">Customize Order</span>
                 </div>
-                <ChevronRight className="w-6 h-6 opacity-20 group-hover:translate-x-3 transition-transform" />
+                <ChevronRight className="w-5 h-5 md:w-6 md:h-6 opacity-20 group-hover:translate-x-3 transition-transform" />
               </Link>
             </div>
 
             {/* Accordion Detail Sections */}
-            <Accordion type="single" collapsible className="w-full border-t border-primary/5 pt-10">
-              <AccordionItem value="process" className="border-primary/5 py-2">
-                <AccordionTrigger className="text-[10px] font-black uppercase tracking-[0.5em] hover:text-accent transition-colors no-underline hover:no-underline">The Process</AccordionTrigger>
+            <Accordion type="single" collapsible className="w-full border-t border-primary/5 pt-8">
+              <AccordionItem value="process" className="border-primary/5 py-1">
+                <AccordionTrigger className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.4em] hover:text-accent transition-colors no-underline hover:no-underline">The Process</AccordionTrigger>
                 <AccordionContent className="text-sm text-primary/60 leading-relaxed italic pt-4">
-                  Every loop is a meditation. Our master weavers spend days hand-stitching each piece in our Kolkata studio, ensuring a tension and durability that lasts for generations.
+                  Every loop is a meditation. Our master weavers spend days hand-stitching each piece in our Kolkata studio.
                 </AccordionContent>
               </AccordionItem>
-              <AccordionItem value="materials" className="border-primary/5 py-2">
-                <AccordionTrigger className="text-[10px] font-black uppercase tracking-[0.5em] hover:text-accent transition-colors no-underline hover:no-underline">Fiber Details</AccordionTrigger>
+              <AccordionItem value="materials" className="border-primary/5 py-1">
+                <AccordionTrigger className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.4em] hover:text-accent transition-colors no-underline hover:no-underline">Fiber Details</AccordionTrigger>
                 <AccordionContent className="text-sm text-primary/60 leading-relaxed italic pt-4">
-                  We use only premium, locally-sourced cotton and soft wool blends that grow softer with every year. Our materials are hypoallergenic and selected for their tactile soul.
+                  We use only premium, locally-sourced cotton and soft wool blends that grow softer with every year.
                 </AccordionContent>
               </AccordionItem>
-              <AccordionItem value="delivery" className="border-primary/5 py-2">
-                <AccordionTrigger className="text-[10px] font-black uppercase tracking-[0.5em] hover:text-accent transition-colors no-underline hover:no-underline">Heritage Delivery</AccordionTrigger>
+              <AccordionItem value="delivery" className="border-primary/5 py-1">
+                <AccordionTrigger className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.4em] hover:text-accent transition-colors no-underline hover:no-underline">Heritage Delivery</AccordionTrigger>
                 <AccordionContent className="text-sm text-primary/60 leading-relaxed italic pt-4">
-                  Based in the heart of Kolkata, we offer hand-delivery exclusively within city limits to ensure your artisanal selection arrives in perfect, boutique-ready condition.
+                  Based in the heart of Kolkata, we offer hand-delivery exclusively within city limits.
                 </AccordionContent>
               </AccordionItem>
             </Accordion>

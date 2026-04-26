@@ -1,10 +1,11 @@
+
 "use client";
 
 import React from 'react';
 import { useCart } from '@/context/CartContext';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetClose } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
-import { ShoppingBasket, Trash2, Plus, Minus, ShoppingBag, ArrowRight, X } from 'lucide-react';
+import { ShoppingBasket, Trash2, Plus, Minus, ShoppingBag, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
@@ -49,8 +50,8 @@ export function CartDrawer({ isLight }: CartDrawerProps) {
         <div className="flex-1 overflow-y-auto p-5 md:p-8 space-y-6 no-scrollbar bg-paper">
           {cart.length === 0 ? (
             <div className="h-full flex flex-col items-center justify-center text-center p-12 space-y-8">
-              <div className="w-24 h-24 md:w-32 md:h-32 bg-primary/5 rounded-full flex items-center justify-center mb-4">
-                <ShoppingBasket className="w-12 h-12 md:w-16 md:h-16 text-primary/20" />
+              <div className="w-20 h-20 md:w-32 md:h-32 bg-primary/5 rounded-full flex items-center justify-center mb-4">
+                <ShoppingBasket className="w-10 h-10 md:w-16 md:h-16 text-primary/20" />
               </div>
               <p className="text-primary/70 font-medium italic text-lg">"Your basket is currently as light as a cloud."</p>
               <SheetClose asChild>
@@ -59,7 +60,7 @@ export function CartDrawer({ isLight }: CartDrawerProps) {
             </div>
           ) : (
             cart.map((item) => (
-              <div key={item.id} className="relative bg-white p-5 rounded-[2.5rem] border border-primary/10 flex gap-4 md:gap-6 shadow-sm hover:shadow-md transition-shadow">
+              <div key={item.id} className="relative bg-white p-5 rounded-[2rem] border border-primary/10 flex gap-4 md:gap-6 shadow-sm hover:shadow-md transition-shadow">
                 <div className="relative w-20 h-20 md:w-24 md:h-24 rounded-2xl overflow-hidden bg-muted shrink-0 border border-primary/5">
                   <Image src={item.image} alt={item.title} fill className="object-cover" />
                 </div>
@@ -103,16 +104,13 @@ export function CartDrawer({ isLight }: CartDrawerProps) {
         </div>
 
         {cart.length > 0 && (
-          <div className="p-8 md:p-10 border-t border-primary/10 space-y-6 bg-white shadow-[0_-10px_40px_rgba(0,0,0,0.05)] pb-12 sm:pb-10">
-            <div className="flex justify-between items-center text-3xl md:text-4xl font-headline">
+          <div className="p-8 md:p-10 border-t border-primary/10 space-y-6 bg-white shadow-[0_-10px_40px_rgba(0,0,0,0.05)] pb-10">
+            <div className="flex justify-between items-center text-2xl md:text-4xl font-headline">
               <span className="text-primary/60">Total Magic</span>
               <span className="text-primary font-bold">₹ {cartTotal.toLocaleString('en-IN')}</span>
             </div>
-            <p className="text-[10px] text-primary/50 uppercase tracking-[0.3em] font-bold text-center italic">
-              "Weaving your forever loops with care"
-            </p>
             <SheetClose asChild>
-              <Button asChild className="w-full h-18 md:h-20 rounded-[2rem] bg-primary hover:bg-primary/90 text-white font-bold text-lg uppercase tracking-[0.3em] shadow-2xl shadow-primary/20 transition-all hover:scale-[1.02] active:scale-95">
+              <Button asChild className="w-full h-16 md:h-20 rounded-[2rem] bg-primary hover:bg-primary/90 text-white font-bold text-lg uppercase tracking-[0.3em] shadow-2xl shadow-primary/20 transition-all hover:scale-[1.02] active:scale-95">
                 <Link href="/checkout" className="flex items-center justify-center gap-4">
                   Checkout <ArrowRight className="w-5 h-5" />
                 </Link>
@@ -120,7 +118,7 @@ export function CartDrawer({ isLight }: CartDrawerProps) {
             </SheetClose>
             <button 
               onClick={clearCart}
-              className="w-full text-[10px] text-primary/40 hover:text-destructive transition-colors uppercase tracking-[0.5em] font-bold pb-4"
+              className="w-full text-[9px] text-primary/40 hover:text-destructive transition-colors uppercase tracking-[0.5em] font-bold pb-4"
             >
               Empty Basket
             </button>

@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { use, useState, useEffect } from 'react';
@@ -114,7 +115,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
       
       <div className="container mx-auto px-4 md:px-6 max-w-7xl flex-1 flex flex-col lg:flex-row gap-10 lg:gap-20 pt-28 lg:pt-40 pb-24">
         
-        {/* Left Column: Image Gallery */}
+        {/* Left Column: Image Gallery (PC: Large & Sticky, Phone: Full Width) */}
         <div className="w-full lg:w-3/5 flex flex-col gap-6">
           <Link href="/shop" className="hidden lg:flex items-center gap-2 text-[9px] font-bold uppercase tracking-[0.4em] text-primary/30 hover:text-primary transition-colors mb-2">
             <ArrowLeft className="w-4 h-4" /> Return to Collection
@@ -144,7 +145,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
           </div>
         </div>
 
-        {/* Right Column: Details & Actions */}
+        {/* Right Column: Details & Actions (Sticky on PC) */}
         <div className="w-full lg:w-2/5 space-y-8 md:space-y-10 lg:sticky lg:top-40 h-fit">
           <div className="space-y-4 text-center lg:text-left">
             <p className="text-[9px] font-bold uppercase tracking-[0.8em] text-accent">Fable & Forever Studio</p>
@@ -215,8 +216,14 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
             </div>
           </div>
 
+          {/* Artisanal Symbols */}
           <div className="grid grid-cols-4 gap-2 md:gap-4 py-8 md:py-10 border-y border-primary/5">
-            {[ { icon: Leaf, label: 'Eco' }, { icon: Feather, label: 'Hand' }, { icon: Heart, label: 'Pure' }, { icon: Undo2, label: 'Soft' } ].map((item, i) => (
+            {[ 
+              { icon: Leaf, label: 'Eco' }, 
+              { icon: Feather, label: 'Hand' }, 
+              { icon: Heart, label: 'Pure' }, 
+              { icon: Undo2, label: 'Soft' } 
+            ].map((item, i) => (
               <div key={i} className="flex flex-col items-center gap-2 md:gap-3">
                 <div className="w-10 h-10 md:w-12 md:h-12 bg-paper rounded-full flex items-center justify-center text-primary/20">
                   <item.icon className="w-4 h-4 md:w-5 md:h-5" />

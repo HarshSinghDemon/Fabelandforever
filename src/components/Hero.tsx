@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useMemo } from 'react';
@@ -42,7 +41,7 @@ export function Hero() {
   return (
     <section className="relative h-screen w-full overflow-hidden bg-[#050505]">
       
-      {/* 1. MOBILE ONLY: Dual-Layer Background (Blurred) */}
+      {/* 1. MOBILE ONLY: Background Blur */}
       <div className="absolute inset-0 z-0 block md:hidden">
         <Carousel
           plugins={[Autoplay({ delay: 6000 })]}
@@ -67,7 +66,7 @@ export function Hero() {
         </Carousel>
       </div>
 
-      {/* 2. DESKTOP ONLY: Cinematic Full-Bleed (Crisp) */}
+      {/* 2. DESKTOP ONLY: Cinematic Full-Bleed */}
       <div className="absolute inset-0 z-0 hidden md:block">
         <Carousel
           plugins={[plugin.current]}
@@ -95,12 +94,11 @@ export function Hero() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/70 pointer-events-none z-[5]"></div>
       </div>
 
-      {/* 3. MOBILE ONLY: Enhanced Inset Window Focal Point */}
+      {/* 3. MOBILE ONLY: Inset Window Focal Point */}
       <div className="absolute inset-0 z-10 flex flex-col items-center justify-center md:hidden px-6 pt-10">
         <div className="w-full max-w-[420px] aspect-[4/5.8] max-h-[65vh] rounded-[4rem] overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.6)] border-[6px] border-white/10 relative -translate-y-16 animate-fade-in-up scale-105 duration-1000">
           
-          {/* Only in Kolkata Badge */}
-          <div className="absolute top-6 left-1/2 -translate-x-1/2 z-30 bg-accent/90 backdrop-blur-md px-4 py-2 rounded-full flex items-center gap-2 shadow-2xl animate-soft-pulse">
+          <div className="absolute top-6 left-1/2 -translate-x-1/2 z-30 bg-accent/90 backdrop-blur-md px-4 py-2 rounded-full flex items-center gap-2 shadow-2xl animate-heartbeat">
             <MapPin className="w-3 h-3 text-white" />
             <span className="text-[8px] font-black uppercase tracking-[0.3em] text-white">Only in Kolkata</span>
           </div>
@@ -133,7 +131,7 @@ export function Hero() {
                 Handmade Crochet
               </span>
               <h1 className="font-headline text-5xl leading-[0.8] tracking-tighter mb-6 drop-shadow-2xl italic animate-loop-in stagger-2 opacity-0">
-                Fable <span className="block font-fancy text-6xl text-accent -my-1 -rotate-3">&</span> Forever
+                <span className="text-[#FBBF24]">F</span>able <span className="block font-fancy text-6xl text-accent -my-1 -rotate-3">&</span> <span className="text-[#FBBF24]">F</span>orever
               </h1>
               <Button asChild className="bg-white text-primary hover:bg-white/90 h-14 w-full max-w-[200px] rounded-[2rem] text-[10px] font-black uppercase tracking-[0.5em] shadow-2xl active:scale-95 transition-all group animate-loop-in stagger-3 opacity-0">
                 <Link href="#shop" className="flex items-center justify-center">
@@ -144,14 +142,13 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Mobile Scroll Indicator - Moved higher to clear bottom nav and floating contact */}
         <div className="absolute bottom-28 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-in fade-in slide-in-from-bottom-10 duration-1000 delay-500">
            <span className="text-[9px] font-black uppercase tracking-[0.5em] text-white/50 animate-pulse">Scroll to Explore</span>
            <ChevronDown className="w-5 h-5 text-accent animate-float" />
         </div>
       </div>
 
-      {/* 4. DESKTOP ONLY: Immersive Narrative Overlay */}
+      {/* 4. DESKTOP ONLY: Immersive Overlay */}
       <div className="container mx-auto px-4 sm:px-6 relative z-10 h-full hidden md:flex items-center justify-center text-center text-white pointer-events-none">
         <div className="max-w-7xl mx-auto space-y-8 md:space-y-16 pointer-events-auto">
           <div className="overflow-hidden">
@@ -163,7 +160,7 @@ export function Hero() {
           <div className="relative">
             <h1 className="font-headline text-5xl sm:text-7xl md:text-[8rem] lg:text-[10rem] hero-title leading-[0.85] tracking-tighter drop-shadow-2xl flex flex-col items-center select-none px-2">
               <span className="block overflow-hidden">
-                <span className="block animate-loop-in stagger-1 opacity-0">Fable</span>
+                <span className="block animate-loop-in stagger-1 opacity-0"><span className="text-[#FBBF24]">F</span>able</span>
               </span>
               <div className="h-0 relative z-20 flex justify-center items-center">
                 <span className="font-fancy text-5xl md:text-9xl lg:text-[12rem] text-accent/90 block animate-loop-in stagger-2 opacity-0 -rotate-3">
@@ -171,7 +168,7 @@ export function Hero() {
                 </span>
               </div>
               <span className="block overflow-hidden">
-                <span className="italic block animate-loop-in stagger-3 opacity-0">Forever</span>
+                <span className="italic block animate-loop-in stagger-3 opacity-0"><span className="text-[#FBBF24]">F</span>orever</span>
               </span>
             </h1>
           </div>

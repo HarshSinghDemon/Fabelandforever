@@ -1,4 +1,3 @@
-
 "use client";
 
 import React from 'react';
@@ -11,6 +10,7 @@ import { collection, query, orderBy } from 'firebase/firestore';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Button } from '@/components/ui/button';
 import { Sparkles, ShoppingBag } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface FeaturedProductsProps {
   title: string;
@@ -88,26 +88,27 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
           <div className="w-12 h-[1px] bg-accent/20 mt-4 md:mt-6"></div>
         </div>
 
-        {/* Smartphone: 2-Column Matrix | Desktop: Carousel */}
+        {/* Smartphone Matrix */}
         <div className="block md:hidden">
           <div className="grid grid-cols-2 gap-3">
-            {filteredProducts.slice(0, 4).map((product: any) => (
+            {filteredProducts.slice(0, 4).map((product: any, idx: number) => (
               <Link 
                 key={product.id}
                 href={`/products/${product.id}`}
-                className="group relative flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm border border-primary/5 active:scale-95 transition-all duration-300"
+                className="group relative flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm border border-primary/5 active:scale-95 transition-all duration-300 reveal-on-scroll active"
+                style={{ transitionDelay: `${idx * 0.1}s` }}
               >
-                <div className="absolute inset-0 bg-primary opacity-0 group-active:opacity-100 transition-opacity z-10"></div>
+                <div className="absolute inset-0 bg-accent/5 opacity-0 group-hover:opacity-100 transition-opacity z-10"></div>
                 <div className="relative aspect-[3/4] w-full">
                   <Image src={product.imageUrls?.[0]} alt={product.name} fill className="object-cover" />
                 </div>
                 <div className="p-3 space-y-1 relative z-20">
-                  <h3 className="font-headline text-sm text-primary truncate group-active:text-accent">{product.name}</h3>
+                  <h3 className="font-headline text-sm text-primary truncate group-hover:text-accent font-black">{product.name}</h3>
                   <div className="flex items-center justify-between">
-                    <span className="font-headline text-xs text-primary group-active:text-accent">₹ {product.price}</span>
+                    <span className="font-headline text-xs text-primary font-black">₹ {product.price}</span>
                     <button 
                       onClick={(e) => handleAddToCart(e, product)}
-                      className="w-7 h-7 bg-primary text-white rounded-full flex items-center justify-center active:scale-90"
+                      className="w-7 h-7 bg-primary text-white rounded-full flex items-center justify-center active:scale-90 shadow-md"
                     >
                       <ShoppingBag className="w-3.5 h-3.5" />
                     </button>
@@ -118,24 +119,25 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
           </div>
         </div>
 
+        {/* Desktop Carousel */}
         <div className="hidden md:block relative">
           <Carousel opts={{ align: "start", loop: false }} className="w-full">
             <CarouselContent className="-ml-2 md:-ml-4">
               {filteredProducts.map((product: any, idx: number) => (
                 <CarouselItem key={product.id} className="pl-2 md:pl-4 basis-1/2 lg:basis-1/3">
                   <div className="group relative py-2 md:py-4 px-1 md:px-2 transition-all duration-700 reveal-on-scroll active" style={{ transitionDelay: `${idx * 0.1}s` }}>
-                    <div className="absolute inset-x-0 -inset-y-4 bg-white rounded-[1rem] md:rounded-[3rem] opacity-0 group-hover:opacity-100 group-hover:bg-primary shadow-xl group-hover:shadow-2xl transition-all duration-500 -z-10 group-hover:-translate-y-2"></div>
+                    <div className="absolute inset-x-0 -inset-y-4 bg-accent/5 rounded-[1rem] md:rounded-[3rem] opacity-0 group-hover:opacity-100 shadow-xl group-hover:shadow-2xl transition-all duration-500 -z-10 group-hover:-translate-y-2"></div>
                     <Link href={`/products/${product.id}`} className="block space-y-2 md:space-y-6 text-center">
-                      <div className="relative aspect-[3/4] mx-auto w-[92%] transition-all duration-700 group-hover:-translate-y-6 group-hover:scale-105">
+                      <div className="relative aspect-[3/4] mx-auto w-[92%] transition-all duration-700 group-hover:-translate-y-6 group-hover:scale-105 animate-float" style={{ animationDelay: `${idx * 0.5}s` }}>
                         <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-[80%] h-6 bg-black/10 blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
                         <div className="relative h-full w-full overflow-hidden rounded-[1.2rem] md:rounded-[2.5rem] shadow-sm group-hover:shadow-2xl transition-all duration-700 border border-primary/5">
                           <Image src={product.imageUrls?.[0]} alt={product.name} fill className="object-cover" />
                         </div>
                       </div>
                       <div className="space-y-1.5 md:space-y-4 px-2 md:px-4">
-                        <h3 className="font-headline text-sm md:text-3xl text-primary group-hover:text-accent transition-colors duration-500 truncate">{product.name}</h3>
-                        <p className="font-headline text-xs md:text-2xl text-primary group-hover:text-accent transition-colors">₹ {product.price}</p>
-                        <Button onClick={(e) => handleAddToCart(e, product)} className="w-full h-8 md:h-12 rounded-full border border-accent text-accent bg-transparent group-hover:bg-accent group-hover:text-white shadow-sm">
+                        <h3 className="font-headline text-sm md:text-3xl text-primary group-hover:text-accent transition-colors duration-500 truncate font-black">{product.name}</h3>
+                        <p className="font-headline text-xs md:text-2xl text-primary font-black">₹ {product.price}</p>
+                        <Button onClick={(e) => handleAddToCart(e, product)} className="w-full h-8 md:h-12 rounded-full border border-accent text-accent bg-transparent group-hover:bg-accent group-hover:text-white shadow-sm font-black">
                           Add <ShoppingBag className="ml-1.5 w-3 h-3" />
                         </Button>
                       </div>

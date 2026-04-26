@@ -20,7 +20,7 @@ export function Footer() {
               <Logo className="w-8 h-8 text-white" />
               <div className="flex flex-col">
                 <span className="font-headline text-xl text-white tracking-tighter leading-none">
-                   <span className="text-[#FBBF24]">F</span>able & <span className="text-[#FBBF24]">F</span>orever
+                   <span className="text-[#FBBF24] text-[1.3em] inline-block leading-none">F</span>able & <span className="text-[#FBBF24] text-[1.3em] inline-block leading-none">F</span>orever
                 </span>
                 <span className="text-[7px] font-bold uppercase tracking-[0.4em] text-accent mt-1">সুতোয় বোনা প্রতিটি গল্প</span>
               </div>

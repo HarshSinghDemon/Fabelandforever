@@ -130,7 +130,7 @@ export function Hero() {
                 Handmade Crochet
               </span>
               <h1 className="font-headline text-5xl leading-[0.8] tracking-tighter mb-6 drop-shadow-2xl italic animate-loop-in stagger-2 opacity-0">
-                <span className="text-[#FBBF24]">F</span>able <span className="block font-fancy text-6xl text-accent -my-1 -rotate-3">&</span> <span className="text-[#FBBF24]">F</span>orever
+                <span className="text-[#FBBF24] text-[1.3em] inline-block leading-none">F</span>able <span className="block font-fancy text-6xl text-accent -my-1 -rotate-3">&</span> <span className="text-[#FBBF24] text-[1.3em] inline-block leading-none">F</span>orever
               </h1>
               <Button asChild className="bg-white text-primary hover:bg-white/90 h-14 w-full max-w-[200px] rounded-[2rem] text-[10px] font-black uppercase tracking-[0.5em] shadow-2xl active:scale-95 transition-all group animate-loop-in stagger-3 opacity-0">
                 <Link href="#shop" className="flex items-center justify-center">
@@ -159,7 +159,7 @@ export function Hero() {
           <div className="relative">
             <h1 className="font-headline text-5xl sm:text-7xl md:text-[8rem] lg:text-[10rem] hero-title leading-[0.85] tracking-tighter drop-shadow-2xl flex flex-col items-center select-none px-2">
               <span className="block overflow-hidden">
-                <span className="block animate-loop-in stagger-1 opacity-0"><span className="text-[#FBBF24]">F</span>able</span>
+                <span className="block animate-loop-in stagger-1 opacity-0"><span className="text-[#FBBF24] text-[1.3em] inline-block leading-none">F</span>able</span>
               </span>
               <div className="h-0 relative z-20 flex justify-center items-center">
                 <span className="font-fancy text-5xl md:text-9xl lg:text-[12rem] text-accent/90 block animate-loop-in stagger-2 opacity-0 -rotate-3">
@@ -167,7 +167,7 @@ export function Hero() {
                 </span>
               </div>
               <span className="block overflow-hidden">
-                <span className="italic block animate-loop-in stagger-3 opacity-0"><span className="text-[#FBBF24]">F</span>orever</span>
+                <span className="italic block animate-loop-in stagger-3 opacity-0"><span className="text-[#FBBF24] text-[1.3em] inline-block leading-none">F</span>orever</span>
               </span>
             </h1>
           </div>

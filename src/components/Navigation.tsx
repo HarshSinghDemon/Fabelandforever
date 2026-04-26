@@ -123,7 +123,7 @@ export function Navigation() {
                   (!isHomePage || isScrolled) ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4 pointer-events-none",
                   useLightStyle ? "text-white" : "text-primary"
                 )}>
-                  <span className="text-[#FBBF24]">F</span>able & <span className="text-[#FBBF24]">F</span>orever
+                  <span className="text-[#FBBF24] text-[1.3em] inline-block leading-none">F</span>able & <span className="text-[#FBBF24] text-[1.3em] inline-block leading-none">F</span>orever
                 </span>
               </Link>
             </div>

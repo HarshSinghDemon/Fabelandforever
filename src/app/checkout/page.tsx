@@ -102,6 +102,12 @@ export default function CheckoutPage() {
     }
 
     setIsLocating(true);
+    const options = {
+      enableHighAccuracy: true,
+      timeout: 10000,
+      maximumAge: 0
+    };
+
     navigator.geolocation.getCurrentPosition(
       (position) => {
         setFormData(prev => ({ 
@@ -116,8 +122,13 @@ export default function CheckoutPage() {
       },
       (error) => {
         setIsLocating(false);
-        toast({ variant: "destructive", title: "GPS Denied", description: "Please enable location services for precise delivery." });
-      }
+        let msg = "Please enable location services for precise delivery.";
+        if (error.code === error.PERMISSION_DENIED) msg = "Location permission denied.";
+        if (error.code === error.POSITION_UNAVAILABLE) msg = "Location info is unavailable.";
+        if (error.code === error.TIMEOUT) msg = "Location request timed out.";
+        toast({ variant: "destructive", title: "GPS Denied", description: msg });
+      },
+      options
     );
   };
 
@@ -386,12 +397,6 @@ export default function CheckoutPage() {
                         onChange={(e) => setFormData({...formData, locality: e.target.value})}
                         className="bg-paper border-none h-14 md:h-16 rounded-2xl md:rounded-3xl px-6 md:px-8 text-sm md:text-lg font-medium" 
                       />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-[9px] font-bold uppercase tracking-widest text-primary/50 ml-4">Heritage City</label>
-                      <div className="bg-paper h-14 md:h-16 rounded-2xl md:rounded-3xl px-6 md:px-8 flex items-center font-bold text-primary/40 text-sm md:text-lg">
-                        Kolkata
-                      </div>
                     </div>
                   </div>
                 </div>

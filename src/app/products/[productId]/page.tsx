@@ -20,7 +20,6 @@ import {
   Instagram, 
   ChevronRight, 
   Sparkles,
-  Star,
   MapPin,
   Feather,
   Heart,
@@ -133,7 +132,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
       
       <div className="container mx-auto px-4 md:px-6 max-w-7xl pt-24 md:pt-40 pb-16 flex-1">
         
-        {/* Breadcrumbs - Always Visible */}
+        {/* Breadcrumbs */}
         <nav className="text-[10px] md:text-[11px] font-black uppercase tracking-[0.4em] text-primary/30 flex items-center gap-2 mb-8 md:mb-12">
           <Link href="/" className="hover:text-accent transition-colors">Home</Link>
           <ChevronRight className="w-3 h-3" />
@@ -230,15 +229,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
               </p>
             </div>
 
-            <div className="flex items-center gap-4 py-4 border-y border-primary/5">
-              <div className="flex text-amber-400 gap-0.5">
-                {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 fill-current" />)}
-              </div>
-              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-primary/30">Artisanal Choice</span>
-              <span className="text-[10px] font-bold text-accent border-l border-primary/10 pl-4 underline underline-offset-4 cursor-pointer">62 Reviews</span>
-            </div>
-
-            <div className="flex items-baseline gap-3">
+            <div className="flex items-baseline gap-3 pt-4">
                <span className="text-3xl md:text-5xl font-headline text-primary">
                  ₹ {Number(product.price).toLocaleString('en-IN')}
                </span>
@@ -280,7 +271,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
               </Button>
             </div>
 
-            {/* Order via DM Portal */}
+            {/* Customize Order Portal */}
             <div className="pt-2">
               <Link 
                 href="https://www.instagram.com/fable.and.forever/"

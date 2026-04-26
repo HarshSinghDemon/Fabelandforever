@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { Search, Loader2, Home, LayoutGrid, ArrowRight, Instagram, Menu, X } from 'lucide-react';
+import { Search, Loader2, Home, LayoutGrid, ArrowRight, Instagram, Menu, X, ShoppingBag } from 'lucide-react';
 import { CartDrawer } from './CartDrawer';
 import { Logo } from './Logo';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -242,21 +242,27 @@ export function Navigation() {
         </Dialog>
       </nav>
 
-      {/* Mobile Bottom Navigation Bar: Hidden if Top Bar is Active enough */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-[100] bg-white/95 backdrop-blur-2xl border-t border-primary/5 h-16 flex items-center justify-around px-4 pb-4 pt-2 shadow-[0_-4px_30px_-4px_rgba(0,0,0,0.05)]">
-        <Link href="/" className="flex flex-col items-center gap-1">
-          <Home className="w-5 h-5 text-primary" />
-          <span className="text-[8px] font-black uppercase tracking-widest text-primary">Home</span>
+      {/* Mobile Bottom Navigation Bar: High-end App Style */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-[100] bg-white/95 backdrop-blur-2xl border-t border-primary/5 h-20 flex items-center justify-around px-6 pb-6 pt-3 shadow-[0_-8px_40px_-4px_rgba(0,0,0,0.1)] rounded-t-[2.5rem]">
+        <Link href="/" className={cn(
+          "flex flex-col items-center gap-1.5 transition-all",
+          pathname === '/' ? "text-primary scale-110" : "text-primary/30"
+        )}>
+          <Home className="w-6 h-6" />
+          <span className="text-[9px] font-black uppercase tracking-widest">Home</span>
         </Link>
-        <Link href="/shop" className="flex flex-col items-center gap-1">
-          <LayoutGrid className="w-5 h-5 text-primary/60" />
-          <span className="text-[8px] font-black uppercase tracking-widest text-primary/60">Shop</span>
+        <Link href="/shop" className={cn(
+          "flex flex-col items-center gap-1.5 transition-all",
+          pathname === '/shop' ? "text-primary scale-110" : "text-primary/30"
+        )}>
+          <LayoutGrid className="w-6 h-6" />
+          <span className="text-[9px] font-black uppercase tracking-widest">Shop</span>
         </Link>
-        <button onClick={() => setIsSearchOpen(true)} className="flex flex-col items-center gap-1">
-          <Search className="w-5 h-5 text-primary/60" />
-          <span className="text-[8px] font-black uppercase tracking-widest text-primary/60">Search</span>
+        <button onClick={() => setIsSearchOpen(true)} className="flex flex-col items-center gap-1.5 text-primary/30">
+          <Search className="w-6 h-6" />
+          <span className="text-[9px] font-black uppercase tracking-widest">Search</span>
         </button>
-        <div className="scale-90">
+        <div className="relative">
           <CartDrawer isLight={false} />
         </div>
       </div>

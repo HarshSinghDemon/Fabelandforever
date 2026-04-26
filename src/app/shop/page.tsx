@@ -124,9 +124,10 @@ export default function ShopPage() {
         </div>
       </section>
 
-      <div className="sticky top-[70px] md:top-[80px] z-[40] bg-white/95 backdrop-blur-2xl border-b border-primary/5 py-3 md:py-6">
+      {/* Pill Filters Bar */}
+      <div className="sticky top-[70px] md:top-[80px] z-[40] bg-white/95 backdrop-blur-2xl border-b border-primary/5 py-4 md:py-6">
         <div className="container mx-auto px-4 md:px-6 relative max-w-7xl">
-          <div className="relative flex items-center max-w-5xl mx-auto">
+          <div className="relative flex items-center">
             <button 
               onClick={() => scrollByAmount('left')}
               className={cn(
@@ -140,13 +141,13 @@ export default function ShopPage() {
             <div 
               ref={scrollContainerRef}
               onScroll={checkScroll}
-              className="flex items-center gap-6 md:gap-10 overflow-x-auto no-scrollbar scroll-smooth py-2 px-2 w-full"
+              className="flex items-center gap-3 md:gap-6 overflow-x-auto no-scrollbar scroll-smooth py-2 px-2 w-full"
             >
               {categories.map((cat) => (
                 <a 
                   key={cat} 
                   href={`#${cat.toLowerCase().replace(/\s+/g, '-')}`}
-                  className="whitespace-nowrap text-[9px] md:text-[11px] font-black uppercase tracking-[0.4em] text-primary/40 hover:text-primary transition-all border-b-2 border-transparent hover:border-accent pb-2"
+                  className="whitespace-nowrap px-4 py-2 md:px-6 md:py-2.5 rounded-full border border-primary/5 bg-paper text-[8px] md:text-[10px] font-black uppercase tracking-widest text-primary/40 hover:text-primary hover:bg-white hover:border-accent hover:shadow-lg transition-all"
                 >
                   {cat}
                 </a>
@@ -197,52 +198,51 @@ export default function ShopPage() {
                        <p className="text-primary/20 font-headline text-lg md:text-2xl italic px-6">"New loops coming soon to this collection."</p>
                     </div>
                   ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
+                    <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-8 lg:gap-12">
                       {catProducts.map((product) => (
                         <div key={product.id} className="group relative py-4 px-2 transition-all duration-700">
-                          {/* Elevated background on hover - Transition to Midnight Teal */}
-                          <div className="absolute inset-x-0 -inset-y-4 bg-white rounded-[2rem] opacity-0 group-hover:opacity-100 group-hover:bg-primary shadow-[0_40px_80px_-20px_rgba(0,0,0,0.1)] group-hover:shadow-2xl transition-all duration-500 -z-10 group-hover:-translate-y-2"></div>
+                          {/* Elevated background on hover - Transition to Lavender Text */}
+                          <div className="absolute inset-x-0 -inset-y-2 md:-inset-y-4 bg-white rounded-[1.5rem] md:rounded-[3rem] opacity-0 group-hover:opacity-100 group-hover:bg-primary shadow-xl group-hover:shadow-2xl transition-all duration-500 -z-10 group-hover:-translate-y-2"></div>
                           
-                          <Link href={`/products/${product.id}`} className="block space-y-4 md:space-y-6 text-center transition-colors duration-500">
+                          <Link href={`/products/${product.id}`} className="block space-y-3 md:space-y-6 text-center transition-colors duration-500">
                             {/* Floating Image with Shadow */}
-                            <div className="relative aspect-[3/4] mx-auto w-[90%] transition-all duration-700 group-hover:-translate-y-6 group-hover:scale-105">
+                            <div className="relative aspect-[3/4] mx-auto w-[92%] transition-all duration-700 group-hover:-translate-y-3 md:group-hover:-translate-y-6 group-hover:scale-105">
                               {/* Bottom Shadow Wrapper */}
                               <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-[80%] h-4 bg-black/10 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
                               
-                              <div className="relative h-full w-full overflow-hidden rounded-[2rem] shadow-sm group-hover:shadow-2xl transition-all duration-700 border border-primary/5">
+                              <div className="relative h-full w-full overflow-hidden rounded-[1.5rem] md:rounded-[2.5rem] shadow-sm group-hover:shadow-2xl transition-all duration-700 border border-primary/5">
                                 <Image
                                   src={product.imageUrls?.[0] || 'https://placehold.co/600x800?text=Forever+Loop'}
                                   alt={product.name}
                                   fill
                                   className="object-cover"
-                                  sizes="(max-width: 768px) 90vw, 30vw"
+                                  sizes="(max-width: 768px) 45vw, 30vw"
                                 />
                               </div>
                             </div>
                             
-                            <div className="space-y-2 md:space-y-4 px-4">
-                              <h3 className="font-headline text-xl md:text-3xl text-primary leading-tight px-1 group-hover:text-accent transition-colors duration-500">
-                                {product.name}
-                              </h3>
-                              <p className="text-[9px] md:text-[10px] text-primary/40 leading-relaxed italic line-clamp-2 max-w-[240px] mx-auto group-hover:text-accent transition-colors duration-500">
-                                {product.description}
-                              </p>
-                              
-                              <div className="flex items-center justify-center gap-3 pt-1">
-                                <span className="text-[7px] md:text-[9px] font-black uppercase tracking-widest text-primary/20 group-hover:text-accent/60 transition-colors duration-500">
+                            <div className="space-y-1.5 md:space-y-4 px-2 md:px-6">
+                              <div className="space-y-0.5 md:space-y-1">
+                                <h3 className="font-headline text-sm md:text-3xl text-primary leading-tight truncate group-hover:text-accent transition-colors duration-500">
+                                  {product.name}
+                                </h3>
+                                <p className="text-[7px] md:text-[10px] text-primary/40 font-bold uppercase tracking-widest group-hover:text-accent transition-colors duration-500">
                                   {product.category}
-                                </span>
-                                <span className="font-headline text-lg md:text-2xl text-primary group-hover:text-accent transition-colors duration-500">
+                                </p>
+                              </div>
+                              
+                              <div className="flex items-center justify-center gap-2 md:gap-4">
+                                <span className="font-headline text-xs md:text-2xl text-primary group-hover:text-accent transition-colors duration-500">
                                   ₹ {Number(product.price).toLocaleString('en-IN')}
                                 </span>
                               </div>
                               
-                              <div className="pt-2">
+                              <div className="pt-1 md:pt-2">
                                 <button 
                                   onClick={(e) => handleAddToCart(e, product)}
-                                  className="w-full h-10 md:h-12 rounded-full border-2 border-accent text-accent bg-transparent hover:bg-accent hover:text-white group-hover:bg-accent group-hover:text-white group-hover:border-transparent transition-all duration-500 font-black uppercase tracking-[0.3em] text-[8px] md:text-[10px] flex items-center justify-center gap-2 group/btn shadow-sm hover:shadow-xl active:scale-95"
+                                  className="w-full h-8 md:h-12 rounded-full border border-accent text-accent bg-transparent hover:bg-accent hover:text-white group-hover:bg-accent group-hover:text-white group-hover:border-transparent transition-all duration-500 font-black uppercase tracking-[0.2em] text-[7px] md:text-[10px] flex items-center justify-center gap-1.5 group/btn shadow-sm"
                                 >
-                                  Add to Cart <ShoppingBag className="w-3.5 h-3.5 group-hover/btn:rotate-12 transition-transform" />
+                                  Add to Cart <ShoppingBag className="w-3 h-3 md:w-3.5 md:h-3.5 group-hover/btn:rotate-12 transition-transform" />
                                 </button>
                               </div>
                             </div>

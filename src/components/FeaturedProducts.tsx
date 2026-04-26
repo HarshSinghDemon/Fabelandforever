@@ -116,19 +116,19 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
                       
                       <div className="space-y-4 px-2">
                         <div className="space-y-1">
-                          <h3 className="font-headline text-2xl md:text-4xl text-primary leading-tight truncate px-1 group-hover:text-white transition-colors duration-500">
+                          <h3 className="font-headline text-2xl md:text-4xl text-primary leading-tight truncate px-1 group-hover:text-accent transition-colors duration-500">
                             {product.name}
                           </h3>
-                          <p className="text-[9px] md:text-[10px] text-primary/30 font-bold uppercase tracking-[0.4em] italic group-hover:text-white transition-colors duration-500">
+                          <p className="text-[9px] md:text-[10px] text-primary/30 font-bold uppercase tracking-[0.4em] italic group-hover:text-accent transition-colors duration-500">
                             {product.category}
                           </p>
                         </div>
                         
                         <div className="flex items-center justify-center gap-6 pt-2">
-                           <span className="text-[8px] md:text-[10px] font-black text-primary/20 uppercase tracking-widest group-hover:text-white/20 transition-colors duration-500">
+                           <span className="text-[8px] md:text-[10px] font-black text-primary/20 uppercase tracking-widest group-hover:text-accent/40 transition-colors duration-500">
                              Limited Piece
                            </span>
-                           <span className="font-headline text-xl md:text-3xl text-primary group-hover:text-white transition-colors duration-500">
+                           <span className="font-headline text-xl md:text-3xl text-primary group-hover:text-accent transition-colors duration-500">
                              ₹ {Number(product.price).toLocaleString('en-IN')}
                            </span>
                         </div>

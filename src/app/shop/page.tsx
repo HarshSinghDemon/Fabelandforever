@@ -221,18 +221,18 @@ export default function ShopPage() {
                             </div>
                             
                             <div className="space-y-3 md:space-y-5 px-6">
-                              <h3 className="font-headline text-2xl md:text-4xl text-primary leading-tight px-1 group-hover:text-white transition-colors duration-500">
+                              <h3 className="font-headline text-2xl md:text-4xl text-primary leading-tight px-1 group-hover:text-accent transition-colors duration-500">
                                 {product.name}
                               </h3>
-                              <p className="text-[10px] md:text-xs text-primary/40 leading-relaxed italic line-clamp-2 max-w-[240px] mx-auto group-hover:text-white transition-colors duration-500">
+                              <p className="text-[10px] md:text-xs text-primary/40 leading-relaxed italic line-clamp-2 max-w-[240px] mx-auto group-hover:text-accent/80 transition-colors duration-500">
                                 {product.description}
                               </p>
                               
                               <div className="flex items-center justify-center gap-4 pt-2">
-                                <span className="text-[8px] md:text-[10px] font-black uppercase tracking-widest text-primary/20 group-hover:text-white/40 transition-colors duration-500">
+                                <span className="text-[8px] md:text-[10px] font-black uppercase tracking-widest text-primary/20 group-hover:text-accent/60 transition-colors duration-500">
                                   {product.category}
                                 </span>
-                                <span className="font-headline text-xl md:text-3xl text-primary group-hover:text-white transition-colors duration-500">
+                                <span className="font-headline text-xl md:text-3xl text-primary group-hover:text-accent transition-colors duration-500">
                                   ₹ {Number(product.price).toLocaleString('en-IN')}
                                 </span>
                               </div>

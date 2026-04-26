@@ -94,7 +94,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
       });
     }
     toast({
-      title: "Selection Adopted ✨",
+      title: "Selection Added ✨",
       description: `${quantity} ${product.name} added to your basket.`,
     });
   };
@@ -293,7 +293,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
                   onClick={handleAddToCart}
                   className="flex-1 h-16 md:h-20 bg-primary text-white text-[11px] font-black tracking-[0.5em] uppercase shadow-2xl transition-all hover:scale-[1.02] active:scale-95 rounded-2xl"
                 >
-                  Adopt Selection
+                  Add to Cart
                 </Button>
               </div>
 
@@ -316,8 +316,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
                 <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 <Instagram className="w-8 h-8 group-hover:rotate-12 transition-transform duration-500" /> 
                 <div className="flex flex-col items-start text-left">
-                  <span className="text-[12px] font-black uppercase tracking-[0.6em] leading-none mb-2">Order via DM</span>
-                  <span className="text-[9px] font-bold uppercase tracking-widest text-white/60 italic">Bespoke Manifestation</span>
+                  <span className="text-[12px] font-black uppercase tracking-[0.6em] leading-none">Customize Order</span>
                 </div>
                 <ChevronRight className="w-6 h-6 opacity-20 group-hover:translate-x-3 transition-transform" />
               </Link>

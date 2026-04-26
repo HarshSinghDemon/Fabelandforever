@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useEffect, useState, useRef } from 'react';
@@ -89,7 +90,7 @@ export default function ShopPage() {
       image: product.imageUrls?.[0] || ''
     });
     toast({
-      title: "Added to Basket ✨",
+      title: "Added to Cart ✨",
       description: `${product.name} has been selected.`,
     });
   };
@@ -222,8 +223,8 @@ export default function ShopPage() {
                                 onClick={(e) => handleAddToCart(e, product)}
                                 className="inline-flex items-center gap-2 px-4 md:px-10 py-2.5 md:py-5 bg-white border border-primary/10 text-primary hover:bg-primary hover:text-white transition-all duration-500 font-black uppercase tracking-[0.3em] md:tracking-[0.5em] text-[8px] md:text-[10px] active:scale-95 group/btn w-full justify-center"
                               >
-                                <span className="hidden xs:inline">Adopt Selection</span>
-                                <span className="xs:hidden text-[7px]">Adopt</span>
+                                <span className="hidden xs:inline">Add to Cart</span>
+                                <span className="xs:hidden text-[7px]">Add</span>
                                 <ShoppingBasket className="w-3 h-3 md:w-4 md:h-4 group-hover/btn:rotate-12 transition-transform" />
                               </button>
                             </div>

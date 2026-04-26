@@ -1,3 +1,4 @@
+
 "use client";
 
 import React from 'react';
@@ -62,7 +63,7 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
     });
     
     toast({
-      title: "Selection Adopted ✨",
+      title: "Added to Cart ✨",
       description: `${product.name} has been selected.`,
     });
   };
@@ -118,7 +119,7 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
                           variant="outline"
                           className="w-full h-10 md:h-14 rounded-none border-primary/10 hover:border-primary text-[8px] md:text-[9px] tracking-[0.3em] md:tracking-[0.5em] font-black"
                         >
-                          Adopt Selection
+                          Add to Cart
                         </Button>
                       </div>
                     </div>

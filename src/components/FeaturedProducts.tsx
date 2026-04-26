@@ -94,10 +94,10 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
               {filteredProducts.map((product: any, idx: number) => (
                 <CarouselItem key={product.id} className="pl-4 md:pl-8 basis-full sm:basis-1/2 lg:basis-1/3">
                   <div className="group relative py-8 px-4 transition-all duration-700 reveal-on-scroll active" style={{ transitionDelay: `${idx * 0.1}s` }}>
-                    {/* Floating Background Effect */}
-                    <div className="absolute inset-0 bg-white rounded-[3rem] opacity-0 group-hover:opacity-100 shadow-[0_40px_80px_-20px_rgba(0,0,0,0.1)] transition-all duration-500 -z-10 group-hover:-translate-y-2"></div>
+                    {/* Elevated background on hover */}
+                    <div className="absolute inset-x-0 -inset-y-6 bg-white rounded-[3rem] opacity-0 group-hover:opacity-100 group-hover:bg-primary shadow-[0_40px_80px_-20px_rgba(0,0,0,0.1)] group-hover:shadow-2xl transition-all duration-500 -z-10 group-hover:-translate-y-2"></div>
                     
-                    <Link href={`/products/${product.id}`} className="block space-y-8 text-center">
+                    <Link href={`/products/${product.id}`} className="block space-y-8 text-center group-hover:text-white transition-colors duration-500">
                       {/* Floating Image Container */}
                       <div className="relative aspect-[3/4] mx-auto w-[90%] transition-all duration-700 group-hover:-translate-y-6 group-hover:scale-105">
                         {/* Interactive Shadow */}
@@ -116,19 +116,19 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
                       
                       <div className="space-y-4 px-2">
                         <div className="space-y-1">
-                          <h3 className="font-headline text-2xl md:text-4xl text-primary leading-tight truncate px-1">{product.name}</h3>
-                          <p className="text-[9px] md:text-[10px] text-primary/30 font-bold uppercase tracking-[0.4em] italic">{product.category}</p>
+                          <h3 className="font-headline text-2xl md:text-4xl text-primary leading-tight truncate px-1 group-hover:text-white transition-colors duration-500">{product.name}</h3>
+                          <p className="text-[9px] md:text-[10px] text-primary/30 font-bold uppercase tracking-[0.4em] italic group-hover:text-white/40 transition-colors duration-500">{product.category}</p>
                         </div>
                         
                         <div className="flex items-center justify-center gap-6 pt-2">
-                           <span className="text-[8px] md:text-[10px] font-black text-primary/20 uppercase tracking-widest">Limited Piece</span>
-                           <span className="font-headline text-xl md:text-3xl text-primary">₹ {Number(product.price).toLocaleString('en-IN')}</span>
+                           <span className="text-[8px] md:text-[10px] font-black text-primary/20 uppercase tracking-widest group-hover:text-white/20 transition-colors duration-500">Limited Piece</span>
+                           <span className="font-headline text-xl md:text-3xl text-primary group-hover:text-white transition-colors duration-500">₹ {Number(product.price).toLocaleString('en-IN')}</span>
                         </div>
                         
                         <div className="pt-4">
                           <Button 
                             onClick={(e) => handleAddToCart(e, product)}
-                            className="w-full h-14 md:h-16 rounded-full border-2 border-accent bg-transparent text-accent hover:bg-accent hover:text-white text-[9px] md:text-[11px] tracking-[0.4em] font-black uppercase shadow-sm hover:shadow-xl transition-all duration-500 group/btn"
+                            className="w-full h-14 md:h-16 rounded-full border-2 border-accent bg-transparent text-accent hover:bg-accent hover:text-white group-hover:bg-accent group-hover:text-white group-hover:border-transparent text-[9px] md:text-[11px] tracking-[0.4em] font-black uppercase shadow-sm hover:shadow-xl transition-all duration-500 group/btn"
                           >
                             Add to Cart <ShoppingBag className="ml-3 w-4 h-4 group-hover/btn:rotate-12 transition-transform" />
                           </Button>

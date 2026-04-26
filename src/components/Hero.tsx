@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useMemo } from 'react';
@@ -13,6 +14,7 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
+import { cn } from '@/lib/utils';
 
 export function Hero() {
   const db = useFirestore();
@@ -39,39 +41,52 @@ export function Hero() {
 
   return (
     <section className="relative h-screen w-full overflow-hidden bg-[#050505]">
-      <div className="absolute inset-0 z-0">
-        <Carousel
-          plugins={[plugin.current]}
-          className="w-full h-full"
-          opts={{
-            align: "start",
-            loop: true,
-            duration: 50, 
-          }}
-        >
-          <CarouselContent className="h-screen ml-0">
-            {heroImages.map((imgUrl, index) => (
-              <CarouselItem key={index} className="h-full pl-0 relative">
-                <div className="relative w-full h-full overflow-hidden">
-                  <Image
-                    src={imgUrl}
-                    alt={`Artisanal Heritage ${index + 1}`}
-                    fill
-                    quality={100}
-                    className="object-cover opacity-80 animate-ken-burns"
-                    priority={index === 0}
-                    sizes="100vw"
-                  />
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-        </Carousel>
-        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black/90 pointer-events-none z-[5]"></div>
+      {/* Visual Layer: Mockup on Mobile, Full Bleed on Desktop */}
+      <div className="absolute inset-0 z-0 flex items-center justify-center p-6 pt-24 pb-32 lg:p-0 lg:block">
+        <div className={cn(
+          "relative w-full h-full transition-all duration-1000 overflow-hidden bg-black",
+          "lg:absolute lg:inset-0 lg:max-w-none lg:max-h-none lg:aspect-auto lg:border-0 lg:rounded-none lg:shadow-none",
+          "max-w-[280px] max-h-[580px] aspect-[9/19] border-[10px] border-white/5 rounded-[3rem] shadow-[0_0_100px_-20px_rgba(255,255,255,0.1)]"
+        )}>
+          {/* Smartphone Hardware Notch (Mobile Only) */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-5 bg-white/5 rounded-b-2xl z-20 lg:hidden"></div>
+
+          <Carousel
+            plugins={[plugin.current]}
+            className="w-full h-full"
+            opts={{
+              align: "start",
+              loop: true,
+              duration: 50, 
+            }}
+          >
+            <CarouselContent className="h-full ml-0">
+              {heroImages.map((imgUrl, index) => (
+                <CarouselItem key={index} className="h-full pl-0 relative">
+                  <div className="relative w-full h-full overflow-hidden">
+                    <Image
+                      src={imgUrl}
+                      alt={`Artisanal Heritage ${index + 1}`}
+                      fill
+                      quality={100}
+                      className="object-cover opacity-80 animate-ken-burns"
+                      priority={index === 0}
+                      sizes="(max-width: 1024px) 280px, 100vw"
+                    />
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
+          
+          {/* Subtle Gradient Overlay inside the frame/background */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black/90 pointer-events-none z-[5]"></div>
+        </div>
       </div>
       
-      <div className="container mx-auto px-4 sm:px-6 relative z-10 h-full flex items-center justify-center text-center text-white pt-10 md:pt-20">
-        <div className="max-w-7xl mx-auto space-y-8 md:space-y-16">
+      {/* Narrative Content Layer */}
+      <div className="container mx-auto px-4 sm:px-6 relative z-10 h-full flex items-center justify-center text-center text-white pt-10 md:pt-20 pointer-events-none">
+        <div className="max-w-7xl mx-auto space-y-8 md:space-y-16 pointer-events-auto">
           <div className="overflow-hidden">
              <span className="text-[10px] md:text-sm font-black uppercase tracking-[0.8em] md:tracking-[1.5em] text-accent block animate-loop-in opacity-0">
                Hand-Stitched Legacy

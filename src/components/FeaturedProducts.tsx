@@ -97,7 +97,7 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
                     {/* Elevated background on hover */}
                     <div className="absolute inset-x-0 -inset-y-6 bg-white rounded-[3rem] opacity-0 group-hover:opacity-100 group-hover:bg-primary shadow-[0_40px_80px_-20px_rgba(0,0,0,0.1)] group-hover:shadow-2xl transition-all duration-500 -z-10 group-hover:-translate-y-2"></div>
                     
-                    <Link href={`/products/${product.id}`} className="block space-y-8 text-center group-hover:text-white transition-colors duration-500">
+                    <Link href={`/products/${product.id}`} className="block space-y-8 text-center transition-colors duration-500">
                       {/* Floating Image Container */}
                       <div className="relative aspect-[3/4] mx-auto w-[90%] transition-all duration-700 group-hover:-translate-y-6 group-hover:scale-105">
                         {/* Interactive Shadow */}
@@ -119,7 +119,7 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
                           <h3 className="font-headline text-2xl md:text-4xl text-primary leading-tight truncate px-1 group-hover:text-white transition-colors duration-500">
                             {product.name}
                           </h3>
-                          <p className="text-[9px] md:text-[10px] text-primary/30 font-bold uppercase tracking-[0.4em] italic group-hover:text-white/40 transition-colors duration-500">
+                          <p className="text-[9px] md:text-[10px] text-primary/30 font-bold uppercase tracking-[0.4em] italic group-hover:text-white transition-colors duration-500">
                             {product.category}
                           </p>
                         </div>

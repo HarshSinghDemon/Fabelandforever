@@ -203,7 +203,7 @@ export default function ShopPage() {
                           {/* Elevated background on hover - Transition to Midnight Teal */}
                           <div className="absolute inset-x-0 -inset-y-6 bg-white rounded-[2rem] opacity-0 group-hover:opacity-100 group-hover:bg-primary shadow-[0_40px_80px_-20px_rgba(0,0,0,0.1)] group-hover:shadow-2xl transition-all duration-500 -z-10 group-hover:-translate-y-2"></div>
                           
-                          <Link href={`/products/${product.id}`} className="block space-y-6 md:space-y-8 text-center group-hover:text-white transition-colors duration-500">
+                          <Link href={`/products/${product.id}`} className="block space-y-6 md:space-y-8 text-center transition-colors duration-500">
                             {/* Floating Image with Shadow */}
                             <div className="relative aspect-[3/4] mx-auto w-[85%] transition-all duration-700 group-hover:-translate-y-6 group-hover:scale-105">
                               {/* Bottom Shadow Wrapper */}
@@ -224,7 +224,7 @@ export default function ShopPage() {
                               <h3 className="font-headline text-2xl md:text-4xl text-primary leading-tight px-1 group-hover:text-white transition-colors duration-500">
                                 {product.name}
                               </h3>
-                              <p className="text-[10px] md:text-xs text-primary/40 leading-relaxed italic line-clamp-2 max-w-[240px] mx-auto group-hover:text-white/80 transition-colors duration-500">
+                              <p className="text-[10px] md:text-xs text-primary/40 leading-relaxed italic line-clamp-2 max-w-[240px] mx-auto group-hover:text-white transition-colors duration-500">
                                 {product.description}
                               </p>
                               

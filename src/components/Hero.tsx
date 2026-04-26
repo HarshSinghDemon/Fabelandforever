@@ -98,11 +98,6 @@ export function Hero() {
       <div className="absolute inset-0 z-10 flex flex-col items-center justify-center md:hidden px-6 pt-10">
         <div className="w-full max-w-[420px] aspect-[4/5.8] max-h-[65vh] rounded-[4rem] overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.6)] border-[6px] border-white/10 relative -translate-y-16 animate-fade-in-up scale-105 duration-1000">
           
-          <div className="absolute top-6 left-1/2 -translate-x-1/2 z-30 bg-accent/90 backdrop-blur-md px-4 py-2 rounded-full flex items-center gap-2 shadow-2xl animate-heartbeat">
-            <MapPin className="w-3 h-3 text-white" />
-            <span className="text-[8px] font-black uppercase tracking-[0.3em] text-white">Only in Kolkata</span>
-          </div>
-
           <Carousel
             plugins={[Autoplay({ delay: 6000 })]}
             className="w-full h-full"
@@ -127,6 +122,10 @@ export function Hero() {
           
           <div className="absolute inset-0 z-20 flex flex-col items-center justify-center pb-8 text-center text-white p-6 -translate-y-10">
             <div className="space-y-4 w-full flex flex-col items-center">
+              <div className="bg-accent/90 backdrop-blur-md px-4 py-2 rounded-full flex items-center gap-2 shadow-2xl animate-heartbeat mb-2">
+                <MapPin className="w-3 h-3 text-white" />
+                <span className="text-[8px] font-black uppercase tracking-[0.3em] text-white">Only in Kolkata</span>
+              </div>
               <span className="text-[10px] font-black uppercase tracking-[0.6em] text-accent block animate-loop-in opacity-0">
                 Handmade Crochet
               </span>

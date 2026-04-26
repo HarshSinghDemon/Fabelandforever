@@ -39,6 +39,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { cn } from '@/lib/utils';
+import { FeaturedProducts } from '@/components/FeaturedProducts';
 
 export default function ProductDetailPage({ params }: { params: Promise<{ productId: string }> }) {
   const { productId } = use(params);
@@ -131,6 +132,16 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
       <Navigation />
       
       <div className="container mx-auto px-4 md:px-6 max-w-7xl pt-24 md:pt-40 pb-16 flex-1">
+        
+        {/* Breadcrumbs - Always Visible */}
+        <nav className="text-[10px] md:text-[11px] font-black uppercase tracking-[0.4em] text-primary/30 flex items-center gap-2 mb-8 md:mb-12">
+          <Link href="/" className="hover:text-accent transition-colors">Home</Link>
+          <ChevronRight className="w-3 h-3" />
+          <Link href="/shop" className="hover:text-accent transition-colors">Boutique</Link>
+          <ChevronRight className="w-3 h-3" />
+          <span className="text-accent">{product.name}</span>
+        </nav>
+
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12">
           
           {/* Column 1: Archive Sidebar (Desktop Only) */}
@@ -150,23 +161,6 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
                     </li>
                   ))}
                 </ul>
-              </div>
-
-              <div className="pt-8 border-t border-primary/5 space-y-4">
-                <div className="flex flex-col gap-3 text-primary/20">
-                  <div className="flex items-center gap-2">
-                    <Feather className="w-4 h-4" />
-                    <span className="text-[8px] font-black uppercase tracking-widest">Hand-Stitched</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Heart className="w-4 h-4" />
-                    <span className="text-[8px] font-black uppercase tracking-widest">Pure Fibers</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <MapPin className="w-4 h-4" />
-                    <span className="text-[8px] font-black uppercase tracking-widest">Kolkata Exclusive</span>
-                  </div>
-                </div>
               </div>
             </nav>
           </aside>
@@ -221,64 +215,57 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
           </div>
 
           {/* Column 3: Narrative Pillar Details */}
-          <div className="lg:col-span-5 space-y-6 lg:pl-4">
-            <nav className="text-[8px] font-black uppercase tracking-[0.4em] text-primary/30 flex items-center gap-2">
-              <Link href="/" className="hover:text-accent transition-colors">Home</Link>
-              <ChevronRight className="w-2.5 h-2.5" />
-              <Link href="/shop" className="hover:text-accent transition-colors">Shop</Link>
-              <ChevronRight className="w-2.5 h-2.5" />
-              <span className="text-accent">{product.name}</span>
-            </nav>
-
-            <div className="space-y-3">
+          <div className="lg:col-span-5 space-y-8 lg:pl-4">
+            <div className="space-y-4">
               <div className="space-y-1">
-                <p className="text-[9px] font-black uppercase tracking-[0.5em] text-accent flex items-center gap-2">
+                <p className="text-[10px] md:text-[11px] font-black uppercase tracking-[0.5em] text-accent flex items-center gap-2">
                    <Sparkles className="w-3.5 h-3.5" /> {product.category}
                 </p>
-                <h1 className="font-headline text-3xl md:text-5xl lg:text-6xl text-primary tracking-tighter leading-tight">
+                <h1 className="font-headline text-4xl md:text-5xl lg:text-7xl text-primary tracking-tighter leading-[0.9] md:leading-tight">
                   {product.name}
                 </h1>
               </div>
-              <p className="text-sm md:text-base leading-relaxed text-primary/60 italic font-medium max-w-lg">
+              <p className="text-sm md:text-lg leading-relaxed text-primary/60 italic font-medium max-w-lg">
                 "{product.description}"
               </p>
             </div>
 
-            <div className="flex items-center gap-4 py-2 border-y border-primary/5">
+            <div className="flex items-center gap-4 py-4 border-y border-primary/5">
               <div className="flex text-amber-400 gap-0.5">
-                {[...Array(5)].map((_, i) => <Star key={i} className="w-3.5 h-3.5 fill-current" />)}
+                {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 fill-current" />)}
               </div>
-              <span className="text-[8px] font-black uppercase tracking-[0.3em] text-primary/30">Artisanal Choice</span>
+              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-primary/30">Artisanal Choice</span>
+              <span className="text-[10px] font-bold text-accent border-l border-primary/10 pl-4 underline underline-offset-4 cursor-pointer">62 Reviews</span>
             </div>
 
             <div className="flex items-baseline gap-3">
-               <span className="text-2xl md:text-4xl font-headline text-primary">
+               <span className="text-3xl md:text-5xl font-headline text-primary">
                  ₹ {Number(product.price).toLocaleString('en-IN')}
                </span>
-               <span className="text-[9px] font-black uppercase tracking-widest text-primary/20">Tax Included</span>
+               <span className="text-[10px] font-black uppercase tracking-widest text-primary/20">Tax Included</span>
             </div>
 
             {/* Action Row: Quantity & Buy */}
-            <div className="space-y-3 md:space-y-4">
-              <div className="flex flex-col sm:flex-row gap-3 items-stretch">
-                <div className="flex items-center border border-primary/10 h-14 md:h-16 bg-white shadow-sm overflow-hidden min-w-[120px] rounded-xl">
+            <div className="space-y-4 md:space-y-6">
+              <div className="flex flex-col sm:flex-row gap-4 items-stretch">
+                <div className="flex items-center border-2 border-primary/10 h-16 md:h-20 bg-white shadow-sm overflow-hidden min-w-[140px] rounded-2xl">
                   <button 
                     onClick={() => setQuantity(Math.max(1, quantity - 1))} 
-                    className="flex-1 flex items-center justify-center hover:bg-primary/5 h-full"
+                    className="flex-1 flex items-center justify-center hover:bg-primary/5 h-full transition-colors"
                   >
-                    <Minus className="w-3.5 h-3.5 text-primary" />
+                    <Minus className="w-4 h-4 text-primary" />
                   </button>
-                  <div className="w-10 flex items-center justify-center font-black text-primary text-base">{quantity}</div>
+                  <div className="w-12 flex items-center justify-center font-black text-primary text-lg">{quantity}</div>
                   <button 
                     onClick={() => setQuantity(quantity + 1)} 
-                    className="flex-1 flex items-center justify-center hover:bg-primary/5 h-full"
+                    className="flex-1 flex items-center justify-center hover:bg-primary/5 h-full transition-colors"
                   >
-                    <Plus className="w-3.5 h-3.5 text-primary" />
+                    <Plus className="w-4 h-4 text-primary" />
                   </button>
                 </div>
                 <Button 
                   onClick={handleAddToCart}
-                  className="flex-1 h-14 md:h-16 bg-primary text-white text-[9px] md:text-[10px] font-black tracking-[0.4em] uppercase rounded-xl"
+                  className="flex-1 h-16 md:h-20 bg-primary text-white text-[10px] md:text-[12px] font-black tracking-[0.5em] uppercase rounded-2xl shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all"
                 >
                   Add to Cart
                 </Button>
@@ -287,7 +274,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
               <Button 
                 onClick={handleBuyNow}
                 variant="outline"
-                className="w-full h-14 md:h-16 border-primary/20 text-[9px] md:text-[10px] font-black tracking-[0.4em] uppercase hover:bg-primary hover:text-white rounded-xl"
+                className="w-full h-16 md:h-20 border-primary/20 text-[10px] md:text-[12px] font-black tracking-[0.5em] uppercase hover:bg-primary hover:text-white rounded-2xl transition-all"
               >
                 Buy it Now
               </Button>
@@ -298,36 +285,46 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
               <Link 
                 href="https://www.instagram.com/fable.and.forever/"
                 target="_blank"
-                className="w-full flex items-center justify-center gap-4 py-4 md:py-6 bg-accent text-white hover:bg-accent/90 transition-all rounded-2xl group"
+                className="w-full flex items-center justify-center gap-4 py-5 md:py-8 bg-accent text-white hover:bg-accent/90 transition-all rounded-[2rem] group shadow-2xl shadow-accent/20"
               >
-                <Instagram className="w-5 h-5 group-hover:rotate-12 transition-transform" /> 
-                <span className="text-[9px] md:text-[11px] font-black uppercase tracking-[0.5em]">Customize Order</span>
-                <ChevronRight className="w-4 h-4 opacity-20 group-hover:translate-x-1 transition-transform" />
+                <Instagram className="w-6 h-6 group-hover:rotate-12 transition-transform" /> 
+                <span className="text-[10px] md:text-[12px] font-black uppercase tracking-[0.6em]">Customize Order</span>
+                <ChevronRight className="w-5 h-5 opacity-20 group-hover:translate-x-2 transition-transform" />
               </Link>
             </div>
 
             {/* Accordion Detail Sections */}
-            <Accordion type="single" collapsible className="w-full border-t border-primary/5 pt-6">
-              <AccordionItem value="process" className="border-primary/5 py-0.5">
-                <AccordionTrigger className="text-[8px] md:text-[9px] font-black uppercase tracking-[0.4em] no-underline hover:no-underline">The Process</AccordionTrigger>
-                <AccordionContent className="text-xs text-primary/60 italic pt-3">
-                  Every loop is a meditation. Our master weavers spend days hand-stitching each piece in our Kolkata studio.
+            <Accordion type="single" collapsible className="w-full border-t border-primary/5 pt-8">
+              <AccordionItem value="process" className="border-primary/5 py-1">
+                <AccordionTrigger className="text-[10px] md:text-[11px] font-black uppercase tracking-[0.5em] no-underline hover:no-underline py-6">The Process</AccordionTrigger>
+                <AccordionContent className="text-sm text-primary/60 italic pt-2 pb-6 leading-relaxed">
+                  Every loop is a meditation. Our master weavers spend days hand-stitching each piece in our Kolkata studio, ensuring a tension and durability that lasts a lifetime.
                 </AccordionContent>
               </AccordionItem>
-              <AccordionItem value="materials" className="border-primary/5 py-0.5">
-                <AccordionTrigger className="text-[8px] md:text-[9px] font-black uppercase tracking-[0.4em] no-underline hover:no-underline">Fiber Details</AccordionTrigger>
-                <AccordionContent className="text-xs text-primary/60 italic pt-3">
-                  We use only premium, locally-sourced cotton and soft wool blends that grow softer with every year.
+              <AccordionItem value="materials" className="border-primary/5 py-1">
+                <AccordionTrigger className="text-[10px] md:text-[11px] font-black uppercase tracking-[0.5em] no-underline hover:no-underline py-6">Fiber Details</AccordionTrigger>
+                <AccordionContent className="text-sm text-primary/60 italic pt-2 pb-6 leading-relaxed">
+                  We use only premium, locally-sourced cotton and soft wool blends that grow softer with every year. Our materials are hypoallergenic and selected for their tactile luxury.
                 </AccordionContent>
               </AccordionItem>
-              <AccordionItem value="delivery" className="border-primary/5 py-0.5">
-                <AccordionTrigger className="text-[8px] md:text-[9px] font-black uppercase tracking-[0.4em] no-underline hover:no-underline">Heritage Delivery</AccordionTrigger>
-                <AccordionContent className="text-xs text-primary/60 italic pt-3">
-                  Based in the heart of Kolkata, we offer hand-delivery exclusively within city limits.
+              <AccordionItem value="delivery" className="border-primary/5 py-1">
+                <AccordionTrigger className="text-[10px] md:text-[11px] font-black uppercase tracking-[0.5em] no-underline hover:no-underline py-6">Heritage Delivery</AccordionTrigger>
+                <AccordionContent className="text-sm text-primary/60 italic pt-2 pb-6 leading-relaxed">
+                  Based in the heart of Kolkata, we offer artisanal hand-delivery exclusively within city limits. Each package is gift-wrapped in reusable fabric and includes a unique serial scroll.
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
           </div>
+        </div>
+      </div>
+
+      {/* Related Products Section */}
+      <div className="bg-paper py-20 md:py-32 border-t border-primary/5">
+        <div className="container mx-auto px-4 md:px-6 max-w-7xl">
+           <FeaturedProducts 
+             title="Related Creations" 
+             categoryFilter={product.category} 
+           />
         </div>
       </div>
 

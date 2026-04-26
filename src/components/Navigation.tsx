@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { Search, Loader2, Home, LayoutGrid, ArrowRight, Instagram } from 'lucide-react';
+import { Search, Loader2, Home, LayoutGrid, ArrowRight, Instagram, Menu, X } from 'lucide-react';
 import { CartDrawer } from './CartDrawer';
 import { Logo } from './Logo';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -14,17 +14,16 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { useFirestore, useCollection, useMemoFirebase } from '@/firebase';
 import { collection, query, orderBy } from 'firebase/firestore';
 import Image from 'next/image';
+import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 
 export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
   const isHomePage = pathname === '/';
 
-  // Adaptive style logic:
-  // Use light style (white text) ONLY on home hero before scroll.
-  // Otherwise, use high-contrast teal on blurred white background.
   const useLightStyle = isHomePage && !isScrolled;
 
   const db = useFirestore();
@@ -74,14 +73,54 @@ export function Navigation() {
       )}>
         <div className="container mx-auto px-4 md:px-6 max-w-7xl">
           <div className="flex items-center justify-between relative">
-            <div className="flex-shrink-0">
+            
+            {/* Mobile: Left Menu Trigger */}
+            <div className="lg:hidden flex-1 flex justify-start">
+               <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+                  <SheetTrigger asChild>
+                    <button className={cn(
+                      "p-2 rounded-full transition-all",
+                      useLightStyle ? "text-white" : "text-primary"
+                    )}>
+                      <Menu className="w-6 h-6" />
+                    </button>
+                  </SheetTrigger>
+                  <SheetContent side="left" className="w-80 p-0 border-none bg-primary z-[200]">
+                    <SheetHeader className="p-8 border-b border-white/5">
+                      <SheetTitle className="text-white font-headline text-2xl">Menu</SheetTitle>
+                    </SheetHeader>
+                    <div className="flex flex-col p-8 space-y-6">
+                      {navLinks.map((link) => (
+                        <Link 
+                          key={link.name} 
+                          href={link.href}
+                          onClick={() => setIsMobileMenuOpen(false)}
+                          className="text-[11px] font-black uppercase tracking-[0.5em] text-white/60 hover:text-white transition-all"
+                        >
+                          {link.name}
+                        </Link>
+                      ))}
+                      <Link 
+                        href="https://www.instagram.com/fable.and.forever/"
+                        target="_blank"
+                        className="flex items-center gap-4 pt-8 border-t border-white/10 text-accent font-black uppercase tracking-widest text-[10px]"
+                      >
+                        Order via DM <Instagram className="w-4 h-4" />
+                      </Link>
+                    </div>
+                  </SheetContent>
+               </Sheet>
+            </div>
+
+            {/* Logo: Centered on Mobile, Left on PC */}
+            <div className="flex-1 lg:flex-none flex justify-center lg:justify-start">
               <Link href="/" className="flex items-center gap-3 md:gap-5 group">
                 <Logo className={cn(
                   "w-8 h-8 md:w-10 md:h-10 transition-colors duration-500",
                   useLightStyle ? "text-white" : "text-primary"
                 )} />
                 <span className={cn(
-                  "font-headline text-xl md:text-3xl font-bold tracking-tighter hidden sm:block transition-all duration-700",
+                  "font-headline text-xl md:text-3xl font-bold tracking-tighter hidden lg:block transition-all duration-700",
                   (!isHomePage || isScrolled) ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4 pointer-events-none",
                   useLightStyle ? "text-white" : "text-primary"
                 )}>
@@ -90,6 +129,7 @@ export function Navigation() {
               </Link>
             </div>
 
+            {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center gap-10">
               {navLinks.map((link) => (
                 <Link 
@@ -105,19 +145,8 @@ export function Navigation() {
               ))}
             </div>
 
-            <div className="flex items-center gap-3 md:gap-6">
-              <Link 
-                href="https://www.instagram.com/fable.and.forever/"
-                target="_blank"
-                className={cn(
-                  "hidden xs:flex items-center gap-2 px-4 py-2 rounded-full border transition-all text-[8px] font-black uppercase tracking-widest group/ig",
-                  useLightStyle 
-                    ? "border-white/30 text-white hover:bg-white hover:text-primary" 
-                    : "border-primary/20 text-primary hover:bg-primary hover:text-white"
-                )}
-              >
-                Order via DM <Instagram className="w-3 h-3 ml-1 group-hover/ig:rotate-12 transition-transform" />
-              </Link>
+            {/* Right Icons */}
+            <div className="flex-1 flex items-center justify-end gap-2 md:gap-6">
               <button 
                 onClick={() => setIsSearchOpen(true)}
                 className={cn(
@@ -163,7 +192,7 @@ export function Navigation() {
                   {loadingProducts && searchQuery && (
                     <div className="flex flex-col items-center justify-center py-12 gap-4">
                       <Loader2 className="w-6 h-6 text-accent animate-spin" />
-                      <p className="text-[10px] font-bold uppercase tracking-widest text-primary/30">Searching collection...</p>
+                      <p className="text-[10px] font-bold uppercase tracking widest text-primary/30">Searching collection...</p>
                     </div>
                   )}
                   
@@ -213,7 +242,7 @@ export function Navigation() {
         </Dialog>
       </nav>
 
-      {/* Mobile Bottom Navigation Bar */}
+      {/* Mobile Bottom Navigation Bar: Hidden if Top Bar is Active enough */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 z-[100] bg-white/95 backdrop-blur-2xl border-t border-primary/5 h-16 flex items-center justify-around px-4 pb-4 pt-2 shadow-[0_-4px_30px_-4px_rgba(0,0,0,0.05)]">
         <Link href="/" className="flex flex-col items-center gap-1">
           <Home className="w-5 h-5 text-primary" />

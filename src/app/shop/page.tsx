@@ -10,7 +10,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useCart } from '@/context/CartContext';
 import { useToast } from '@/hooks/use-toast';
-import { ShoppingBasket, ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
+import { ShoppingBasket, ChevronLeft, ChevronRight, Sparkles, ShoppingBag } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export default function ShopPage() {
@@ -96,7 +96,7 @@ export default function ShopPage() {
   };
 
   return (
-    <main className="min-h-screen bg-white selection:bg-accent/20 flex flex-col">
+    <main className="min-h-screen bg-paper selection:bg-accent/20 flex flex-col">
       <Navigation />
       
       <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden bg-[#050505]">
@@ -197,38 +197,50 @@ export default function ShopPage() {
                        <p className="text-primary/20 font-headline text-lg md:text-2xl italic px-6">"New loops coming soon to this collection."</p>
                     </div>
                   ) : (
-                    <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-16">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
                       {catProducts.map((product) => (
-                        <div key={product.id} className="group space-y-3 md:space-y-8">
-                          <Link href={`/products/${product.id}`} className="block">
-                            <div className="relative aspect-[3/4] overflow-hidden bg-paper shadow-sm group-hover:shadow-2xl transition-all duration-700 stitching-border">
-                              <Image
-                                src={product.imageUrls?.[0] || 'https://placehold.co/600x800?text=Forever+Loop'}
-                                alt={product.name}
-                                fill
-                                className="object-cover transition-transform duration-[2s] group-hover:scale-105"
-                                sizes="(max-width: 768px) 50vw, 33vw"
-                              />
-                            </div>
-                          </Link>
+                        <div key={product.id} className="group relative">
+                          {/* Elevated background on hover */}
+                          <div className="absolute inset-x-0 -inset-y-6 bg-white rounded-[2rem] opacity-0 group-hover:opacity-100 shadow-[0_40px_80px_-20px_rgba(0,0,0,0.1)] transition-all duration-500 -z-10 group-hover:-translate-y-2"></div>
                           
-                          <div className="space-y-2 md:space-y-4 text-center px-1">
-                            <div className="space-y-0.5 md:space-y-1">
-                              <h3 className="font-headline text-base md:text-3xl text-primary group-hover:text-accent transition-colors truncate px-1">{product.name}</h3>
-                              <p className="font-black text-primary/30 text-[9px] md:text-sm tracking-[0.3em] md:tracking-[0.4em] uppercase italic">₹ {Number(product.price).toLocaleString('en-IN')}</p>
+                          <Link href={`/products/${product.id}`} className="block space-y-6 md:space-y-8 text-center">
+                            {/* Floating Image with Shadow */}
+                            <div className="relative aspect-[3/4] mx-auto w-[85%] transition-all duration-700 group-hover:-translate-y-4 group-hover:scale-105">
+                              {/* Bottom Shadow Wrapper */}
+                              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-[80%] h-4 bg-black/10 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                              
+                              <div className="relative h-full w-full overflow-hidden rounded-[2rem] shadow-sm group-hover:shadow-2xl transition-all duration-700">
+                                <Image
+                                  src={product.imageUrls?.[0] || 'https://placehold.co/600x800?text=Forever+Loop'}
+                                  alt={product.name}
+                                  fill
+                                  className="object-cover"
+                                  sizes="(max-width: 768px) 90vw, 30vw"
+                                />
+                              </div>
                             </div>
                             
-                            <div className="pt-1">
-                              <button 
-                                onClick={(e) => handleAddToCart(e, product)}
-                                className="inline-flex items-center gap-2 px-4 md:px-10 py-2.5 md:py-5 bg-white border border-primary/10 text-primary hover:bg-primary hover:text-white transition-all duration-500 font-black uppercase tracking-[0.3em] md:tracking-[0.5em] text-[8px] md:text-[10px] active:scale-95 group/btn w-full justify-center"
-                              >
-                                <span className="hidden xs:inline">Add to Cart</span>
-                                <span className="xs:hidden text-[7px]">Add</span>
-                                <ShoppingBasket className="w-3 h-3 md:w-4 md:h-4 group-hover/btn:rotate-12 transition-transform" />
-                              </button>
+                            <div className="space-y-3 md:space-y-5 px-6">
+                              <h3 className="font-headline text-2xl md:text-4xl text-primary leading-tight px-1">{product.name}</h3>
+                              <p className="text-[10px] md:text-xs text-primary/40 leading-relaxed italic line-clamp-2 max-w-[240px] mx-auto">
+                                {product.description}
+                              </p>
+                              
+                              <div className="flex items-center justify-center gap-4 pt-2">
+                                <span className="text-[8px] md:text-[10px] font-black uppercase tracking-widest text-primary/20">{product.category}</span>
+                                <span className="font-headline text-xl md:text-3xl text-primary">₹ {Number(product.price).toLocaleString('en-IN')}</span>
+                              </div>
+                              
+                              <div className="pt-2">
+                                <button 
+                                  onClick={(e) => handleAddToCart(e, product)}
+                                  className="w-full h-12 md:h-14 rounded-full border-2 border-accent text-accent hover:bg-accent hover:text-white transition-all duration-500 font-black uppercase tracking-[0.3em] text-[8px] md:text-[10px] flex items-center justify-center gap-2 group/btn shadow-sm hover:shadow-xl active:scale-95"
+                                >
+                                  Add to Cart <ShoppingBag className="w-3.5 h-3.5 group-hover/btn:rotate-12 transition-transform" />
+                                </button>
+                              </div>
                             </div>
-                          </div>
+                          </Link>
                         </div>
                       ))}
                     </div>

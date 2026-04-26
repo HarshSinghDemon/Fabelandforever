@@ -1,3 +1,4 @@
+
 "use client";
 
 import React from 'react';
@@ -9,7 +10,7 @@ import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
 import { collection, query, orderBy } from 'firebase/firestore';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Button } from '@/components/ui/button';
-import { Sparkles } from 'lucide-react';
+import { Sparkles, ShoppingBag } from 'lucide-react';
 
 interface FeaturedProductsProps {
   title: string;
@@ -79,56 +80,68 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
   if (filteredProducts.length === 0) return null;
 
   return (
-    <section className="py-12 md:py-20 bg-background overflow-hidden border-t border-primary/5">
+    <section className="py-12 md:py-24 bg-background overflow-hidden border-t border-primary/5">
       <div className="container mx-auto px-4 md:px-6 max-w-7xl">
-        <div className="flex flex-col items-center text-center mb-8 md:mb-16 reveal-on-scroll active">
+        <div className="flex flex-col items-center text-center mb-12 md:mb-20 reveal-on-scroll active">
           <span className="text-accent font-black tracking-[0.8em] uppercase text-[9px] mb-3 block">Boutique Selection</span>
-          <h2 className="font-headline text-3xl md:text-6xl text-primary tracking-tighter leading-none">{title}</h2>
+          <h2 className="font-headline text-4xl md:text-7xl text-primary tracking-tighter leading-none">{title}</h2>
           <div className="w-12 h-[1px] bg-accent/20 mt-4 md:mt-6"></div>
         </div>
 
         <div className="relative">
           <Carousel opts={{ align: "start", loop: false }} className="w-full">
-            <CarouselContent className="-ml-3 md:-ml-6">
+            <CarouselContent className="-ml-4 md:-ml-8">
               {filteredProducts.map((product: any, idx: number) => (
-                <CarouselItem key={product.id} className="pl-3 md:pl-6 basis-1/2 md:basis-1/3 lg:basis-1/4">
-                  <div className="group space-y-3 md:space-y-6 transition-all duration-700 reveal-on-scroll active" style={{ transitionDelay: `${idx * 0.1}s` }}>
-                    <Link href={`/products/${product.id}`} className="block">
-                      <div className="relative aspect-[3/4] overflow-hidden bg-white rounded-none shadow-sm transition-all duration-[2s] group-hover:shadow-2xl border border-primary/5 stitching-border">
-                        <Image
-                          src={product.imageUrls?.[0] || 'https://placehold.co/600x800?text=Forever+Loop'}
-                          alt={product.name}
-                          fill
-                          className="object-cover transition-transform duration-[2.5s] group-hover:scale-105"
-                          sizes="(max-width: 768px) 50vw, 25vw"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                      </div>
-                    </Link>
+                <CarouselItem key={product.id} className="pl-4 md:pl-8 basis-full sm:basis-1/2 lg:basis-1/3">
+                  <div className="group relative py-8 px-4 transition-all duration-700 reveal-on-scroll active" style={{ transitionDelay: `${idx * 0.1}s` }}>
+                    {/* Floating Background Effect */}
+                    <div className="absolute inset-0 bg-white rounded-[3rem] opacity-0 group-hover:opacity-100 shadow-[0_40px_80px_-20px_rgba(0,0,0,0.1)] transition-all duration-500 -z-10 group-hover:-translate-y-2"></div>
                     
-                    <div className="space-y-2 md:space-y-4 text-center px-1">
-                      <div className="space-y-0.5 md:space-y-1">
-                        <h3 className="font-headline text-base md:text-2xl text-primary group-hover:text-accent transition-colors truncate px-1 leading-tight">{product.name}</h3>
-                        <p className="font-black text-primary/40 text-[10px] md:text-xs tracking-widest italic">₹ {Number(product.price).toLocaleString('en-IN')}</p>
+                    <Link href={`/products/${product.id}`} className="block space-y-8 text-center">
+                      {/* Floating Image Container */}
+                      <div className="relative aspect-[3/4] mx-auto w-[90%] transition-all duration-700 group-hover:-translate-y-6 group-hover:scale-105">
+                        {/* Interactive Shadow */}
+                        <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-[80%] h-6 bg-black/10 blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        
+                        <div className="relative h-full w-full overflow-hidden rounded-[2.5rem] shadow-sm group-hover:shadow-2xl transition-all duration-700 border border-primary/5">
+                          <Image
+                            src={product.imageUrls?.[0] || 'https://placehold.co/600x800?text=Forever+Loop'}
+                            alt={product.name}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 768px) 90vw, 33vw"
+                          />
+                        </div>
                       </div>
                       
-                      <div className="pt-0.5 md:pt-1">
-                        <Button 
-                          onClick={(e) => handleAddToCart(e, product)}
-                          variant="outline"
-                          className="w-full h-9 md:h-12 rounded-none border-primary/10 hover:border-primary text-[7px] md:text-[9px] tracking-[0.3em] md:tracking-[0.5em] font-black"
-                        >
-                          Add to Cart
-                        </Button>
+                      <div className="space-y-4 px-2">
+                        <div className="space-y-1">
+                          <h3 className="font-headline text-2xl md:text-4xl text-primary leading-tight truncate px-1">{product.name}</h3>
+                          <p className="text-[9px] md:text-[10px] text-primary/30 font-bold uppercase tracking-[0.4em] italic">{product.category}</p>
+                        </div>
+                        
+                        <div className="flex items-center justify-center gap-6 pt-2">
+                           <span className="text-[8px] md:text-[10px] font-black text-primary/20 uppercase tracking-widest">Limited Piece</span>
+                           <span className="font-headline text-xl md:text-3xl text-primary">₹ {Number(product.price).toLocaleString('en-IN')}</span>
+                        </div>
+                        
+                        <div className="pt-4">
+                          <Button 
+                            onClick={(e) => handleAddToCart(e, product)}
+                            className="w-full h-14 md:h-16 rounded-full border-2 border-accent bg-transparent text-accent hover:bg-accent hover:text-white text-[9px] md:text-[11px] tracking-[0.4em] font-black uppercase shadow-sm hover:shadow-xl transition-all duration-500 group/btn"
+                          >
+                            Add to Cart <ShoppingBag className="ml-3 w-4 h-4 group-hover/btn:rotate-12 transition-transform" />
+                          </Button>
+                        </div>
                       </div>
-                    </div>
+                    </Link>
                   </div>
                 </CarouselItem>
               ))}
             </CarouselContent>
             
-            <CarouselPrevious className="hidden md:flex -left-10 h-10 w-10 border-none bg-white/80 backdrop-blur-sm shadow-xl hover:bg-primary hover:text-white transition-all rounded-none" />
-            <CarouselNext className="hidden md:flex -right-10 h-10 w-10 border-none bg-white/80 backdrop-blur-sm shadow-xl hover:bg-primary hover:text-white transition-all rounded-none" />
+            <CarouselPrevious className="hidden md:flex -left-12 h-14 w-14 border-none bg-white/90 backdrop-blur-md shadow-2xl hover:bg-primary hover:text-white transition-all rounded-full" />
+            <CarouselNext className="hidden md:flex -right-12 h-14 w-14 border-none bg-white/90 backdrop-blur-md shadow-2xl hover:bg-primary hover:text-white transition-all rounded-full" />
           </Carousel>
         </div>
       </div>

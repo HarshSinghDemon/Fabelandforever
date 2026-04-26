@@ -21,6 +21,10 @@ export function Navigation() {
   const pathname = usePathname();
   const isHomePage = pathname === '/';
 
+  // Determine if we should use the "light" (white text/transparent bg) style
+  // This is ONLY for the homepage when not scrolled.
+  const useLightStyle = isHomePage && !isScrolled;
+
   const db = useFirestore();
   const productsQuery = useMemoFirebase(() => {
     if (!db) return null;
@@ -62,9 +66,9 @@ export function Navigation() {
     <>
       <nav className={cn(
         "fixed top-0 left-0 right-0 z-[60] transition-all duration-700",
-        isScrolled 
-          ? "bg-white/95 backdrop-blur-xl border-b border-primary/5 py-4 shadow-sm" 
-          : "bg-transparent py-10"
+        useLightStyle 
+          ? "bg-transparent py-10" 
+          : "bg-white/95 backdrop-blur-xl border-b border-primary/5 py-4 shadow-sm"
       )}>
         <div className="container mx-auto px-6 max-w-7xl">
           <div className="flex items-center justify-between relative">
@@ -72,12 +76,12 @@ export function Navigation() {
               <Link href="/" className="flex items-center gap-3 md:gap-5 group">
                 <Logo className={cn(
                   "w-9 h-9 md:w-12 md:h-12 transition-colors duration-500",
-                  isScrolled ? "text-primary" : "text-white"
+                  useLightStyle ? "text-white" : "text-primary"
                 )} />
                 <span className={cn(
                   "font-headline text-xl md:text-4xl font-bold tracking-tighter hidden sm:block transition-all duration-700",
                   (!isHomePage || isScrolled) ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4 pointer-events-none",
-                  isScrolled ? "text-primary" : "text-white"
+                  useLightStyle ? "text-white" : "text-primary"
                 )}>
                   Fable & Forever
                 </span>
@@ -91,7 +95,7 @@ export function Navigation() {
                   href={link.href}
                   className={cn(
                     "text-[11px] font-black uppercase tracking-[0.4em] transition-all hover:text-accent whitespace-nowrap",
-                    isScrolled ? "text-primary" : "text-white drop-shadow-md"
+                    useLightStyle ? "text-white drop-shadow-md" : "text-primary"
                   )}
                 >
                   {link.name}
@@ -105,9 +109,9 @@ export function Navigation() {
                 target="_blank"
                 className={cn(
                   "hidden xs:flex items-center gap-3 px-6 py-2.5 rounded-full border-2 transition-all text-[9px] font-black uppercase tracking-widest group/ig",
-                  isScrolled 
-                    ? "border-accent/20 text-accent hover:bg-accent hover:text-white" 
-                    : "border-white/30 text-white hover:bg-white hover:text-primary"
+                  useLightStyle 
+                    ? "border-white/30 text-white hover:bg-white hover:text-primary" 
+                    : "border-accent/20 text-accent hover:bg-accent hover:text-white"
                 )}
               >
                 Order via DM <Instagram className="w-3.5 h-3.5 ml-1 group-hover/ig:rotate-12 transition-transform" />
@@ -116,12 +120,12 @@ export function Navigation() {
                 onClick={() => setIsSearchOpen(true)}
                 className={cn(
                   "p-2 rounded-full transition-all active:scale-90",
-                  isScrolled ? "text-primary hover:bg-primary/5" : "text-white hover:bg-white/10"
+                  useLightStyle ? "text-white hover:bg-white/10" : "text-primary hover:bg-primary/5"
                 )}
               >
                 <Search className="w-5 h-5 md:w-6 h-6" />
               </button>
-              <CartDrawer isLight={!isScrolled && isHomePage} />
+              <CartDrawer isLight={useLightStyle} />
             </div>
           </div>
         </div>

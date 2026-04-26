@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { use, useState, useEffect } from 'react';
@@ -191,7 +190,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
                           src={img} 
                           alt={product.name} 
                           fill 
-                          className="object-cover md:object-cover transition-transform duration-[10s] hover:scale-105"
+                          className="object-cover transition-transform duration-[10s] hover:scale-105"
                           priority={idx === 0}
                           sizes="(max-width: 1024px) 100vw, 40vw"
                         />

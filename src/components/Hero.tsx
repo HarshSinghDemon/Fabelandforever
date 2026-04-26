@@ -128,16 +128,16 @@ export function Hero() {
           <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/90 pointer-events-none"></div>
           
           <div className="absolute inset-0 z-20 flex flex-col items-center justify-end pb-14 text-center text-white p-8">
-            <div className="space-y-4 w-full">
+            <div className="space-y-4 w-full flex flex-col items-center">
               <span className="text-[12px] font-black uppercase tracking-[0.6em] text-accent block animate-loop-in opacity-0">
                 Handmade Crochet
               </span>
               <h1 className="font-headline text-6xl leading-none tracking-tighter mb-8 drop-shadow-2xl italic animate-loop-in stagger-2 opacity-0">
                 Fable <span className="block font-fancy text-7xl text-accent -mt-2 -rotate-3">&</span> Forever
               </h1>
-              <Button asChild className="bg-white text-primary hover:bg-white/90 h-20 w-full rounded-[2rem] text-[12px] font-black uppercase tracking-[0.5em] shadow-2xl active:scale-95 transition-all group animate-loop-in stagger-3 opacity-0">
+              <Button asChild className="bg-white text-primary hover:bg-white/90 h-14 w-full max-w-[240px] rounded-[2rem] text-[10px] font-black uppercase tracking-[0.5em] shadow-2xl active:scale-95 transition-all group animate-loop-in stagger-3 opacity-0">
                 <Link href="#shop" className="flex items-center justify-center">
-                  Explore Boutique <ArrowRight className="ml-4 w-5 h-5 group-hover:translate-x-2 transition-transform" />
+                  Explore Shop <ArrowRight className="ml-3 w-4 h-4 group-hover:translate-x-2 transition-transform" />
                 </Link>
               </Button>
             </div>
@@ -182,9 +182,9 @@ export function Hero() {
             </p>
             
             <div className="pt-6 md:pt-8 flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-8 animate-loop-in stagger-4 opacity-0">
-              <Button asChild className="bg-white text-primary hover:bg-white/90 px-10 md:px-16 h-16 md:h-20 rounded-none text-[10px] md:text-[12px] font-black uppercase tracking-[0.4em] md:tracking-[0.5em] transition-all hover:scale-105 active:scale-95 shadow-2xl group w-full sm:w-auto">
+              <Button asChild className="bg-white text-primary hover:bg-white/90 px-8 md:px-12 h-12 md:h-16 rounded-none text-[9px] md:text-[11px] font-black uppercase tracking-[0.4em] md:tracking-[0.5em] transition-all hover:scale-105 active:scale-95 shadow-2xl group w-full sm:w-auto">
                 <Link href="#shop" className="flex items-center justify-center">
-                  Explore Collection <ArrowRight className="ml-3 md:ml-4 w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-2 transition-transform" />
+                  Explore Shop <ArrowRight className="ml-3 md:ml-4 w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-2 transition-transform" />
                 </Link>
               </Button>
               

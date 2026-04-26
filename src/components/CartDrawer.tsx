@@ -46,8 +46,9 @@ export function CartDrawer({ isLight }: CartDrawerProps) {
             </SheetTitle>
             <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-primary/60 mt-2">Hand-Stitched Heritage</p>
           </div>
-          <SheetClose className="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform active:scale-90">
-             <X className="w-6 h-6" />
+          <SheetClose className="w-auto px-4 h-12 bg-primary text-white rounded-full flex items-center justify-center gap-2 shadow-2xl hover:scale-105 transition-transform active:scale-95">
+             <span className="text-[10px] font-black uppercase tracking-widest">Close</span>
+             <X className="w-5 h-5" />
           </SheetClose>
         </SheetHeader>
 

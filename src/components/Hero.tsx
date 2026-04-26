@@ -125,7 +125,7 @@ export function Hero() {
           
           <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/90 pointer-events-none"></div>
           
-          <div className="absolute inset-0 z-20 flex flex-col items-center justify-center pb-8 text-center text-white p-6">
+          <div className="absolute inset-0 z-20 flex flex-col items-center justify-center pb-8 text-center text-white p-6 -translate-y-10">
             <div className="space-y-4 w-full flex flex-col items-center">
               <span className="text-[10px] font-black uppercase tracking-[0.6em] text-accent block animate-loop-in opacity-0">
                 Handmade Crochet

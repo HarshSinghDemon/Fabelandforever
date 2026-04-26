@@ -95,7 +95,9 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
               <Link 
                 key={product.id}
                 href={`/products/${product.id}`}
-                className="group relative flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm border border-primary/5 active:scale-95 transition-all duration-300 reveal-on-scroll active"
+                className={cn(
+                  "group relative flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm border border-primary/5 active:scale-95 transition-all duration-300 reveal-on-scroll active",
+                )}
                 style={{ transitionDelay: `${idx * 0.1}s` }}
               >
                 <div className="absolute inset-0 bg-accent/5 opacity-0 group-hover:opacity-100 transition-opacity z-10"></div>

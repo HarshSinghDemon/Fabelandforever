@@ -1,4 +1,3 @@
-
 "use client"
 
 import * as React from "react"
@@ -66,8 +65,8 @@ const SheetContent = React.forwardRef<
       {...props}
     >
       {children}
-      <SheetPrimitive.Close className="absolute right-6 top-6 rounded-full w-12 h-12 flex items-center justify-center bg-white shadow-xl text-primary opacity-90 ring-offset-background transition-all hover:opacity-100 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary z-[200] border border-primary/5">
-        <X className="h-6 w-6" />
+      <SheetPrimitive.Close className="absolute right-4 top-4 sm:right-6 sm:top-6 rounded-full w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-white shadow-xl text-primary opacity-90 ring-offset-background transition-all hover:opacity-100 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary z-[200] border border-primary/5">
+        <X className="h-5 w-5 sm:h-6 sm:h-6" />
         <span className="sr-only">Close</span>
       </SheetPrimitive.Close>
     </SheetPrimitive.Content>

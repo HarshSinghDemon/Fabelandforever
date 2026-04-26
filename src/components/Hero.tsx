@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useMemo } from 'react';
@@ -68,11 +67,11 @@ export function Hero() {
             ))}
           </CarouselContent>
         </Carousel>
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/80 pointer-events-none z-[5]"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black/90 pointer-events-none z-[5]"></div>
       </div>
       
-      <div className="container mx-auto px-6 relative z-10 h-full flex items-center justify-center text-center text-white pt-10 md:pt-20">
-        <div className="max-w-7xl mx-auto space-y-6 md:space-y-16">
+      <div className="container mx-auto px-4 sm:px-6 relative z-10 h-full flex items-center justify-center text-center text-white pt-10 md:pt-20">
+        <div className="max-w-7xl mx-auto space-y-8 md:space-y-16">
           <div className="overflow-hidden">
              <span className="text-[10px] md:text-sm font-black uppercase tracking-[0.8em] md:tracking-[1.5em] text-accent block animate-loop-in opacity-0">
                Hand-Stitched Legacy
@@ -80,7 +79,7 @@ export function Hero() {
           </div>
 
           <div className="relative">
-            <h1 className="font-headline text-5xl sm:text-7xl md:text-[8rem] lg:text-[10rem] leading-[0.85] tracking-tighter drop-shadow-2xl flex flex-col items-center select-none px-4">
+            <h1 className="font-headline text-5xl sm:text-7xl md:text-[8rem] lg:text-[10rem] hero-title leading-[0.85] tracking-tighter drop-shadow-2xl flex flex-col items-center select-none px-2">
               <span className="block overflow-hidden">
                 <span className="block animate-loop-in stagger-1 opacity-0">Fable</span>
               </span>
@@ -95,13 +94,13 @@ export function Hero() {
             </h1>
           </div>
           
-          <div className="space-y-6 md:space-y-10 max-w-2xl mx-auto pt-12 md:pt-0">
-            <p className="text-[11px] md:text-base leading-relaxed font-black uppercase tracking-[0.3em] md:tracking-[0.4em] text-white/70 animate-loop-in stagger-4 opacity-0 px-6">
+          <div className="space-y-8 md:space-y-10 max-w-2xl mx-auto pt-16 md:pt-0">
+            <p className="text-[10px] md:text-base leading-relaxed font-black uppercase tracking-[0.3em] md:tracking-[0.4em] text-white/70 animate-loop-in stagger-4 opacity-0 px-4">
               Bespoke crochet collections designed for the heritage heart.
             </p>
             
-            <div className="pt-4 md:pt-8 flex flex-col sm:flex-row items-center justify-center gap-6 md:gap-8 animate-loop-in stagger-4 opacity-0">
-              <Button asChild className="bg-white text-primary hover:bg-white/90 px-10 md:px-16 h-14 md:h-20 rounded-none text-[10px] md:text-[12px] font-black uppercase tracking-[0.4em] md:tracking-[0.5em] transition-all hover:scale-105 active:scale-95 shadow-2xl group w-full sm:w-auto">
+            <div className="pt-6 md:pt-8 flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-8 animate-loop-in stagger-4 opacity-0">
+              <Button asChild className="bg-white text-primary hover:bg-white/90 px-10 md:px-16 h-16 md:h-20 rounded-none text-[10px] md:text-[12px] font-black uppercase tracking-[0.4em] md:tracking-[0.5em] transition-all hover:scale-105 active:scale-95 shadow-2xl group w-full sm:w-auto">
                 <Link href="#shop" className="flex items-center justify-center">
                   Explore Collection <ArrowRight className="ml-3 md:ml-4 w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-2 transition-transform" />
                 </Link>
@@ -110,7 +109,7 @@ export function Hero() {
               <Link 
                 href="https://www.instagram.com/fable.and.forever/"
                 target="_blank"
-                className="text-[10px] md:text-[12px] font-black uppercase tracking-[0.4em] md:tracking-[0.5em] text-white/90 hover:text-accent transition-all border-b-2 border-accent/40 pb-2 hover:border-accent group flex items-center gap-4 bg-black/20 backdrop-blur-sm px-6 py-4 md:bg-transparent md:p-0 rounded-full"
+                className="text-[10px] md:text-[12px] font-black uppercase tracking-[0.4em] md:tracking-[0.5em] text-white/90 hover:text-accent transition-all border-b-2 border-accent/40 pb-2 hover:border-accent group flex items-center justify-center gap-4 bg-black/20 backdrop-blur-sm px-8 py-5 md:bg-transparent md:p-0 rounded-full w-full sm:w-auto"
               >
                 DM for Order <Sparkles className="w-5 h-5 text-accent group-hover:rotate-45 transition-transform" />
               </Link>

@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { use, useState, useEffect } from 'react';
@@ -113,7 +112,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
     <main className="min-h-screen bg-white selection:bg-accent/10 flex flex-col">
       <Navigation />
       
-      <div className="container mx-auto px-4 md:px-6 max-w-7xl flex-1 flex flex-col lg:flex-row gap-10 lg:gap-20 pt-24 lg:pt-40 pb-20">
+      <div className="container mx-auto px-4 md:px-6 max-w-7xl flex-1 flex flex-col lg:flex-row gap-10 lg:gap-20 pt-28 lg:pt-40 pb-24">
         
         {/* Left Column: Image Gallery */}
         <div className="w-full lg:w-3/5 flex flex-col gap-6">
@@ -132,6 +131,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
                         fill 
                         className="object-cover"
                         priority={idx === 0}
+                        sizes="(max-width: 1024px) 100vw, 60vw"
                       />
                     </div>
                   </CarouselItem>
@@ -145,39 +145,39 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
         </div>
 
         {/* Right Column: Details & Actions */}
-        <div className="w-full lg:w-2/5 space-y-10 lg:sticky lg:top-40 h-fit">
-          <div className="space-y-4">
+        <div className="w-full lg:w-2/5 space-y-8 md:space-y-10 lg:sticky lg:top-40 h-fit">
+          <div className="space-y-4 text-center lg:text-left">
             <p className="text-[9px] font-bold uppercase tracking-[0.8em] text-accent">Fable & Forever Studio</p>
             <h1 className="font-headline text-4xl md:text-6xl text-primary leading-tight tracking-tight">
               {product.title || product.name}
             </h1>
-            <div className="flex items-baseline gap-4 pt-2">
+            <div className="flex items-baseline justify-center lg:justify-start gap-4 pt-2">
               <span className="text-3xl font-medium text-primary">₹ {Number(product.price).toLocaleString('en-IN')}</span>
             </div>
           </div>
 
-          <div className="p-6 bg-paper/50 border border-primary/5 flex items-start gap-6 relative overflow-hidden stitching-border">
-            <div className="w-12 h-12 bg-primary/5 rounded-full flex items-center justify-center shrink-0">
+          <div className="p-6 bg-paper/50 border border-primary/5 flex items-start gap-5 md:gap-6 relative overflow-hidden stitching-border">
+            <div className="w-10 h-10 md:w-12 md:h-12 bg-primary/5 rounded-full flex items-center justify-center shrink-0">
               <MapPin className="w-5 h-5 text-primary" />
             </div>
             <div className="space-y-1">
               <h4 className="text-[9px] font-bold uppercase tracking-[0.5em] text-primary">Kolkata Exclusive</h4>
-              <p className="text-[11px] leading-relaxed text-primary/50 font-medium italic">
+              <p className="text-[10px] md:text-[11px] leading-relaxed text-primary/50 font-medium italic">
                 "Handcrafted and delivered exclusively within Kolkata city limits."
               </p>
             </div>
           </div>
 
           <div className="space-y-8">
-            <div className="space-y-3">
+            <div className="space-y-4 text-center lg:text-left">
               <label className="text-[9px] font-bold uppercase tracking-[0.5em] text-primary/30">Quantity Selection</label>
-              <div className="flex items-center border border-primary/10 h-14 bg-white overflow-hidden max-w-[160px]">
+              <div className="flex items-center border border-primary/10 h-14 bg-white overflow-hidden max-w-[160px] mx-auto lg:ml-0">
                 <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="flex-1 flex items-center justify-center hover:bg-primary/5 transition-colors h-full">
-                  <Minus className="w-4 h-4" />
+                  <Minus className="w-4 h-4 text-primary" />
                 </button>
                 <div className="w-12 flex items-center justify-center font-bold text-primary text-base">{quantity}</div>
                 <button onClick={() => setQuantity(quantity + 1)} className="flex-1 flex items-center justify-center hover:bg-primary/5 transition-colors h-full">
-                  <Plus className="w-4 h-4" />
+                  <Plus className="w-4 h-4 text-primary" />
                 </button>
               </div>
             </div>
@@ -185,50 +185,50 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Button 
                 onClick={handleAddToCart}
-                className="h-16 rounded-none bg-primary text-white text-[10px] tracking-[0.5em] w-full"
+                className="h-16 rounded-none bg-primary text-white text-[10px] tracking-[0.4em] w-full uppercase"
               >
                 Add to Cart
               </Button>
               <Button 
                 onClick={handleBuyNow}
                 variant="outline"
-                className="h-16 rounded-none border-primary/20 text-[10px] tracking-[0.5em] w-full"
+                className="h-16 rounded-none border-primary/20 text-[10px] tracking-[0.4em] w-full uppercase"
               >
                 Buy it Now
               </Button>
             </div>
 
-            <div className="pt-6">
+            <div className="pt-4">
               <Link 
                 href="https://www.instagram.com/fable.and.forever/"
                 target="_blank"
-                className="w-full flex items-center justify-center gap-6 py-10 bg-accent text-white hover:bg-accent/90 transition-all border border-accent/10 shadow-xl relative overflow-hidden group rounded-[2rem]"
+                className="w-full flex items-center justify-center gap-6 py-8 md:py-10 bg-accent text-white hover:bg-accent/90 transition-all border border-accent/10 shadow-xl relative overflow-hidden group rounded-[1.5rem] md:rounded-[2rem]"
               >
                 <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent animate-pulse"></div>
-                <Instagram className="w-8 h-8 group-hover:rotate-12 transition-transform" /> 
+                <Instagram className="w-7 h-7 md:w-8 md:h-8 group-hover:rotate-12 transition-transform" /> 
                 <div className="flex flex-col items-start">
-                  <span className="text-[11px] font-black uppercase tracking-[0.6em]">DM for Order</span>
+                  <span className="text-[10px] md:text-[11px] font-black uppercase tracking-[0.5em] md:tracking-[0.6em]">DM for Order</span>
                   <span className="text-[8px] font-bold uppercase tracking-widest text-white/60 mt-1 italic">Consult the Weaver</span>
                 </div>
-                <ChevronRight className="w-6 h-6 ml-auto mr-4 opacity-40 group-hover:translate-x-2 transition-transform" />
+                <ChevronRight className="w-5 h-5 md:w-6 md:h-6 ml-auto mr-4 opacity-40 group-hover:translate-x-2 transition-transform" />
               </Link>
             </div>
           </div>
 
-          <div className="grid grid-cols-4 gap-4 py-10 border-y border-primary/5">
+          <div className="grid grid-cols-4 gap-2 md:gap-4 py-8 md:py-10 border-y border-primary/5">
             {[ { icon: Leaf, label: 'Eco' }, { icon: Feather, label: 'Hand' }, { icon: Heart, label: 'Pure' }, { icon: Undo2, label: 'Soft' } ].map((item, i) => (
-              <div key={i} className="flex flex-col items-center gap-3">
-                <div className="w-12 h-12 bg-paper rounded-full flex items-center justify-center text-primary/20">
-                  <item.icon className="w-5 h-5" />
+              <div key={i} className="flex flex-col items-center gap-2 md:gap-3">
+                <div className="w-10 h-10 md:w-12 md:h-12 bg-paper rounded-full flex items-center justify-center text-primary/20">
+                  <item.icon className="w-4 h-4 md:w-5 md:h-5" />
                 </div>
-                <span className="text-[8px] font-bold uppercase tracking-[0.4em] text-primary/20">{item.label}</span>
+                <span className="text-[7px] md:text-[8px] font-bold uppercase tracking-[0.4em] text-primary/20">{item.label}</span>
               </div>
             ))}
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-6 text-center lg:text-left px-4 lg:px-0">
             <h4 className="text-[9px] font-bold uppercase tracking-[0.6em] text-primary/40">The Stitch Story</h4>
-            <p className="text-base leading-relaxed text-primary/60 italic font-medium">
+            <p className="text-sm md:text-base leading-relaxed text-primary/60 italic font-medium">
               "{product.description}"
             </p>
           </div>

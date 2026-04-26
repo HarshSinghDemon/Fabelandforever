@@ -89,13 +89,21 @@ export default function CheckoutPage() {
           
           if (data && data.address) {
             const addr = data.address;
+            
+            // Refined mapping for Street and Locality
+            const streetVal = addr.road || addr.pedestrian || addr.suburb || addr.neighbourhood || '';
+            const localityVal = addr.neighbourhood || addr.suburb || addr.city_district || addr.village || addr.town || '';
+            const cityVal = addr.city || addr.town || addr.state_district || 'Kolkata';
+            const pincodeVal = addr.postcode || '';
+
             setFormData(prev => ({
               ...prev,
-              street: addr.road || addr.pedestrian || addr.suburb || prev.street,
-              locality: addr.neighbourhood || addr.suburb || addr.city_district || addr.village || prev.locality,
-              city: addr.city || addr.town || addr.state_district || 'Kolkata',
-              pincode: addr.postcode || prev.pincode
+              street: streetVal || prev.street,
+              locality: localityVal || prev.locality,
+              city: cityVal,
+              pincode: pincodeVal || prev.pincode
             }));
+            
             toast({ title: "Address Captured ✨", description: "Your destination details have been unrolled automatically." });
           } else {
             toast({ title: "Coordinates Recorded 📍", description: "GPS detected, but address lookup was shy. Please fill manually." });

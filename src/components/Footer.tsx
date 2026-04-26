@@ -1,4 +1,3 @@
-
 "use client";
 
 import React from 'react';
@@ -67,7 +66,7 @@ export function Footer() {
                 </div>
                 <div className="space-y-2">
                   <p className="text-lg font-headline italic text-white/90">
-                    Artisanal Studio Loft
+                    Fable & Forever
                   </p>
                   <p className="text-[11px] font-black uppercase tracking-[0.3em] text-white/40 leading-relaxed">
                     Kolkata, India

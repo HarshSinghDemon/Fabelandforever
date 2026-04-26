@@ -82,7 +82,7 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
   return (
     <section className="py-12 md:py-24 bg-background overflow-hidden border-t border-primary/5">
       <div className="container mx-auto px-4 md:px-6 max-w-7xl">
-        <div className="flex flex-col items-center text-center mb-12 md:mb-20 reveal-on-scroll active">
+        <div className="flex flex-col items-center text-center mb-8 md:mb-16 reveal-on-scroll active">
           <span className="text-accent font-black tracking-[0.8em] uppercase text-[9px] mb-3 block">Boutique Selection</span>
           <h2 className="font-headline text-4xl md:text-7xl text-primary tracking-tighter leading-none">{title}</h2>
           <div className="w-12 h-[1px] bg-accent/20 mt-4 md:mt-6"></div>
@@ -90,14 +90,14 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
 
         <div className="relative">
           <Carousel opts={{ align: "start", loop: false }} className="w-full">
-            <CarouselContent className="-ml-4 md:-ml-8">
+            <CarouselContent className="-ml-2 md:-ml-4">
               {filteredProducts.map((product: any, idx: number) => (
-                <CarouselItem key={product.id} className="pl-4 md:pl-8 basis-full sm:basis-1/2 lg:basis-1/3">
-                  <div className="group relative py-8 px-4 transition-all duration-700 reveal-on-scroll active" style={{ transitionDelay: `${idx * 0.1}s` }}>
+                <CarouselItem key={product.id} className="pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/3">
+                  <div className="group relative py-4 px-2 transition-all duration-700 reveal-on-scroll active" style={{ transitionDelay: `${idx * 0.1}s` }}>
                     {/* Elevated background on hover */}
-                    <div className="absolute inset-x-0 -inset-y-6 bg-white rounded-[3rem] opacity-0 group-hover:opacity-100 group-hover:bg-primary shadow-[0_40px_80px_-20px_rgba(0,0,0,0.1)] group-hover:shadow-2xl transition-all duration-500 -z-10 group-hover:-translate-y-2"></div>
+                    <div className="absolute inset-x-0 -inset-y-4 bg-white rounded-[3rem] opacity-0 group-hover:opacity-100 group-hover:bg-primary shadow-[0_40px_80px_-20px_rgba(0,0,0,0.1)] group-hover:shadow-2xl transition-all duration-500 -z-10 group-hover:-translate-y-2"></div>
                     
-                    <Link href={`/products/${product.id}`} className="block space-y-8 text-center transition-colors duration-500">
+                    <Link href={`/products/${product.id}`} className="block space-y-4 md:space-y-6 text-center transition-colors duration-500">
                       {/* Floating Image Container */}
                       <div className="relative aspect-[3/4] mx-auto w-[90%] transition-all duration-700 group-hover:-translate-y-6 group-hover:scale-105">
                         {/* Interactive Shadow */}
@@ -114,9 +114,9 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
                         </div>
                       </div>
                       
-                      <div className="space-y-4 px-2">
+                      <div className="space-y-2 md:space-y-4 px-4">
                         <div className="space-y-1">
-                          <h3 className="font-headline text-2xl md:text-4xl text-primary leading-tight truncate px-1 group-hover:text-accent transition-colors duration-500">
+                          <h3 className="font-headline text-xl md:text-3xl text-primary leading-tight truncate px-1 group-hover:text-accent transition-colors duration-500">
                             {product.name}
                           </h3>
                           <p className="text-[9px] md:text-[10px] text-primary/30 font-bold uppercase tracking-[0.4em] italic group-hover:text-accent transition-colors duration-500">
@@ -124,21 +124,21 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
                           </p>
                         </div>
                         
-                        <div className="flex items-center justify-center gap-6 pt-2">
-                           <span className="text-[8px] md:text-[10px] font-black text-primary/20 uppercase tracking-widest group-hover:text-accent/40 transition-colors duration-500">
+                        <div className="flex items-center justify-center gap-4 pt-1">
+                           <span className="text-[8px] md:text-[9px] font-black text-primary/20 uppercase tracking-widest group-hover:text-accent/40 transition-colors duration-500">
                              Limited Piece
                            </span>
-                           <span className="font-headline text-xl md:text-3xl text-primary group-hover:text-accent transition-colors duration-500">
+                           <span className="font-headline text-lg md:text-2xl text-primary group-hover:text-accent transition-colors duration-500">
                              ₹ {Number(product.price).toLocaleString('en-IN')}
                            </span>
                         </div>
                         
-                        <div className="pt-4">
+                        <div className="pt-2">
                           <Button 
                             onClick={(e) => handleAddToCart(e, product)}
-                            className="w-full h-14 md:h-16 rounded-full border-2 border-accent text-accent bg-transparent hover:bg-accent hover:text-white group-hover:bg-accent group-hover:text-white group-hover:border-transparent text-[9px] md:text-[11px] tracking-[0.4em] font-black uppercase shadow-sm hover:shadow-xl transition-all duration-500 group/btn"
+                            className="w-full h-10 md:h-12 rounded-full border-2 border-accent text-accent bg-transparent hover:bg-accent hover:text-white group-hover:bg-accent group-hover:text-white group-hover:border-transparent text-[8px] md:text-[10px] tracking-[0.4em] font-black uppercase shadow-sm hover:shadow-xl transition-all duration-500 group/btn"
                           >
-                            Add to Cart <ShoppingBag className="ml-3 w-4 h-4 group-hover/btn:rotate-12 transition-transform" />
+                            Add to Cart <ShoppingBag className="ml-2 w-3.5 h-3.5 group-hover/btn:rotate-12 transition-transform" />
                           </Button>
                         </div>
                       </div>

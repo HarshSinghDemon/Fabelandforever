@@ -65,7 +65,7 @@ export function CartDrawer({ isLight }: CartDrawerProps) {
                   <Image src={item.image} alt={item.title} fill className="object-cover" />
                 </div>
                 <div className="flex-1 flex flex-col justify-between py-1 min-w-0">
-                  <div className="pr-8">
+                  <div className="pr-10">
                     <h4 className="font-bold text-primary text-sm sm:text-base truncate leading-tight">{item.title}</h4>
                     <p className="text-[9px] text-accent font-bold uppercase tracking-widest mt-1">{item.category}</p>
                   </div>
@@ -89,10 +89,10 @@ export function CartDrawer({ isLight }: CartDrawerProps) {
                   </div>
                 </div>
                 
-                {/* Floating Delete Button */}
+                {/* Floating Delete Button - Positioned consistently for laptops and smartphones */}
                 <button 
                   onClick={() => removeFromCart(item.id)}
-                  className="absolute top-3 right-3 w-8 h-8 bg-white shadow-md rounded-full flex items-center justify-center text-primary/20 hover:text-destructive hover:scale-110 transition-all border border-primary/5"
+                  className="absolute top-4 right-4 w-8 h-8 bg-white shadow-md rounded-full flex items-center justify-center text-primary/20 hover:text-destructive hover:scale-110 transition-all border border-primary/5"
                   aria-label="Remove item"
                 >
                   <Trash2 className="w-3.5 h-3.5" />

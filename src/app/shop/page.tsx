@@ -200,7 +200,7 @@ export default function ShopPage() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
                       {catProducts.map((product) => (
                         <div key={product.id} className="group relative py-8 px-4 transition-all duration-700">
-                          {/* Elevated background on hover */}
+                          {/* Elevated background on hover - Transition to Midnight Teal */}
                           <div className="absolute inset-x-0 -inset-y-6 bg-white rounded-[2rem] opacity-0 group-hover:opacity-100 group-hover:bg-primary shadow-[0_40px_80px_-20px_rgba(0,0,0,0.1)] group-hover:shadow-2xl transition-all duration-500 -z-10 group-hover:-translate-y-2"></div>
                           
                           <Link href={`/products/${product.id}`} className="block space-y-6 md:space-y-8 text-center group-hover:text-white transition-colors duration-500">
@@ -221,14 +221,20 @@ export default function ShopPage() {
                             </div>
                             
                             <div className="space-y-3 md:space-y-5 px-6">
-                              <h3 className="font-headline text-2xl md:text-4xl text-primary leading-tight px-1 group-hover:text-white transition-colors duration-500">{product.name}</h3>
-                              <p className="text-[10px] md:text-xs text-primary/40 leading-relaxed italic line-clamp-2 max-w-[240px] mx-auto group-hover:text-white/40 transition-colors duration-500">
+                              <h3 className="font-headline text-2xl md:text-4xl text-primary leading-tight px-1 group-hover:text-white transition-colors duration-500">
+                                {product.name}
+                              </h3>
+                              <p className="text-[10px] md:text-xs text-primary/40 leading-relaxed italic line-clamp-2 max-w-[240px] mx-auto group-hover:text-white/80 transition-colors duration-500">
                                 {product.description}
                               </p>
                               
                               <div className="flex items-center justify-center gap-4 pt-2">
-                                <span className="text-[8px] md:text-[10px] font-black uppercase tracking-widest text-primary/20 group-hover:text-white/20 transition-colors duration-500">{product.category}</span>
-                                <span className="font-headline text-xl md:text-3xl text-primary group-hover:text-white transition-colors duration-500">₹ {Number(product.price).toLocaleString('en-IN')}</span>
+                                <span className="text-[8px] md:text-[10px] font-black uppercase tracking-widest text-primary/20 group-hover:text-white/40 transition-colors duration-500">
+                                  {product.category}
+                                </span>
+                                <span className="font-headline text-xl md:text-3xl text-primary group-hover:text-white transition-colors duration-500">
+                                  ₹ {Number(product.price).toLocaleString('en-IN')}
+                                </span>
                               </div>
                               
                               <div className="pt-2">

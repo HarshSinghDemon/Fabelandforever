@@ -116,19 +116,27 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
                       
                       <div className="space-y-4 px-2">
                         <div className="space-y-1">
-                          <h3 className="font-headline text-2xl md:text-4xl text-primary leading-tight truncate px-1 group-hover:text-white transition-colors duration-500">{product.name}</h3>
-                          <p className="text-[9px] md:text-[10px] text-primary/30 font-bold uppercase tracking-[0.4em] italic group-hover:text-white/40 transition-colors duration-500">{product.category}</p>
+                          <h3 className="font-headline text-2xl md:text-4xl text-primary leading-tight truncate px-1 group-hover:text-white transition-colors duration-500">
+                            {product.name}
+                          </h3>
+                          <p className="text-[9px] md:text-[10px] text-primary/30 font-bold uppercase tracking-[0.4em] italic group-hover:text-white/40 transition-colors duration-500">
+                            {product.category}
+                          </p>
                         </div>
                         
                         <div className="flex items-center justify-center gap-6 pt-2">
-                           <span className="text-[8px] md:text-[10px] font-black text-primary/20 uppercase tracking-widest group-hover:text-white/20 transition-colors duration-500">Limited Piece</span>
-                           <span className="font-headline text-xl md:text-3xl text-primary group-hover:text-white transition-colors duration-500">₹ {Number(product.price).toLocaleString('en-IN')}</span>
+                           <span className="text-[8px] md:text-[10px] font-black text-primary/20 uppercase tracking-widest group-hover:text-white/20 transition-colors duration-500">
+                             Limited Piece
+                           </span>
+                           <span className="font-headline text-xl md:text-3xl text-primary group-hover:text-white transition-colors duration-500">
+                             ₹ {Number(product.price).toLocaleString('en-IN')}
+                           </span>
                         </div>
                         
                         <div className="pt-4">
                           <Button 
                             onClick={(e) => handleAddToCart(e, product)}
-                            className="w-full h-14 md:h-16 rounded-full border-2 border-accent bg-transparent text-accent hover:bg-accent hover:text-white group-hover:bg-accent group-hover:text-white group-hover:border-transparent text-[9px] md:text-[11px] tracking-[0.4em] font-black uppercase shadow-sm hover:shadow-xl transition-all duration-500 group/btn"
+                            className="w-full h-14 md:h-16 rounded-full border-2 border-accent text-accent bg-transparent hover:bg-accent hover:text-white group-hover:bg-accent group-hover:text-white group-hover:border-transparent text-[9px] md:text-[11px] tracking-[0.4em] font-black uppercase shadow-sm hover:shadow-xl transition-all duration-500 group/btn"
                           >
                             Add to Cart <ShoppingBag className="ml-3 w-4 h-4 group-hover/btn:rotate-12 transition-transform" />
                           </Button>

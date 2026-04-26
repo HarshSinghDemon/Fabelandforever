@@ -92,56 +92,56 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
           <Carousel opts={{ align: "start", loop: false }} className="w-full">
             <CarouselContent className="-ml-2 md:-ml-4">
               {filteredProducts.map((product: any, idx: number) => (
-                <CarouselItem key={product.id} className="pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/3">
-                  <div className="group relative py-4 px-2 transition-all duration-700 reveal-on-scroll active" style={{ transitionDelay: `${idx * 0.1}s` }}>
+                <CarouselItem key={product.id} className="pl-2 md:pl-4 basis-1/2 lg:basis-1/3">
+                  <div className="group relative py-2 md:py-4 px-1 md:px-2 transition-all duration-700 reveal-on-scroll active" style={{ transitionDelay: `${idx * 0.1}s` }}>
                     {/* Elevated background on hover/active */}
-                    <div className="absolute inset-x-0 -inset-y-4 bg-white rounded-[1.5rem] md:rounded-[3rem] opacity-0 group-hover:opacity-100 group-active:opacity-100 group-hover:bg-primary group-active:bg-primary shadow-[0_40px_80px_-20px_rgba(0,0,0,0.1)] group-hover:shadow-2xl group-active:shadow-2xl transition-all duration-500 -z-10 group-hover:-translate-y-2 group-active:-translate-y-2"></div>
+                    <div className="absolute inset-x-0 -inset-y-4 bg-white rounded-[1rem] md:rounded-[3rem] opacity-0 group-hover:opacity-100 group-active:opacity-100 group-hover:bg-primary group-active:bg-primary shadow-[0_40px_80px_-20px_rgba(0,0,0,0.1)] group-hover:shadow-2xl group-active:shadow-2xl transition-all duration-500 -z-10 group-hover:-translate-y-2 group-active:-translate-y-2"></div>
                     
                     <Link 
                       href={`/products/${product.id}`} 
-                      className="block space-y-4 md:space-y-6 text-center transition-all duration-500 active:scale-95"
+                      className="block space-y-2 md:space-y-6 text-center transition-all duration-500 active:scale-95"
                     >
                       {/* Floating Image Container */}
-                      <div className="relative aspect-[3/4] mx-auto w-[90%] transition-all duration-700 group-hover:-translate-y-6 group-active:-translate-y-4 group-hover:scale-105 group-active:scale-105">
+                      <div className="relative aspect-[3/4] mx-auto w-[92%] transition-all duration-700 group-hover:-translate-y-6 group-active:-translate-y-4 group-hover:scale-105 group-active:scale-105">
                         {/* Interactive Shadow */}
                         <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-[80%] h-6 bg-black/10 blur-2xl rounded-full opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-opacity"></div>
                         
-                        <div className="relative h-full w-full overflow-hidden rounded-[2rem] md:rounded-[2.5rem] shadow-sm group-hover:shadow-2xl group-active:shadow-2xl transition-all duration-700 border border-primary/5">
+                        <div className="relative h-full w-full overflow-hidden rounded-[1.2rem] md:rounded-[2.5rem] shadow-sm group-hover:shadow-2xl group-active:shadow-2xl transition-all duration-700 border border-primary/5">
                           <Image
                             src={product.imageUrls?.[0] || 'https://placehold.co/600x800?text=Forever+Loop'}
                             alt={product.name}
                             fill
                             className="object-cover"
-                            sizes="(max-width: 768px) 90vw, 33vw"
+                            sizes="(max-width: 768px) 45vw, 33vw"
                           />
                         </div>
                       </div>
                       
-                      <div className="space-y-2 md:space-y-4 px-4">
-                        <div className="space-y-1">
-                          <h3 className="font-headline text-xl md:text-3xl text-primary leading-tight truncate px-1 group-hover:text-accent group-active:text-accent transition-colors duration-500">
+                      <div className="space-y-1.5 md:space-y-4 px-2 md:px-4">
+                        <div className="space-y-0.5 md:space-y-1">
+                          <h3 className="font-headline text-sm md:text-3xl text-primary leading-tight truncate px-1 group-hover:text-accent group-active:text-accent transition-colors duration-500">
                             {product.name}
                           </h3>
-                          <p className="text-[9px] md:text-[10px] text-primary/30 font-bold uppercase tracking-[0.4em] italic group-hover:text-accent group-active:text-accent transition-colors duration-500">
+                          <p className="text-[7px] md:text-[10px] text-primary/30 font-bold uppercase tracking-[0.4em] italic group-hover:text-accent group-active:text-accent transition-colors duration-500">
                             {product.category}
                           </p>
                         </div>
                         
-                        <div className="flex items-center justify-center gap-4 pt-1">
-                           <span className="text-[8px] md:text-[9px] font-black text-primary/20 uppercase tracking-widest group-hover:text-accent/40 group-active:text-accent/40 transition-colors duration-500">
+                        <div className="flex items-center justify-center gap-2 md:gap-4 pt-0.5 md:pt-1">
+                           <span className="text-[6px] md:text-[9px] font-black text-primary/20 uppercase tracking-widest group-hover:text-accent/40 group-active:text-accent/40 transition-colors duration-500 hidden xs:inline">
                              Limited Piece
                            </span>
-                           <span className="font-headline text-lg md:text-2xl text-primary group-hover:text-accent group-active:text-accent transition-colors duration-500">
+                           <span className="font-headline text-xs md:text-2xl text-primary group-hover:text-accent group-active:text-accent transition-colors duration-500">
                              ₹ {Number(product.price).toLocaleString('en-IN')}
                            </span>
                         </div>
                         
-                        <div className="pt-2">
+                        <div className="pt-1 md:pt-2">
                           <Button 
                             onClick={(e) => handleAddToCart(e, product)}
-                            className="w-full h-10 md:h-12 rounded-full border-2 border-accent text-accent bg-transparent hover:bg-accent hover:text-white group-hover:bg-accent group-hover:text-white group-active:bg-accent group-active:text-white group-hover:border-transparent group-active:border-transparent text-[8px] md:text-[10px] tracking-[0.4em] font-black uppercase shadow-sm hover:shadow-xl transition-all duration-500 group/btn active:scale-90"
+                            className="w-full h-8 md:h-12 rounded-full border border-accent text-accent bg-transparent hover:bg-accent hover:text-white group-hover:bg-accent group-hover:text-white group-active:bg-accent group-active:text-white group-hover:border-transparent group-active:border-transparent text-[7px] md:text-[10px] tracking-[0.3em] md:tracking-[0.4em] font-black uppercase shadow-sm hover:shadow-xl transition-all duration-500 group/btn active:scale-90"
                           >
-                            Add to Cart <ShoppingBag className="ml-2 w-3.5 h-3.5 group-hover/btn:rotate-12 transition-transform" />
+                            Add to Cart <ShoppingBag className="ml-1.5 w-3 h-3 md:w-3.5 md:h-3.5 group-hover/btn:rotate-12 transition-transform" />
                           </Button>
                         </div>
                       </div>

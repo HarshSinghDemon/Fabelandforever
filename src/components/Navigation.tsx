@@ -22,8 +22,9 @@ export function Navigation() {
   const pathname = usePathname();
   const isHomePage = pathname === '/';
 
-  // Determine if we should use the "light" (white text/transparent bg) style
-  // This is ONLY for the homepage when not scrolled.
+  // Adaptive style logic:
+  // Use light style (white text) ONLY on home hero before scroll.
+  // Otherwise, use high-contrast teal on blurred white background.
   const useLightStyle = isHomePage && !isScrolled;
 
   const db = useFirestore();
@@ -68,19 +69,19 @@ export function Navigation() {
       <nav className={cn(
         "fixed top-0 left-0 right-0 z-[60] transition-all duration-700",
         useLightStyle 
-          ? "bg-transparent py-10" 
-          : "bg-white/95 backdrop-blur-xl border-b border-primary/10 py-3 md:py-4 shadow-sm"
+          ? "bg-transparent py-8" 
+          : "bg-white/95 backdrop-blur-xl border-b border-primary/10 py-3 shadow-sm"
       )}>
         <div className="container mx-auto px-4 md:px-6 max-w-7xl">
           <div className="flex items-center justify-between relative">
             <div className="flex-shrink-0">
               <Link href="/" className="flex items-center gap-3 md:gap-5 group">
                 <Logo className={cn(
-                  "w-8 h-8 md:w-12 md:h-12 transition-colors duration-500",
+                  "w-8 h-8 md:w-10 md:h-10 transition-colors duration-500",
                   useLightStyle ? "text-white" : "text-primary"
                 )} />
                 <span className={cn(
-                  "font-headline text-xl md:text-4xl font-bold tracking-tighter hidden sm:block transition-all duration-700",
+                  "font-headline text-xl md:text-3xl font-bold tracking-tighter hidden sm:block transition-all duration-700",
                   (!isHomePage || isScrolled) ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4 pointer-events-none",
                   useLightStyle ? "text-white" : "text-primary"
                 )}>
@@ -89,7 +90,7 @@ export function Navigation() {
               </Link>
             </div>
 
-            <div className="hidden lg:flex items-center gap-12">
+            <div className="hidden lg:flex items-center gap-10">
               {navLinks.map((link) => (
                 <Link 
                   key={link.name} 
@@ -104,18 +105,18 @@ export function Navigation() {
               ))}
             </div>
 
-            <div className="flex items-center gap-3 md:gap-8">
+            <div className="flex items-center gap-3 md:gap-6">
               <Link 
                 href="https://www.instagram.com/fable.and.forever/"
                 target="_blank"
                 className={cn(
-                  "hidden xs:flex items-center gap-3 px-5 py-2 rounded-full border-2 transition-all text-[8px] font-black uppercase tracking-widest group/ig",
+                  "hidden xs:flex items-center gap-2 px-4 py-2 rounded-full border transition-all text-[8px] font-black uppercase tracking-widest group/ig",
                   useLightStyle 
                     ? "border-white/30 text-white hover:bg-white hover:text-primary" 
                     : "border-primary/20 text-primary hover:bg-primary hover:text-white"
                 )}
               >
-                Order via DM <Instagram className="w-3.5 h-3.5 ml-1 group-hover/ig:rotate-12 transition-transform" />
+                Order via DM <Instagram className="w-3 h-3 ml-1 group-hover/ig:rotate-12 transition-transform" />
               </Link>
               <button 
                 onClick={() => setIsSearchOpen(true)}
@@ -124,7 +125,7 @@ export function Navigation() {
                   useLightStyle ? "text-white hover:bg-white/10" : "text-primary hover:bg-primary/5"
                 )}
               >
-                <Search className="w-5 h-5 md:w-6 h-6" />
+                <Search className="w-5 h-5" />
               </button>
               <CartDrawer isLight={useLightStyle} />
             </div>
@@ -135,11 +136,11 @@ export function Navigation() {
           setIsSearchOpen(open);
           if (!open) setSearchQuery('');
         }}>
-          <DialogContent className="sm:max-w-[600px] w-full border-none shadow-2xl p-0 overflow-hidden rounded-none bg-paper h-screen sm:h-auto">
+          <DialogContent className="sm:max-w-[600px] w-full border-none shadow-2xl p-0 overflow-hidden rounded-none bg-paper h-screen sm:h-auto z-[150]">
             <div className="p-8 md:p-12 pb-4 h-full flex flex-col">
               <DialogHeader className="mb-10">
                 <div className="flex flex-col gap-2 mb-8">
-                  <DialogTitle className="font-headline text-4xl md:text-5xl text-primary tracking-tighter">
+                  <DialogTitle className="font-headline text-4xl text-primary tracking-tighter">
                     Search
                   </DialogTitle>
                   <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-accent/60 italic">Exploring the boutique scrolls</p>
@@ -151,7 +152,7 @@ export function Navigation() {
                     placeholder="What shall we find?" 
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10 h-14 md:h-16 border-none border-b-2 border-primary/10 bg-transparent text-xl md:text-2xl placeholder:text-primary/10 focus-visible:ring-0 rounded-none text-primary font-headline"
+                    className="pl-10 h-14 border-none border-b-2 border-primary/10 bg-transparent text-xl md:text-2xl placeholder:text-primary/10 focus-visible:ring-0 rounded-none text-primary font-headline"
                     autoFocus
                   />
                 </div>
@@ -160,15 +161,15 @@ export function Navigation() {
               <ScrollArea className="flex-1 pb-10">
                 <div className="space-y-6">
                   {loadingProducts && searchQuery && (
-                    <div className="flex flex-col items-center justify-center py-16 gap-4">
-                      <Loader2 className="w-8 h-8 text-accent animate-spin" />
+                    <div className="flex flex-col items-center justify-center py-12 gap-4">
+                      <Loader2 className="w-6 h-6 text-accent animate-spin" />
                       <p className="text-[10px] font-bold uppercase tracking-widest text-primary/30">Searching collection...</p>
                     </div>
                   )}
                   
                   {searchQuery && filteredProducts.length === 0 && !loadingProducts ? (
-                    <div className="text-center py-16">
-                      <p className="text-primary/40 font-headline text-xl italic">"No creations match this query."</p>
+                    <div className="text-center py-12">
+                      <p className="text-primary/40 font-headline text-lg italic">"No creations match this query."</p>
                     </div>
                   ) : (
                     <div className="flex flex-col gap-4">
@@ -177,9 +178,9 @@ export function Navigation() {
                           key={product.id} 
                           href={`/products/${product.id}`}
                           onClick={() => setIsSearchOpen(false)}
-                          className="flex items-center gap-4 md:gap-6 p-4 md:p-5 hover:bg-white rounded-none border border-transparent hover:border-primary/5 transition-all group shadow-sm"
+                          className="flex items-center gap-4 p-4 hover:bg-white border border-transparent hover:border-primary/5 transition-all group shadow-sm"
                         >
-                          <div className="relative w-14 h-18 md:w-16 md:h-20 overflow-hidden bg-muted/20 flex-shrink-0">
+                          <div className="relative w-14 h-18 overflow-hidden bg-muted/20 flex-shrink-0">
                             <Image 
                               src={product.imageUrls?.[0] || 'https://placehold.co/400x500'} 
                               alt={product.name} 
@@ -188,20 +189,19 @@ export function Navigation() {
                             />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <h4 className="font-headline text-lg md:text-xl text-primary group-hover:text-accent transition-colors truncate">
+                            <h4 className="font-headline text-lg text-primary group-hover:text-accent transition-colors truncate">
                               {product.name}
                             </h4>
-                            <div className="flex items-center gap-3 mt-1.5 md:mt-2">
-                              <span className="text-[8px] md:text-[9px] font-bold uppercase tracking-widest text-accent/60">
+                            <div className="flex items-center gap-3 mt-1.5">
+                              <span className="text-[8px] font-bold uppercase tracking-widest text-accent/60">
                                 {product.category}
                               </span>
-                              <span className="w-0.5 h-0.5 md:w-1 md:h-1 bg-primary/10 rounded-full"></span>
-                              <span className="font-bold text-primary/60 text-[10px] md:text-xs">
+                              <span className="font-bold text-primary/60 text-[10px]">
                                 ₹ {product.price?.toLocaleString('en-IN')}
                               </span>
                             </div>
                           </div>
-                          <ArrowRight className="w-4 h-4 md:w-5 md:h-5 text-primary/10 group-hover:text-accent group-hover:translate-x-1 transition-all" />
+                          <ArrowRight className="w-4 h-4 text-primary/10 group-hover:text-accent group-hover:translate-x-1 transition-all" />
                         </Link>
                       ))}
                     </div>
@@ -213,16 +213,17 @@ export function Navigation() {
         </Dialog>
       </nav>
 
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-[100] bg-white/95 backdrop-blur-2xl border-t border-primary/5 h-20 flex items-center justify-around px-4 pb-4 pt-2 shadow-[0_-4px_30px_-4px_rgba(0,0,0,0.05)]">
-        <Link href="/" className="flex flex-col items-center gap-1 group">
+      {/* Mobile Bottom Navigation Bar */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-[100] bg-white/95 backdrop-blur-2xl border-t border-primary/5 h-16 flex items-center justify-around px-4 pb-4 pt-2 shadow-[0_-4px_30px_-4px_rgba(0,0,0,0.05)]">
+        <Link href="/" className="flex flex-col items-center gap-1">
           <Home className="w-5 h-5 text-primary" />
           <span className="text-[8px] font-black uppercase tracking-widest text-primary">Home</span>
         </Link>
-        <Link href="/shop" className="flex flex-col items-center gap-1 group">
+        <Link href="/shop" className="flex flex-col items-center gap-1">
           <LayoutGrid className="w-5 h-5 text-primary/60" />
           <span className="text-[8px] font-black uppercase tracking-widest text-primary/60">Shop</span>
         </Link>
-        <button onClick={() => setIsSearchOpen(true)} className="flex flex-col items-center gap-1 group">
+        <button onClick={() => setIsSearchOpen(true)} className="flex flex-col items-center gap-1">
           <Search className="w-5 h-5 text-primary/60" />
           <span className="text-[8px] font-black uppercase tracking-widest text-primary/60">Search</span>
         </button>

@@ -1,66 +1,108 @@
+
 "use client";
 
 import React from 'react';
 import Link from 'next/link';
-import { Instagram, Mail, MapPin, Lock } from 'lucide-react';
+import { Instagram, Mail, MapPin, Lock, ArrowRight, Sparkles } from 'lucide-react';
 import { Logo } from './Logo';
 
 export function Footer() {
   return (
-    <footer id="footer" className="bg-[#0a0a0a] text-white py-40 sm:py-60 relative overflow-hidden">
-      <div className="container mx-auto px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-24 mb-40">
+    <footer id="footer" className="bg-[#050505] text-white py-32 md:py-56 relative overflow-hidden border-t border-white/5">
+      {/* Subtle Artisanal Texture */}
+      <div className="absolute inset-0 opacity-5 pointer-events-none">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,_#fff_1px,_transparent_1px)] bg-[size:30px_30px]"></div>
+      </div>
+
+      <div className="container mx-auto px-6 relative z-10 max-w-7xl">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-20 md:gap-24 mb-32 md:mb-48">
           
-          <div className="lg:col-span-5 space-y-12">
+          <div className="lg:col-span-5 space-y-12 reveal-on-scroll">
             <div className="flex items-center gap-8">
-              <Logo className="w-12 h-12 text-white" />
-              <h2 className="font-headline text-4xl uppercase tracking-tighter">Fable & Forever</h2>
+              <Logo className="w-14 h-14 text-white" />
+              <div className="flex flex-col">
+                <h2 className="font-headline text-3xl md:text-5xl uppercase tracking-tighter leading-none">Fable & Forever</h2>
+                <span className="text-[9px] font-bold uppercase tracking-[0.6em] text-accent mt-2">সুতোয় বোনা প্রতিটি গল্প</span>
+              </div>
             </div>
-            <p className="text-white/30 max-w-sm leading-relaxed font-bold text-sm uppercase tracking-widest italic">
-              "Weaving history into every loop. Slow-made for those who value the touch of the hand."
+            
+            <p className="text-white/40 max-w-sm leading-loose font-medium text-sm md:text-base italic">
+              "Weaving heritage into every loop. Our boutique is a sanctuary for slow stitching, based in the heart of Kolkata."
             </p>
-            <div className="flex gap-10">
-              <Link href="https://www.instagram.com/fable.and.forever/" className="text-white/40 hover:text-white transition-all hover:scale-110">
-                <Instagram className="w-5 h-5" />
-              </Link>
-              <Link href="mailto:fableandforevercompany@gmail.com" className="text-white/40 hover:text-white transition-all hover:scale-110">
-                <Mail className="w-5 h-5" />
-              </Link>
+
+            <div className="pt-8">
+               <Link 
+                href="https://www.instagram.com/fable.and.forever/" 
+                target="_blank" 
+                className="inline-flex items-center gap-6 bg-white/5 backdrop-blur-xl border border-white/10 px-10 py-6 rounded-[2.5rem] hover:bg-white/10 transition-all group shadow-2xl"
+               >
+                  <div className="bg-gradient-to-tr from-accent to-accent/50 p-4 rounded-full shadow-lg group-hover:rotate-12 transition-transform">
+                    <Instagram className="w-6 h-6 text-white" />
+                  </div>
+                  <div className="flex flex-col items-start text-left">
+                    <span className="text-[12px] font-black uppercase tracking-[0.4em] text-white">DM for Order</span>
+                    <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-accent animate-pulse mt-1">Start the Ritual</span>
+                  </div>
+                  <ArrowRight className="w-5 h-5 ml-4 opacity-20 group-hover:translate-x-2 transition-transform" />
+               </Link>
             </div>
           </div>
 
-          <div className="lg:col-span-3 space-y-10">
-            <h4 className="text-[9px] font-bold uppercase tracking-[0.6em] text-accent">Menu</h4>
-            <ul className="space-y-6 text-[10px] font-bold uppercase tracking-[0.3em]">
-              <li><Link href="/#shop" className="text-white/30 hover:text-white transition-colors">Collection</Link></li>
-              <li><Link href="/about" className="text-white/30 hover:text-white transition-colors">Our Story</Link></li>
-              <li><Link href="/#contact" className="text-white/30 hover:text-white transition-colors">Connect</Link></li>
+          <div className="lg:col-span-3 space-y-10 reveal-on-scroll stagger-1">
+            <h4 className="text-[10px] font-black uppercase tracking-[0.8em] text-accent">Navigation</h4>
+            <ul className="space-y-6 text-[11px] font-black uppercase tracking-[0.4em]">
+              <li><Link href="/shop" className="text-white/40 hover:text-white transition-colors">Shop Catalog</Link></li>
+              <li><Link href="/about" className="text-white/40 hover:text-white transition-colors">The Weaver's Story</Link></li>
+              <li><Link href="/#contact" className="text-white/40 hover:text-white transition-colors">Manifest Vision</Link></li>
+              <li><Link href="mailto:fableandforevercompany@gmail.com" className="text-white/40 hover:text-white transition-colors">Send Email</Link></li>
             </ul>
           </div>
 
-          <div className="lg:col-span-4 space-y-10">
-            <h4 className="text-[9px] font-bold uppercase tracking-[0.6em] text-accent">Studio</h4>
-            <div className="flex items-start gap-6 text-white/30">
-              <MapPin className="w-5 h-5 shrink-0 opacity-20" />
-              <p className="text-xs font-bold uppercase tracking-widest leading-loose">
-                Bespoke Artisanal Studio<br />
-                Hand-Stitched in Kolkata
-              </p>
+          <div className="lg:col-span-4 space-y-10 reveal-on-scroll stagger-2">
+            <h4 className="text-[10px] font-black uppercase tracking-[0.8em] text-accent">Studio Residence</h4>
+            <div className="space-y-12">
+              <div className="flex items-start gap-6 group">
+                <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center shrink-0 border border-white/10">
+                  <MapPin className="w-5 h-5 text-accent animate-pulse" />
+                </div>
+                <div className="space-y-2">
+                  <p className="text-lg font-headline italic text-white/90">
+                    Artisanal Studio Loft
+                  </p>
+                  <p className="text-[11px] font-black uppercase tracking-[0.3em] text-white/40 leading-relaxed">
+                    Kolkata, India
+                  </p>
+                  <div className="pt-2">
+                    <span className="inline-block px-4 py-1.5 bg-accent/10 border border-accent/20 rounded-full text-[8px] font-black uppercase tracking-widest text-accent">
+                      Exclusive City Delivery
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-6 flex gap-8 border-t border-white/5">
+                <Link href="https://www.instagram.com/fable.and.forever/" className="text-white/20 hover:text-white transition-all hover:scale-125">
+                  <Instagram className="w-6 h-6" />
+                </Link>
+                <Link href="mailto:fableandforevercompany@gmail.com" className="text-white/20 hover:text-white transition-all hover:scale-125">
+                  <Mail className="w-6 h-6" />
+                </Link>
+              </div>
             </div>
           </div>
 
         </div>
 
-        <div className="pt-16 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-12 text-[9px] font-bold text-white/10 uppercase tracking-[0.6em]">
-          <div className="flex items-center gap-6">
-            <span>© 2024 Fable & Forever • সুতোয় বোনা প্রতিটি গল্প</span>
-            <Link href="/admin" className="inline-flex items-center gap-2 hover:text-white/40 transition-colors">
-              <Lock className="w-3 h-3" /> Studio Entry
+        <div className="pt-20 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-12 text-[9px] font-bold text-white/20 uppercase tracking-[0.6em]">
+          <div className="flex items-center gap-8 flex-wrap justify-center">
+            <span>© 2024 Fable & Forever Studio • Kolkata Heritage</span>
+            <Link href="/admin" className="inline-flex items-center gap-3 hover:text-accent transition-all group">
+              <Lock className="w-3 h-3 group-hover:rotate-12 transition-transform" /> Studio Control
             </Link>
           </div>
           <div className="flex gap-12">
-            <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
-            <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
+            <Link href="/privacy" className="hover:text-white transition-colors">Privacy Scrolls</Link>
+            <Link href="/terms" className="hover:text-white transition-colors">Studio Terms</Link>
           </div>
         </div>
       </div>

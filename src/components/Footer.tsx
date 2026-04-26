@@ -20,7 +20,9 @@ export function Footer() {
             <Link href="/" className="flex items-center gap-3">
               <Logo className="w-8 h-8 text-white" />
               <div className="flex flex-col">
-                <span className="font-headline text-xl text-white tracking-tighter leading-none">Fable & Forever</span>
+                <span className="font-headline text-xl text-white tracking-tighter leading-none">
+                   <span className="text-[#FBBF24]">F</span>able & <span className="text-[#FBBF24]">F</span>orever
+                </span>
                 <span className="text-[7px] font-bold uppercase tracking-[0.4em] text-accent mt-1">সুতোয় বোনা প্রতিটি গল্প</span>
               </div>
             </Link>
@@ -51,11 +53,16 @@ export function Footer() {
         </div>
 
         <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-6 text-[8px] font-bold uppercase tracking-[0.4em] text-white/20">
-            <span>© 2024 F&F Studio • All Rights Reserved</span>
-            <Link href="/admin" className="flex items-center gap-2 hover:text-accent transition-colors">
-              <Lock className="w-2.5 h-2.5" /> Studio Control
-            </Link>
+          <div className="flex flex-col md:flex-row items-center gap-6">
+            <div className="flex items-center gap-6 text-[8px] font-bold uppercase tracking-[0.4em] text-white/20">
+              <span>© 2024 F&F Studio • All Rights Reserved</span>
+              <Link href="/admin" className="flex items-center gap-2 hover:text-accent transition-colors">
+                <Lock className="w-2.5 h-2.5" /> Studio Control
+              </Link>
+            </div>
+            <p className="text-[8px] font-bold uppercase tracking-[0.5em] text-white/40">
+              Site Developed by Harsh Singh
+            </p>
           </div>
           <div className="flex gap-6 text-[8px] font-bold uppercase tracking-[0.4em] text-white/20">
             <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>

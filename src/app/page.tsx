@@ -1,6 +1,8 @@
+
 "use client";
 
 import React, { useEffect } from 'react';
+import Image from 'next/image';
 import { Navigation } from '@/components/Navigation';
 import { Hero } from '@/components/Hero';
 import { FeaturedProducts } from '@/components/FeaturedProducts';
@@ -11,6 +13,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import Link from 'next/link';
+import { cn } from '@/lib/utils';
 
 export default function Home() {
   useEffect(() => {
@@ -73,29 +76,51 @@ export default function Home() {
         <FeaturedProducts title="Most Loved Amigurumi" categoryFilter="Amigurumi" />
       </div>
 
-      <section className="py-16 md:py-24 bg-white border-y border-primary/5 overflow-hidden">
-        <div className="container mx-auto px-6 text-center max-w-7xl">
-          <span className="text-accent font-black tracking-[0.8em] uppercase text-[10px] mb-6 block reveal-on-scroll">Our Ethos</span>
-          <h2 className="font-headline text-4xl sm:text-7xl text-primary leading-none mb-12 md:mb-16 reveal-on-scroll">
-            The <span className="italic">Process.</span>
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-20">
-            {[
-              { icon: Feather, title: 'Pure Materials', desc: 'Sourced from local vendors, ensuring every loop starts with high quality fibers.' },
-              { icon: Palette, title: 'Artisan Palette', desc: 'Colors chosen to evoke emotion and complement your heritage home.' },
-              { icon: Sparkles, title: 'Slow Stitching', desc: 'Every creation is a labor of love, taking days to achieve perfection.' }
-            ].map((item, idx) => (
-              <div key={idx} className={`space-y-4 md:space-y-8 reveal-on-scroll stagger-${idx + 1}`}>
-                <div className="w-14 h-14 md:w-20 md:h-20 bg-paper rounded-full flex items-center justify-center mx-auto border border-primary/5 shadow-sm hover:scale-110 transition-transform duration-500 group">
-                  <item.icon className="w-5 h-5 md:w-8 md:h-8 text-accent group-hover:rotate-12 transition-transform" />
-                </div>
-                <h3 className="font-headline text-xl md:text-3xl text-primary uppercase tracking-tighter">{item.title}</h3>
-                <p className="text-primary/60 text-xs md:text-base leading-relaxed max-w-[280px] mx-auto italic font-medium">
-                  {item.desc}
-                </p>
+      <section className="py-24 md:py-40 bg-white border-y border-primary/5 overflow-hidden relative">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-accent/5 via-transparent to-transparent opacity-50"></div>
+        
+        <div className="container mx-auto px-6 max-w-7xl relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 md:gap-24 items-center">
+            
+            <div className="lg:col-span-5 space-y-12 reveal-on-scroll">
+              <div className="space-y-6">
+                <span className="text-accent font-black tracking-[0.8em] uppercase text-[10px] block">Artisanal Ethos</span>
+                <h2 className="font-headline text-5xl md:text-8xl text-primary leading-[0.85] tracking-tighter">
+                  The <br /><span className="italic">Process.</span>
+                </h2>
+                <div className="h-[1px] w-24 bg-accent/30"></div>
               </div>
-            ))}
+              
+              <p className="text-primary/60 text-lg md:text-xl leading-relaxed italic font-medium">
+                "We don't manufacture; we weave stories. Every loop is a choice to honor the patient hands of our Kolkata weavers."
+              </p>
+            </div>
+
+            <div className="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+              {[
+                { icon: Feather, title: 'Pure Materials', desc: 'Sourced from local heritage vendors, ensuring every loop starts with soft, premium fibers.', delay: 0.1 },
+                { icon: Palette, title: 'Artisan Palette', desc: 'Colors chosen to evoke emotion and complement the curated heritage home.', delay: 0.2 },
+                { icon: Sparkles, title: 'Slow Stitching', desc: 'Every creation is a labor of love, taking days of meditation to achieve perfection.', delay: 0.3 }
+              ].map((item, idx) => (
+                <div 
+                  key={idx} 
+                  className={cn(
+                    "p-10 bg-paper rounded-[3rem] border border-primary/5 shadow-sm hover:shadow-2xl transition-all duration-700 group stitching-border reveal-on-scroll",
+                    idx === 2 ? "md:col-span-2" : ""
+                  )}
+                  style={{ transitionDelay: `${item.delay}s` }}
+                >
+                  <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-8 shadow-sm group-hover:scale-110 transition-transform duration-500 animate-float" style={{ animationDelay: `${idx * 0.5}s` }}>
+                    <item.icon className="w-6 h-6 text-accent" />
+                  </div>
+                  <h3 className="font-headline text-2xl text-primary mb-4">{item.title}</h3>
+                  <p className="text-primary/50 text-sm leading-relaxed italic font-medium">
+                    {item.desc}
+                  </p>
+                </div>
+              ))}
+            </div>
+
           </div>
         </div>
       </section>

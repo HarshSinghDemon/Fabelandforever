@@ -147,7 +147,7 @@ export default function ShopPage() {
                 <a 
                   key={cat} 
                   href={`#${cat.toLowerCase().replace(/\s+/g, '-')}`}
-                  className="whitespace-nowrap px-4 py-2 md:px-6 md:py-2.5 rounded-full border border-primary/5 bg-paper text-[8px] md:text-[10px] font-black uppercase tracking-widest text-primary/40 hover:text-primary hover:bg-white hover:border-accent hover:shadow-lg transition-all"
+                  className="whitespace-nowrap px-4 py-2 md:px-6 md:py-2.5 rounded-full border border-primary/5 bg-paper text-[8px] md:text-[10px] font-black uppercase tracking-widest text-primary/40 hover:text-primary hover:bg-white hover:border-accent hover:shadow-lg transition-all active:scale-95"
                 >
                   {cat}
                 </a>
@@ -167,7 +167,7 @@ export default function ShopPage() {
         </div>
       </div>
 
-      <div className="flex-1 pb-24 md:pb-32">
+      <div className="flex-1 pb-32 md:pb-40">
         {isLoading ? (
           <div className="py-40 md:py-60 flex flex-col items-center gap-6">
              <Sparkles className="w-10 h-10 md:w-12 md:h-12 text-primary/10 animate-pulse" />
@@ -201,16 +201,19 @@ export default function ShopPage() {
                     <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-8 lg:gap-12">
                       {catProducts.map((product) => (
                         <div key={product.id} className="group relative py-4 px-2 transition-all duration-700">
-                          {/* Elevated background on hover - Transition to Lavender Text */}
-                          <div className="absolute inset-x-0 -inset-y-2 md:-inset-y-4 bg-white rounded-[1.5rem] md:rounded-[3rem] opacity-0 group-hover:opacity-100 group-hover:bg-primary shadow-xl group-hover:shadow-2xl transition-all duration-500 -z-10 group-hover:-translate-y-2"></div>
+                          {/* Elevated background on hover/active - Transition to Lavender Text */}
+                          <div className="absolute inset-x-0 -inset-y-2 md:-inset-y-4 bg-white rounded-[1.5rem] md:rounded-[3rem] opacity-0 group-hover:opacity-100 group-active:opacity-100 group-hover:bg-primary group-active:bg-primary shadow-xl group-hover:shadow-2xl group-active:shadow-2xl transition-all duration-500 -z-10 group-hover:-translate-y-2 group-active:-translate-y-2"></div>
                           
-                          <Link href={`/products/${product.id}`} className="block space-y-3 md:space-y-6 text-center transition-colors duration-500">
+                          <Link 
+                            href={`/products/${product.id}`} 
+                            className="block space-y-3 md:space-y-6 text-center transition-all duration-500 active:scale-95"
+                          >
                             {/* Floating Image with Shadow */}
-                            <div className="relative aspect-[3/4] mx-auto w-[92%] transition-all duration-700 group-hover:-translate-y-3 md:group-hover:-translate-y-6 group-hover:scale-105">
+                            <div className="relative aspect-[3/4] mx-auto w-[92%] transition-all duration-700 group-hover:-translate-y-3 md:group-hover:-translate-y-6 group-active:-translate-y-3 group-hover:scale-105 group-active:scale-105">
                               {/* Bottom Shadow Wrapper */}
-                              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-[80%] h-4 bg-black/10 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-[80%] h-4 bg-black/10 blur-xl rounded-full opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-opacity"></div>
                               
-                              <div className="relative h-full w-full overflow-hidden rounded-[1.5rem] md:rounded-[2.5rem] shadow-sm group-hover:shadow-2xl transition-all duration-700 border border-primary/5">
+                              <div className="relative h-full w-full overflow-hidden rounded-[1.5rem] md:rounded-[2.5rem] shadow-sm group-hover:shadow-2xl group-active:shadow-2xl transition-all duration-700 border border-primary/5">
                                 <Image
                                   src={product.imageUrls?.[0] || 'https://placehold.co/600x800?text=Forever+Loop'}
                                   alt={product.name}
@@ -223,16 +226,16 @@ export default function ShopPage() {
                             
                             <div className="space-y-1.5 md:space-y-4 px-2 md:px-6">
                               <div className="space-y-0.5 md:space-y-1">
-                                <h3 className="font-headline text-sm md:text-3xl text-primary leading-tight truncate group-hover:text-accent transition-colors duration-500">
+                                <h3 className="font-headline text-sm md:text-3xl text-primary leading-tight truncate group-hover:text-accent group-active:text-accent transition-colors duration-500">
                                   {product.name}
                                 </h3>
-                                <p className="text-[7px] md:text-[10px] text-primary/40 font-bold uppercase tracking-widest group-hover:text-accent transition-colors duration-500">
+                                <p className="text-[7px] md:text-[10px] text-primary/40 font-bold uppercase tracking-widest group-hover:text-accent group-active:text-accent transition-colors duration-500">
                                   {product.category}
                                 </p>
                               </div>
                               
                               <div className="flex items-center justify-center gap-2 md:gap-4">
-                                <span className="font-headline text-xs md:text-2xl text-primary group-hover:text-accent transition-colors duration-500">
+                                <span className="font-headline text-xs md:text-2xl text-primary group-hover:text-accent group-active:text-accent transition-colors duration-500">
                                   ₹ {Number(product.price).toLocaleString('en-IN')}
                                 </span>
                               </div>
@@ -240,7 +243,7 @@ export default function ShopPage() {
                               <div className="pt-1 md:pt-2">
                                 <button 
                                   onClick={(e) => handleAddToCart(e, product)}
-                                  className="w-full h-8 md:h-12 rounded-full border border-accent text-accent bg-transparent hover:bg-accent hover:text-white group-hover:bg-accent group-hover:text-white group-hover:border-transparent transition-all duration-500 font-black uppercase tracking-[0.2em] text-[7px] md:text-[10px] flex items-center justify-center gap-1.5 group/btn shadow-sm"
+                                  className="w-full h-8 md:h-12 rounded-full border border-accent text-accent bg-transparent hover:bg-accent hover:text-white group-hover:bg-accent group-hover:text-white group-active:bg-accent group-active:text-white group-hover:border-transparent group-active:border-transparent transition-all duration-500 font-black uppercase tracking-[0.2em] text-[7px] md:text-[10px] flex items-center justify-center gap-1.5 group/btn shadow-sm active:scale-90"
                                 >
                                   Add to Cart <ShoppingBag className="w-3 h-3 md:w-3.5 md:h-3.5 group-hover/btn:rotate-12 transition-transform" />
                                 </button>

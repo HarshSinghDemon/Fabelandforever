@@ -79,7 +79,7 @@ export function Navigation() {
                <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
                   <SheetTrigger asChild>
                     <button className={cn(
-                      "p-2 rounded-full transition-all",
+                      "p-2 rounded-full transition-all active:scale-90",
                       useLightStyle ? "text-white" : "text-primary"
                     )}>
                       <Menu className="w-6 h-6" />
@@ -95,7 +95,7 @@ export function Navigation() {
                           key={link.name} 
                           href={link.href}
                           onClick={() => setIsMobileMenuOpen(false)}
-                          className="text-[11px] font-black uppercase tracking-[0.5em] text-white/60 hover:text-white transition-all"
+                          className="text-[11px] font-black uppercase tracking-[0.5em] text-white/60 hover:text-white transition-all active:translate-x-2"
                         >
                           {link.name}
                         </Link>
@@ -103,7 +103,7 @@ export function Navigation() {
                       <Link 
                         href="https://www.instagram.com/fable.and.forever/"
                         target="_blank"
-                        className="flex items-center gap-4 pt-8 border-t border-white/10 text-accent font-black uppercase tracking-widest text-[10px]"
+                        className="flex items-center gap-4 pt-8 border-t border-white/10 text-accent font-black uppercase tracking-widest text-[10px] active:scale-95"
                       >
                         Order via DM <Instagram className="w-4 h-4" />
                       </Link>
@@ -114,7 +114,7 @@ export function Navigation() {
 
             {/* Logo: Centered on Mobile, Left on PC */}
             <div className="flex-1 lg:flex-none flex justify-center lg:justify-start">
-              <Link href="/" className="flex items-center gap-3 md:gap-5 group">
+              <Link href="/" className="flex items-center gap-3 md:gap-5 group active:scale-95 transition-transform">
                 <Logo className={cn(
                   "w-8 h-8 md:w-10 md:h-10 transition-colors duration-500",
                   useLightStyle ? "text-white" : "text-primary"
@@ -150,7 +150,7 @@ export function Navigation() {
               <button 
                 onClick={() => setIsSearchOpen(true)}
                 className={cn(
-                  "p-2 rounded-full transition-all active:scale-90",
+                  "p-2 rounded-full transition-all active:scale-75",
                   useLightStyle ? "text-white hover:bg-white/10" : "text-primary hover:bg-primary/5"
                 )}
               >
@@ -207,7 +207,7 @@ export function Navigation() {
                           key={product.id} 
                           href={`/products/${product.id}`}
                           onClick={() => setIsSearchOpen(false)}
-                          className="flex items-center gap-4 p-4 hover:bg-white border border-transparent hover:border-primary/5 transition-all group shadow-sm"
+                          className="flex items-center gap-4 p-4 hover:bg-white border border-transparent hover:border-primary/5 transition-all group shadow-sm active:scale-[0.98]"
                         >
                           <div className="relative w-14 h-18 overflow-hidden bg-muted/20 flex-shrink-0">
                             <Image 
@@ -245,24 +245,24 @@ export function Navigation() {
       {/* Mobile Bottom Navigation Bar: High-end App Style */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 z-[100] bg-white/95 backdrop-blur-2xl border-t border-primary/5 h-20 flex items-center justify-around px-6 pb-6 pt-3 shadow-[0_-8px_40px_-4px_rgba(0,0,0,0.1)] rounded-t-[2.5rem]">
         <Link href="/" className={cn(
-          "flex flex-col items-center gap-1.5 transition-all",
+          "flex flex-col items-center gap-1.5 transition-all active:scale-90",
           pathname === '/' ? "text-primary scale-110" : "text-primary/30"
         )}>
           <Home className="w-6 h-6" />
           <span className="text-[9px] font-black uppercase tracking-widest">Home</span>
         </Link>
         <Link href="/shop" className={cn(
-          "flex flex-col items-center gap-1.5 transition-all",
+          "flex flex-col items-center gap-1.5 transition-all active:scale-90",
           pathname === '/shop' ? "text-primary scale-110" : "text-primary/30"
         )}>
           <LayoutGrid className="w-6 h-6" />
           <span className="text-[9px] font-black uppercase tracking-widest">Shop</span>
         </Link>
-        <button onClick={() => setIsSearchOpen(true)} className="flex flex-col items-center gap-1.5 text-primary/30">
+        <button onClick={() => setIsSearchOpen(true)} className="flex flex-col items-center gap-1.5 text-primary/30 active:scale-90">
           <Search className="w-6 h-6" />
           <span className="text-[9px] font-black uppercase tracking-widest">Search</span>
         </button>
-        <div className="relative">
+        <div className="relative active:scale-90 transition-transform">
           <CartDrawer isLight={false} />
         </div>
       </div>

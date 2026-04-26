@@ -97,7 +97,7 @@ export function Hero() {
 
       {/* 3. MOBILE ONLY: Enhanced Inset Window Focal Point */}
       <div className="absolute inset-0 z-10 flex flex-col items-center justify-center md:hidden px-6 pt-10">
-        <div className="w-full max-w-[450px] aspect-[4/5.5] rounded-[4rem] overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.6)] border-[6px] border-white/10 relative -translate-y-12 animate-fade-in-up scale-105 duration-1000">
+        <div className="w-full max-w-[420px] aspect-[4/5.8] max-h-[65vh] rounded-[4rem] overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.6)] border-[6px] border-white/10 relative -translate-y-16 animate-fade-in-up scale-105 duration-1000">
           
           {/* Only in Kolkata Badge */}
           <div className="absolute top-6 left-1/2 -translate-x-1/2 z-30 bg-accent/90 backdrop-blur-md px-4 py-2 rounded-full flex items-center gap-2 shadow-2xl animate-soft-pulse">
@@ -125,17 +125,17 @@ export function Hero() {
             </CarouselContent>
           </Carousel>
           
-          <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/90 pointer-events-none"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/90 pointer-events-none"></div>
           
-          <div className="absolute inset-0 z-20 flex flex-col items-center justify-end pb-14 text-center text-white p-8">
+          <div className="absolute inset-0 z-20 flex flex-col items-center justify-center pb-8 text-center text-white p-6">
             <div className="space-y-4 w-full flex flex-col items-center">
-              <span className="text-[12px] font-black uppercase tracking-[0.6em] text-accent block animate-loop-in opacity-0">
+              <span className="text-[10px] font-black uppercase tracking-[0.6em] text-accent block animate-loop-in opacity-0">
                 Handmade Crochet
               </span>
-              <h1 className="font-headline text-6xl leading-none tracking-tighter mb-8 drop-shadow-2xl italic animate-loop-in stagger-2 opacity-0">
-                Fable <span className="block font-fancy text-7xl text-accent -mt-2 -rotate-3">&</span> Forever
+              <h1 className="font-headline text-5xl leading-[0.8] tracking-tighter mb-6 drop-shadow-2xl italic animate-loop-in stagger-2 opacity-0">
+                Fable <span className="block font-fancy text-6xl text-accent -my-1 -rotate-3">&</span> Forever
               </h1>
-              <Button asChild className="bg-white text-primary hover:bg-white/90 h-14 w-full max-w-[240px] rounded-[2rem] text-[10px] font-black uppercase tracking-[0.5em] shadow-2xl active:scale-95 transition-all group animate-loop-in stagger-3 opacity-0">
+              <Button asChild className="bg-white text-primary hover:bg-white/90 h-14 w-full max-w-[200px] rounded-[2rem] text-[10px] font-black uppercase tracking-[0.5em] shadow-2xl active:scale-95 transition-all group animate-loop-in stagger-3 opacity-0">
                 <Link href="#shop" className="flex items-center justify-center">
                   Explore Shop <ArrowRight className="ml-3 w-4 h-4 group-hover:translate-x-2 transition-transform" />
                 </Link>
@@ -144,10 +144,10 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Mobile Scroll Indicator */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-in fade-in slide-in-from-bottom-10 duration-1000 delay-500">
-           <span className="text-[10px] font-black uppercase tracking-[0.6em] text-white/50 animate-pulse">Scroll to Explore</span>
-           <ChevronDown className="w-6 h-6 text-accent animate-float" />
+        {/* Mobile Scroll Indicator - Moved higher to clear bottom nav and floating contact */}
+        <div className="absolute bottom-28 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-in fade-in slide-in-from-bottom-10 duration-1000 delay-500">
+           <span className="text-[9px] font-black uppercase tracking-[0.5em] text-white/50 animate-pulse">Scroll to Explore</span>
+           <ChevronDown className="w-5 h-5 text-accent animate-float" />
         </div>
       </div>
 

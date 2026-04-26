@@ -19,7 +19,6 @@ import {
   MapPin, 
   Loader2, 
   Instagram, 
-  Mail, 
   ChevronRight, 
   Sparkles,
   Feather,
@@ -27,7 +26,6 @@ import {
   Undo2,
   Leaf,
   ArrowLeft,
-  MessageCircle
 } from 'lucide-react';
 import {
   Carousel,
@@ -187,31 +185,32 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Button 
                 onClick={handleAddToCart}
-                className="h-14 rounded-none bg-primary text-white text-[10px] tracking-[0.5em] w-full"
+                className="h-16 rounded-none bg-primary text-white text-[10px] tracking-[0.5em] w-full"
               >
                 Add to Cart
               </Button>
               <Button 
                 onClick={handleBuyNow}
                 variant="outline"
-                className="h-14 rounded-none border-primary/20 text-[10px] tracking-[0.5em] w-full"
+                className="h-16 rounded-none border-primary/20 text-[10px] tracking-[0.5em] w-full"
               >
                 Buy it Now
               </Button>
             </div>
 
-            <div className="pt-2">
+            <div className="pt-6">
               <Link 
                 href="https://www.instagram.com/fable.and.forever/"
                 target="_blank"
-                className="w-full flex items-center justify-center gap-4 py-8 bg-accent/5 text-accent hover:bg-accent/10 transition-all border border-accent/10 shadow-sm relative overflow-hidden group"
+                className="w-full flex items-center justify-center gap-6 py-10 bg-accent text-white hover:bg-accent/90 transition-all border border-accent/10 shadow-xl relative overflow-hidden group rounded-[2rem]"
               >
-                <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-accent via-transparent to-transparent"></div>
-                <Instagram className="w-5 h-5 group-hover:rotate-12 transition-transform" /> 
-                <div className="flex flex-col items-center">
-                  <span className="text-[10px] font-black uppercase tracking-[0.6em]">DM for Custom Order</span>
-                  <span className="text-[7px] font-bold uppercase tracking-widest text-accent/40 mt-1 italic">Consult the Weaver</span>
+                <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent animate-pulse"></div>
+                <Instagram className="w-8 h-8 group-hover:rotate-12 transition-transform" /> 
+                <div className="flex flex-col items-start">
+                  <span className="text-[11px] font-black uppercase tracking-[0.6em]">DM for Order</span>
+                  <span className="text-[8px] font-bold uppercase tracking-widest text-white/60 mt-1 italic">Consult the Weaver</span>
                 </div>
+                <ChevronRight className="w-6 h-6 ml-auto mr-4 opacity-40 group-hover:translate-x-2 transition-transform" />
               </Link>
             </div>
           </div>

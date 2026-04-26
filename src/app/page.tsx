@@ -111,18 +111,32 @@ export default function Home() {
                 Contact <br />
                 <span className="italic text-accent">Us.</span>
               </h2>
-              <div className="space-y-10">
-                <p className="text-primary/70 font-black uppercase tracking-[0.5em] text-[12px] leading-relaxed">
-                  Based in Kolkata • Delivery Exclusively in Kolkata <br />
-                  <span className="text-accent">Custom inquiries via Instagram DMs</span>
-                </p>
-                <div className="pt-12 border-t border-primary/10 flex flex-col gap-10">
-                  <Link href="mailto:fableandforevercompany@gmail.com" className="text-3xl md:text-5xl font-headline text-primary hover:text-accent transition-all flex items-center gap-8 group">
-                    Send an Email <ArrowRight className="w-10 h-10 group-hover:translate-x-8 transition-transform" />
-                  </Link>
-                  <Link href="https://www.instagram.com/fable.and.forever/" target="_blank" className="text-3xl md:text-5xl font-headline text-accent hover:text-primary transition-all flex items-center gap-8 group">
-                    DM on Instagram <Instagram className="w-10 h-10 group-hover:rotate-12 transition-transform" />
-                  </Link>
+              <div className="space-y-12">
+                <div className="p-10 bg-accent text-white rounded-[3rem] shadow-2xl relative overflow-hidden group hover:scale-[1.02] transition-all">
+                  <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  <div className="relative z-10 flex flex-col gap-6">
+                    <div className="flex items-center gap-4">
+                       <Instagram className="w-10 h-10" />
+                       <h3 className="font-headline text-3xl">DM for Order</h3>
+                    </div>
+                    <p className="text-[11px] font-black uppercase tracking-[0.4em] leading-relaxed text-white/80">
+                      Bespoke consultations and custom order manifesting exclusively via Instagram DMs.
+                    </p>
+                    <Link href="https://www.instagram.com/fable.and.forever/" target="_blank" className="inline-flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.6em] bg-white text-accent px-8 py-5 rounded-full mt-4 w-fit shadow-lg">
+                      Start Ritual <ArrowRight className="w-4 h-4" />
+                    </Link>
+                  </div>
+                </div>
+
+                <div className="space-y-10 pt-8">
+                  <p className="text-primary/70 font-black uppercase tracking-[0.5em] text-[12px] leading-relaxed">
+                    Based in Kolkata • Delivery Exclusively in Kolkata <br />
+                  </p>
+                  <div className="pt-12 border-t border-primary/10 flex flex-col gap-10">
+                    <Link href="mailto:fableandforevercompany@gmail.com" className="text-3xl md:text-5xl font-headline text-primary hover:text-accent transition-all flex items-center gap-8 group">
+                      Send an Email <ArrowRight className="w-10 h-10 group-hover:translate-x-8 transition-transform" />
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
@@ -135,7 +149,7 @@ export default function Home() {
                     <Input 
                       required
                       placeholder="Enter your name" 
-                      className="border-none bg-transparent p-0 text-2xl md:text-3xl placeholder:text-primary/20 rounded-none focus-visible:ring-0 font-headline h-auto text-primary font-bold" 
+                      className="border-none bg-transparent p-0 text-2xl md:text-3xl placeholder:text-primary/40 rounded-none focus-visible:ring-0 font-headline h-auto text-primary font-bold" 
                     />
                   </div>
                   <div className="space-y-4 border-b-2 border-primary/60 pb-6 focus-within:border-accent transition-colors">
@@ -144,7 +158,7 @@ export default function Home() {
                       required
                       type="email" 
                       placeholder="hello@example.com" 
-                      className="border-none bg-transparent p-0 text-2xl md:text-3xl placeholder:text-primary/20 rounded-none focus-visible:ring-0 font-headline h-auto text-primary font-bold" 
+                      className="border-none bg-transparent p-0 text-2xl md:text-3xl placeholder:text-primary/40 rounded-none focus-visible:ring-0 font-headline h-auto text-primary font-bold" 
                     />
                   </div>
                </div>
@@ -153,7 +167,7 @@ export default function Home() {
                   <Textarea 
                     required
                     placeholder="Tell us about your dream crochet project..." 
-                    className="border-none bg-transparent p-0 min-h-[160px] text-2xl md:text-3xl placeholder:text-primary/20 rounded-none focus-visible:ring-0 resize-none font-headline text-primary leading-relaxed font-bold" 
+                    className="border-none bg-transparent p-0 min-h-[160px] text-2xl md:text-3xl placeholder:text-primary/40 rounded-none focus-visible:ring-0 resize-none font-headline text-primary leading-relaxed font-bold" 
                   />
                </div>
                <Button type="submit" className="bg-primary hover:bg-primary/90 text-white h-24 px-16 rounded-full text-[12px] font-black uppercase tracking-[0.8em] w-full transition-all active:scale-95 shadow-2xl shadow-primary/40 hover:scale-[1.02] group">

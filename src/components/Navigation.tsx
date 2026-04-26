@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useEffect } from 'react';
@@ -75,7 +76,7 @@ export function Navigation() {
                   isScrolled ? "text-primary" : "text-white"
                 )} />
                 <span className={cn(
-                  "font-headline text-3xl md:text-4xl font-bold tracking-tighter hidden sm:block transition-all duration-700",
+                  "font-headline text-2xl md:text-4xl font-bold tracking-tighter hidden sm:block transition-all duration-700",
                   (!isHomePage || isScrolled) ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4 pointer-events-none",
                   isScrolled ? "text-primary" : "text-white"
                 )}>
@@ -104,13 +105,13 @@ export function Navigation() {
                 href="https://www.instagram.com/fable.and.forever/"
                 target="_blank"
                 className={cn(
-                  "hidden xs:flex items-center gap-3 px-6 py-2 rounded-full border transition-all text-[9px] font-black uppercase tracking-widest",
+                  "hidden xs:flex items-center gap-3 px-6 py-2.5 rounded-full border-2 transition-all text-[10px] font-black uppercase tracking-widest group/ig",
                   isScrolled 
-                    ? "border-primary/10 text-primary hover:bg-primary hover:text-white" 
-                    : "border-white/20 text-white hover:bg-white hover:text-primary"
+                    ? "border-accent/20 text-accent hover:bg-accent hover:text-white" 
+                    : "border-white/30 text-white hover:bg-white hover:text-primary"
                 )}
               >
-                DM Us <Instagram className="w-3.5 h-3.5" />
+                DM for Order <Instagram className="w-4 h-4 ml-2 group-hover/ig:rotate-12 transition-transform" />
               </Link>
               <button 
                 onClick={() => setIsSearchOpen(true)}

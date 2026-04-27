@@ -14,7 +14,8 @@ import {
   Check,
   Instagram,
   Sparkles,
-  Scroll
+  Scroll,
+  MessageSquare
 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -26,20 +27,20 @@ export default function CheckoutPage() {
   const router = useRouter();
   const [copied, setCopied] = useState(false);
   
-  // Generate the manifestation message
+  // Generate a simple order message
   const generateMessage = () => {
     const itemsList = cart.map(item => `- ${item.title} (x${item.quantity})`).join('\n');
-    return `Greetings Fable & Forever! ✨\n\nI wish to manifest the following loops for my collection:\n\n${itemsList}\n\nTotal Magic: ₹ ${cartTotal.toLocaleString('en-IN')}\n\nPlease record my request in the studio scrolls! 🧶`;
+    return `Hi Fable & Forever! ✨\n\nI'd like to order the following items:\n\n${itemsList}\n\nPlease let me know the next steps. Thanks! 🧶`;
   };
 
-  const manifestationMessage = generateMessage();
+  const orderMessage = generateMessage();
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(manifestationMessage);
+    navigator.clipboard.writeText(orderMessage);
     setCopied(true);
     toast({
-      title: "Manifestation Copied! ✨",
-      description: "Paste this message into our Instagram DMs.",
+      title: "Order Details Copied! ✨",
+      description: "Paste this into our Instagram DMs.",
     });
     setTimeout(() => setCopied(false), 3000);
   };
@@ -71,7 +72,9 @@ export default function CheckoutPage() {
           <Link href="/shop" className="inline-flex items-center text-primary/60 hover:text-primary transition-colors gap-2 font-black uppercase tracking-widest text-[10px]">
             <ArrowLeft className="w-4 h-4" /> Back to Boutique
           </Link>
-          <h1 className="font-headline text-5xl md:text-8xl text-primary mt-8 tracking-tighter">Manifest <span className="italic">Scroll.</span></h1>
+          <h1 className="font-headline text-5xl md:text-8xl text-primary mt-8 tracking-tighter">
+            Order <span className="italic">Details.</span>
+          </h1>
           <p className="text-accent font-black uppercase tracking-[0.4em] text-[10px] mt-4">Preparing your signature request</p>
         </div>
 
@@ -92,15 +95,8 @@ export default function CheckoutPage() {
                       <h4 className="font-black text-primary text-xs truncate uppercase tracking-tight">{item.title}</h4>
                       <p className="text-[9px] text-muted-foreground uppercase tracking-widest font-black">Qty: {item.quantity}</p>
                     </div>
-                    <span className="font-black text-primary text-sm whitespace-nowrap">₹ {(item.price * item.quantity).toLocaleString('en-IN')}</span>
                   </div>
                 ))}
-              </div>
-              <div className="mt-10 pt-8 border-t border-dashed border-primary/10">
-                <div className="flex justify-between items-center text-3xl font-black text-primary font-headline">
-                  <span className="italic text-primary/30 text-xl">Total Magic</span>
-                  <span>₹ {cartTotal.toLocaleString('en-IN')}</span>
-                </div>
               </div>
             </div>
           </div>
@@ -113,18 +109,18 @@ export default function CheckoutPage() {
                <div className="space-y-10">
                   <div className="text-center space-y-4">
                     <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto">
-                       <Scroll className="w-8 h-8 text-accent" />
+                       <MessageSquare className="w-8 h-8 text-accent" />
                     </div>
-                    <h3 className="font-headline text-3xl text-primary">The Final Ritual</h3>
-                    <p className="text-sm text-primary/60 italic leading-relaxed">
-                      "We have woven your manifestation message below. Simply copy it and send it to our Instagram DMs to finalize your request."
+                    <h3 className="font-headline text-3xl text-primary">Place Your Order</h3>
+                    <p className="text-sm text-primary/60 italic leading-relaxed max-w-md mx-auto">
+                      "We've made it easy for you! Just copy the order details below and paste them into our Instagram DM to place your order."
                     </p>
                   </div>
 
                   <div className="relative group">
                     <div className="absolute -inset-2 bg-primary/5 rounded-[2.5rem] opacity-0 group-hover:opacity-100 transition-opacity blur-xl"></div>
-                    <div className="relative bg-paper p-8 rounded-[2.5rem] border border-primary/5 font-headline text-lg md:text-xl text-primary leading-relaxed whitespace-pre-wrap shadow-inner min-h-[200px]">
-                      {manifestationMessage}
+                    <div className="relative bg-paper p-8 rounded-[2.5rem] border border-primary/5 font-sans text-base md:text-lg text-primary leading-relaxed whitespace-pre-wrap shadow-inner min-h-[180px] font-medium italic">
+                      {orderMessage}
                     </div>
                     
                     <button 
@@ -134,7 +130,7 @@ export default function CheckoutPage() {
                       {copied ? (
                         <>Copied! <Check className="w-4 h-4 text-emerald-500" /></>
                       ) : (
-                        <>Copy Text <Copy className="w-4 h-4 text-accent" /></>
+                        <>Copy Order <Copy className="w-4 h-4 text-accent" /></>
                       )}
                     </button>
                   </div>
@@ -145,11 +141,11 @@ export default function CheckoutPage() {
                       className="w-full h-20 rounded-full bg-primary hover:bg-primary/90 text-white font-black text-xl uppercase tracking-[0.3em] shadow-2xl transition-all hover:scale-[1.02] group"
                     >
                       <Link href="https://www.instagram.com/fable.and.forever/" target="_blank" className="flex items-center justify-center gap-4">
-                        Open Instagram <Instagram className="w-7 h-7 group-hover:rotate-12 transition-transform" />
+                        DM us on Instagram <Instagram className="w-7 h-7 group-hover:rotate-12 transition-transform" />
                       </Link>
                     </Button>
                     <p className="text-center text-[9px] font-black uppercase tracking-[0.4em] text-primary/30">
-                      We'll respond to your DM as soon as we catch the thread.
+                      We'll respond to your DM to finalize the payment and delivery.
                     </p>
                   </div>
                </div>

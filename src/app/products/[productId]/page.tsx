@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { use, useState, useEffect } from 'react';
@@ -101,11 +100,8 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
 
   const handleBackNavigation = (e: React.MouseEvent) => {
     e.preventDefault();
-    if (window.history.length > 1) {
-      router.back();
-    } else {
-      router.push('/shop');
-    }
+    // Scroll Restoration Ritual: router.back() is most reliable for coordinate preservation
+    router.back();
   };
 
   if (loading && !dbProduct && !placeholder) {
@@ -175,7 +171,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
 
               <button 
                 onClick={handleBackNavigation}
-                className="flex items-center gap-3 text-[10px] font-black uppercase tracking-widest text-primary/30 hover:text-primary transition-all group pt-8 border-t border-primary/5 w-full"
+                className="flex items-center gap-3 text-[10px] font-black uppercase tracking-widest text-primary/30 hover:text-primary transition-all group pt-8 border-t border-primary/5 w-full text-left"
               >
                 <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> 
                 <span>Back Ritual</span>

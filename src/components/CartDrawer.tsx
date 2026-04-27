@@ -1,11 +1,10 @@
-
 "use client";
 
 import React from 'react';
 import { useCart } from '@/context/CartContext';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetClose } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
-import { ShoppingBasket, Trash2, Plus, Minus, ShoppingBag, ArrowRight } from 'lucide-react';
+import { ShoppingBasket, Trash2, Plus, Minus, ShoppingBag, Instagram } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
@@ -111,13 +110,13 @@ export function CartDrawer({ isLight }: CartDrawerProps) {
         {cart.length > 0 && (
           <div className="p-8 md:p-10 border-t border-primary/5 space-y-6 bg-white shadow-[0_-15px_40px_rgba(0,0,0,0.03)] pb-12">
             <div className="flex justify-between items-center text-2xl md:text-4xl font-headline font-black">
-              <span className="text-primary/30 italic">Total Magic</span>
+              <span className="text-primary/30 italic">Total</span>
               <span className="text-primary">₹ {cartTotal.toLocaleString('en-IN')}</span>
             </div>
             <SheetClose asChild>
               <Button asChild className="w-full h-16 md:h-20 rounded-full bg-primary hover:bg-primary/95 text-white font-black text-lg uppercase tracking-[0.3em] shadow-2xl shadow-primary/20 transition-all hover:scale-[1.02] active:scale-95 group">
                 <Link href="/checkout" className="flex items-center justify-center gap-4">
-                  Proceed to Manifest <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
+                  Order via Instagram <Instagram className="w-6 h-6 group-hover:rotate-12 transition-transform" />
                 </Link>
               </Button>
             </SheetClose>

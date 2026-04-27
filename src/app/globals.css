@@ -34,6 +34,7 @@
   body {
     @apply bg-background text-foreground font-sans;
     -webkit-font-smoothing: antialiased;
+    /* Scroll Restoration Fix: Remove scroll-behavior: smooth as it can conflict with coordinate restoration */
   }
 }
 
@@ -55,24 +56,24 @@
 /* Artisanal Unroll: Smoother Scroll Reveals */
 .reveal-on-scroll {
   opacity: 0;
-  transform: translateY(30px) scale(0.96) skewY(1.5deg);
+  transform: translateY(30px) scale(0.96);
   transition: opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1), transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform, opacity;
 }
 
 .reveal-on-scroll.active {
   opacity: 1;
-  transform: translateY(0) scale(1) skewY(0deg);
+  transform: translateY(0) scale(1);
 }
 
 @keyframes loop-in {
   from {
     opacity: 0;
-    transform: translateY(40px) skewY(1deg) scale(0.9);
+    transform: translateY(40px) scale(0.95);
   }
   to {
     opacity: 1;
-    transform: translateY(0) skewY(0deg) scale(1);
+    transform: translateY(0) scale(1);
   }
 }
 

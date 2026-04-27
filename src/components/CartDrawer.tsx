@@ -47,9 +47,6 @@ export function CartDrawer({ isLight }: CartDrawerProps) {
             </SheetTitle>
             <p className="text-[9px] font-black uppercase tracking-[0.4em] text-primary/40 mt-2">Hand-Stitched Heritage</p>
           </div>
-          <SheetClose className="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition-transform active:scale-90 border-2 border-white/10 group">
-             <X className="w-5 h-5 group-hover:rotate-90 transition-transform duration-500" />
-          </SheetClose>
         </SheetHeader>
 
         {/* Scrollable Scroll */}

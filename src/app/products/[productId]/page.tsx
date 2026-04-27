@@ -254,7 +254,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
             {/* Action Row: Quantity & Buy */}
             <div className="space-y-4 md:space-y-6">
               <div className="flex flex-col sm:flex-row gap-4 items-stretch">
-                <div className="flex items-center border-2 border-primary/10 h-16 md:h-20 bg-white shadow-sm overflow-hidden min-w-[140px] rounded-2xl">
+                <div className="flex items-center border-2 border-primary/10 h-20 md:h-24 bg-white shadow-sm overflow-hidden min-w-[140px] rounded-2xl">
                   <button 
                     onClick={() => setQuantity(Math.max(1, quantity - 1))} 
                     className="flex-1 flex items-center justify-center hover:bg-primary/5 h-full transition-colors"
@@ -271,7 +271,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
                 </div>
                 <Button 
                   onClick={handleAddToCart}
-                  className="flex-1 h-16 md:h-20 bg-primary text-white text-[10px] md:text-[12px] font-black tracking-[0.5em] uppercase rounded-2xl shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all"
+                  className="flex-1 h-20 md:h-24 bg-primary text-white text-[10px] md:text-[12px] font-black tracking-[0.5em] uppercase rounded-2xl shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all"
                 >
                   Add to Cart
                 </Button>
@@ -280,7 +280,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
               <Button 
                 onClick={handleBuyNow}
                 variant="outline"
-                className="w-full h-16 md:h-20 border-primary/20 text-[10px] md:text-[12px] font-black tracking-[0.5em] uppercase hover:bg-primary hover:text-white rounded-2xl transition-all"
+                className="w-full h-20 md:h-24 border-primary/20 text-[10px] md:text-[12px] font-black tracking-[0.5em] uppercase hover:bg-primary hover:text-white rounded-2xl transition-all"
               >
                 Buy it Now
               </Button>

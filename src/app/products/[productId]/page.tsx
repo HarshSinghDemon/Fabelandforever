@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { use, useState, useEffect } from 'react';
@@ -23,7 +22,8 @@ import {
   MapPin,
   Feather,
   Heart,
-  Undo2
+  Undo2,
+  ArrowLeft
 } from 'lucide-react';
 import {
   Carousel,
@@ -102,6 +102,15 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
     router.push('/checkout');
   };
 
+  const handleBackNavigation = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (window.history.length > 1) {
+      router.back();
+    } else {
+      router.push('/shop');
+    }
+  };
+
   if (loading && !dbProduct && !placeholder) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
@@ -132,11 +141,16 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
       
       <div className="container mx-auto px-4 md:px-6 max-w-7xl pt-24 md:pt-40 pb-16 flex-1">
         
-        {/* Breadcrumbs */}
+        {/* Breadcrumbs with Back Ritual */}
         <nav className="text-[10px] md:text-[11px] font-black uppercase tracking-[0.4em] text-primary/30 flex items-center gap-2 mb-8 md:mb-12">
           <Link href="/" className="hover:text-accent transition-colors">Home</Link>
           <ChevronRight className="w-3 h-3" />
-          <Link href="/shop" className="hover:text-accent transition-colors">Boutique</Link>
+          <button 
+            onClick={handleBackNavigation}
+            className="hover:text-accent transition-colors uppercase tracking-[0.4em] font-black"
+          >
+            Boutique
+          </button>
           <ChevronRight className="w-3 h-3" />
           <span className="text-accent">{product.name}</span>
         </nav>
@@ -161,6 +175,14 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
                   ))}
                 </ul>
               </div>
+
+              <button 
+                onClick={handleBackNavigation}
+                className="flex items-center gap-3 text-[10px] font-black uppercase tracking-widest text-primary/30 hover:text-primary transition-all group pt-8 border-t border-primary/5 w-full"
+              >
+                <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> 
+                <span>Back Ritual</span>
+              </button>
             </nav>
           </aside>
 

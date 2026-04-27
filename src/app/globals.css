@@ -33,7 +33,6 @@
   }
   body {
     @apply bg-background text-foreground font-sans;
-    scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
   }
 }

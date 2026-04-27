@@ -54,6 +54,13 @@ export function Navigation() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isHomePage]);
 
+  // Listen for the custom event from the MobileBottomNav
+  useEffect(() => {
+    const handleOpenSearch = () => setIsSearchOpen(true);
+    window.addEventListener('open-search-dialog', handleOpenSearch);
+    return () => window.removeEventListener('open-search-dialog', handleOpenSearch);
+  }, []);
+
   const navLinks = [
     { name: 'Shop All', href: '/shop' },
     { name: 'Flowers', href: '/shop#flowers' },
@@ -75,7 +82,7 @@ export function Navigation() {
             <div className="lg:hidden flex-1 flex justify-start">
                <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
                   <SheetTrigger asChild>
-                    <button className={cn("p-2 rounded-full transition-all active:scale-90", useLightStyle ? "text-white" : "text-primary")}><Menu className="w-6 h-6" /></button>
+                    <button className={cn("p-2 rounded-full transition-all active:scale-90", useLightStyle ? "text-white" : "text-primary")} aria-label="Open menu"><Menu className="w-6 h-6" /></button>
                   </SheetTrigger>
                   <SheetContent side="left" className="w-80 p-0 border-none bg-primary z-[200]">
                     <SheetHeader className="p-8 border-b border-white/5"><SheetTitle className="text-white font-headline text-2xl">Menu</SheetTitle></SheetHeader>
@@ -109,7 +116,7 @@ export function Navigation() {
             </div>
 
             <div className="flex-1 flex items-center justify-end gap-2 md:gap-6">
-              <button onClick={() => setIsSearchOpen(true)} className={cn("p-2 rounded-full transition-all active:scale-75", useLightStyle ? "text-white hover:bg-white/10" : "text-primary hover:bg-primary/5")}><Search className="w-5 h-5" /></button>
+              <button onClick={() => setIsSearchOpen(true)} className={cn("p-2 rounded-full transition-all active:scale-75", useLightStyle ? "text-white hover:bg-white/10" : "text-primary hover:bg-primary/5")} aria-label="Search"><Search className="w-5 h-5" /></button>
               <CartDrawer isLight={useLightStyle} />
             </div>
           </div>

@@ -4,6 +4,7 @@ import { CartProvider } from '@/context/CartContext';
 import { Toaster } from '@/components/ui/toaster';
 import { FirebaseClientProvider } from '@/firebase/client-provider';
 import { FloatingContact } from '@/components/FloatingContact';
+import { MobileBottomNav } from '@/components/MobileBottomNav';
 
 export const metadata: Metadata = {
   title: 'Fable & Forever | Artisanal Crochet Tales',
@@ -26,6 +27,7 @@ export default function RootLayout({
         <FirebaseClientProvider>
           <CartProvider>
             {children}
+            <MobileBottomNav />
             <FloatingContact />
             <Toaster />
           </CartProvider>

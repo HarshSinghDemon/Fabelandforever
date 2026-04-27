@@ -78,7 +78,7 @@ export function Hero() {
                     fill 
                     quality={100} 
                     className="object-cover animate-ken-burns" 
-                    priority={index === 0} // High priority for first hero image
+                    priority={index === 0}
                     sizes="100vw" 
                   />
                 </div>
@@ -90,8 +90,8 @@ export function Hero() {
       </div>
 
       {/* 3. MOBILE ONLY: Inset Window Focal Point */}
-      <div className="absolute inset-0 z-10 flex flex-col items-center justify-center md:hidden px-6 pt-10">
-        <div className="w-full max-w-[420px] aspect-[4/5.8] max-h-[65vh] rounded-[4rem] overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.6)] border-[6px] border-white/10 relative -translate-y-16 animate-fade-in-up scale-105 duration-1000">
+      <div className="absolute inset-0 z-10 flex flex-col items-center justify-center md:hidden px-6 pt-4">
+        <div className="w-full max-w-[420px] aspect-[4/5.8] max-h-[70vh] rounded-[4rem] overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.6)] border-[6px] border-white/10 relative animate-fade-in-up scale-100 duration-1000">
           
           <Carousel plugins={[Autoplay({ delay: 6000 })]} className="w-full h-full" opts={{ loop: true }}>
             <CarouselContent className="h-full ml-0">
@@ -105,7 +105,7 @@ export function Hero() {
           
           <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/90 pointer-events-none"></div>
           
-          <div className="absolute inset-0 z-20 flex flex-col items-center justify-center pb-8 text-center text-white p-6 -translate-y-10">
+          <div className="absolute inset-0 z-20 flex flex-col items-center justify-center pb-8 text-center text-white p-6">
             <div className="space-y-4 w-full flex flex-col items-center">
               <div className="bg-accent/90 backdrop-blur-md px-5 py-2.5 rounded-full flex items-center gap-2 shadow-2xl animate-heartbeat mb-4">
                 <MapPin className="w-3.5 h-3.5 text-white" />
@@ -122,9 +122,9 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="absolute bottom-28 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-in fade-in slide-in-from-bottom-10 duration-1000 delay-500">
-           <span className="text-[9px] font-black uppercase tracking-[0.5em] text-white/50 animate-pulse">Scroll to Explore</span>
-           <ChevronDown className="w-5 h-5 text-accent animate-float" />
+        <div className="absolute bottom-24 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 animate-in fade-in slide-in-from-bottom-10 duration-1000 delay-500">
+           <span className="text-[8px] font-black uppercase tracking-[0.5em] text-white/40 animate-pulse">Scroll to Explore</span>
+           <ChevronDown className="w-4 h-4 text-accent animate-float" />
         </div>
       </div>
 

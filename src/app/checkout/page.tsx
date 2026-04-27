@@ -92,7 +92,7 @@ export default function CheckoutPage() {
                       <Image src={item.image} alt={item.title} fill className="object-cover" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h4 className="font-black text-primary text-xs truncate uppercase tracking-tight">{item.title}</h4>
+                      <h4 className="font-black text-primary text-sm truncate uppercase tracking-tight">{item.title}</h4>
                       <p className="text-[9px] text-muted-foreground uppercase tracking-widest font-black">Qty: {item.quantity}</p>
                     </div>
                   </div>
@@ -119,7 +119,8 @@ export default function CheckoutPage() {
 
                   <div className="relative group">
                     <div className="absolute -inset-2 bg-primary/5 rounded-[2.5rem] opacity-0 group-hover:opacity-100 transition-opacity blur-xl"></div>
-                    <div className="relative bg-paper p-8 rounded-[2.5rem] border border-primary/5 font-sans text-base md:text-lg text-primary leading-relaxed whitespace-pre-wrap shadow-inner min-h-[180px] font-medium italic">
+                    {/* Added pb-20 to ensure the copy button doesn't hide text */}
+                    <div className="relative bg-paper p-8 pb-20 rounded-[2.5rem] border border-primary/5 font-sans text-base md:text-lg text-primary leading-relaxed whitespace-pre-wrap shadow-inner min-h-[180px] font-medium italic">
                       {orderMessage}
                     </div>
                     
@@ -138,10 +139,10 @@ export default function CheckoutPage() {
                   <div className="space-y-4 pt-4">
                     <Button 
                       asChild
-                      className="w-full h-20 rounded-full bg-primary hover:bg-primary/90 text-white font-black text-xl uppercase tracking-[0.3em] shadow-2xl transition-all hover:scale-[1.02] group"
+                      className="w-full h-16 rounded-full bg-primary hover:bg-primary/90 text-white font-black text-[10px] uppercase tracking-[0.5em] shadow-2xl transition-all hover:scale-[1.02] group"
                     >
                       <Link href="https://www.instagram.com/fable.and.forever/" target="_blank" className="flex items-center justify-center gap-4">
-                        DM us on Instagram <Instagram className="w-7 h-7 group-hover:rotate-12 transition-transform" />
+                        DM us on Instagram <Instagram className="w-5 h-5 group-hover:rotate-12 transition-transform" />
                       </Link>
                     </Button>
                     <p className="text-center text-[9px] font-black uppercase tracking-[0.4em] text-primary/30">

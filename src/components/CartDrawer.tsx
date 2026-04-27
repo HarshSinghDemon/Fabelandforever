@@ -1,10 +1,11 @@
+
 "use client";
 
 import React from 'react';
 import { useCart } from '@/context/CartContext';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetClose } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
-import { ShoppingBasket, Trash2, Plus, Minus, ShoppingBag, Instagram } from 'lucide-react';
+import { ShoppingBasket, Trash2, Plus, Minus, ShoppingBag } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
@@ -116,7 +117,7 @@ export function CartDrawer({ isLight }: CartDrawerProps) {
             <SheetClose asChild>
               <Button asChild className="w-full h-16 md:h-20 rounded-full bg-primary hover:bg-primary/95 text-white font-black text-lg uppercase tracking-[0.3em] shadow-2xl shadow-primary/20 transition-all hover:scale-[1.02] active:scale-95 group">
                 <Link href="/checkout" className="flex items-center justify-center gap-4">
-                  Order via Instagram <Instagram className="w-6 h-6 group-hover:rotate-12 transition-transform" />
+                  Proceed to Checkout
                 </Link>
               </Button>
             </SheetClose>

@@ -75,7 +75,7 @@ export default function CheckoutPage() {
           <h1 className="font-headline text-5xl md:text-8xl text-primary mt-8 tracking-tighter">
             Order <span className="italic">Details.</span>
           </h1>
-          <p className="text-accent font-black uppercase tracking-[0.4em] text-[10px] mt-4">Preparing your signature request</p>
+          <p className="text-accent font-black uppercase tracking-[0.4em] text-[10px] mt-4">We've made it easy for you!</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
@@ -111,27 +111,27 @@ export default function CheckoutPage() {
                     <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto">
                        <MessageSquare className="w-8 h-8 text-accent" />
                     </div>
-                    <h3 className="font-headline text-3xl text-primary">Place Your Order</h3>
+                    <h3 className="font-headline text-3xl text-primary">Manifest Your Order</h3>
                     <p className="text-sm text-primary/60 italic leading-relaxed max-w-md mx-auto">
-                      "We've made it easy for you! Just copy the order details below and paste them into our Instagram DM to place your order."
+                      "Copy the details below and paste them into our Instagram DM. We'll take it from there."
                     </p>
                   </div>
 
                   <div className="relative group">
                     <div className="absolute -inset-2 bg-primary/5 rounded-[2.5rem] opacity-0 group-hover:opacity-100 transition-opacity blur-xl"></div>
-                    {/* Added pb-20 to ensure the copy button doesn't hide text */}
-                    <div className="relative bg-paper p-8 pb-20 rounded-[2.5rem] border border-primary/5 font-sans text-base md:text-lg text-primary leading-relaxed whitespace-pre-wrap shadow-inner min-h-[180px] font-medium italic">
+                    {/* Added substantial bottom padding to ensure copy button doesn't obscure text */}
+                    <div className="relative bg-paper p-8 pb-24 md:pb-32 rounded-[2.5rem] border border-primary/5 font-sans text-base md:text-lg text-primary leading-relaxed whitespace-pre-wrap shadow-inner min-h-[180px] font-medium italic">
                       {orderMessage}
                     </div>
                     
                     <button 
                       onClick={handleCopy}
-                      className="absolute bottom-4 right-4 bg-white shadow-xl px-6 py-3 rounded-full flex items-center gap-3 text-[10px] font-black uppercase tracking-widest border border-primary/5 hover:scale-105 active:scale-95 transition-all text-primary"
+                      className="absolute bottom-6 right-6 bg-white shadow-xl px-6 py-3 rounded-full flex items-center gap-3 text-[10px] font-black uppercase tracking-widest border border-primary/5 hover:scale-105 active:scale-95 transition-all text-primary"
                     >
                       {copied ? (
                         <>Copied! <Check className="w-4 h-4 text-emerald-500" /></>
                       ) : (
-                        <>Copy Order <Copy className="w-4 h-4 text-accent" /></>
+                        <>Copy Ritual <Copy className="w-4 h-4 text-accent" /></>
                       )}
                     </button>
                   </div>

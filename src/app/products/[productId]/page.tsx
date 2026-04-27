@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { use, useState, useEffect } from 'react';
@@ -197,7 +198,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
                           alt={product.name} 
                           fill 
                           className="object-cover"
-                          priority={idx === 0}
+                          priority={idx === 0} // Snappy loading for first image
                           sizes="(max-width: 1024px) 100vw, 40vw"
                         />
                       </div>
@@ -222,7 +223,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
                     current === idx + 1 ? "border-accent scale-105" : "border-primary/5 opacity-50"
                   )}
                 >
-                  <Image src={img} alt={`Thumb ${idx}`} fill className="object-cover" />
+                  <Image src={img} alt={`Thumb ${idx}`} fill className="object-cover" sizes="80px" />
                 </button>
               ))}
             </div>

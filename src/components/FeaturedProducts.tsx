@@ -1,3 +1,4 @@
+
 "use client";
 
 import React from 'react';
@@ -118,6 +119,7 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
                             alt={product.name} 
                             fill 
                             className="object-cover" 
+                            priority={idx < 2} // Snappy loading for first items
                             sizes="(max-width: 768px) 70vw, 30vw"
                           />
                         </div>

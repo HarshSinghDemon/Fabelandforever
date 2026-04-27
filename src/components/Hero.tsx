@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useMemo } from 'react';
@@ -52,7 +53,7 @@ export function Hero() {
             {heroImages.map((imgUrl, index) => (
               <CarouselItem key={index} className="h-full pl-0 relative basis-full">
                 <div className="relative w-full h-full opacity-30 blur-3xl scale-125">
-                  <Image src={imgUrl} alt="Atmospheric" fill className="object-cover" sizes="100vw" />
+                  <Image src={imgUrl} alt="Atmospheric" fill className="object-cover" sizes="100vw" priority={index === 0} />
                 </div>
               </CarouselItem>
             ))}
@@ -71,7 +72,15 @@ export function Hero() {
             {heroImages.map((imgUrl, index) => (
               <CarouselItem key={index} className="h-full pl-0 relative basis-full">
                 <div className="relative w-full h-full">
-                  <Image src={imgUrl} alt={`Artisanal ${index + 1}`} fill quality={100} className="object-cover animate-ken-burns" priority={index === 0} sizes="100vw" />
+                  <Image 
+                    src={imgUrl} 
+                    alt={`Artisanal ${index + 1}`} 
+                    fill 
+                    quality={100} 
+                    className="object-cover animate-ken-burns" 
+                    priority={index === 0} // High priority for first hero image
+                    sizes="100vw" 
+                  />
                 </div>
               </CarouselItem>
             ))}
@@ -88,7 +97,7 @@ export function Hero() {
             <CarouselContent className="h-full ml-0">
               {heroImages.map((imgUrl, index) => (
                 <CarouselItem key={index} className="h-full pl-0 relative basis-full">
-                  <Image src={imgUrl} alt="Selection" fill className="object-cover" sizes="95vw" />
+                  <Image src={imgUrl} alt="Selection" fill className="object-cover" sizes="(max-width: 768px) 95vw, 100vw" priority={index === 0} />
                 </CarouselItem>
               ))}
             </CarouselContent>

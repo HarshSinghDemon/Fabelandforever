@@ -1,11 +1,10 @@
-
 "use client";
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { Search, Loader2, Instagram, Menu } from 'lucide-react';
+import { Search, Loader2, Instagram, Menu, Sun, Moon } from 'lucide-react';
 import { CartDrawer } from './CartDrawer';
 import { Logo } from './Logo';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -15,6 +14,7 @@ import { useFirestore, useCollection, useMemoFirebase } from '@/firebase';
 import { collection, query, orderBy } from 'firebase/firestore';
 import Image from 'next/image';
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from '@/components/ui/sheet';
+import { useTheme } from '@/context/ThemeContext';
 
 export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -23,8 +23,9 @@ export function Navigation() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
   const isHomePage = pathname === '/';
+  const { theme, toggleTheme } = useTheme();
 
-  const useLightStyle = isHomePage && !isScrolled;
+  const useLightStyle = isHomePage && !isScrolled && theme === 'light';
 
   const db = useFirestore();
   const productsQuery = useMemoFirebase(() => {
@@ -55,7 +56,6 @@ export function Navigation() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isHomePage]);
 
-  // Listen for the custom event from the MobileBottomNav
   useEffect(() => {
     const handleOpenSearch = () => setIsSearchOpen(true);
     window.addEventListener('open-search-dialog', handleOpenSearch);
@@ -75,26 +75,49 @@ export function Navigation() {
       <nav className={cn(
         "fixed top-0 left-0 right-0 z-[60] transition-all duration-700",
         useLightStyle 
-          ? "bg-transparent py-2 sm:py-4" 
-          : "bg-white/95 backdrop-blur-xl border-b border-primary/10 py-3 shadow-sm"
+          ? "bg-transparent py-2" 
+          : "bg-background/95 backdrop-blur-xl border-b border-primary/10 py-3 shadow-sm"
       )}>
         <div className="container mx-auto px-4 md:px-6 max-w-7xl">
           <div className="flex items-center justify-between relative">
-            <div className="lg:hidden flex-1 flex justify-start">
-               <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-                  <SheetTrigger asChild>
-                    <button className={cn("p-2 rounded-full transition-all active:scale-90", useLightStyle ? "text-white" : "text-primary")} aria-label="Open menu"><Menu className="w-6 h-6" /></button>
-                  </SheetTrigger>
-                  <SheetContent side="left" className="w-80 p-0 border-none bg-primary z-[200]">
-                    <SheetHeader className="p-8 border-b border-white/5"><SheetTitle className="text-white font-headline text-2xl">Menu</SheetTitle></SheetHeader>
-                    <div className="flex flex-col p-8 space-y-6">
-                      {navLinks.map((link) => (
-                        <Link key={link.name} href={link.href} onClick={() => setIsMobileMenuOpen(false)} className="text-[11px] font-black uppercase tracking-[0.5em] text-white/60 hover:text-white transition-all active:translate-x-2">{link.name}</Link>
-                      ))}
-                      <Link href="https://www.instagram.com/fable.and.forever/" target="_blank" className="flex items-center gap-4 pt-8 border-t border-white/10 text-accent font-black uppercase tracking-widest text-[10px]">Order via DM <Instagram className="w-4 h-4" /></Link>
-                    </div>
-                  </SheetContent>
-               </Sheet>
+            <div className="flex-1 lg:flex-none flex items-center justify-start gap-4">
+              <button 
+                onClick={toggleTheme}
+                className={cn(
+                  "p-2 rounded-full transition-all active:scale-75",
+                  useLightStyle ? "text-white hover:bg-white/10" : "text-primary hover:bg-primary/5"
+                )}
+                aria-label="Toggle theme"
+              >
+                {theme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
+              </button>
+
+              <div className="lg:hidden">
+                 <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+                    <SheetTrigger asChild>
+                      <button className={cn("p-2 rounded-full transition-all active:scale-90", useLightStyle ? "text-white" : "text-primary")} aria-label="Open menu"><Menu className="w-6 h-6" /></button>
+                    </SheetTrigger>
+                    <SheetContent side="left" className="w-80 p-0 border-none bg-primary z-[200]">
+                      <SheetHeader className="p-8 border-b border-white/5"><SheetTitle className="text-white font-headline text-2xl">Menu</SheetTitle></SheetHeader>
+                      <div className="flex flex-col p-8 space-y-6">
+                        {navLinks.map((link) => (
+                          <Link key={link.name} href={link.href} onClick={() => setIsMobileMenuOpen(false)} className="text-[11px] font-black uppercase tracking-[0.5em] text-white/60 hover:text-white transition-all active:translate-x-2">{link.name}</Link>
+                        ))}
+                        
+                        <div className="pt-8 border-t border-white/10 flex flex-col gap-6">
+                          <button 
+                            onClick={() => { toggleTheme(); setIsMobileMenuOpen(false); }}
+                            className="flex items-center gap-4 text-white/60 hover:text-white transition-all text-[11px] font-black uppercase tracking-[0.5em]"
+                          >
+                            {theme === 'light' ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
+                            Switch Theme
+                          </button>
+                          <Link href="https://www.instagram.com/fable.and.forever/" target="_blank" className="flex items-center gap-4 text-accent font-black uppercase tracking-widest text-[10px]">Order via DM <Instagram className="w-4 h-4" /></Link>
+                        </div>
+                      </div>
+                    </SheetContent>
+                 </Sheet>
+              </div>
             </div>
 
             <div className="flex-1 lg:flex-none flex justify-center lg:justify-start">
@@ -124,7 +147,7 @@ export function Navigation() {
         </div>
 
         <Dialog open={isSearchOpen} onOpenChange={(open) => { setIsSearchOpen(open); if (!open) setSearchQuery(''); }}>
-          <DialogContent className="sm:max-w-[600px] w-full border-none shadow-2xl p-0 overflow-hidden rounded-none bg-paper h-screen sm:h-auto z-[150]">
+          <DialogContent className="sm:max-w-[600px] w-full border-none shadow-2xl p-0 overflow-hidden rounded-none bg-background h-screen sm:h-auto z-[150]">
             <div className="p-8 md:p-12 pb-4 h-full flex flex-col">
               <DialogHeader className="mb-10">
                 <DialogTitle className="font-headline text-4xl text-primary tracking-tighter mb-8">Search</DialogTitle>
@@ -139,7 +162,7 @@ export function Navigation() {
                   {searchQuery && filteredProducts.length === 0 && !loadingProducts ? <div className="text-center py-12"><p className="text-primary/40 font-headline text-lg italic">"No creations match."</p></div> : (
                     <div className="flex flex-col gap-4">
                       {filteredProducts.map((product) => (
-                        <Link key={product.id} href={`/products/${product.id}`} onClick={() => setIsSearchOpen(false)} className="flex items-center gap-4 p-4 hover:bg-white border border-transparent hover:border-primary/5 transition-all group shadow-sm">
+                        <Link key={product.id} href={`/products/${product.id}`} onClick={() => setIsSearchOpen(false)} className="flex items-center gap-4 p-4 hover:bg-secondary border border-transparent hover:border-primary/5 transition-all group shadow-sm">
                           <div className="relative w-14 h-18 overflow-hidden bg-muted/20 flex-shrink-0"><Image src={product.imageUrls?.[0] || 'https://placehold.co/400x500'} alt={product.name} fill className="object-cover" /></div>
                           <div className="flex-1 min-w-0">
                             <h4 className="font-headline text-lg text-primary group-hover:text-accent transition-colors truncate uppercase font-black tracking-tight">{product.name}</h4>

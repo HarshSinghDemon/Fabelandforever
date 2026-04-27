@@ -1,6 +1,7 @@
 import type {Metadata} from 'next';
 import './globals.css';
 import { CartProvider } from '@/context/CartContext';
+import { ThemeProvider } from '@/context/ThemeContext';
 import { Toaster } from '@/components/ui/toaster';
 import { FirebaseClientProvider } from '@/firebase/client-provider';
 import { FloatingContact } from '@/components/FloatingContact';
@@ -23,14 +24,16 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Pacifico&display=swap" rel="stylesheet" />
       </head>
-      <body className="font-cute antialiased bg-background text-foreground">
+      <body className="antialiased bg-background text-foreground">
         <FirebaseClientProvider>
-          <CartProvider>
-            {children}
-            <MobileBottomNav />
-            <FloatingContact />
-            <Toaster />
-          </CartProvider>
+          <ThemeProvider>
+            <CartProvider>
+              {children}
+              <MobileBottomNav />
+              <FloatingContact />
+              <Toaster />
+            </CartProvider>
+          </ThemeProvider>
         </FirebaseClientProvider>
       </body>
     </html>

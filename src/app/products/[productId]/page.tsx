@@ -101,7 +101,6 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
 
   const handleBackNavigation = (e: React.MouseEvent) => {
     e.preventDefault();
-    // Scroll Restoration Ritual: router.back() is most reliable for coordinate preservation
     router.back();
   };
 
@@ -135,7 +134,6 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
       
       <div className="container mx-auto px-4 md:px-6 max-w-7xl pt-24 md:pt-40 pb-16 flex-1">
         
-        {/* Breadcrumbs with Back Ritual */}
         <nav className="text-[10px] md:text-[11px] font-black uppercase tracking-[0.4em] text-primary/30 flex items-center gap-2 mb-8 md:mb-12">
           <Link href="/" className="hover:text-accent transition-colors">Home</Link>
           <ChevronRight className="w-3 h-3" />
@@ -151,7 +149,6 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12">
           
-          {/* Column 1: Archive Sidebar (Desktop Only) */}
           <aside className="hidden lg:block lg:col-span-2">
             <nav className="sticky top-32 space-y-8">
               <div className="space-y-4">
@@ -180,7 +177,6 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
             </nav>
           </aside>
 
-          {/* Column 2: Visual Center Gallery */}
           <div className="lg:col-span-5 space-y-6">
             <div className="relative aspect-[4/5] bg-paper overflow-hidden shadow-sm border border-primary/5 stitching-border group">
               {product.isBestseller && (
@@ -198,7 +194,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
                           alt={product.name} 
                           fill 
                           className="object-cover"
-                          priority={idx === 0} // Snappy loading for first image
+                          priority={idx === 0}
                           sizes="(max-width: 1024px) 100vw, 40vw"
                         />
                       </div>
@@ -212,7 +208,6 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
               </div>
             </div>
 
-            {/* Thumbnail Navigation */}
             <div className="flex gap-3 overflow-x-auto no-scrollbar py-1">
               {galleryImages.map((img: string, idx: number) => (
                 <button 
@@ -229,7 +224,6 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
             </div>
           </div>
 
-          {/* Column 3: Narrative Pillar Details */}
           <div className="lg:col-span-5 space-y-8 lg:pl-4">
             <div className="space-y-4">
               <div className="space-y-1">
@@ -252,7 +246,6 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
                <span className="text-[10px] font-black uppercase tracking-widest text-primary/20">Tax Included</span>
             </div>
 
-            {/* Action Row: Quantity & Buy */}
             <div className="space-y-4 md:space-y-6">
               <div className="flex flex-col sm:flex-row gap-4 items-stretch">
                 <div className="flex items-center border-2 border-primary/10 h-20 md:h-24 bg-white shadow-sm overflow-hidden min-w-[140px] rounded-2xl">
@@ -287,7 +280,6 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
               </Button>
             </div>
 
-            {/* Customize Order Portal */}
             <div className="pt-2">
               <Link 
                 href="https://www.instagram.com/fable.and.forever/"
@@ -300,7 +292,6 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
               </Link>
             </div>
 
-            {/* Accordion Detail Sections */}
             <Accordion type="single" collapsible className="w-full border-t border-primary/5 pt-8">
               <AccordionItem value="process" className="border-primary/5 py-1">
                 <AccordionTrigger className="text-[10px] md:text-[11px] font-black uppercase tracking-[0.5em] no-underline hover:no-underline py-6">The Process</AccordionTrigger>
@@ -325,7 +316,6 @@ export default function ProductDetailPage({ params }: { params: Promise<{ produc
         </div>
       </div>
 
-      {/* Related Products Section */}
       <div className="bg-paper py-20 md:py-32 border-t border-primary/5">
         <div className="container mx-auto px-4 md:px-6 max-w-7xl">
            <FeaturedProducts 

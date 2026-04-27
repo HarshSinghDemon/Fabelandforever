@@ -1,3 +1,4 @@
+
 "use client";
 
 import React from 'react';
@@ -29,13 +30,13 @@ export function MobileBottomNav() {
               href={item.href} 
               className={cn(
                 "flex flex-col items-center gap-1 transition-all duration-500 relative py-1",
-                isActive ? "text-accent scale-110" : "text-foreground/70"
+                isActive ? "text-accent scale-110" : "text-foreground/90"
               )}
             >
-              <item.icon className={cn("w-6 h-6", isActive ? "stroke-[2.5px]" : "stroke-2")} />
+              <item.icon className={cn("w-6 h-6", isActive ? "stroke-[2.5px]" : "stroke-[2.5px]")} />
               <span className={cn(
                 "text-[8px] font-black uppercase tracking-[0.2em] transition-opacity duration-300",
-                isActive ? "opacity-100" : "opacity-60"
+                isActive ? "opacity-100" : "opacity-90"
               )}>
                 {item.name}
               </span>
@@ -48,10 +49,10 @@ export function MobileBottomNav() {
         
         <button 
           onClick={handleSearchClick}
-          className="flex flex-col items-center gap-1 text-foreground/70 hover:text-accent transition-all active:scale-90 py-1"
+          className="flex flex-col items-center gap-1 text-foreground/90 hover:text-accent transition-all active:scale-90 py-1"
         >
-          <Search className="w-6 h-6 stroke-2" />
-          <span className="text-[8px] font-black uppercase tracking-[0.2em] opacity-60">Search</span>
+          <Search className="w-6 h-6 stroke-[2.5px]" />
+          <span className="text-[8px] font-black uppercase tracking-[0.2em] opacity-90">Search</span>
         </button>
       </div>
     </nav>

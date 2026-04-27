@@ -103,7 +103,7 @@ export default function ShopPage() {
         <div className="absolute inset-0 z-0">
           <Image 
             src="https://images.unsplash.com/photo-1605649494300-83561a0932da?q=80&w=2070&auto=format&fit=crop" 
-            alt="Shop Catalog" 
+            alt="Shop Category" 
             fill 
             className="object-cover opacity-40 animate-ken-burns" 
             priority
@@ -115,7 +115,7 @@ export default function ShopPage() {
           <div className="reveal-on-scroll active space-y-4 md:space-y-6">
             <span className="text-white/40 font-black tracking-[0.8em] md:tracking-[1em] uppercase text-[9px] mb-2 block">Boutique Curation</span>
             <h1 className="font-headline text-5xl md:text-9xl text-white leading-none tracking-tighter drop-shadow-2xl">
-              Shop <span className="italic">Catalog.</span>
+              Shop <span className="italic">Category.</span>
             </h1>
             <p className="text-white/60 font-medium max-w-lg mx-auto leading-relaxed italic text-xs md:text-lg px-4">
               "Hand-stitched loops for the heritage home, curated with patience and artisanal care."
@@ -125,13 +125,13 @@ export default function ShopPage() {
       </section>
 
       {/* Pill Filters Bar */}
-      <div className="sticky top-[70px] md:top-[80px] z-[40] bg-white/95 backdrop-blur-2xl border-b border-primary/5 py-4 md:py-6">
+      <div className="sticky top-[70px] md:top-[80px] z-[40] bg-white/95 backdrop-blur-2xl border-b border-primary/5 py-4 md:py-6 dark:bg-background/95">
         <div className="container mx-auto px-4 md:px-6 relative max-w-7xl">
           <div className="relative flex items-center">
             <button 
               onClick={() => scrollByAmount('left')}
               className={cn(
-                "absolute -left-4 md:-left-12 top-1/2 -translate-y-1/2 z-50 w-8 h-8 md:w-10 md:h-10 rounded-full bg-white shadow-xl border border-primary/5 flex items-center justify-center text-primary transition-all duration-300",
+                "absolute -left-4 md:-left-12 top-1/2 -translate-y-1/2 z-50 w-8 h-8 md:w-10 md:h-10 rounded-full bg-white shadow-xl border border-primary/5 flex items-center justify-center text-primary transition-all duration-300 dark:bg-card dark:text-foreground",
                 canScrollLeft ? "opacity-100 scale-100" : "opacity-0 scale-50 pointer-events-none"
               )}
             >
@@ -147,7 +147,7 @@ export default function ShopPage() {
                 <a 
                   key={cat} 
                   href={`#${cat.toLowerCase().replace(/\s+/g, '-')}`}
-                  className="whitespace-nowrap px-4 py-2 md:px-6 md:py-2.5 rounded-full border border-primary/5 bg-paper text-[8px] md:text-[10px] font-black uppercase tracking-widest text-primary/40 hover:text-primary hover:bg-white hover:border-accent hover:shadow-lg transition-all active:scale-95"
+                  className="whitespace-nowrap px-4 py-2 md:px-6 md:py-2.5 rounded-full border border-primary/5 bg-paper text-[8px] md:text-[10px] font-black uppercase tracking-widest text-primary/40 hover:text-primary hover:bg-white hover:border-accent hover:shadow-lg transition-all active:scale-95 dark:bg-card dark:border-white/5 dark:text-white/40 dark:hover:text-white"
                 >
                   {cat}
                 </a>
@@ -157,7 +157,7 @@ export default function ShopPage() {
             <button 
               onClick={() => scrollByAmount('right')}
               className={cn(
-                "absolute -right-4 md:-right-12 top-1/2 -translate-y-1/2 z-50 w-8 h-8 md:w-10 md:h-10 rounded-full bg-white shadow-xl border border-primary/5 flex items-center justify-center text-primary transition-all duration-300",
+                "absolute -right-4 md:-right-12 top-1/2 -translate-y-1/2 z-50 w-8 h-8 md:w-10 md:h-10 rounded-full bg-white shadow-xl border border-primary/5 flex items-center justify-center text-primary transition-all duration-300 dark:bg-card dark:text-foreground",
                 canScrollRight ? "opacity-100 scale-100" : "opacity-0 scale-50 pointer-events-none"
               )}
             >
@@ -201,16 +201,13 @@ export default function ShopPage() {
                     <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-8 lg:gap-12 px-2 md:px-0">
                       {catProducts.map((product) => (
                         <div key={product.id} className="group relative py-4 px-2 transition-all duration-700">
-                          {/* Elevated background on hover/active */}
-                          <div className="absolute inset-x-0 -inset-y-2 md:-inset-y-4 bg-white rounded-[1.5rem] md:rounded-[3rem] opacity-0 group-hover:opacity-100 group-active:opacity-100 group-hover:bg-primary group-active:bg-primary shadow-xl group-hover:shadow-2xl group-active:shadow-2xl transition-all duration-500 -z-10 group-hover:-translate-y-2 group-active:-translate-y-2"></div>
+                          <div className="absolute inset-x-0 -inset-y-2 md:-inset-y-4 bg-white dark:bg-card rounded-[1.5rem] md:rounded-[3rem] opacity-0 group-hover:opacity-100 group-active:opacity-100 group-hover:bg-primary group-active:bg-primary shadow-xl group-hover:shadow-2xl group-active:shadow-2xl transition-all duration-500 -z-10 group-hover:-translate-y-2 group-active:-translate-y-2"></div>
                           
                           <Link 
                             href={`/products/${product.id}`} 
                             className="block space-y-3 md:space-y-6 text-center transition-all duration-500 active:scale-95"
                           >
-                            {/* Floating Image Container */}
                             <div className="relative aspect-[3/4] mx-auto w-[92%] transition-all duration-700 group-hover:-translate-y-6 group-active:-translate-y-3 group-hover:scale-105 group-active:scale-105">
-                              {/* Bottom Shadow Wrapper */}
                               <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-[80%] h-4 bg-black/10 blur-xl rounded-full opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-opacity"></div>
                               
                               <div className="relative h-full w-full overflow-hidden rounded-[1.5rem] md:rounded-[2.5rem] shadow-sm group-hover:shadow-2xl group-active:shadow-2xl transition-all duration-700 border border-primary/5">

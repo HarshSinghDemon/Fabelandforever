@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -27,11 +28,11 @@
   }
 
   .dark {
-    --background: 0 0% 5%; /* Deep Midnight Black */
+    --background: 185 45% 5%; /* Deep Midnight Dark Teal/Black */
     --foreground: 0 0% 98%;
-    --card: 0 0% 8%;
+    --card: 185 45% 8%;
     --card-foreground: 0 0% 98%;
-    --popover: 0 0% 8%;
+    --popover: 185 45% 8%;
     --popover-foreground: 0 0% 98%;
     --primary: 185 45% 45%; /* Lighter Teal for Dark Mode */
     --primary-foreground: 185 55% 10%;

@@ -1,3 +1,4 @@
+
 "use client";
 
 import React from 'react';
@@ -63,8 +64,8 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
     });
     
     toast({
-      title: "Added to Cart ✨",
-      description: `${product.name} has been selected.`,
+      title: "Selection Added ✨",
+      description: `${product.name} is now in your basket.`,
     });
   };
 
@@ -88,31 +89,30 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
           <div className="w-12 h-[1px] bg-accent/20 mt-4 md:mt-6"></div>
         </div>
 
-        {/* Smartphone Matrix */}
-        <div className="block md:hidden">
-          <div className="grid grid-cols-2 gap-3">
-            {filteredProducts.slice(0, 4).map((product: any, idx: number) => (
+        {/* Smartphone Horizontal Scroll (2x1 Matrix) */}
+        <div className="block md:hidden -mx-4 px-4 overflow-x-auto no-scrollbar scroll-smooth snap-x snap-mandatory">
+          <div className="flex gap-4 pb-8 min-w-full">
+            {filteredProducts.map((product: any, idx: number) => (
               <Link 
                 key={product.id}
                 href={`/products/${product.id}`}
                 className={cn(
-                  "group relative flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm border border-primary/5 active:scale-95 transition-all duration-300 reveal-on-scroll active",
+                  "group relative flex flex-col bg-white rounded-3xl overflow-hidden shadow-sm border border-primary/5 active:scale-95 transition-all duration-500 snap-center shrink-0 w-[calc(50%-8px)]",
                 )}
-                style={{ transitionDelay: `${idx * 0.1}s` }}
               >
                 <div className="absolute inset-0 bg-accent/5 opacity-0 group-hover:opacity-100 transition-opacity z-10"></div>
-                <div className="relative aspect-[3/4] w-full">
-                  <Image src={product.imageUrls?.[0]} alt={product.name} fill className="object-cover" />
+                <div className="relative aspect-[3/4] w-full overflow-hidden">
+                  <Image src={product.imageUrls?.[0]} alt={product.name} fill className="object-cover transition-transform duration-700 group-hover:scale-110" />
                 </div>
-                <div className="p-3 space-y-1 relative z-20">
-                  <h3 className="font-headline text-sm text-primary truncate group-hover:text-accent font-black">{product.name}</h3>
+                <div className="p-4 space-y-2 relative z-20">
+                  <h3 className="font-headline text-sm text-primary truncate group-hover:text-accent font-black uppercase tracking-tight">{product.name}</h3>
                   <div className="flex items-center justify-between">
-                    <span className="font-headline text-xs text-primary font-black">₹ {product.price}</span>
+                    <span className="font-headline text-xs text-primary font-black">₹ {product.price.toLocaleString('en-IN')}</span>
                     <button 
                       onClick={(e) => handleAddToCart(e, product)}
-                      className="w-7 h-7 bg-primary text-white rounded-full flex items-center justify-center active:scale-90 shadow-md"
+                      className="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center active:scale-90 shadow-lg"
                     >
-                      <ShoppingBag className="w-3.5 h-3.5" />
+                      <ShoppingBag className="w-4 h-4" />
                     </button>
                   </div>
                 </div>
@@ -137,10 +137,10 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
                         </div>
                       </div>
                       <div className="space-y-1.5 md:space-y-4 px-2 md:px-4">
-                        <h3 className="font-headline text-sm md:text-3xl text-primary group-hover:text-accent transition-colors duration-500 truncate font-black">{product.name}</h3>
-                        <p className="font-headline text-xs md:text-2xl text-primary font-black">₹ {product.price}</p>
-                        <Button onClick={(e) => handleAddToCart(e, product)} className="w-full h-8 md:h-12 rounded-full border border-accent text-accent bg-transparent group-hover:bg-accent group-hover:text-white shadow-sm font-black">
-                          Add <ShoppingBag className="ml-1.5 w-3 h-3" />
+                        <h3 className="font-headline text-sm md:text-3xl text-primary group-hover:text-accent transition-colors duration-500 truncate font-black uppercase tracking-tight">{product.name}</h3>
+                        <p className="font-headline text-xs md:text-2xl text-primary font-black">₹ {product.price.toLocaleString('en-IN')}</p>
+                        <Button onClick={(e) => handleAddToCart(e, product)} className="w-full h-12 rounded-full border-2 border-accent text-accent bg-transparent hover:bg-accent hover:text-white shadow-sm font-black transition-all">
+                          Add to Basket <ShoppingBag className="ml-1.5 w-4 h-4" />
                         </Button>
                       </div>
                     </Link>
@@ -148,8 +148,8 @@ export function FeaturedProducts({ title, categoryFilter, isBestseller }: Featur
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious className="-left-12 h-14 w-14 bg-white/90 backdrop-blur-md shadow-2xl rounded-full" />
-            <CarouselNext className="-right-12 h-14 w-14 bg-white/90 backdrop-blur-md shadow-2xl rounded-full" />
+            <CarouselPrevious className="-left-12 h-14 w-14 bg-white/90 backdrop-blur-md shadow-2xl rounded-full border border-primary/5 text-primary hover:bg-primary hover:text-white transition-all" />
+            <CarouselNext className="-right-12 h-14 w-14 bg-white/90 backdrop-blur-md shadow-2xl rounded-full border border-primary/5 text-primary hover:bg-primary hover:text-white transition-all" />
           </Carousel>
         </div>
       </div>

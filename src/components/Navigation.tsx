@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useEffect } from 'react';
@@ -134,8 +135,8 @@ export function Navigation() {
                         <Link key={product.id} href={`/products/${product.id}`} onClick={() => setIsSearchOpen(false)} className="flex items-center gap-4 p-4 hover:bg-white border border-transparent hover:border-primary/5 transition-all group shadow-sm">
                           <div className="relative w-14 h-18 overflow-hidden bg-muted/20 flex-shrink-0"><Image src={product.imageUrls?.[0] || 'https://placehold.co/400x500'} alt={product.name} fill className="object-cover" /></div>
                           <div className="flex-1 min-w-0">
-                            <h4 className="font-headline text-lg text-primary group-hover:text-accent transition-colors truncate">{product.name}</h4>
-                            <div className="flex items-center gap-3 mt-1.5"><span className="text-[8px] font-bold uppercase tracking-widest text-accent/60">{product.category}</span><span className="font-bold text-primary/60 text-[10px]">₹ {product.price?.toLocaleString('en-IN')}</span></div>
+                            <h4 className="font-headline text-lg text-primary group-hover:text-accent transition-colors truncate uppercase font-black tracking-tight">{product.name}</h4>
+                            <div className="flex items-center gap-3 mt-1.5"><span className="text-[8px] font-bold uppercase tracking-widest text-accent/60">{product.category}</span><span className="font-black text-primary/60 text-[10px]">₹ {product.price?.toLocaleString('en-IN')}</span></div>
                           </div>
                         </Link>
                       ))}

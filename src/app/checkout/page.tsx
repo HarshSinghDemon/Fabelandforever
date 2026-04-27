@@ -1,25 +1,20 @@
+
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
 import { Navigation } from '@/components/Navigation';
 import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import { 
-  ShoppingBag, 
   Package, 
   ArrowLeft, 
   CheckCircle2, 
   Loader2, 
   Sparkles,
   MapPin,
-  Instagram,
-  Mail,
-  Navigation as NavIcon,
-  Phone,
   Building
 } from 'lucide-react';
 import Link from 'next/link';
@@ -27,15 +22,6 @@ import Image from 'next/image';
 import { useToast } from '@/hooks/use-toast';
 import { useFirestore } from '@/firebase';
 import { collection, addDoc } from 'firebase/firestore';
-
-// Basic Kolkata Pincode Mapping for Area Detection (Fallback)
-const KOLKATA_LOCALITIES: Record<string, string> = {
-  "700001": "B.B.D. Bagh",
-  "700019": "Ballygunge",
-  "700027": "Alipore",
-  "700091": "Salt Lake",
-  "700156": "New Town",
-};
 
 export default function CheckoutPage() {
   const { cart, cartTotal, clearCart } = useCart();
@@ -45,7 +31,6 @@ export default function CheckoutPage() {
   
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [orderComplete, setOrderComplete] = useState(false);
-  const [isLocating, setIsLocating] = useState(false);
   
   const [formData, setFormData] = useState({
     name: '',
@@ -54,74 +39,9 @@ export default function CheckoutPage() {
     email: '',
     flat: '',
     street: '',
-    locality: '',
     city: '',
-    pincode: '',
-    gpsLocation: null as { lat: number, lng: number } | null
+    pincode: ''
   });
-
-  // Auto-detect area based on pincode manually
-  useEffect(() => {
-    if (formData.pincode.length === 6 && KOLKATA_LOCALITIES[formData.pincode] && !formData.locality) {
-      setFormData(prev => ({ ...prev, locality: KOLKATA_LOCALITIES[formData.pincode], city: 'Kolkata' }));
-    }
-  }, [formData.pincode]);
-
-  const handleDetectGPS = () => {
-    if (!navigator.geolocation) {
-      toast({ variant: "destructive", title: "GPS Error", description: "Your device does not support geolocation." });
-      return;
-    }
-
-    setIsLocating(true);
-    navigator.geolocation.getCurrentPosition(
-      async (position) => {
-        const { latitude, longitude } = position.coords;
-        setFormData(prev => ({ 
-          ...prev, 
-          gpsLocation: { lat: latitude, lng: longitude } 
-        }));
-
-        try {
-          // Attempt reverse geocoding via OpenStreetMap Nominatim
-          const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`);
-          const data = await response.json();
-          
-          if (data && data.address) {
-            const addr = data.address;
-            
-            // Refined mapping for Street and Locality
-            const streetVal = addr.road || addr.pedestrian || addr.suburb || addr.neighbourhood || '';
-            const localityVal = addr.neighbourhood || addr.suburb || addr.city_district || addr.village || addr.town || '';
-            const cityVal = addr.city || addr.town || addr.state_district || 'Kolkata';
-            const pincodeVal = addr.postcode || '';
-
-            setFormData(prev => ({
-              ...prev,
-              street: streetVal || prev.street,
-              locality: localityVal || prev.locality,
-              city: cityVal,
-              pincode: pincodeVal || prev.pincode
-            }));
-            
-            toast({ title: "Address Captured ✨", description: "Your destination details have been unrolled automatically." });
-          } else {
-            toast({ title: "Coordinates Recorded 📍", description: "GPS detected, but address lookup was shy. Please fill manually." });
-          }
-        } catch (err) {
-          console.error("Geocoding failed", err);
-          toast({ title: "Coordinates Recorded 📍", description: "Location captured. Address lookup failed." });
-        } finally {
-          setIsLocating(false);
-        }
-      },
-      (error) => {
-        setIsLocating(false);
-        toast({ variant: "destructive", title: "GPS Denied", description: "Please enable location services for precise delivery." });
-      },
-      { enableHighAccuracy: true, timeout: 10000 }
-    );
-  };
 
   const handleSubmitOrder = (e: React.FormEvent) => {
     e.preventDefault();
@@ -137,10 +57,8 @@ export default function CheckoutPage() {
       address: {
         flat: formData.flat,
         street: formData.street,
-        locality: formData.locality,
         city: formData.city,
-        pincode: formData.pincode,
-        gps: formData.gpsLocation
+        pincode: formData.pincode
       },
       items: cart.map(item => ({
         id: item.id,
@@ -260,13 +178,7 @@ export default function CheckoutPage() {
                 </div>
 
                 <div className="space-y-8 pt-8 border-t border-primary/5">
-                  <div className="flex items-center justify-between">
-                    <h3 className="font-headline text-2xl text-primary">Destination Scroll</h3>
-                    <Button type="button" variant="outline" onClick={handleDetectGPS} disabled={isLocating} className="rounded-full h-12 border-accent/20 text-accent text-[9px] font-black uppercase tracking-widest bg-accent/5 hover:bg-accent hover:text-white transition-all">
-                      {isLocating ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <NavIcon className="w-4 h-4 mr-2" />}
-                      {formData.gpsLocation ? "Space Auto-Filled" : "Autofill via GPS"}
-                    </Button>
-                  </div>
+                  <h3 className="font-headline text-2xl text-primary">Destination Scroll</h3>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2 md:col-span-2">
@@ -274,18 +186,14 @@ export default function CheckoutPage() {
                       <Input required placeholder="e.g., Flat 4B, 2nd Floor" value={formData.flat} onChange={(e) => setFormData({...formData, flat: e.target.value})} className="bg-paper border-none h-14 rounded-2xl px-6 font-bold" />
                     </div>
                     <div className="space-y-2 md:col-span-2">
-                      <label className="text-[9px] font-black uppercase tracking-widest text-primary/50 ml-4">Street / Building</label>
-                      <Input required placeholder="e.g., Whispering Woods Apartments" value={formData.street} onChange={(e) => setFormData({...formData, street: e.target.value})} className="bg-paper border-none h-14 rounded-2xl px-6 font-bold" />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-[9px] font-black uppercase tracking-widest text-primary/50 ml-4">Area / Locality</label>
-                      <Input required placeholder="e.g., Park Street" value={formData.locality} onChange={(e) => setFormData({...formData, locality: e.target.value})} className="bg-paper border-none h-14 rounded-2xl px-6 font-bold" />
+                      <label className="text-[9px] font-black uppercase tracking-widest text-primary/50 ml-4">Street / Building / Area</label>
+                      <Input required placeholder="e.g., Whispering Woods, Park Street" value={formData.street} onChange={(e) => setFormData({...formData, street: e.target.value})} className="bg-paper border-none h-14 rounded-2xl px-6 font-bold" />
                     </div>
                     <div className="space-y-2">
                       <label className="text-[9px] font-black uppercase tracking-widest text-primary/50 ml-4">Pincode</label>
                       <Input required maxLength={6} placeholder="7000xx" value={formData.pincode} onChange={(e) => setFormData({...formData, pincode: e.target.value})} className="bg-paper border-none h-14 rounded-2xl px-6 font-bold" />
                     </div>
-                    <div className="space-y-2 md:col-span-2">
+                    <div className="space-y-2">
                       <label className="text-[9px] font-black uppercase tracking-widest text-primary/50 ml-4 flex items-center gap-2"><Building className="w-3 h-3" /> City</label>
                       <Input required placeholder="e.g., Kolkata" value={formData.city} onChange={(e) => setFormData({...formData, city: e.target.value})} className="bg-paper border-none h-14 rounded-2xl px-6 font-bold" />
                     </div>

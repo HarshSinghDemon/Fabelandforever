@@ -3,7 +3,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Instagram, Lock } from 'lucide-react';
+import { Instagram, Lock, MapPin } from 'lucide-react';
 import { Logo } from './Logo';
 
 export function Footer() {
@@ -27,9 +27,14 @@ export function Footer() {
               </div>
             </Link>
             <div className="hidden md:block w-px h-8 bg-white/10 mx-2"></div>
-            <p className="hidden md:block text-[9px] font-bold uppercase tracking-[0.3em] text-white/40 max-w-[200px]">
-              Artisanal Crochet Studio • Kolkata Heritage
-            </p>
+            <div className="hidden md:flex flex-col gap-1">
+              <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-white/40">
+                Artisanal Crochet Studio
+              </p>
+              <div className="flex items-center gap-2 text-[8px] font-black uppercase tracking-widest text-accent">
+                <MapPin className="w-2.5 h-2.5" /> Kolkata & Neighboring Areas
+              </div>
+            </div>
           </div>
 
           <nav className="flex flex-wrap justify-center gap-6 md:gap-10">

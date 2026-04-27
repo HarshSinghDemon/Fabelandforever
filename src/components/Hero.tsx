@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useMemo } from 'react';
@@ -98,9 +99,9 @@ export function Hero() {
           
           <div className="absolute inset-0 z-20 flex flex-col items-center justify-center pb-8 text-center text-white p-6 -translate-y-10">
             <div className="space-y-4 w-full flex flex-col items-center">
-              <div className="bg-accent/90 backdrop-blur-md px-4 py-2 rounded-full flex items-center gap-2 shadow-2xl animate-heartbeat mb-2">
-                <MapPin className="w-3 h-3 text-white" />
-                <span className="text-[8px] font-black uppercase tracking-[0.3em] text-white">Only in Kolkata</span>
+              <div className="bg-accent/90 backdrop-blur-md px-5 py-2.5 rounded-full flex items-center gap-2 shadow-2xl animate-heartbeat mb-4">
+                <MapPin className="w-3.5 h-3.5 text-white" />
+                <span className="text-[9px] font-black uppercase tracking-[0.3em] text-white">Kolkata & Neighboring Areas</span>
               </div>
               <span className="text-[10px] font-black uppercase tracking-[0.6em] text-accent block animate-loop-in opacity-0">Handmade Crochet</span>
               <h1 className="font-headline text-5xl leading-[0.8] tracking-tighter mb-6 drop-shadow-2xl italic animate-loop-in stagger-2 opacity-0">
@@ -131,7 +132,7 @@ export function Hero() {
             </h1>
           </div>
           <div className="space-y-10 max-w-2xl mx-auto pt-16 md:pt-0">
-            <p className="text-[10px] md:text-base leading-relaxed font-black uppercase tracking-[0.4em] text-white/70 animate-loop-in stagger-4 opacity-0 px-4">Bespoke crochet collections designed for the heritage heart.</p>
+            <p className="text-[10px] md:text-base leading-relaxed font-black uppercase tracking-[0.4em] text-white/70 animate-loop-in stagger-4 opacity-0 px-4">Bespoke crochet collections for Kolkata & Neighboring Areas.</p>
             <div className="pt-8 flex flex-col sm:flex-row items-center justify-center gap-8 animate-loop-in stagger-4 opacity-0">
               <Button asChild className="bg-white text-primary hover:bg-white/90 px-12 h-16 rounded-none text-[11px] font-black uppercase tracking-[0.5em] transition-all hover:scale-105 shadow-2xl group w-full sm:w-auto">
                 <Link href="#shop" className="flex items-center justify-center">Explore Shop <ArrowRight className="ml-4 w-5 h-5 group-hover:translate-x-2 transition-transform" /></Link>

@@ -89,9 +89,9 @@ export function Hero() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/70 pointer-events-none z-[5]"></div>
       </div>
 
-      {/* 3. MOBILE ONLY: Inset Window Focal Point */}
-      <div className="absolute inset-0 z-10 flex flex-col items-center justify-center md:hidden px-6 pt-4">
-        <div className="w-full max-w-[420px] aspect-[4/5.8] max-h-[70vh] rounded-[4rem] overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.6)] border-[6px] border-white/10 relative animate-fade-in-up scale-100 duration-1000">
+      {/* 3. MOBILE ONLY: Inset Window Focal Point - CELESTIAL ALIGNMENT (Shifted Up) */}
+      <div className="absolute inset-0 z-10 flex flex-col items-center justify-start md:hidden px-6 pt-16 sm:pt-20">
+        <div className="w-full max-w-[420px] aspect-[4/5.8] max-h-[75vh] rounded-[4rem] overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.6)] border-[6px] border-white/10 relative animate-fade-in-up scale-100 duration-1000">
           
           <Carousel plugins={[Autoplay({ delay: 6000 })]} className="w-full h-full" opts={{ loop: true }}>
             <CarouselContent className="h-full ml-0">
@@ -122,7 +122,7 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="absolute bottom-24 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 animate-in fade-in slide-in-from-bottom-10 duration-1000 delay-500">
+        <div className="flex flex-col items-center gap-1 mt-6 animate-in fade-in slide-in-from-bottom-10 duration-1000 delay-500">
            <span className="text-[8px] font-black uppercase tracking-[0.5em] text-white/40 animate-pulse">Scroll to Explore</span>
            <ChevronDown className="w-4 h-4 text-accent animate-float" />
         </div>

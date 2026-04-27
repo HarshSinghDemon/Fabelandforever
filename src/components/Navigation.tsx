@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useEffect } from 'react';
@@ -74,7 +75,7 @@ export function Navigation() {
       <nav className={cn(
         "fixed top-0 left-0 right-0 z-[60] transition-all duration-700",
         useLightStyle 
-          ? "bg-transparent py-8" 
+          ? "bg-transparent py-2 sm:py-4" 
           : "bg-white/95 backdrop-blur-xl border-b border-primary/10 py-3 shadow-sm"
       )}>
         <div className="container mx-auto px-4 md:px-6 max-w-7xl">

@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { use, useState, useEffect } from 'react';
@@ -19,10 +20,6 @@ import {
   Instagram, 
   ChevronRight, 
   Sparkles,
-  MapPin,
-  Feather,
-  Heart,
-  Undo2,
   ArrowLeft
 } from 'lucide-react';
 import {
